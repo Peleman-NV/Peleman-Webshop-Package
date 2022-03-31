@@ -1,0 +1,1 @@
+This is where functionality shared between the admin and public part of the side reside.

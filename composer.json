@@ -2,8 +2,7 @@
     "autoload": {
         "psr-4": {
             "PPA\\": "",
-            "automattic\\": ""
-            
+            "automattic\\": ""            
         }
     },
     "require": {

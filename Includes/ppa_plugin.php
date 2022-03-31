@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace PPA\includes;
 
-class PPA_Deactivator
+class PPA_plugin
 {
-    public static function deactivate()
+    public function run()
     {
     }
 }
