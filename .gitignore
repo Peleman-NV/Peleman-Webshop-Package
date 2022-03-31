@@ -21,3 +21,8 @@ node_modules/
 *.log
 *.sql
 *.sqlite
+
+# additional ignores
+/vendor
+/woocommerce
+Config.php
