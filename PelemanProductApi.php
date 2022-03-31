@@ -18,10 +18,10 @@ use PPA\includes\PPA_plugin;
  *
  * @link              http://example.com
  * @since             1.0.0
- * @package           Plugin_Name
+ * @package           PPA
  *
  * @wordpress-plugin
- * Plugin Name:       WordPress Plugin Boilerplate
+ * Plugin Name:       Peleman Product API
  * Plugin URI:        http://example.com/plugin-name-uri/
  * Description:       This is a short description of what the plugin does. It's displayed in the WordPress admin area.
  * Version:           1.0.0
@@ -29,7 +29,7 @@ use PPA\includes\PPA_plugin;
  * Author URI:        http://example.com/
  * License:           GPL-2.0+
  * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
- * Text Domain:       plugin-name
+ * Text Domain:       PPA
  * Domain Path:       /languages
  */
 
@@ -37,7 +37,7 @@ if (!defined('WPINC')) {
     die;
 }
 
-define('PLUGIN_NAME_VERSION', '1.0.0');
+define('PPA_VERSION', '1.0.0');
 
 function activate_plugin()
 {
