@@ -28,9 +28,7 @@ use PPA\includes\PPA_plugin;
  * Domain Path:       /languages
  */
 
-if (!defined('WPINC')) {
-    die;
-}
+defined('WPINC') || die;
 
 define('PPA_VERSION', '1.0.0');
 

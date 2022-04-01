@@ -7,7 +7,9 @@ namespace PPA\includes\endpoints;
 use WP_Error;
 use WP_REST_Request;
 use WP_REST_Controller;
-use myFirstPlugin\Includes\Authentication\Authenticator;
+use PPA\includes\authentication\PPA_Authenticator;
+
+defined('ABSPATH') || die;
 
 abstract class PPA_Endpoint extends WP_REST_Controller implements PPA_IEndpoint
 {
@@ -43,14 +45,14 @@ abstract class PPA_Endpoint extends WP_REST_Controller implements PPA_IEndpoint
      */
     protected const AUTH = 'authenticate';
 
-    private Authenticator $authenticator;
+    private PPA_Authenticator $authenticator;
 
     /**
      * initialization function that registers this class' callback to the hook and rest API
      */
     public abstract function register(): void;
 
-    public function __construct(string $namespace, string $rest_base, Authenticator $authenticator)
+    public function __construct(string $namespace, string $rest_base, PPA_Authenticator $authenticator)
     {
         $this->namespace = $namespace;
         $this->rest_base = $rest_base;

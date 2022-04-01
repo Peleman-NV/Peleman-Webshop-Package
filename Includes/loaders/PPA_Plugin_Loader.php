@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace PPA\includes;
+namespace PPA\includes\loaders;
 
 use PPA\includes\loaders\PPA_Action_Loader;
 use PPA\includes\loaders\PPA_Filter_Loader;
 use PPA\includes\loaders\PPA_Shortcode_Loader;
 
-class PPA_PluginLoader
+class PPA_Plugin_Loader
 {
     private array $actions;
     private array $filters;
