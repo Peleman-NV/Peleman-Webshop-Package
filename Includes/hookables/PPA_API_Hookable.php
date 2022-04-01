@@ -7,6 +7,7 @@ namespace PPA\includes\hookables;
 use PPA\includes\endpoints\PPA_IEndpoint;
 use PPA\includes\loaders\PPA_Plugin_Loader;
 use PPA\includes\endpoints\PPA_Test_Endpoint;
+use PPA\includes\endpoints\PPA_Products_Endpoint;
 use PPA\includes\authentication\PPA_Authenticator;
 
 defined('ABSPATH') || die;
@@ -26,13 +27,13 @@ class PPA_API_Hookable implements PPA_IHookable
         $authenticator = new PPA_Authenticator();
 
         $this->add_endpoint(new PPA_Test_Endpoint($this->namespace, $authenticator));
-        
+        $this->add_endpoint(new PPA_Products_Endpoint($this->namespace, $authenticator));
+
         //TODO: add endpoints
         //  attributes
         //  tags
         //  images
         //  categories
-        //  products
         //  variations
         //  terms
         //  menus
