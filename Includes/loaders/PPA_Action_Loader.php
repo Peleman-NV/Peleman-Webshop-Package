@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace PPA\includes\loaders;
 
 /**
- * wrapper class for Wordpress filter hooks
+ * wrapper class for Wordpress action hooks
  */
-final class PPA_FilterLoader implements PPA_ILoader
+final class PPA_Action_Loader implements PPA_ILoader
 {
     private string $name;
     private object $component;
@@ -26,7 +26,7 @@ final class PPA_FilterLoader implements PPA_ILoader
 
     final public function register()
     {
-        \add_filter(
+        \add_action(
             $this->name,
             array($this->component, $this->callback),
             $this->priority,

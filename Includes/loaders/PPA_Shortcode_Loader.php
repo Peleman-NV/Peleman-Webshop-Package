@@ -7,7 +7,7 @@ namespace PPA\includes\loaders;
 /**
  * wrapper class for Wordpress shortcodes
  */
-final class PPA_ShortCodeLoader implements PPA_ILoader
+final class PPA_Shortcode_Loader implements PPA_ILoader
 {
     private string $tag;
     private object $component;

@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace PPA\includes;
 
-use PPA\includes\loaders\PPA_ActionLoader;
-use PPA\includes\loaders\PPA_FilterLoader;
-use PPA\includes\loaders\PPA_ShortCodeLoader;
+use PPA\includes\loaders\PPA_Action_Loader;
+use PPA\includes\loaders\PPA_Filter_Loader;
+use PPA\includes\loaders\PPA_Shortcode_Loader;
 
 class PPA_PluginLoader
 {
@@ -33,17 +33,17 @@ class PPA_PluginLoader
 
     public function add_action(string $hook, Object $component, string $callback, int $priority = 10, int $accepted_args = 1): void
     {
-        $this->actions[] = new PPA_ActionLoader($hook, $component, $callback, $priority, $accepted_args);
+        $this->actions[] = new PPA_Action_Loader($hook, $component, $callback, $priority, $accepted_args);
     }
 
     public function add_filter(string $hook, Object $component, string $callback, int $priority = 10, int $accepted_args = 1): void
     {
-        $this->filters[] = new PPA_FilterLoader($hook, $component, $callback, $priority, $accepted_args);
+        $this->filters[] = new PPA_Filter_Loader($hook, $component, $callback, $priority, $accepted_args);
     }
 
     public function add_shortcode(string $tag, object $component, string $callback): void
     {
-        $this->shortcodes[] = new PPA_ShortCodeLoader($tag, $component, $callback);
+        $this->shortcodes[] = new PPA_Shortcode_Loader($tag, $component, $callback);
     }
 
     final public function register_hooks(): void

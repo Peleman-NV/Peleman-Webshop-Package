@@ -34,16 +34,14 @@ if (!defined('WPINC')) {
 
 define('PPA_VERSION', '1.0.0');
 
+//register activation hook. Is called when the plugin is activated in the Wordpress Admin panel
 register_activation_hook(__FILE__, function () {
     PPA_Activator::activate();
 });
+
+//register deactivation hook. Is called when the plugin is deactivated in the Wordpress Admin panel
 register_deactivation_hook(__FILE__, function () {
     PPA_Deactivator::deactivate();
 });
 
-function run_plugin_name()
-{
-    $plugin = new PPA_Plugin();
-    $plugin->run();
-}
-run_plugin_name();
+PPA_plugin::run();
