@@ -29,7 +29,7 @@ class PPA_Test_Endpoint extends PPA_Endpoint
             $this->rest_base,
             array(
                 array(
-                    'methods' => WP_REST_Server::READABLE,
+                    'methods' => WP_REST_Server::ALLMETHODS,
                     'callback' => array($this, self::GET),
                     'permission_callback' => array($this, self::AUTH),
                 ),

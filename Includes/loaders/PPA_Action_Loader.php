@@ -18,13 +18,13 @@ final class PPA_Action_Loader implements PPA_ILoader
     public function __construct(string $name, object $component, string $callback, int $priority = 1, int $accepted_args = 1)
     {
         $this->name = $name;
-        $this->object = $component;
+        $this->component = $component;
         $this->callback = $callback;
         $this->priority = $priority;
         $this->accepted_args = $accepted_args;
     }
 
-    final public function register()
+    final public function register() : void
     {
         \add_action(
             $this->name,

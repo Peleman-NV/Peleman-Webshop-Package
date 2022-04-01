@@ -42,4 +42,5 @@ register_deactivation_hook(__FILE__, function () {
     PPA_Deactivator::deactivate();
 });
 
-PPA_plugin::run();
+$plugin = new PPA_Plugin();
+$plugin->run();

@@ -16,7 +16,7 @@ final class PPA_Shortcode_Loader implements PPA_ILoader
     public function __construct(string $tag, object $component, string $callback)
     {
         $this->tag = $tag;
-        $this->object = $component;
+        $this->component = $component;
         $this->callback = $callback;
     }
 

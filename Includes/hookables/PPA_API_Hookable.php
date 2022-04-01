@@ -30,22 +30,19 @@ class PPA_API_Hookable implements PPA_IHookable
         $loader->add_action(
             "rest_api_init",
             $this,
-            "init_endpoints"
+            "init_endpoints",
         );
     }
+
 
     protected function add_endpoint(PPA_IEndpoint $endpoint): void
     {
         $this->endpoints[] = $endpoint;
     }
 
-    protected function init_endpoints(): void
+    public function init_endpoints(): void
     {
-        /**
-         * @var PPA_IEndpoint
-         */
-        foreach($this->endpoints as $endpoint)
-        {
+        foreach ($this->endpoints as $endpoint) {
             $endpoint->register();
         }
     }
