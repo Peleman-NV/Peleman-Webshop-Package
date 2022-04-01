@@ -11,6 +11,9 @@ use PPA\includes\authentication\PPA_Authenticator;
 
 defined('ABSPATH') || die;
 
+/**
+ * Hookable component of the Peleman Product API plugin, responsible for the REST API component
+ */
 class PPA_API_Hookable implements PPA_IHookable
 {
     protected string $namespace;
@@ -23,6 +26,16 @@ class PPA_API_Hookable implements PPA_IHookable
         $authenticator = new PPA_Authenticator();
 
         $this->add_endpoint(new PPA_Test_Endpoint($this->namespace, $authenticator));
+        
+        //TODO: add endpoints
+        //  attributes
+        //  tags
+        //  images
+        //  categories
+        //  products
+        //  variations
+        //  terms
+        //  menus
     }
 
     public function register(PPA_Plugin_Loader $loader): void
