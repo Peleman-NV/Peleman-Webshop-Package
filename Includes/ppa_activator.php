@@ -14,5 +14,6 @@ class PPA_Activator
 {
     public static function activate()
     {
+        //TODO: create tables to store authentication data
     }
 }

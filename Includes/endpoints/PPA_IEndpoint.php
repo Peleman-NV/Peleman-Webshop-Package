@@ -10,8 +10,12 @@ interface PPA_IEndpoint
 {
     public function register(): void;
 
-    public function get_callback(WP_REST_Request $request): object;
-    public function update_callback(WP_REST_Request $request): object;
-    public function delete_callback(WP_REST_Request $request): object;
-    public function post_callback(WP_REST_Request $request): object;
+    public function get_item(WP_REST_Request $request): object;
+    public function get_items(WP_REST_Request $request): object;
+
+    public function update_item(WP_REST_Request $request): object;
+
+    public function delete_item(WP_REST_Request $request): object;
+    
+    public function post_item(WP_REST_Request $request): object;
 }
