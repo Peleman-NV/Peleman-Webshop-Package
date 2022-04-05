@@ -10,6 +10,7 @@ use WP_REST_Response;
 use Requests_Exception_HTTP_404;
 use PPA\includes\authentication\PPA_IApiAuthenticator;
 use PPA\includes\endpoints\PPA_EndpointController;
+use PPA\includes\PPA_ArgBuilder;
 use WC_Product;
 
 class PPA_Products_Endpoint extends PPA_EndpointController
@@ -141,33 +142,39 @@ class PPA_Products_Endpoint extends PPA_EndpointController
 
     protected function request_to_args(WP_REST_Request $request): array
     {
-        $args = array(
+        $args = new PPA_ArgBuilder(array(
             'return'        => 'objects',
             'limit'         => (int)$request['limit'] ?: self::PAGE_SOFT_CAP,
             'page'          => (int)$request['page'] ?: 1,
             'paginate'      => (int)$request['limit'] > -1,
-            // 'order'         => $request['order'],   //DESC or ASC
-            // 'orderby'       => $request['orderby'], //valid strings are: none, ID, name, type, rand, date, modified
             //MORE TO BE ADDED IF NECESSARY
-        );
+        ));
 
         //string | array : draft; pending; private; publish; trash
-        if(!empty($request['status'])) $args['status'] = $request['status'];
-        //string | array : external; grouped; simple; variable; custom
-        if(!empty($request['type'])) $args['type'] = $request['type'];
-        //string : partial string match to SKU
-        if(!empty($request['sku'])) $args['sku'] = $request['sku'];
-        //array : limit specific tags by slug
-        if(!empty($request['tag'])) $args['tag'] = $request['tag'];
-        //array : limit categories by slug
-        if(!empty($request['category'])) $args['category'] = $request['category'];
-        //float : price to match
-        if(!empty($request['price'])) $args['price'] = $request['price'];
-        //string : ASC; DESC
-        if(!empty($request['order'])) $args['order'] = $request['order'];
-        //string : none; id; name; type; rand; date; modified;
-        if(!empty($request['orderby'])) $args['orderby'] = $request['orderby'];
-        
+        $args->add_arg_if_exists($request, 'status')
+            //string | array : external; grouped; simple; variable; custom
+            ->add_arg_if_exists($request, 'type')
+            //string : partial string match to SKU
+            ->add_arg_if_exists($request, 'sku')
+            //array : limit specific tags by slug
+            ->add_arg_if_exists($request, 'tag')
+            //array : limit categories by slug
+            ->add_arg_if_exists($request, 'category')
+            //float : price to match
+            ->add_arg_if_exists($request, 'price')
+            //string : ASC; DESC
+            ->add_arg_if_exists($request, 'order')
+            //string : none; id; name; type; rand; date; modified;
+            ->add_arg_if_exists($request, 'orderby');
+
+        return $args->to_array();
+    }
+
+    private function add_arg_if_exists(array &$args, WP_REST_Request $request, string $parameter): array
+    {
+        if (!empty($request[$parameter])) {
+            $args[$parameter] = $request[$parameter];
+        }
         return $args;
     }
 
