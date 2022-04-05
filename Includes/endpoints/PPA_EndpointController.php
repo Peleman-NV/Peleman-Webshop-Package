@@ -6,12 +6,12 @@ namespace PPA\includes\endpoints;
 
 use WP_Error;
 use WP_REST_Request;
-use WP_REST_Controller;
 use PPA\includes\authentication\PPA_Authenticator;
+use PPA\includes\authentication\PPA_IApiAuthenticator;
 
 defined('ABSPATH') || die;
 
-abstract class PPA_EndpointController implements PPA_IEndpoint
+abstract class PPA_EndpointController implements PPA_IEndpoint, PPA_IApiAuthenticator
 {
     private PPA_Authenticator $authenticator;
 
@@ -33,7 +33,7 @@ abstract class PPA_EndpointController implements PPA_IEndpoint
      * GET individual item
      *
      * @param WP_REST_Request $request
-     * @return object
+     * @return WP_REST_Response|WP_Error
      */
     public function get_item(WP_REST_Request $request): object
     {
@@ -44,7 +44,7 @@ abstract class PPA_EndpointController implements PPA_IEndpoint
      * GET grouped items
      *
      * @param WP_REST_Request $request
-     * @return object
+     * @return WP_REST_Response|WP_Error
      */
     public function get_items(WP_REST_Request $request): object
     {
@@ -55,7 +55,7 @@ abstract class PPA_EndpointController implements PPA_IEndpoint
      * PUT/PATCH item
      *
      * @param WP_REST_Request $request
-     * @return object
+     * @return WP_REST_Response|WP_Error
      */
     public function update_item(WP_REST_Request $request): object
     {
@@ -66,7 +66,7 @@ abstract class PPA_EndpointController implements PPA_IEndpoint
      * POST new item
      *
      * @param WP_REST_Request $request
-     * @return object
+     * @return WP_REST_Response|WP_Error
      */
     public function post_item(WP_REST_Request $request): object
     {
@@ -77,22 +77,63 @@ abstract class PPA_EndpointController implements PPA_IEndpoint
      * DELETE item
      *
      * @param WP_REST_Request $request
-     * @return object
+     * @return WP_REST_Response|WP_Error
      */
     public function delete_item(WP_REST_Request $request): object
     {
         throw new \Requests_Exception_HTTP_501("method not implemented!");
     }
     #endregion
-
+    #region REST AUTHENTICATION
     /**
      * Authentication function for API Endpoint controller
      * by default, uses the API authenticator class. In specific conditions, it might be worthwhile to overwrite this function to loosen or open up access for certain endpoints
      * @return boolean
      * @throws \Requests_exception_HTTP
      */
-    public function authenticate(WP_REST_REQUEST $request): bool
+    public function auth_get_item(WP_REST_Request $request): bool
     {
-        return $this->authenticator->authenticate($request);
+        return $this->authenticator->auth_get_item($request);
     }
+
+    /**
+     * @param WP_REST_Request $request
+     * @return boolean
+     * @throws \Requests_exception_HTTP
+     */
+    public function auth_get_items(WP_REST_Request $request): bool
+    {
+        return $this->authenticator->auth_get_items($request);
+    }
+
+    /**
+     * @param WP_REST_Request $request
+     * @return boolean
+     * @throws \Requests_exception_HTTP
+     */
+    public function auth_delete_item(WP_REST_Request $request): bool
+    {
+        return $this->authenticator->auth_delete_item($request);
+    }
+
+    /**
+     * @param WP_REST_Request $request
+     * @return boolean
+     * @throws \Requests_exception_HTTP
+     */
+    public function auth_post_item(WP_REST_Request $request): bool
+    {
+        return $this->authenticator->auth_post_item($request);
+    }
+
+    /**
+     * @param WP_REST_Request $request
+     * @return boolean
+     * @throws \Requests_exception_HTTP
+     */
+    public function auth_update_item(WP_REST_Request $request): bool
+    {
+        return $this->authenticator->auth_update_item($request);
+    }
+    #endregion
 }

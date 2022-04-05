@@ -8,7 +8,7 @@ use WP_REST_Server;
 use WP_REST_Request;
 use WP_REST_Response;
 use Requests_Exception_HTTP_404;
-use PPA\includes\authentication\PPA_Authenticator;
+use PPA\includes\authentication\PPA_IApiAuthenticator;
 use PPA\includes\endpoints\PPA_EndpointController;
 use WC_Product;
 
@@ -16,7 +16,7 @@ class PPA_Products_Endpoint extends PPA_EndpointController
 {
     private const PAGE_SOFT_CAP = 10;
 
-    public function __construct(string $namespace, PPA_Authenticator $authenticator)
+    public function __construct(string $namespace, PPA_IApiAuthenticator $authenticator)
     {
         parent::__construct(
             $namespace,
@@ -34,15 +34,14 @@ class PPA_Products_Endpoint extends PPA_EndpointController
                 array(
                     "methods" => WP_REST_Server::READABLE,
                     "callback" => array($this, 'get_items'),
-                    "permission_callback" => array($this, 'authenticate'),
+                    "permission_callback" => array($this, 'auth_get_items'),
                     'args' => $this->get_params(),
                 ),
                 array(
                     "methods" => WP_REST_Server::CREATABLE,
                     "callback" => array($this, 'create_item'),
-                    "permission_callback" => array($this, 'authenticate'),
+                    "permission_callback" => array($this, 'auth_post_item'),
                 ),
-
             )
         );
 
@@ -53,12 +52,12 @@ class PPA_Products_Endpoint extends PPA_EndpointController
                 array(
                     "methods" => WP_REST_Server::DELETABLE,
                     "callback" => array($this, 'delete_item'),
-                    "permission_callback" => array($this, 'authenticate'),
+                    "permission_callback" => array($this, 'auth_delete_item'),
                 ),
                 array(
                     "methods" => WP_REST_Server::READABLE,
                     "callback" => array($this, 'get_item'),
-                    "permission_callback" => array($this, 'authenticate'),
+                    "permission_callback" => array($this, 'auth_get_item'),
                 ),
             )
         );
@@ -81,13 +80,13 @@ class PPA_Products_Endpoint extends PPA_EndpointController
 
     public function get_items(WP_REST_Request $request): object
     {
-        $pagination = isset($request['limit']);
-        $results = (array)wc_get_products($this->request_to_args($request, $pagination));
+        $args = $this->request_to_args($request);
+        $results = (array)wc_get_products($this->request_to_args($request));
 
-        if ($pagination) {
-            $results['products'] = $this->remap_array($results['products']);
+        if (!empty($args['paginate'])) {
+            $results['products'] = $this->remap_results_array($results['products']);
         } else {
-            $results = $this->remap_array($results);
+            $results = $this->remap_results_array($results);
         }
 
         $results['test'] = "some data";
@@ -140,36 +139,55 @@ class PPA_Products_Endpoint extends PPA_EndpointController
         return $schema;
     }
 
-    private function request_to_args(WP_REST_Request $request, bool $pagination): array
+    protected function request_to_args(WP_REST_Request $request): array
     {
-        $arguments = array(
-            'return' => 'objects',
-            'sku' => $request['sku'] ?: "",
-            'limit' => (int)$request['limit'] ?: self::PAGE_SOFT_CAP,
+        $args = array(
+            'return'        => 'objects',
+            'limit'         => (int)$request['limit'] ?: self::PAGE_SOFT_CAP,
+            'page'          => (int)$request['page'] ?: 1,
+            'paginate'      => (int)$request['limit'] > -1,
+            // 'order'         => $request['order'],   //DESC or ASC
+            // 'orderby'       => $request['orderby'], //valid strings are: none, ID, name, type, rand, date, modified
+            //MORE TO BE ADDED IF NECESSARY
         );
 
-        if ($pagination) {
-            $arguments['paginate'] = true;
-            $arguments['page'] = (int)$request['page'] ?: 1;
-        }
-
-        return $arguments;
+        //string | array : draft; pending; private; publish; trash
+        if(!empty($request['status'])) $args['status'] = $request['status'];
+        //string | array : external; grouped; simple; variable; custom
+        if(!empty($request['type'])) $args['type'] = $request['type'];
+        //string : partial string match to SKU
+        if(!empty($request['sku'])) $args['sku'] = $request['sku'];
+        //array : limit specific tags by slug
+        if(!empty($request['tag'])) $args['tag'] = $request['tag'];
+        //array : limit categories by slug
+        if(!empty($request['category'])) $args['category'] = $request['category'];
+        //float : price to match
+        if(!empty($request['price'])) $args['price'] = $request['price'];
+        //string : ASC; DESC
+        if(!empty($request['order'])) $args['order'] = $request['order'];
+        //string : none; id; name; type; rand; date; modified;
+        if(!empty($request['orderby'])) $args['orderby'] = $request['orderby'];
+        
+        return $args;
     }
 
-    private function remap_array(array $products): array
+    private function remap_results_array(array $products): array
     {
         return array_map(
             function ($product) {
                 if (!$product instanceof WC_Product) {
                     return $product;
                 }
-                return $product->get_data();
+                $data = $product->get_data();
+                $data['variations'] = $product->get_children();
+                return $data;
             },
             $products
         );
     }
 
-    public function get_params(): array{
+    public function get_params(): array
+    {
         $params = array();
         $params['sku'] = array(
             'description' => 'filter results to matching SKUs. supports partial matches.',

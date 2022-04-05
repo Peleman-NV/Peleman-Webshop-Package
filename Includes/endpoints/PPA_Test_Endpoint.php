@@ -7,14 +7,14 @@ namespace PPA\includes\endpoints;
 use WP_REST_Server;
 use WP_REST_Request;
 use WP_REST_Response;
-use PPA\includes\authentication\PPA_Authenticator;
 use PPA\includes\endpoints\PPA_EndpointController;
+use PPA\includes\authentication\PPA_IApiAuthenticator;
 
 defined('ABSPATH') || die;
 
 class PPA_Test_Endpoint extends PPA_EndpointController
 {
-    public function __construct(string $namespace, PPA_Authenticator $authenticator)
+    public function __construct(string $namespace, PPA_IApiAuthenticator $authenticator)
     {
         parent::__construct(
             $namespace,
