@@ -18,7 +18,7 @@ use PWP\includes\PWP_plugin;
  * @wordpress-plugin
  * Plugin Name:       Peleman Webshop Package
  * Plugin URI:        https://www.peleman.com
- * Description:       This is a short description of what the plugin does. It's displayed in the WordPress admin area.
+ * Description:       In-development merger project of the Peleman Product Uploader and Print Partner Integrator.
  * Version:           1.0.0
  * Author:            Kai Helsen
  * Author URI:        https://github.com/KaiHelsen

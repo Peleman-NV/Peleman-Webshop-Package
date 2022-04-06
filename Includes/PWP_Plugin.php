@@ -4,14 +4,13 @@ declare(strict_types=1);
 
 namespace PWP\includes;
 
+use PWP\includes\API\PWP_API_Hookable;
 use PWP\includes\hookables\PWP_IHookable;
 use PWP\includes\loaders\PWP_Plugin_Loader;
-use PWP\includes\hookables\PWP_API_Hookable;
-
 
 defined('ABSPATH') || exit;
 
-class PWP_plugin
+class PWP_Plugin
 {
     private PWP_Plugin_Loader $loader;
     private string $version;
@@ -22,7 +21,7 @@ class PWP_plugin
     public function __construct()
     {
         $this->version = defined('PWP_VERSION') ? PWP_VERSION : '1.0.0';
-        $this->plugin_name = 'Peleman Product API';
+        $this->plugin_name = 'Peleman Webshop Package';
         $this->loader = new PWP_Plugin_Loader();
         $this->components = array();
     }
@@ -32,12 +31,12 @@ class PWP_plugin
         $this->initialize_hooks();
         $this->register_hooks();
 
-        do_action('ppa_plugin_loaded');
+        do_action('PWP_plugin_loaded');
     }
 
     private function initialize_hooks()
     {
-        $this->add_hookable(new PWP_API_Hookable('ppa/v1'));
+        $this->add_hookable(new PWP_API_Hookable('pwp/v1'));
         //TODO: add the other hookable components
     }
 

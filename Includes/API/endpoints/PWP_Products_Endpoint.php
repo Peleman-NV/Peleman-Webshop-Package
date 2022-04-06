@@ -2,18 +2,14 @@
 
 declare(strict_types=1);
 
-namespace PWP\includes\endpoints;
+namespace PWP\includes\API\endpoints;
 
-use WP_REST_Server;
-use WP_REST_Request;
-use WP_REST_Response;
-use Requests_Exception_HTTP_404;
-use PWP\includes\authentication\PWP_IApiAuthenticator;
-use PWP\includes\endpoints\PWP_EndpointController;
 use PWP\includes\PWP_ArgBuilder;
-use WC_Product;
+use PWP\includes\API\endpoints\PWP_EndpointController;
+use PWP\includes\authentication\PWP_IApiAuthenticator;
 
-class PWP_Products_Endpoint extends PWP_EndpointController
+
+class PWP_Products_Endpoint extends PWP_EndpointController implements PWP_IEndpoint
 {
     private const PAGE_SOFT_CAP = 10;
 
@@ -33,13 +29,13 @@ class PWP_Products_Endpoint extends PWP_EndpointController
             $this->rest_base,
             array(
                 array(
-                    "methods" => WP_REST_Server::READABLE,
+                    "methods" => \WP_REST_Server::READABLE,
                     "callback" => array($this, 'get_items'),
                     "permission_callback" => array($this, 'auth_get_items'),
                     'args' => $this->get_params_schema(),
                 ),
                 array(
-                    "methods" => WP_REST_Server::CREATABLE,
+                    "methods" => \WP_REST_Server::CREATABLE,
                     "callback" => array($this, 'create_item'),
                     "permission_callback" => array($this, 'auth_post_item'),
                 ),
@@ -51,12 +47,12 @@ class PWP_Products_Endpoint extends PWP_EndpointController
             $this->rest_base . "/(?P<id>\d+)",
             array(
                 array(
-                    "methods" => WP_REST_Server::DELETABLE,
+                    "methods" => \WP_REST_Server::DELETABLE,
                     "callback" => array($this, 'delete_item'),
                     "permission_callback" => array($this, 'auth_delete_item'),
                 ),
                 array(
-                    "methods" => WP_REST_Server::READABLE,
+                    "methods" => \WP_REST_Server::READABLE,
                     "callback" => array($this, 'get_item'),
                     "permission_callback" => array($this, 'auth_get_item'),
                 ),
@@ -64,36 +60,36 @@ class PWP_Products_Endpoint extends PWP_EndpointController
         );
     }
 
-    public function get_item(WP_REST_Request $request): object
+    public function get_item(\WP_REST_Request $request): object
     {
         $product = wc_get_product($request['id']);
 
         if (!$product) {
-            throw new Requests_Exception_HTTP_404(
+            throw new \Requests_Exception_HTTP_404(
                 "product not found in database"
             );
         }
 
         $json = $product->get_data();
 
-        return new WP_REST_Response($json);
+        return new \WP_REST_Response($json);
     }
 
-    public function get_items(WP_REST_Request $request): object
+    public function get_items(\WP_REST_Request $request): object
     {
         $results = (array)wc_get_products($this->request_to_args($request));
 
         $results['products'] = $this->remap_results_array($results['products']);
 
-        return new WP_REST_Response($results);
+        return new \WP_REST_Response($results);
     }
 
-    public function delete_item(WP_REST_Request $request): object
+    public function delete_item(\WP_REST_Request $request): object
     {
         $product = wc_get_product($request['id']);
 
         if (!$product) {
-            throw new Requests_Exception_HTTP_404(
+            throw new \Requests_Exception_HTTP_404(
                 "product not found in database"
             );
         }
@@ -108,7 +104,7 @@ class PWP_Products_Endpoint extends PWP_EndpointController
             }
         }
 
-        return new WP_REST_Response(array(
+        return new \WP_REST_Response(array(
             'message' => $forceDelete ?
                 'product permanently deleted successfullly!' :
                 'product moved to trash successfully!',
@@ -133,7 +129,7 @@ class PWP_Products_Endpoint extends PWP_EndpointController
         return $schema;
     }
 
-    protected function request_to_args(WP_REST_Request $request): array
+    protected function request_to_args(\WP_REST_Request $request): array
     {
         $args = new PWP_ArgBuilder(array(
             'return'        => 'objects',
@@ -159,7 +155,7 @@ class PWP_Products_Endpoint extends PWP_EndpointController
     {
         return array_map(
             function ($product) {
-                if (!$product instanceof WC_Product) {
+                if (!$product instanceof \WC_Product) {
                     return $product;
                 }
                 $data = $product->get_data();

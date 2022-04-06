@@ -2,18 +2,20 @@
 
 declare(strict_types=1);
 
-namespace PWP\includes\hookables;
+namespace PWP\includes\API;
 
-use PWP\includes\endpoints\PWP_IEndpoint;
+use PWP\includes\hookables\PWP_IHookable;
 use PWP\includes\loaders\PWP_Plugin_Loader;
-use PWP\includes\endpoints\PWP_Test_Endpoint;
-use PWP\includes\endpoints\PWP_Products_Endpoint;
+use PWP\includes\API\endpoints\PWP_IEndpoint;
+use PWP\includes\API\endpoints\PWP_Test_Endpoint;
 use PWP\includes\authentication\PWP_Authenticator;
+use PWP\includes\API\endpoints\PWP_Products_Endpoint;
+
 
 defined('ABSPATH') || die;
 
 /**
- * Hookable component of the Peleman Product API plugin, responsible for the REST API component
+ * Hookable component of the Peleman Webshop Package plugin, responsible for the REST API component
  */
 class PWP_API_Hookable implements PWP_IHookable
 {
@@ -47,7 +49,6 @@ class PWP_API_Hookable implements PWP_IHookable
             "init_endpoints",
         );
     }
-
 
     protected function add_endpoint(PWP_IEndpoint $endpoint): void
     {

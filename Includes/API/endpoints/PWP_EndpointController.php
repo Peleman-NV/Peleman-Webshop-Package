@@ -2,10 +2,11 @@
 
 declare(strict_types=1);
 
-namespace PWP\includes\endpoints;
+namespace PWP\includes\API\endpoints;
 
 use WP_Error;
 use WP_REST_Request;
+use PWP\includes\API\endpoints\PWP_IEndpoint;
 use PWP\includes\authentication\PWP_Authenticator;
 use PWP\includes\authentication\PWP_IApiAuthenticator;
 

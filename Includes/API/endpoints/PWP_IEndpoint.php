@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PWP\includes\endpoints;
+namespace PWP\includes\API\endpoints;
 
 use WP_REST_Request;
 

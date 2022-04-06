@@ -10,9 +10,7 @@ use PWP\includes\loaders\PWP_Shortcode_Loader;
 
 class PWP_Plugin_Loader
 {
-    private array $actions;
-    private array $filters;
-    private array $shortcodes;
+    private array $loaders;
 
     public function __construct()
     {
