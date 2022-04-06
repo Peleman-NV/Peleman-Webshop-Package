@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PPA\includes;
+namespace PWP\includes;
 
 defined('ABSPATH') || exit;
 
@@ -10,7 +10,7 @@ defined('ABSPATH') || exit;
  * deactivator class for the Peleman Product API plugin
  * is to be run when the plugin is deactivated from the Wordpress admin menu
  */
-class PPA_Deactivator
+class PWP_Deactivator
 {
     public static function deactivate()
     {

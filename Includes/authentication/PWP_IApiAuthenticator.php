@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace PPA\includes\authentication;
+namespace PWP\includes\authentication;
 
 use WP_REST_Request;
 
-interface PPA_IApiAuthenticator
+interface PWP_IApiAuthenticator
 {
     public function auth_get_item(WP_REST_Request $request): bool;
 

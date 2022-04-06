@@ -2,19 +2,19 @@
 
 declare(strict_types=1);
 
-namespace PPA\includes\endpoints;
+namespace PWP\includes\endpoints;
 
 use WP_REST_Server;
 use WP_REST_Request;
 use WP_REST_Response;
-use PPA\includes\endpoints\PPA_EndpointController;
-use PPA\includes\authentication\PPA_IApiAuthenticator;
+use PWP\includes\endpoints\PWP_EndpointController;
+use PWP\includes\authentication\PWP_IApiAuthenticator;
 
 defined('ABSPATH') || die;
 
-class PPA_Test_Endpoint extends PPA_EndpointController
+class PWP_Test_Endpoint extends PWP_EndpointController
 {
-    public function __construct(string $namespace, PPA_IApiAuthenticator $authenticator)
+    public function __construct(string $namespace, PWP_IApiAuthenticator $authenticator)
     {
         parent::__construct(
             $namespace,

@@ -1,16 +1,16 @@
 # endpoints
 folder containing the individual endpoint classes for the API.
 
-## PPA_IEndpoint
+## PWP_IEndpoint
 interface for API endpoints
 
-## PPA_Endpoint
+## PWP_Endpoint
 abstract class for API endpoints. Contains necessary functionality for the proper operation of all endpoints.
 
 ___
 ## concrete endpoints
 
-### PPA_Test_Endpoint
+### PWP_Test_Endpoint
 - Returns a simple confirmation message when called. has no other purpose than to confirm the proper operation of the API system.
 
         <domain>/wp-json/ppa/v1/test
@@ -18,7 +18,7 @@ ___
     `GET` | `POST` | `PUT` | `PATCH` | `DELETE`
 
 ___
-### PPA_Products_Endpoint
+### PWP_Products_Endpoint
 - Returns one or multiple products.
 
         <domain>/wp-json/ppa/v1/products/?id
@@ -26,7 +26,7 @@ ___
     `GET` | `POST`
 
 ___
-### PPA_Variations_Endpoint
+### PWP_Variations_Endpoint
 - Returns one or multiple products.
 
         <domain>/wp-json/ppa/v1/products/:id/variations/?id
@@ -34,7 +34,7 @@ ___
     `GET` | `POST`
 
 ___
-### PPA_Tags_Endpoint
+### PWP_Tags_Endpoint
 - endpoint for woocommerce tags
 
         <domain>/wp-json/ppa/v1/tags/?id
@@ -42,7 +42,7 @@ ___
     `GET` | `POST` | `PUT` | `PATCH` | `DELETE`
 
 ___
-### PPA_Attributes_Endpoint
+### PWP_Attributes_Endpoint
 - endpoint for woocommerce attributes
 
         <domain>/wp-json/ppa/v1/attributes
@@ -50,7 +50,7 @@ ___
     `GET` | `POST`
 
 ___
-### PPA_Terms_Endpoint
+### PWP_Terms_Endpoint
 - Returns one or multiple products.
 
         <domain>/wp-json/ppa/v1/terms
@@ -58,7 +58,7 @@ ___
     `GET` | `POST`
 
 ___
-### PPA_Images_Endpoint
+### PWP_Images_Endpoint
 - Returns one or multiple products.
 
         <domain>/wp-json/ppa/v1/Images
@@ -66,7 +66,7 @@ ___
     `GET` | `POST`
 
 ___
-### PPA_Categories_Endpoint
+### PWP_Categories_Endpoint
 - Returns one or multiple products.
 
         <domain>/wp-json/ppa/v1/categories
@@ -74,7 +74,7 @@ ___
     `GET` | `POST`
 
 ___
-### PPA_Menus_Endpoint
+### PWP_Menus_Endpoint
 - Returns menus/mega menus
 
         <domain>/wp-json/ppa/v1/menus

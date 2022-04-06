@@ -2,20 +2,20 @@
 
 declare(strict_types=1);
 
-namespace PPA\includes\hookables;
+namespace PWP\includes\hookables;
 
-use PPA\includes\endpoints\PPA_IEndpoint;
-use PPA\includes\loaders\PPA_Plugin_Loader;
-use PPA\includes\endpoints\PPA_Test_Endpoint;
-use PPA\includes\endpoints\PPA_Products_Endpoint;
-use PPA\includes\authentication\PPA_Authenticator;
+use PWP\includes\endpoints\PWP_IEndpoint;
+use PWP\includes\loaders\PWP_Plugin_Loader;
+use PWP\includes\endpoints\PWP_Test_Endpoint;
+use PWP\includes\endpoints\PWP_Products_Endpoint;
+use PWP\includes\authentication\PWP_Authenticator;
 
 defined('ABSPATH') || die;
 
 /**
  * Hookable component of the Peleman Product API plugin, responsible for the REST API component
  */
-class PPA_API_Hookable implements PPA_IHookable
+class PWP_API_Hookable implements PWP_IHookable
 {
     protected string $namespace;
     protected string $rest_base;
@@ -23,11 +23,11 @@ class PPA_API_Hookable implements PPA_IHookable
 
     public function __construct(string $namespace)
     {
-        $this->namespace = $namespace ?: 'ppa/v1';
-        $authenticator = new PPA_Authenticator();
+        $this->namespace = $namespace ?: 'pwp/v1';
+        $authenticator = new PWP_Authenticator();
 
-        $this->add_endpoint(new PPA_Test_Endpoint($this->namespace, $authenticator));
-        $this->add_endpoint(new PPA_Products_Endpoint($this->namespace, $authenticator));
+        $this->add_endpoint(new PWP_Test_Endpoint($this->namespace, $authenticator));
+        $this->add_endpoint(new PWP_Products_Endpoint($this->namespace, $authenticator));
 
         //TODO: add endpoints
         //  attributes
@@ -39,7 +39,7 @@ class PPA_API_Hookable implements PPA_IHookable
         //  menus
     }
 
-    public function register(PPA_Plugin_Loader $loader): void
+    public function register(PWP_Plugin_Loader $loader): void
     {
         $loader->add_action(
             "rest_api_init",
@@ -49,7 +49,7 @@ class PPA_API_Hookable implements PPA_IHookable
     }
 
 
-    protected function add_endpoint(PPA_IEndpoint $endpoint): void
+    protected function add_endpoint(PWP_IEndpoint $endpoint): void
     {
         $this->endpoints[] = $endpoint;
     }

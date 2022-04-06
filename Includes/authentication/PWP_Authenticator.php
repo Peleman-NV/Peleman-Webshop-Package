@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace PPA\includes\authentication;
+namespace PWP\includes\authentication;
 
 use WP_REST_Request;
 
 defined('ABSPATH') || die;
 
-class PPA_Authenticator implements PPA_IApiAuthenticator
+class PWP_Authenticator implements PWP_IApiAuthenticator
 {
     public function auth_get_item(WP_REST_Request $request): bool
     {

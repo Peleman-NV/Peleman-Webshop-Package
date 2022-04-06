@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace PPA\includes\loaders;
+namespace PWP\includes\loaders;
 
 /**
  * wrapper class for Wordpress shortcodes
  */
-final class PPA_Shortcode_Loader implements PPA_ILoader
+final class PWP_Shortcode_Loader implements PWP_ILoader
 {
     private string $tag;
     private object $component;

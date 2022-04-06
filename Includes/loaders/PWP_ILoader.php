@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace PPA\includes\loaders;
+namespace PWP\includes\loaders;
 
-interface PPA_ILoader
+interface PWP_ILoader
 {
     public function register();
 }

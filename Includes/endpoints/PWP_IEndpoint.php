@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace PPA\includes\endpoints;
+namespace PWP\includes\endpoints;
 
 use WP_REST_Request;
 
-interface PPA_IEndpoint
+interface PWP_IEndpoint
 {
     public function register(): void;
 

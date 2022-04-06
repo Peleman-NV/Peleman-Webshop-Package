@@ -2,17 +2,17 @@
 
 declare(strict_types=1);
 
-namespace PPA\includes\hookables;
+namespace PWP\includes\hookables;
 
-use PPA\includes\loaders\PPA_Plugin_Loader;
+use PWP\includes\loaders\PWP_Plugin_Loader;
 
 /**
  * interface for objects to register hooks, actions and filters.
  */
-interface PPA_IHookable
+interface PWP_IHookable
 {
     /**
      * register actions and filters for this class
      */
-    public function register(PPA_Plugin_Loader $loader) : void;
+    public function register(PWP_Plugin_Loader $loader) : void;
 }

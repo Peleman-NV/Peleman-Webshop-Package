@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace PPA\includes\loaders;
+namespace PWP\includes\loaders;
 
 /**
- * wrapper class for Wordpress filter hooks
+ * wrapper class for Wordpress action hooks
  */
-final class PPA_Filter_Loader implements PPA_ILoader
+final class PWP_Action_Loader implements PWP_ILoader
 {
     private string $name;
     private object $component;
@@ -24,9 +24,9 @@ final class PPA_Filter_Loader implements PPA_ILoader
         $this->accepted_args = $accepted_args;
     }
 
-    final public function register()
+    final public function register() : void
     {
-        \add_filter(
+        \add_action(
             $this->name,
             array($this->component, $this->callback),
             $this->priority,

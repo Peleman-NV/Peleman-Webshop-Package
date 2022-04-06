@@ -2,25 +2,25 @@
 
 declare(strict_types=1);
 
-namespace PPA\includes\endpoints;
+namespace PWP\includes\endpoints;
 
 use WP_Error;
 use WP_REST_Request;
-use PPA\includes\authentication\PPA_Authenticator;
-use PPA\includes\authentication\PPA_IApiAuthenticator;
+use PWP\includes\authentication\PWP_Authenticator;
+use PWP\includes\authentication\PWP_IApiAuthenticator;
 
 defined('ABSPATH') || die;
 
-abstract class PPA_EndpointController implements PPA_IEndpoint, PPA_IApiAuthenticator
+abstract class PWP_EndpointController implements PWP_IEndpoint, PWP_IApiAuthenticator
 {
-    private PPA_Authenticator $authenticator;
+    private PWP_Authenticator $authenticator;
 
     /**
      * initialization function that registers this class' callback to the hook and rest API
      */
     public abstract function register(): void;
 
-    public function __construct(string $namespace, string $rest_base, PPA_Authenticator $authenticator)
+    public function __construct(string $namespace, string $rest_base, PWP_Authenticator $authenticator)
     {
         $this->namespace = $namespace;
         $this->rest_base = $rest_base;
