@@ -12,7 +12,7 @@ abstract class PWP_Update
 
     public function __construct(string $version)
     {
-        $version = PWP_VersionNumber::from_string($version);
+        $this->version = PWP_VersionNumber::from_string($version);
     }
 
     /**

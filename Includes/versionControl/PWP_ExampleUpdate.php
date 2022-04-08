@@ -8,10 +8,13 @@ use PWP\includes\versionControl\PWP_VersionNumber;
 
 class PWP_ExampleUpdate extends PWP_Update
 {
-        public function __construct()
+        public function __construct(string $version)
         {
+            //normally you do not initialize the version number in the constructor as above, instead it should be hard-coded in the script
+            //but since this is a testing version and we want to do a bit of experimentation with versioning,
+            //this makes it easier to do so.
             //feed the update's version number into the parent constructor here
-            parent::__construct('0.1.0');
+            parent::__construct($version);
 
             //do other constructor setup here.
         }

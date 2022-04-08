@@ -11,8 +11,14 @@ use PWP\includes\versionControl\PWP_VersionNumber;
 
 class PWP_VersionController
 {
-    private PWP_VersionNumber $localVersion; //version the local version is at
-    private PWP_VersionNumber $pluginVersion; //version of the current plugin, and the number we are trying to get to.
+    /**
+     * version of the current plugin, and the version number the version controller is trying to reach
+     */
+    private PWP_VersionNumber $pluginVersion;
+    /**
+     * version number of the local version, and what we're trying to upgrade
+     */
+    private PWP_VersionNumber $localVersion;
 
     /**
      * @var PWP_Update[]
@@ -23,6 +29,7 @@ class PWP_VersionController
     {
         $this->pluginVersion = PWP_VersionNumber::from_string($pluginVersion);
         $this->localVersion = PWP_VersionNumber::from_string($localVersion);
+        $this->updates = array();
     }
 
     public function try_update()
@@ -38,10 +45,13 @@ class PWP_VersionController
         //here we register all the update objects
         //this way we ensure we only load and register these objects when we are trying to upgrade the local version
 
-        $updates[] = new PWP_ExampleUpdate();
+        $this->updates[] = new PWP_ExampleUpdate('0.0.3');
+        $this->updates[] = new PWP_ExampleUpdate('0.0.15');
+        $this->updates[] = new PWP_ExampleUpdate('0.1.2');
+        $this->updates[] = new PWP_ExampleUpdate('0.2.0');
 
         //just to be sure, sort array of updates by version number (from oldest to newest);
-        uasort($updates, function (PWP_Update $a, PWP_Update $b) {
+        uasort($this->updates, function (PWP_Update $a, PWP_Update $b) {
             return $a->compare_version($b);
         });
     }
@@ -54,8 +64,6 @@ class PWP_VersionController
             foreach ($this->updates as $key => $update) {
                 $latestVersion = $this->run_update($update, $latestVersion);
             }
-
-            update_option('pwp-version', (string)$latestVersion);
         } catch (\Exception $error) {
             //undo last upgrade we tried to do
             $this->updates[$key]->downgrade();
@@ -64,17 +72,17 @@ class PWP_VersionController
             throw $error;
         }
 
-        if (!$latestVersion->is_older_than($this->pluginVersion)) {
-            throw new Exception("something went wrong with the updating process leading to a version mismatch. Likely you are missing an upgrade object script, or the latest has been deleted", 500);
-        }
+        // if ($latestVersion->is_older_than($this->pluginVersion)) {
+        //     throw new Exception("something went wrong with the updating process leading to a version mismatch. Likely you are missing an upgrade object script, or the latest has been deleted", 500);
+        // }
+        update_option('pwp-version', (string)$latestVersion);
     }
 
-    private function run_update(PWP_Update $update): PWP_VersionNumber
+    private function run_update(PWP_Update $update, PWP_VersionNumber $latestVersion): PWP_VersionNumber
     {
-        if ($update->is_newer_than($this->localVersion)) {
-            $newVersion = $update->upgrade();
+        if ($update->is_newer_than($latestVersion)) {
+            return $update->upgrade();
         }
-
-        return $newVersion;
+        return $latestVersion;
     }
 }

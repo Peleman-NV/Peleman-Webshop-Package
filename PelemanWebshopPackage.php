@@ -30,7 +30,7 @@ use PWP\includes\versionControl\PWP_VersionController;
 
 defined('WPINC') || die;
 
-define('PWP_VERSION', '1.0.0');
+define('PWP_VERSION', '0.3.0');
 !defined('PWP_OPTION_GROUP') ? define('PWP_OPTION_GROUP', 'PWP_OPTIONS') : null;
 
 //register activation hook. Is called when the plugin is activated in the Wordpress Admin panel
@@ -45,7 +45,11 @@ register_deactivation_hook(__FILE__, function () {
     $deactivator->deactivate();
 });
 
-$versionController = new PWP_VersionController(PWP_VERSION, get_option('pwp-version'));
+//currently this system runs automatically when version numbers do not align
+//maybe just do the check every time, and if there's a mismatach, present the user with a button to manually
+//initiate the process.
+$versionController = new PWP_VersionController(PWP_VERSION, (string)get_option('pwp-version'));
 $versionController->try_update();
+
 $plugin = new PWP_Plugin();
 $plugin->run();

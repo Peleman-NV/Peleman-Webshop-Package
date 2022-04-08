@@ -9,9 +9,9 @@ class PWP_VersionNumber
     public int $major;
     public int $minor;
     public int $patch;
-    public string $rest;
+    public ?string $rest;
 
-    private function __construct(int $major, int $minor, int $patch, string $rest = '')
+    private function __construct(int $major, int $minor, int $patch, ?string $rest = null)
     {
         $this->major = $major;
         $this->minor = $minor;
@@ -28,7 +28,7 @@ class PWP_VersionNumber
     public static function from_string(string $version): PWP_VersionNumber
     {
         $version = explode('.', $version, 4);
-        return new PWP_VersionNumber((int)$version[0], (int)$version[1], (int)$version[2], $version[3]);
+        return new PWP_VersionNumber((int)$version[0], (int)$version[1], (int)$version[2], $version[3] ?: '');
     }
 
     /**
@@ -40,9 +40,9 @@ class PWP_VersionNumber
      * @param string $rest
      * @return PWP_VersionNumber
      */
-    public static function from_ints(int $major, int $minor, int $patch, string $rest = ''): PWP_VersionNumber
+    public static function from_ints(int $major, int $minor, int $patch, ?string $rest = null): PWP_VersionNumber
     {
-        return new PWP_VersionNumber($major, $minor, $patch);
+        return new PWP_VersionNumber($major, $minor, $patch, $rest);
     }
 
     public function is_newer_than(PWP_VersionNumber $other): bool
@@ -64,14 +64,13 @@ class PWP_VersionNumber
      * comparison function for array sorting
      *
      * @param PWP_VersionNumber $other
-     * @param bool $reverse default false, will invert results from what is described. quick way to reverse-sort if desired.
      * @return integer ```-1``` if this version is OLDER than other, ```0``` if they MATCH, and ```1``` if this version is NEWER
      */
-    public function compare(PWP_VersionNumber $other, bool $reverse = false): int
+    public function compare(PWP_VersionNumber $other): int
     {
-        if($this->equals($other)) return 0;
-        if($this->is_newer_than($other)) return $reverse? -1 :1;
-        else return $reverse? 1 : -1;
+        if ($this->equals($other)) return 0;
+        if ($this->is_newer_than($other)) return  1;
+        return -1;
     }
 
     /**
@@ -90,6 +89,11 @@ class PWP_VersionNumber
 
     public function __toString()
     {
-        return "{$this->major}.{$this->minor}.{$this->patch}.{$this->rest}";
+        $str = "{$this->major}.{$this->minor}.{$this->patch}";
+
+        if (is_null($this->rest) || $this->rest !== '') {
+            return $str . ".{$this->rest}";
+        }
+        return $str;
     }
 }

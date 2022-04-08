@@ -32,9 +32,6 @@ class PWP_Activator
     public function init_settings()
     {
         register_setting(PWP_OPTION_GROUP, 'pwp-version', array(
-            'type' => 'string',
-            'description' => 'current semantic version number, used to keep track of upgrades',
-            'show_in_rest' => true,
             'default' => '0.0.1',
         ));
     }
