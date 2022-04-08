@@ -12,14 +12,14 @@ use PWP\includes\PWP_Deactivator;
 use PWP\includes\versionControl\PWP_VersionController;
 /**
  * @link              https://www.peleman.com
- * @since             1.0.0
+ * @since             0.1.0
  * @package           PWP
  *
  * @wordpress-plugin
  * Plugin Name:       Peleman Webshop Package
  * Plugin URI:        https://www.peleman.com
  * Description:       In-development umbrella project of the Peleman Product Uploader and Print Partner Integrator.
- * Version:           1.0.0
+ * Version:           0.3.0
  * Author:            Kai Helsen
  * Author URI:        https://github.com/KaiHelsen
  * License:           GPL-2.0+

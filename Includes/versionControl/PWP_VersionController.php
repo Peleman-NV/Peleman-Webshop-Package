@@ -72,10 +72,8 @@ class PWP_VersionController
             throw $error;
         }
 
-        // if ($latestVersion->is_older_than($this->pluginVersion)) {
-        //     throw new Exception("something went wrong with the updating process leading to a version mismatch. Likely you are missing an upgrade object script, or the latest has been deleted", 500);
-        // }
-        update_option('pwp-version', (string)$latestVersion);
+        //when all updates have been performed successfully, update the local plugin version to the current version
+        update_option('pwp-version', (string)$this->pluginVersion);
     }
 
     private function run_update(PWP_Update $update, PWP_VersionNumber $latestVersion): PWP_VersionNumber
