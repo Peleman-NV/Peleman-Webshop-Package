@@ -129,43 +129,6 @@ class PWP_Products_Endpoint extends PWP_EndpointController implements PWP_IEndpo
         return $schema;
     }
 
-    protected function request_to_args(\WP_REST_Request $request): array
-    {
-        $args = new PWP_ArgBuilder(array(
-            'return'        => 'objects',
-            'limit'         => (int)$request['limit'] ?: self::PAGE_SOFT_CAP,
-            'page'          => (int)$request['page'] ?: 1,
-            'paginate'      => true,
-        ));
-
-        $args
-            ->add_arg_if_exists($request, 'sku')
-            ->add_arg_if_exists($request, 'status')
-            ->add_arg_if_exists($request, 'type')
-            ->add_arg_if_exists($request, 'tag')
-            ->add_arg_if_exists($request, 'category')
-            ->add_arg_if_exists($request, 'price')
-            ->add_arg_if_exists($request, 'orderby')
-            ->add_arg_if_exists($request, 'order');
-
-        return $args->to_array();
-    }
-
-    private function remap_results_array(array $products): array
-    {
-        return array_map(
-            function ($product) {
-                if (!$product instanceof \WC_Product) {
-                    return $product;
-                }
-                $data = $product->get_data();
-                $data['variations'] = $product->get_children();
-                return $data;
-            },
-            $products
-        );
-    }
-
     public function get_params_schema(): array
     {
         $params = array();
@@ -222,5 +185,42 @@ class PWP_Products_Endpoint extends PWP_EndpointController implements PWP_IEndpo
         //TODO: keep building on schema. look towards WooCommerce Rest API for examples on structure
 
         return $params;
+    }
+
+    protected function request_to_args(\WP_REST_Request $request): array
+    {
+        $args = new PWP_ArgBuilder(array(
+            'return'        => 'objects',
+            'limit'         => (int)$request['limit'] ?: self::PAGE_SOFT_CAP,
+            'page'          => (int)$request['page'] ?: 1,
+            'paginate'      => true,
+        ));
+
+        $args
+            ->add_arg_if_exists($request, 'sku')
+            ->add_arg_if_exists($request, 'status')
+            ->add_arg_if_exists($request, 'type')
+            ->add_arg_if_exists($request, 'tag')
+            ->add_arg_if_exists($request, 'category')
+            ->add_arg_if_exists($request, 'price')
+            ->add_arg_if_exists($request, 'orderby')
+            ->add_arg_if_exists($request, 'order');
+
+        return $args->to_array();
+    }
+
+    private function remap_results_array(array $products): array
+    {
+        return array_map(
+            function ($product) {
+                if (!$product instanceof \WC_Product) {
+                    return $product;
+                }
+                $data = $product->get_data();
+                $data['variations'] = $product->get_children();
+                return $data;
+            },
+            $products
+        );
     }
 }

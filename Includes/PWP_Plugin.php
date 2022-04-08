@@ -37,6 +37,11 @@ class PWP_Plugin
     private function initialize_hooks()
     {
         $this->add_hookable(new PWP_API_Hookable('pwp/v1'));
+
+        if(is_admin())
+        {
+            //load admin panel only hooks
+        }
         //TODO: add the other hookable components
     }
 
