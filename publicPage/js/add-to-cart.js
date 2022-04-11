@@ -18,10 +18,10 @@
     $(function () {
         $('.single_add_to_cart_button').on(
             'click',
-            blockDefaultAddToCartBehavior
+            overrideDefaultAddToCartBehaviour
         );
 
-        function blockDefaultAddToCartBehavior(e) {
+        function overrideDefaultAddToCartBehaviour(e) {
             $('#ppi-loading').removeClass('ppi-hidden');
             e.preventDefault();
             const variationId = $("[name='variation_id']").val();
@@ -34,49 +34,49 @@
             const data = {
                 variant: variationId,
                 content: contentFileId,
-                action: 'pwp_add_to_cart',
-                // _ajax_nonce: pwp_add_to_cart_object.nonce,
+                action: 'ajx_add_to_cart',
+                // _ajax_nonce: ajx_add_to_cart_object.nonce,
             };
 
             $.ajax({
-                url: pwp_add_to_cart_object.ajax_url,
+                url: ajx_add_to_cart_object.ajax_url,
                 method: 'GET',
                 data: data,
                 cache: false,
                 dataType: 'json',
                 success: function (response) {
                     console.log(response);
-                    window.location.href = 'http://www.google.com';
-                    if (response.status === 'success') {
-                        if (response.isCustomizable === 'no') {
-                            //redirect to IMAXEL editor
-                            //after editing, the IMAXEL editor then returns the customer to 
-                            // window.location.href = response.url;
-                            return;
-                        } else {
-                            $('.single_add_to_cart_button').off(
-                                'click',
-                                blockDefaultAddToCartBehavior
-                            );
-                            $('.single_add_to_cart_button').trigger('click');
-                        }
-                    }
                     if (response.status === 'error') {
                         $('#redirection-info').html(response.message);
                         $('#redirection-info').addClass('ppi-response-error');
+                        return;
                     }
+                    if (response.isCustomizable === false) {
+                        //redirect to IMAXEL editor
+                        //after editing, the IMAXEL editor then returns the customer to 
+                        // window.location.href = response.url;
+                        window.location.href = 'https://peleman-editor.netlify.app/';
+                        return;
+                    } else {
+                        $('.single_add_to_cart_button').off(
+                            'click',
+                            overrideDefaultAddToCartBehaviour
+                        );
+                        $('.single_add_to_cart_button').trigger('click');
+                    }
+
                 },
                 error: function (jqXHR, textStatus, errorThrown) {
                     console.log({ jqXHR });
                     console.error(
                         'Something went wrong:\n' +
-                            jqXHR.status +
-                            ': ' +
-                            jqXHR.statusText +
-                            '\nTextstatus: ' +
-                            textStatus +
-                            '\nError thrown: ' +
-                            errorThrown
+                        jqXHR.status +
+                        ': ' +
+                        jqXHR.statusText +
+                        '\nTextstatus: ' +
+                        textStatus +
+                        '\nError thrown: ' +
+                        errorThrown
                     );
                 },
             });

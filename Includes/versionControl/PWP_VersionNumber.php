@@ -6,10 +6,10 @@ namespace PWP\includes\versionControl;
 
 class PWP_VersionNumber
 {
-    public int $major;
-    public int $minor;
-    public int $patch;
-    public ?string $rest;
+    private int $major;
+    private int $minor;
+    private int $patch;
+    private ?string $rest;
 
     private function __construct(int $major, int $minor, int $patch, ?string $rest = null)
     {
