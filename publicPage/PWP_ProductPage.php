@@ -16,11 +16,14 @@ class PWP_ProductPage implements PWP_IHookable
     public function register(PWP_Plugin_Loader $loader): void
     {
         $this->loader = $loader;
-        // $loader->add_action('wp_enqueue_scripts', $this, 'enqueue_styles');
-        // $loader->add_action('wp_enqueue_scripts', $this, 'enqueue_ajax', 8);
+        $loader->add_action('wp_enqueue_scripts', $this, 'enqueue_styles');
+        $loader->add_action('wp_enqueue_scripts', $this, 'enqueue_ajax', 8);
 
         $loader->add_filter('woocommerce_product_single_add_to_cart_text', $this, 'change_add_to_cart_text_for_product');
         $loader->add_filter('woocommerce_product_add_to_cart_text', $this, 'change_add_to_cart_text_for_archive');
+
+        $loader->add_ajax_action('pwp_add_to_cart', $this, 'pwp_add_to_cart');
+        $loader->add_ajax_nopriv_action('pwp_add_to_cart', $this, 'pwp_add_to_cart');
     }
 
     public function enqueue_styles(): void
@@ -31,13 +34,13 @@ class PWP_ProductPage implements PWP_IHookable
 
     public function enqueue_ajax(): void
     {
-        wp_enqueue_script('ppi-ajax-add-to-cart', plugins_url('js/add-to-cart.js', __FILE__), array('jquery'), rand(0, 2000), true);
+        wp_enqueue_script('pwp-ajax-add-to-cart', plugins_url('js/add-to-cart.js', __FILE__), array('jquery'), rand(0, 2000), true);
         wp_localize_script(
-            'ppi-ajax-add-to-cart',
-            'ppi_add_to_cart_object',
+            'pwp-ajax-add-to-cart',
+            'pwp_add_to_cart_object',
             array(
                 'ajax_url' => admin_url('admin-ajax.php'),
-                'nonce' => wp_create_nonce('ppi_add_to_cart_nonce')
+                'nonce' => wp_create_nonce('pwp_add_to_cart_nonce')
             )
         );
     }
@@ -66,5 +69,9 @@ class PWP_ProductPage implements PWP_IHookable
         }
 
         return $defaultText;
+    }
+
+    public function pwp_add_to_cart()
+    {
     }
 }

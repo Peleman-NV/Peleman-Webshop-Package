@@ -26,31 +26,33 @@
             e.preventDefault();
             const variationId = $("[name='variation_id']").val();
             const contentFileId = $("[name='content_file_id']").val();
-            getImaxelRedirection(variationId, contentFileId);
+            getRedirect(variationId, contentFileId);
         }
 
-        function getImaxelRedirection(variationId, contentFileId = null) {
+        function getRedirect(variationId, contentFileId = null) {
             $('#redirection-info').html('');
             const data = {
                 variant: variationId,
                 content: contentFileId,
-                action: 'ppi_add_to_cart',
-                // _ajax_nonce: ppi_add_to_cart_object.nonce,
+                action: 'pwp_add_to_cart',
+                // _ajax_nonce: pwp_add_to_cart_object.nonce,
             };
 
             $.ajax({
-                url: ppi_add_to_cart_object.ajax_url,
+                url: pwp_add_to_cart_object.ajax_url,
                 method: 'GET',
                 data: data,
                 cache: false,
                 dataType: 'json',
                 success: function (response) {
                     console.log(response);
+                    window.location.href = 'http://www.google.com';
                     if (response.status === 'success') {
-                        if (response.isCustomizable === 'yes') {
+                        if (response.isCustomizable === 'no') {
                             //redirect to IMAXEL editor
                             //after editing, the IMAXEL editor then returns the customer to 
-                            window.location.href = response.url;
+                            // window.location.href = response.url;
+                            return;
                         } else {
                             $('.single_add_to_cart_button').off(
                                 'click',
