@@ -7,6 +7,7 @@ namespace PWP\includes;
 use PWP\includes\API\PWP_API_Hookable;
 use PWP\includes\hookables\PWP_IHookable;
 use PWP\includes\loaders\PWP_Plugin_Loader;
+use PWP\publicPage\PWP_ProductPage;
 
 defined('ABSPATH') || exit;
 
@@ -36,6 +37,8 @@ class PWP_Plugin
 
     private function initialize_hooks()
     {
+        $this->add_hookable(new PWP_ProductPage($this->loader));
+
         $this->add_hookable(new PWP_API_Hookable('pwp/v1'));
 
         if(is_admin())

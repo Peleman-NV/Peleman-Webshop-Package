@@ -22,6 +22,36 @@ class PWP_Plugin_Loader
         $this->loaders[] = new PWP_Action_Loader($hook, $component, $callback, $priority, $accepted_args);
     }
 
+    /**
+     * Add Ajax action to loader. Method automatically adds 'wp_ajax_' prefix to hook name. For logged-in users
+     *
+     * @param string $hook 
+     * @param object $component
+     * @param string $callback
+     * @param integer $priority
+     * @param integer $accepted_args
+     * @return void
+     */
+    public function add_ajax_action(string $hook, object $component, string $callback, int $priority = 10, int $accepted_args = 1): void
+    {
+        $this->loaders[] = new PWP_Action_Loader("wp_ajax_{$hook}", $component, $callback, $priority, $accepted_args);
+    }
+
+    /**
+     * Add Ajax action to loader. Method automatically adds 'wp_ajax_nopriv' prefix to hook name. For non-logged-in users
+     *
+     * @param string $hook 
+     * @param object $component
+     * @param string $callback
+     * @param integer $priority
+     * @param integer $accepted_args
+     * @return void
+     */
+    public function add_ajax_nopriv_action(string $hook, object $component, string $callback, int $priority = 10, int $accepted_args = 1): void
+    {
+        $this->loaders[] = new PWP_Action_Loader("wp_ajax_nopriv_{$hook}", $component, $callback, $priority, $accepted_args);
+    }
+
     public function add_filter(string $hook, object $component, string $callback, int $priority = 10, int $accepted_args = 1): void
     {
         $this->loaders[] = new PWP_Filter_Loader($hook, $component, $callback, $priority, $accepted_args);

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PWP\AdminPage;
 
-class Plugin_Name_Admin
+class PWP_Plugin_Admin
 {
     private $plugin_name;
     private $version;
