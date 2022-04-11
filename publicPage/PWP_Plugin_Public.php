@@ -1,5 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
+namespace PWP\publicPage;
+
 class Plugin_Name_Public
 {
     private $plugin_name;

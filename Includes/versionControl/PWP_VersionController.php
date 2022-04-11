@@ -45,15 +45,18 @@ class PWP_VersionController
         //here we register all the update objects
         //this way we ensure we only load and register these objects when we are trying to upgrade the local version
 
-        $this->updates[] = new PWP_ExampleUpdate('0.0.3');
-        $this->updates[] = new PWP_ExampleUpdate('0.0.15');
-        $this->updates[] = new PWP_ExampleUpdate('0.1.2');
-        $this->updates[] = new PWP_ExampleUpdate('0.2.0');
+        // $this->add_upgrade(new PWP_ExampleUpdate('0.0.3'));
+
 
         //just to be sure, sort array of updates by version number (from oldest to newest);
         uasort($this->updates, function (PWP_Update $a, PWP_Update $b) {
             return $a->compare_version($b);
         });
+    }
+
+    private function add_upgrade(PWP_Update $update): void
+    {
+        $this->updates[] = $update;
     }
 
     private function upgrade_to_newest_version(): void

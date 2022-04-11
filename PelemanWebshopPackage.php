@@ -48,6 +48,7 @@ register_deactivation_hook(__FILE__, function () {
 //currently this system runs automatically when version numbers do not align
 //maybe just do the check every time, and if there's a mismatach, present the user with a button to manually
 //initiate the process.
+
 $versionController = new PWP_VersionController(PWP_VERSION, (string)get_option('pwp-version'));
 $versionController->try_update();
 

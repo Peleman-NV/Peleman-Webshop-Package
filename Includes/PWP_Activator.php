@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace PWP\includes;
 
+use PWP\includes\versionControl\PWP_VersionController;
 use wpdb;
 
 defined('ABSPATH') || exit;
@@ -16,7 +17,6 @@ require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
 class PWP_Activator
 {
     private const PWP_API_KEY_TABLE = 'pwp_api_keys';
-    private array $updaters;
 
     public function __construct()
     {
@@ -67,5 +67,7 @@ class PWP_Activator
 
     public function run_upgrades()
     {
+        $versionController = new PWP_VersionController(PWP_VERSION, get_option('pwp-version'));
+        $versionController->try_update();
     }
 }
