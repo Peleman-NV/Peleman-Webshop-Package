@@ -9,7 +9,7 @@ use PWP\includes\loaders\PWP_Plugin_Loader;
 /**
  * interface for objects to register hooks, actions and filters.
  */
-interface PWP_IHookable
+interface PWP_IHookableComponent
 {
     /**
      * register actions and filters for this class

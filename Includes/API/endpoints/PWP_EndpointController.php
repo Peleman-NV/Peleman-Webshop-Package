@@ -137,4 +137,8 @@ abstract class PWP_EndpointController implements PWP_IEndpoint, PWP_IApiAuthenti
         return $this->authenticator->auth_update_item($request);
     }
     #endregion
+    public function get_params_schema() : array
+    {
+        return array();
+    }
 }

@@ -41,6 +41,22 @@ class PWP_ArgBuilder
         return $this;
     }
 
+    public function add_arg_if_not_null(string $parameter, mixed $argument): PWP_ArgBuilder
+    {
+        if (!is_null($argument)) {
+            $this->args[$parameter] = $argument;
+        }
+        return $this;
+    }
+
+    public function add_arg_if_not_empty(string $parameter, mixed $argument): PWP_ArgBuilder
+    {
+        if (!empty($argument)) {
+            $this->args[$parameter] = $argument;
+        }
+        return $this;
+    }
+
     public function to_array(): array
     {
         return $this->args;

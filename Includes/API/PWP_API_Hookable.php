@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PWP\includes\API;
 
-use PWP\includes\hookables\PWP_IHookable;
+use PWP\includes\hookables\PWP_IHookableComponent;
 use PWP\includes\loaders\PWP_Plugin_Loader;
 use PWP\includes\API\endpoints\PWP_IEndpoint;
 use PWP\includes\API\endpoints\PWP_Test_Endpoint;
@@ -17,7 +17,7 @@ defined('ABSPATH') || die;
 /**
  * Hookable component of the Peleman Webshop Package plugin, responsible for the REST API component
  */
-class PWP_API_Hookable implements PWP_IHookable
+class PWP_API_Hookable implements PWP_IHookableComponent
 {
     protected string $namespace;
     protected string $rest_base;

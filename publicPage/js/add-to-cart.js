@@ -2,7 +2,7 @@
  * This script is responsible for redirecting customers to the Imaxel editor,
  * if the product has a template attached, in the admin backend.
  * It fires on the click event, and passes the variantId and,
- * if present, the content file Id.  It call the * the PHP function
+ * if present, the content file Id.  It call the PHP function
  * "ppi_add_to_cart" in PublicPage/PpiProductPage.php,
  * which makes a request to Imaxel to create a project.
  * It then persists this as a customer project and redirects the user to the editor.
@@ -34,19 +34,19 @@
             const data = {
                 variant: variationId,
                 content: contentFileId,
-                action: 'ajx_add_to_cart',
-                // _ajax_nonce: ajx_add_to_cart_object.nonce,
+                action: 'ajax_add_to_cart',
+                // _ajax_nonce: ajax_add_to_cart_object.nonce,
             };
 
             $.ajax({
-                url: ajx_add_to_cart_object.ajax_url,
+                url: ajax_add_to_cart_object.ajax_url,
                 method: 'GET',
                 data: data,
                 cache: false,
                 dataType: 'json',
                 success: function (response) {
                     console.log(response);
-                    if (response.status === 'error') {
+                    if (response.status !== 'success') {
                         $('#redirection-info').html(response.message);
                         $('#redirection-info').addClass('ppi-response-error');
                         return;
@@ -54,17 +54,15 @@
                     if (response.isCustomizable === true) {
                         //redirect to IMAXEL editor
                         //after editing, the IMAXEL editor then returns the customer to 
-                        // window.location.href = response.url;
-                        window.location.href = 'https://peleman-editor.netlify.app/';
+                        window.location.href = response.destinationUrl;
                         return;
-                    } else {
-                        $('.single_add_to_cart_button').off(
-                            'click',
-                            overrideDefaultAddToCartBehaviour
-                        );
-                        $('.single_add_to_cart_button').trigger('click');
                     }
-
+                    $('.single_add_to_cart_button').off(
+                        'click',
+                        overrideDefaultAddToCartBehaviour
+                    );
+                    $('.single_add_to_cart_button').trigger('click');
+                    return;
                 },
                 error: function (jqXHR, textStatus, errorThrown) {
                     console.log({ jqXHR });

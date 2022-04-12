@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace PWP\includes;
 
 use PWP\includes\API\PWP_API_Hookable;
-use PWP\includes\hookables\PWP_IHookable;
+use PWP\includes\hookables\PWP_IHookableComponent;
 use PWP\includes\loaders\PWP_Plugin_Loader;
 use PWP\publicPage\PWP_ProductPage;
 
@@ -41,30 +41,24 @@ class PWP_Plugin
     {
         if (is_admin()) {
             $this->add_admin_hookables();
-        } else {
-            $this->add_public_hookables();
         }
-        $this->add_universal_hookables();
+
+        $this->add_public_hookables();
     }
 
     private function add_admin_hookables(): void
     {
         //TODO: add admin hookables
-    }    
+    }
 
     private function add_public_hookables(): void
     {
         //TODO: add public hookables
         $this->add_hookable(new PWP_ProductPage($this->loader));
-    }
-    
-    private function add_universal_hookables(): void
-    {
-        //TODO: add universal hookables
         $this->add_hookable(new PWP_API_Hookable('pwp/v1'));
     }
 
-    private function add_hookable(PWP_IHookable $component): void
+    private function add_hookable(PWP_IHookableComponent $component): void
     {
         $this->components[] = $component;
         $component->register($this->loader);

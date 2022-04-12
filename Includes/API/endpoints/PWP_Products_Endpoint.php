@@ -77,7 +77,8 @@ class PWP_Products_Endpoint extends PWP_EndpointController implements PWP_IEndpo
 
     public function get_items(\WP_REST_Request $request): object
     {
-        $results = (array)wc_get_products($this->request_to_args($request));
+        $args = $this->request_to_args($request);
+        $results = (array)wc_get_products($args);
 
         $results['products'] = $this->remap_results_array($results['products']);
 
@@ -131,12 +132,17 @@ class PWP_Products_Endpoint extends PWP_EndpointController implements PWP_IEndpo
 
     public function get_params_schema(): array
     {
-        $params = array();
+        $params = parent::get_params_schema();
         $params['sku'] = array(
             'description' => 'filter results to matching SKUs. supports partial matches.',
             'type' => 'string',
             'validate_callback' => 'rest_validate_request_arg',
         );
+        // $params['f2d-sku'] = array(
+        //     'description' => 'filter results to matching F2D SKU. supports partial matches.',
+        //     'type' => 'string',
+        //     'validate_callback' => 'rest_validate_request_arg',
+        // );
         $params['limit'] = array(
             'description' => 'maximum amount of results per call',
             'type' => 'integer',
@@ -198,6 +204,7 @@ class PWP_Products_Endpoint extends PWP_EndpointController implements PWP_IEndpo
 
         $args
             ->add_arg_if_exists($request, 'sku')
+            ->add_arg_if_exists($request, 'f2d-sku')
             ->add_arg_if_exists($request, 'status')
             ->add_arg_if_exists($request, 'type')
             ->add_arg_if_exists($request, 'tag')
