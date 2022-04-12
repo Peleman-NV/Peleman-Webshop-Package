@@ -6,15 +6,16 @@ namespace PWP\includes\API\endpoints;
 
 use WP_REST_Request;
 use WP_REST_Response;
+use PWP\includes\handlers\PWP_Tag_Handler;
 use PWP\includes\authentication\PWP_IApiAuthenticator;
 
-class PWP_AttributesEndpoint extends PWP_EndpointController
-{    
+class PWP_Tags_Endpoint extends PWP_EndpointController
+{
     public function __construct(string $namespace, PWP_IApiAuthenticator $authenticator)
     {
         parent::__construct(
             $namespace,
-            "/attributes",
+            "/tags",
             $authenticator
         );
     }
@@ -37,10 +38,38 @@ class PWP_AttributesEndpoint extends PWP_EndpointController
                 ),
             )
         );
+
+        register_rest_route(
+            $this->namespace,
+            $this->rest_base . "/(?P<id>\d+)",
+            array(
+                array(
+                    "methods" => \WP_REST_Server::DELETABLE,
+                    "callback" => array($this, 'delete_item'),
+                    "permission_callback" => array($this, 'auth_delete_item'),
+                ),
+                array(
+                    "methods" => \WP_REST_Server::READABLE,
+                    "callback" => array($this, 'get_item'),
+                    "permission_callback" => array($this, 'auth_get_item'),
+                ),
+            )
+        );
+    }
+
+    public function get_items(WP_REST_Request $request): object
+    {
+        $handler = new PWP_Tag_Handler();
+        $data = $handler->get_tags();
+
+        return new WP_REST_Response($data);
     }
 
     public function get_item(WP_REST_Request $request): object
     {
-        return new WP_REST_Response();
+        $id = (int)$request['id'];
+        $handler = new PWP_Tag_Handler();
+        $data = $handler->get_tag($id);
+        return new WP_REST_RESPONSE($data);
     }
 }

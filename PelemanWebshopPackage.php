@@ -19,13 +19,15 @@ use PWP\includes\versionControl\PWP_VersionController;
  * @wordpress-plugin
  * Plugin Name:       Peleman Webshop Package
  * Plugin URI:        https://www.peleman.com
+ * requires PHP:      7.4
+ * requires at least: 5.9.0
  * Description:       In-development umbrella project of the Peleman Product Uploader and Print Partner Integrator.
  * Version:           0.3.0
  * Author:            Kai Helsen
  * Author URI:        https://github.com/KaiHelsen
  * License:           GPL-2.0+
  * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
- * Text Domain:       PWP
+ * Text Domain:       PelemanWebshopPackage
  * Domain Path:       /languages
  */
 

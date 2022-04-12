@@ -33,6 +33,11 @@ class PWP_ArgBuilder
         return $this;
     }
 
+    public function add_arg(string $parameter, $argument): PWP_ArgBuilder
+    {
+        $this->args[$parameter] = $argument;
+        return $this;
+    }
     public function add_arg_if_exists(WP_REST_Request $request, string $parameter): PWP_ArgBuilder
     {
         if (!empty($request[$parameter])) {
@@ -41,7 +46,7 @@ class PWP_ArgBuilder
         return $this;
     }
 
-    public function add_arg_if_not_null(string $parameter, mixed $argument): PWP_ArgBuilder
+    public function add_arg_if_not_null(string $parameter, $argument): PWP_ArgBuilder
     {
         if (!is_null($argument)) {
             $this->args[$parameter] = $argument;
@@ -49,7 +54,7 @@ class PWP_ArgBuilder
         return $this;
     }
 
-    public function add_arg_if_not_empty(string $parameter, mixed $argument): PWP_ArgBuilder
+    public function add_arg_if_not_empty(string $parameter, $argument): PWP_ArgBuilder
     {
         if (!empty($argument)) {
             $this->args[$parameter] = $argument;
