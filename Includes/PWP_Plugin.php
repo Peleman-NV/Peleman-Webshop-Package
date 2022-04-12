@@ -19,7 +19,7 @@ class PWP_Plugin
 
     private array $components;
 
-    public function __construct()
+    private function __construct()
     {
         $this->version = defined('PWP_VERSION') ? PWP_VERSION : '1.0.0';
         $this->plugin_name = 'Peleman Webshop Package';
@@ -27,25 +27,41 @@ class PWP_Plugin
         $this->components = array();
     }
 
-    public function run()
+    public static function run()
     {
-        $this->initialize_hooks();
-        $this->register_hooks();
+        $instance = new PWP_Plugin();
+
+        $instance->initialize_hooks();
+        $instance->register_hooks();
 
         do_action('PWP_plugin_loaded');
     }
 
     private function initialize_hooks()
     {
-        $this->add_hookable(new PWP_ProductPage($this->loader));
-
-        $this->add_hookable(new PWP_API_Hookable('pwp/v1'));
-
-        if(is_admin())
-        {
-            //load admin panel only hooks
+        if (is_admin()) {
+            $this->add_admin_hookables();
+        } else {
+            $this->add_public_hookables();
         }
-        //TODO: add the other hookable components
+        $this->add_universal_hookables();
+    }
+
+    private function add_admin_hookables(): void
+    {
+        //TODO: add admin hookables
+    }    
+
+    private function add_public_hookables(): void
+    {
+        //TODO: add public hookables
+        $this->add_hookable(new PWP_ProductPage($this->loader));
+    }
+    
+    private function add_universal_hookables(): void
+    {
+        //TODO: add universal hookables
+        $this->add_hookable(new PWP_API_Hookable('pwp/v1'));
     }
 
     private function add_hookable(PWP_IHookable $component): void

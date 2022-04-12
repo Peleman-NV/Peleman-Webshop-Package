@@ -5,11 +5,8 @@ declare(strict_types=1);
 namespace PWP\publicPage;
 
 use PWP\includes\hookables\PWP_IHookable;
-use PWP\includes\loaders\PWP_Filter_Loader;
 use PWP\includes\loaders\PWP_Plugin_Loader;
 use WC_Product;
-use WP_HTTP_Response;
-use WP_REST_Response;
 
 class PWP_ProductPage implements PWP_IHookable
 {
@@ -22,12 +19,11 @@ class PWP_ProductPage implements PWP_IHookable
         $loader->add_filter('woocommerce_product_single_add_to_cart_text', $this, 'change_add_to_cart_text_for_product');
 
         $loader->add_ajax_action('ajx_add_to_cart', $this, 'ajx_add_to_cart');
-        $loader->add_ajax_nopriv_action('ajx_add_to_cart', $this, 'ajx_add_to_cart');
+        // $loader->add_ajax_nopriv_action('ajx_add_to_cart', $this, 'ajx_add_to_cart');
     }
 
     public function enqueue_styles(): void
     {
-        echo "<p>bloop!</p>";
         //enqueue CSS and JS scripts
     }
 
@@ -52,6 +48,7 @@ class PWP_ProductPage implements PWP_IHookable
     public function change_add_to_cart_text_for_archive(string $defaultText): string
     {
         global $product;
+
         if ($product instanceof WC_Product) {
             //switch case to differentiate between product types and change button text for each type
             //TODO: purely experimental, change in final release
@@ -75,6 +72,6 @@ class PWP_ProductPage implements PWP_IHookable
         wp_send_json(array(
             'isCustomizable' => true,
         ), 200);
-        wp_die();
+        return;
     }
 }

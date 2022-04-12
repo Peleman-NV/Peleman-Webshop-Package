@@ -51,7 +51,7 @@
                         $('#redirection-info').addClass('ppi-response-error');
                         return;
                     }
-                    if (response.isCustomizable === false) {
+                    if (response.isCustomizable === true) {
                         //redirect to IMAXEL editor
                         //after editing, the IMAXEL editor then returns the customer to 
                         // window.location.href = response.url;

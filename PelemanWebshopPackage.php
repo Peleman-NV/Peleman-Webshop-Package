@@ -6,9 +6,9 @@ namespace PWP;
 
 require plugin_dir_path(__FILE__) . '/vendor/autoload.php';
 
-use PWP\includes\PWP_plugin;
 use PWP\includes\PWP_Activator;
 use PWP\includes\PWP_Deactivator;
+use PWP\includes\PWP_Plugin;
 use PWP\includes\versionControl\PWP_VersionController;
 
 /**
@@ -49,5 +49,4 @@ register_deactivation_hook(__FILE__, function () {
     $deactivator->deactivate();
 });
 
-$plugin = new PWP_Plugin();
-$plugin->run();
+PWP_Plugin::run();
