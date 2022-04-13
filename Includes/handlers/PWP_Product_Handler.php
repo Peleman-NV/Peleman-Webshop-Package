@@ -76,7 +76,7 @@ class PWP_Product_Handler implements PWP_IHandler
         //get images
         if (!empty($data['images'])) {
             foreach ($data['images'] as $image) {
-            $imageId = $this->getImageIdByName($image['name'])}
+            // $imageId = $this->getImageIdByName($image['name'])};
         }
 
         //handle up- & cross-sell products
