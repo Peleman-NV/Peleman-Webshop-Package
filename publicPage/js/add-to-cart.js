@@ -34,12 +34,12 @@
             const data = {
                 variant: variationId,
                 content: contentFileId,
-                action: 'ajax_add_to_cart',
-                // _ajax_nonce: ajax_add_to_cart_object.nonce,
+                action: 'ajax_redirect_to_editor',
+                // _ajax_nonce: ajax_redirect_to_editor_object.nonce,
             };
 
             $.ajax({
-                url: ajax_add_to_cart_object.ajax_url,
+                url: ajax_redirect_to_editor_object.ajax_url,
                 method: 'GET',
                 data: data,
                 cache: false,

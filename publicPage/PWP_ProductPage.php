@@ -18,8 +18,8 @@ class PWP_ProductPage implements PWP_IHookableComponent
         $loader->add_filter('woocommerce_product_add_to_cart_text', $this, 'change_add_to_cart_text_for_archive');
         $loader->add_filter('woocommerce_product_single_add_to_cart_text', $this, 'change_add_to_cart_text_for_product');
 
-        $loader->add_ajax_action('ajax_add_to_cart', $this, 'ajax_add_to_cart');
-        // $loader->add_ajax_nopriv_action('ajax_add_to_cart', $this, 'ajax_add_to_cart');
+        $loader->add_ajax_action('ajax_redirect_to_editor', $this, 'ajax_redirect_to_editor');
+        // $loader->add_ajax_nopriv_action('ajax_redirect_to_editor', $this, 'ajax_redirect_to_editor');
     }
 
     public function enqueue_styles(): void
@@ -32,7 +32,7 @@ class PWP_ProductPage implements PWP_IHookableComponent
         wp_enqueue_script('pwp-ajax-add-to-cart', plugins_url('js/add-to-cart.js', __FILE__), array('jquery'), rand(0, 2000), true);
         wp_localize_script(
             'pwp-ajax-add-to-cart',
-            'ajax_add_to_cart_object',
+            'ajax_redirect_to_editor_object',
             array(
                 'ajax_url' => admin_url('admin-ajax.php'),
                 'nonce' => wp_create_nonce('pwp_add_to_cart_nonce')
@@ -67,7 +67,7 @@ class PWP_ProductPage implements PWP_IHookableComponent
         return $defaultText;
     }
 
-    public function ajax_add_to_cart(): void
+    public function ajax_redirect_to_editor(): void
     {
         $variant_id = sanitize_text_field($_GET['variant']);
         $variant_id = 'var133536';  //currently refers to paperback A5 - Cover A5

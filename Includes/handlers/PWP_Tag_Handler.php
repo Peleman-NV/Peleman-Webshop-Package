@@ -41,6 +41,7 @@ class PWP_Tag_Handler extends PWP_Term_Handler
     public function delete_item(int $id, array $args = []): bool
     {
         //TODO: implementation
-        return false;
+        throw new \Exception("not implemented", 501);
+        throw new \Exception
     }
 }
