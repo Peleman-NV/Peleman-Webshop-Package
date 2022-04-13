@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace PWP\includes\handlers;
 
+use PWP\includes\API\endpoints\PWP_Attributes_Endpoint;
 use stdClass;
 use WC_Product;
 
@@ -43,40 +44,57 @@ class PWP_Product_Handler implements PWP_IHandler
             $isNewProduct = empty($childId);
             if ($isNewProduct) $id = $childId;
             $data['translation_of'] = $id;
-
-            //get category ids
-            $categoryHandler = new PWP_Category_Handler();
-            if (!empty($data['categories'])) {
-                foreach ($data['category'] as $category) {
-                    if (!is_int($category['slug'])) {
-                        $category['id'] = $categoryHandler->get_item_by_slug($category['slug']);
-                    }
-                }
-            }
-
-            //get tag ids
-
-            //get attributes and set first options to default
-
-            //get images
-
-            //handle up- & cross-sell products
-            if (!is_null($data['upsell_skus'])) {
-                $data['upsell_ids'] = $this->get_product_ids_for_skus($data['upsell_skus']);
-            }
-
-            if (!is_null($data['upsell_skus'])) {
-                $data['cross_sell_ids'] = $this->get_product_ids_for_skus($data['upsell_skus']);
-            }
-
-            //handle videos
-
-            //create new item
-
         }
 
+        $data['categories'] = $this->get_category_ids_from_slugs($data['categories']);
+        $data['tags'] = $this->get_tag_ids_from_slugs($data['tags']);
+
+        //get attributes and set first options to default
+
+        $data['default_attributes'] = array();
+        if (!empty($data['attributes'])) {
+            foreach ($data['attributes'] as $key => $attribute) {
+                $attributeKey = $this->get_attribute_id_by_slug($attribute['slug']);
+
+                if (is_null($attributeKey)) {
+                    continue;
+                }
+
+                $attribute['id'] = $attributeKey;
+
+                if ($attribute['default'] !== false) {
+                    $data['default_attributes'][$key]['id'] = $attribute['id'];
+                    if (!empty($attribute->default)) {
+                        $data['default_attributes'][$key]['option'] = $attribute['default'];
+                        continue;
+                    }
+                    $data['default_attributes'][$key]['option'] = $attribute['options'][0];
+                }
+            }
+        }
+
+        //get images
+        if (!empty($data['images'])) {
+            foreach ($data['images'] as $image) {
+            $imageId = $this->getImageIdByName($image['name'])}
+        }
+
+        //handle up- & cross-sell products
+        if (!is_null($data['upsell_skus'])) {
+            $data['upsell_ids'] = $this->get_product_ids_for_skus($data['upsell_skus']);
+        }
+
+        if (!is_null($data['upsell_skus'])) {
+            $data['cross_sell_ids'] = $this->get_product_ids_for_skus($data['upsell_skus']);
+        }
+
+        //handle videos
+
+        //create new item
         return new stdClass();
     }
+
+
 
     public function update_item(int $id, array $args = []): object
     {
@@ -118,6 +136,35 @@ class PWP_Product_Handler implements PWP_IHandler
         return $ids;
     }
 
+    private function get_category_ids_from_slugs(array $categories): array
+    {
+        return $this->get_term_ids_from_slugs($categories, new PWP_Category_Handler());
+    }
 
+    private function get_tag_ids_from_slugs(array $tags): array
+    {
+        return $this->get_term_ids_from_slugs($tags, new PWP_Tag_Handler());
+    }
+
+    private function get_term_ids_from_slugs(array $terms, PWP_Term_Handler $handler): array
+    {
+        foreach ($terms as $term) {
+            if (!is_int($term['slug'])) {
+                $term['id'] = $handler->get_item_by_slug($term['slug'])->term_id;
+                //TODO: handle term id not found or invalid
+            }
+        }
+        return $terms;
+    }
+
+    private function get_attribute_id_by_slug(string $slug): ?array
+    {
+        $handler = new PWP_Product_Attribute_Handler();
+        $attribute = $handler->get_attribute_by_slug($slug);
+        if (is_null($attribute)) {
+            return null;
+        }
+        return $attribute['id'];
+    }
     #endregion
 }

@@ -11,6 +11,8 @@ use PWP\includes\API\endpoints\PWP_Test_Endpoint;
 use PWP\includes\authentication\PWP_Authenticator;
 use PWP\includes\hookables\PWP_IHookableComponent;
 use PWP\includes\API\endpoints\PWP_Products_Endpoint;
+use PWP\includes\API\endpoints\PWP_Attributes_Endpoint;
+use PWP\includes\API\endpoints\PWP_Categories_Endpoint;
 
 defined('ABSPATH') || die;
 
@@ -29,16 +31,16 @@ class PWP_API_Hookable implements PWP_IHookableComponent
         $authenticator = new PWP_Authenticator();
 
         $this->add_endpoint(new PWP_Test_Endpoint($this->namespace, $authenticator));
+
         $this->add_endpoint(new PWP_Products_Endpoint($this->namespace, $authenticator));
         $this->add_endpoint(new PWP_Tags_Endpoint($this->namespace, $authenticator));
+        $this->add_endpoint(new PWP_Categories_Endpoint($this->namespace, $authenticator));
+        $this->add_endpoint(new PWP_Attributes_Endpoint($this->namespace, $authenticator));
 
         //TODO: add endpoints
-        //  attributes
-        //  tags
         //  images
         //  categories
         //  variations
-        //  terms
         //  menus
     }
 

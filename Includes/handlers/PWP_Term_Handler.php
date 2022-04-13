@@ -4,11 +4,8 @@ declare(strict_types=1);
 
 namespace PWP\includes\handlers;
 
-use stdClass;
 use WP_Error;
-use PWP\includes\PWP_ArgBuilder;
-use Requests_Exception_HTTP_404;
-use WP_HTTP_Response;
+use WP_Term;
 
 abstract class PWP_Term_Handler implements PWP_IHandler
 {
@@ -19,6 +16,33 @@ abstract class PWP_Term_Handler implements PWP_IHandler
     {
         $this->taxonomy = $taxonomy;
         $this->longTypeName = $typeLongName;
+    }
+
+    public function get_item(int $id, array $args = []): WP_Term
+    {
+        $term = get_term($id, $this->taxonomy, OBJECT);
+        return $term;
+    }
+
+    public function get_items(array $args = []): array
+    {
+        $terms = get_terms($this->taxonomy);
+        return $terms;
+    }
+
+    public function delete_item(int $id, array $args = []): bool
+    {
+        $outcome = wp_delete_term($id, $this->taxonomy, $args);
+        if ($outcome instanceof WP_Error || !$outcome) {
+            throw new \Exception("{$this->longTypeName} not found", 404);
+            return false;
+        }
+        if ($outcome === 0) {
+            throw new \Exception("attempted to delete default category", 400);
+            return false;
+        }
+
+        return true;
     }
 
     protected function create_new(string $name, string $slug, string $description = '', string $parent = '', array $args = []): array
