@@ -60,7 +60,7 @@ class PWP_Tags_Endpoint extends PWP_EndpointController
     public function get_items(WP_REST_Request $request): object
     {
         $handler = new PWP_Tag_Handler();
-        $data = $handler->get_tags();
+        $data = $handler->get_items();
 
         return new WP_REST_Response($data);
     }
@@ -69,7 +69,7 @@ class PWP_Tags_Endpoint extends PWP_EndpointController
     {
         $id = (int)$request['id'];
         $handler = new PWP_Tag_Handler();
-        $data = $handler->get_tag($id);
+        $data = $handler->get_item($id);
         return new WP_REST_RESPONSE($data);
     }
 }

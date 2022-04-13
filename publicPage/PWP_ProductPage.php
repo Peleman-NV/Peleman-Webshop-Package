@@ -69,11 +69,35 @@ class PWP_ProductPage implements PWP_IHookableComponent
 
     public function ajax_add_to_cart(): void
     {
+        $variant_id = sanitize_text_field($_GET['variant']);
+        $variant_id = 'var133536';  //currently refers to paperback A5 - Cover A5
+        $content_file_id = sanitize_text_field($_GET['content']);
+
+        $language = 'en';
+        $destination = sprintf(
+            'https://%s/?projecturl=pie/projects/%s/%s.json',
+            'deveditor.peleman.com',
+            '625587c002f2a',
+            // "var{$variant_id}.json"
+            $variant_id
+        );
+
+        // redirect URL to create a new project based on the entered data
+        $destination = sprintf(
+            'https://%s/demo/index.php?id=new&templateFile=%s&variantId=%s&language=%s',
+            'deveditor.peleman.com',
+            'tpl133529.json',
+            $variant_id,
+            $language
+        );
         wp_send_json(array(
             'status' => 'success',
             'message' => 'all is well',
             'isCustomizable' => true,
-            'destionationUrl' => 'https://peleman-editor.netlify.app/'
+            //currently just a hard-coded url to project
+            //we will develop this further in the near future
+            // 'destinationUrl' => 'https://deveditor.peleman.com/?projecturl=pie/projects/625587c002f2a/var133393.json'
+            'destinationUrl' => $destination,
         ), 200);
         return;
     }
