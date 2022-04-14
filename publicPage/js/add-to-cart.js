@@ -53,9 +53,8 @@
                         return;
                     }
                     if (response.isCustomizable === true) {
-                        //redirect to IMAXEL editor
-                        //after editing, the IMAXEL editor then returns the customer to 
-                        // console.log(response.destinationUrl);
+                        console.log(response.destinationUrl);
+
                         // window.location.href = response.destinationUrl;
                         return;
                     }

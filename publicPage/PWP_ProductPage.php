@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace PWP\publicPage;
 
+use PWP\includes\editor\PWP_editor_client;
 use PWP\includes\hookables\PWP_IHookableComponent;
 use PWP\includes\loaders\PWP_Plugin_Loader;
 use WC_Product;
@@ -69,10 +70,12 @@ class PWP_ProductPage implements PWP_IHookableComponent
 
     public function ajax_redirect_to_editor(): void
     {
+        $client = new PWP_editor_client('deveditor.peleman.com');
+
         $variant = wc_get_product((int)sanitize_text_field($_GET['variant']));
-        $template_id = $variant->get_meta('template_id', true, 'view') . '.json';
+        $template_id = $variant->get_meta('template_id', true, 'view');
         $variant_id = $variant->get_meta('variant_code', true, 'view');
-        
+
         $content_file_id = sanitize_text_field($_GET['content']);
 
         if (empty($variant_id) || empty($template_id)) {
@@ -83,29 +86,12 @@ class PWP_ProductPage implements PWP_IHookableComponent
             return;
         }
         $language = 'en';
-        $destination = sprintf(
-            'https://%s/?projecturl=pie/projects/%s/%s.json',
-            'deveditor.peleman.com',
-            '625587c002f2a',
-            // "var{$variant_id}.json"
-            $variant_id
-        );
 
-        // redirect URL to create a new project based on the entered data
-        $destination = sprintf(
-            'https://%s/demo/index.php?id=new&templateFile=%s&variantId=%s&language=%s',
-            'deveditor.peleman.com',
-            'tpl133529.json',
-            $variant_id,
-            $language
-        );
+        $destination = $client->get_new_project_url($template_id, $variant_id, $language);
         wp_send_json(array(
             'status' => 'success',
             'message' => 'all is well',
             'isCustomizable' => true,
-            //currently just a hard-coded url to project
-            //we will develop this further in the near future
-            // 'destinationUrl' => 'https://deveditor.peleman.com/?projecturl=pie/projects/625587c002f2a/var133393.json'
             'destinationUrl' => $destination,
         ), 200);
         return;
