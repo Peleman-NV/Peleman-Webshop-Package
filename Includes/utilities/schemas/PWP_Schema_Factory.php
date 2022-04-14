@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PWP\includes\utilities;
+namespace PWP\includes\utilities\schemas;
 
 class PWP_Schema_Factory
 {
@@ -45,12 +45,35 @@ class PWP_Schema_Factory
         );
     }
 
+    /**
+     * enum property, accepts a single string value to match against
+     *
+     * @param string $description
+     * @param array $enumValues
+     * @return PWP_Json_Schema_Property
+     */
     public function enum_property(string $description, array $enumValues): PWP_Json_Schema_Property
     {
         return new PWP_Json_Schema_Property(
             $this->domain,
             $description,
             'string',
+            array('enum' => $enumValues)
+        );
+    }
+
+    /**
+     * multi enum property, accepts one or multiple values to match against
+     *
+     * @param string $description
+     * @param array $enumValues
+     * @return PWP_Json_Array_property
+     */
+    public function multi_enum_property(string $description, array $enumValues): PWP_Json_Array_property
+    {
+        return new PWP_Json_Array_property(
+            $this->domain,
+            $description,
             array('enum' => $enumValues)
         );
     }

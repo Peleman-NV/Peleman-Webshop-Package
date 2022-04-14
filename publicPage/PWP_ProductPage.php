@@ -69,10 +69,19 @@ class PWP_ProductPage implements PWP_IHookableComponent
 
     public function ajax_redirect_to_editor(): void
     {
-        $variant_id = sanitize_text_field($_GET['variant']);
-        $variant_id = 'var133536';  //currently refers to paperback A5 - Cover A5
+        $variant = wc_get_product((int)sanitize_text_field($_GET['variant']));
+        $template_id = $variant->get_meta('template_id', true, 'view') . '.json';
+        $variant_id = $variant->get_meta('variant_code', true, 'view');
+        
         $content_file_id = sanitize_text_field($_GET['content']);
 
+        if (empty($variant_id) || empty($template_id)) {
+            wp_send_json(array(
+                'status' => 'error',
+                'message' => 'variant does not have proper template data!',
+            ));
+            return;
+        }
         $language = 'en';
         $destination = sprintf(
             'https://%s/?projecturl=pie/projects/%s/%s.json',

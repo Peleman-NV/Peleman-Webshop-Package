@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PWP\includes\utilities;
+namespace PWP\includes\utilities\schemas;
 
 class PWP_Json_Array_property extends PWP_Json_Schema_Property
 {

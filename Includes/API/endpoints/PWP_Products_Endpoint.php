@@ -5,10 +5,11 @@ declare(strict_types=1);
 namespace PWP\includes\API\endpoints;
 
 use PWP\includes\PWP_ArgBuilder;
-use PWP\includes\utilities\PWP_Json_Schema;
-use PWP\includes\utilities\PWP_Schema_Factory;
+use PWP\includes\utilities\schemas\PWP_Schema_Factory;
 use PWP\includes\API\endpoints\PWP_EndpointController;
 use PWP\includes\authentication\PWP_IApiAuthenticator;
+use PWP\includes\utilities\schemas\PWP_Argument_Schema;
+use PWP\includes\utilities\schemas\PWP_Resource_Schema;
 
 class PWP_Products_Endpoint extends PWP_EndpointController implements PWP_IEndpoint
 {
@@ -33,7 +34,7 @@ class PWP_Products_Endpoint extends PWP_EndpointController implements PWP_IEndpo
                     "methods" => \WP_REST_Server::READABLE,
                     "callback" => array($this, 'get_items'),
                     "permission_callback" => array($this, 'auth_get_items'),
-                    'args' => array(),
+                    'args' => $this->get_argument_schema(),
                 ),
                 array(
                     "methods" => \WP_REST_Server::CREATABLE,
@@ -41,7 +42,7 @@ class PWP_Products_Endpoint extends PWP_EndpointController implements PWP_IEndpo
                     "permission_callback" => array($this, 'auth_post_item'),
                     'args' => array(),
                 ),
-                'schema' => array($this,'get_params_schema'),
+                'schema' => array($this, 'get_item_schema'),
             )
         );
 
@@ -118,39 +119,14 @@ class PWP_Products_Endpoint extends PWP_EndpointController implements PWP_IEndpo
         ));
     }
 
-    public function get_item_schema(): array
+    public function get_argument_schema(): array
     {
-        $schema = array(
-            'properties' => array(
-                'id' => array(
-                    'description' => 'Unique resource identifier within local woocommerce installation',
-                    'type' => 'integer',
-                    'context' => array('view', 'edit'),
-                    'readonly' => true,
-                ),
-                //TODO: further develop the item schema
-            )
-        );
-
-        return $schema;
-    }
-
-    public function get_params_schema(): array
-    {
-        $params = parent::get_params_schema();
-
         $factory = new PWP_Schema_Factory('default');
-        $schema = new PWP_Json_Schema('product');
-
+        $schema = new PWP_Argument_Schema();
         $schema
             ->add_property(
                 'sku',
                 $factory->string_property('filter results to matching SKUs. supports partial matches.')
-                    ->view()
-            )
-            ->add_property(
-                'f2d-sku',
-                $factory->string_property('filter result to matching F2D sku.')
                     ->view()
             )
             ->add_property(
@@ -190,6 +166,17 @@ class PWP_Products_Endpoint extends PWP_EndpointController implements PWP_IEndpo
                     'modified',
                 ))->default('id')
             );
+
+        return $schema->to_array();
+    }
+
+    public function get_item_schema(): array
+    {
+        $params = parent::get_item_schema();
+
+        $factory = new PWP_Schema_Factory('default');
+        $schema = new PWP_Resource_Schema('product');
+
 
         // $params['f2d-sku'] = array(
         //     'description' => 'filter results to matching F2D SKU. supports partial matches.',

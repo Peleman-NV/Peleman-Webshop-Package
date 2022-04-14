@@ -2,9 +2,11 @@
 
 declare(strict_types=1);
 
-namespace PWP\includes\utilities;
+namespace PWP\includes\utilities\schemas;
 
-class PWP_Json_Schema_Property
+use PWP\includes\utilities\schemas\PWP_IProperty;
+
+class PWP_Json_Schema_Property implements PWP_IProperty
 {
     private string $type;
     private $default;
@@ -65,7 +67,19 @@ class PWP_Json_Schema_Property
         return $this;
     }
 
-    public function add_custom_arg(string $name, $arg): PWP_Json_Schema_Property
+    public function santize_callback(string $callback): PWP_IProperty
+    {
+        $this->customArgs['sanitize_callback'] = $callback;
+        return $this;
+    }
+
+    public function validate_callback(string $callback): PWP_IProperty
+    {
+        $this->customArgs['validate_callback'] = $callback;
+        return $this;
+    }
+
+    public function add_custom_arg(string $name, $arg): PWP_IProperty
     {
         $this->customArgs[$name] = $arg;
         return $this;

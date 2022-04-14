@@ -25,6 +25,7 @@
             $('#ppi-loading').removeClass('ppi-hidden');
             e.preventDefault();
             const variationId = $("[name='variation_id']").val();
+            const templateVariationId = $("[name='")
             const contentFileId = $("[name='content_file_id']").val();
             getRedirect(variationId, contentFileId);
         }
@@ -55,7 +56,7 @@
                         //redirect to IMAXEL editor
                         //after editing, the IMAXEL editor then returns the customer to 
                         // console.log(response.destinationUrl);
-                        window.location.href = response.destinationUrl;
+                        // window.location.href = response.destinationUrl;
                         return;
                     }
                     $('.single_add_to_cart_button').off(

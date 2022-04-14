@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace PWP\includes\utilities;
+namespace PWP\includes\utilities\schemas;
 
-class PWP_Json_Schema
+class PWP_Resource_Schema implements PWP_ISchema
 {
     private array $header;
     private array $properties;
@@ -24,7 +24,7 @@ class PWP_Json_Schema
         $this->required = array();
     }
 
-    public function add_property(string $name, PWP_Json_Schema_Property $property): PWP_Json_Schema
+    public function add_property(string $name, PWP_IProperty $property): PWP_Resource_Schema
     {
         $this->properties[$name] = $property;
 
@@ -38,10 +38,10 @@ class PWP_Json_Schema
     /**
      * Undocumented function
      *
-     * @param PWP_Json_Schema_Property[] $properties
-     * @return PWP_Json_Schema
+     * @param PWP_IProperty[] $properties
+     * @return PWP_Resource_Schema
      */
-    public function add_properties(array $properties): PWP_Json_Schema
+    public function add_properties(array $properties): PWP_Resource_Schema
     {
         foreach ($properties as $key => $property) {
             $this->add_property($key, $property);
