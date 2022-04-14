@@ -18,7 +18,7 @@ abstract class PWP_Term_Handler implements PWP_IHandler
         $this->longTypeName = $typeLongName;
     }
 
-    public function get_item(int $id, array $args = []): WP_Term
+    public function get_item(int $id, array $args = []): ?WP_Term
     {
         $term = get_term($id, $this->taxonomy, OBJECT);
         return $term;

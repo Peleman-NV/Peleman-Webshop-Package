@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace PWP\includes\handlers;
 
 use PWP\includes\API\endpoints\PWP_Attributes_Endpoint;
+use PWP\includes\wrappers\product\PWP_Categories;
+use PWP\includes\wrappers\product\PWP_Product;
 use stdClass;
 use WC_Product;
 
@@ -29,54 +31,49 @@ class PWP_Product_Handler implements PWP_IHandler
 
     public function create_item(array $data, array $args = []): object
     {
-        $data['reviews_allowed'] = 0;
-        $sku = $data['sku'];
+        $product = new PWP_Product($data);
+        $product->disallow_reviews();
 
-        $id = (wc_get_product_id_by_sku($sku));
-        $isNewProduct = empty($id);
-
-        if (empty($data['lang'])) {
-            if ($isNewProduct) {
+        if ($product->is_parent_product()) {
+            if ($product->is_new_product()) {
                 throw new \Exception("parent product not found (you are trying to upload a translated product, but its default language counterpart cannot be found!)s", 400);
             }
 
-            $childId = apply_filters('wmpl_object_id', $id, 'post', false, $data['lang']);
+            $childId = apply_filters('wmpl_object_id', $product->product_id(), 'post', false, $product->lang());
             $isNewProduct = empty($childId);
             if ($isNewProduct) $id = $childId;
-            $data['translation_of'] = $id;
+            $product->set_is_translation_of($id);
         }
 
-        $data['categories'] = $this->get_category_ids_from_slugs($data['categories']);
-        $data['tags'] = $this->get_tag_ids_from_slugs($data['tags']);
+        $product->categories()->get_term_ids_from_slugs();
+        $product->tags()->get_term_ids_from_slugs();
 
         //get attributes and set first options to default
 
-        $data['default_attributes'] = array();
-        if (!empty($data['attributes'])) {
-            foreach ($data['attributes'] as $key => $attribute) {
-                $attributeKey = $this->get_attribute_id_by_slug($attribute['slug']);
+        foreach ($product->attributes() as $key => $attribute) {
+            $attributeKey = $this->get_attribute_id_by_slug($attribute['slug']);
 
-                if (is_null($attributeKey)) {
+            if (is_null($attributeKey)) {
+                continue;
+            }
+
+            $attribute['id'] = $attributeKey;
+
+            if ($attribute['default'] !== false) {
+                $data['default_attributes'][$key]['id'] = $attribute['id'];
+                if (!empty($attribute->default)) {
+                    $data['default_attributes'][$key]['option'] = $attribute['default'];
                     continue;
                 }
-
-                $attribute['id'] = $attributeKey;
-
-                if ($attribute['default'] !== false) {
-                    $data['default_attributes'][$key]['id'] = $attribute['id'];
-                    if (!empty($attribute->default)) {
-                        $data['default_attributes'][$key]['option'] = $attribute['default'];
-                        continue;
-                    }
-                    $data['default_attributes'][$key]['option'] = $attribute['options'][0];
-                }
+                $data['default_attributes'][$key]['option'] = $attribute['options'][0];
             }
         }
 
         //get images
         if (!empty($data['images'])) {
             foreach ($data['images'] as $image) {
-            // $imageId = $this->getImageIdByName($image['name'])};
+                // $imageId = $this->getImageIdByName($image['name'])};
+            }
         }
 
         //handle up- & cross-sell products
@@ -93,6 +90,7 @@ class PWP_Product_Handler implements PWP_IHandler
         //create new item
         return new stdClass();
     }
+
 
 
 
@@ -136,15 +134,15 @@ class PWP_Product_Handler implements PWP_IHandler
         return $ids;
     }
 
-    private function get_category_ids_from_slugs(array $categories): array
-    {
-        return $this->get_term_ids_from_slugs($categories, new PWP_Category_Handler());
-    }
+    // private function get_category_ids_from_slugs(PWP_Categories $categories): PWP_Cate
+    // {
+    //     return $this->get_term_ids_from_slugs($categories->toArray(), new PWP_Category_Handler());
+    // }
 
-    private function get_tag_ids_from_slugs(array $tags): array
-    {
-        return $this->get_term_ids_from_slugs($tags, new PWP_Tag_Handler());
-    }
+    // private function get_tag_ids_from_slugs(PWP_Tags $tags): array
+    // {
+    //     return $this->get_term_ids_from_slugs($tags->toArray, new PWP_Tag_Handler());
+    // }
 
     private function get_term_ids_from_slugs(array $terms, PWP_Term_Handler $handler): array
     {

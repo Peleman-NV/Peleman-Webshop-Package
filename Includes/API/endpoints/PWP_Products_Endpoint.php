@@ -5,9 +5,10 @@ declare(strict_types=1);
 namespace PWP\includes\API\endpoints;
 
 use PWP\includes\PWP_ArgBuilder;
+use PWP\includes\utilities\PWP_Json_Schema;
+use PWP\includes\utilities\PWP_Schema_Factory;
 use PWP\includes\API\endpoints\PWP_EndpointController;
 use PWP\includes\authentication\PWP_IApiAuthenticator;
-
 
 class PWP_Products_Endpoint extends PWP_EndpointController implements PWP_IEndpoint
 {
@@ -32,13 +33,15 @@ class PWP_Products_Endpoint extends PWP_EndpointController implements PWP_IEndpo
                     "methods" => \WP_REST_Server::READABLE,
                     "callback" => array($this, 'get_items'),
                     "permission_callback" => array($this, 'auth_get_items'),
-                    'args' => $this->get_params_schema(),
+                    'args' => array(),
                 ),
                 array(
                     "methods" => \WP_REST_Server::CREATABLE,
                     "callback" => array($this, 'create_item'),
                     "permission_callback" => array($this, 'auth_post_item'),
+                    'args' => array(),
                 ),
+                'schema' => array($this,'get_params_schema'),
             )
         );
 
@@ -50,11 +53,13 @@ class PWP_Products_Endpoint extends PWP_EndpointController implements PWP_IEndpo
                     "methods" => \WP_REST_Server::DELETABLE,
                     "callback" => array($this, 'delete_item'),
                     "permission_callback" => array($this, 'auth_delete_item'),
+                    'args' => array(),
                 ),
                 array(
                     "methods" => \WP_REST_Server::READABLE,
                     "callback" => array($this, 'get_item'),
                     "permission_callback" => array($this, 'auth_get_item'),
+                    'args' => array(),
                 ),
             )
         );
@@ -133,64 +138,85 @@ class PWP_Products_Endpoint extends PWP_EndpointController implements PWP_IEndpo
     public function get_params_schema(): array
     {
         $params = parent::get_params_schema();
-        $params['sku'] = array(
-            'description' => 'filter results to matching SKUs. supports partial matches.',
-            'type' => 'string',
-            'validate_callback' => 'rest_validate_request_arg',
-        );
+
+        $factory = new PWP_Schema_Factory('default');
+        $schema = new PWP_Json_Schema('product');
+
+        $schema
+            ->add_property(
+                'sku',
+                $factory->string_property('filter results to matching SKUs. supports partial matches.')
+                    ->view()
+            )
+            ->add_property(
+                'f2d-sku',
+                $factory->string_property('filter result to matching F2D sku.')
+                    ->view()
+            )
+            ->add_property(
+                'limit',
+                $factory->int_property('maximum amount of results per call')
+                    ->default(self::PAGE_SOFT_CAP)
+                    ->add_custom_arg('sanitize_callback', 'absint')
+            )
+            ->add_property(
+                'page',
+                $factory->int_property('when using pageination, represents the page of results to retrieve.')
+                    ->default(1)
+                    ->add_custom_arg('min', -1)
+                    ->add_custom_arg('sanitize_callback', 'absint')
+            )
+            ->add_property(
+                'order',
+                $factory->enum_property('how to order; ascending or descending', array(
+                    'ASC',
+                    'DESC'
+                ))->default('ASC')
+            )
+            ->add_property(
+                'type',
+                $factory->enum_property('types to match', array_keys(wc_get_product_types()))
+                    ->default('simple')
+            )
+            ->add_property(
+                'orderby',
+                $factory->enum_property('by which parameter to order the resulting output', array(
+                    'none',
+                    'id',
+                    'name',
+                    'type',
+                    'rand',
+                    'date',
+                    'modified',
+                ))->default('id')
+            );
+
         // $params['f2d-sku'] = array(
         //     'description' => 'filter results to matching F2D SKU. supports partial matches.',
         //     'type' => 'string',
         //     'validate_callback' => 'rest_validate_request_arg',
         // );
-        $params['limit'] = array(
-            'description' => 'maximum amount of results per call',
-            'type' => 'integer',
-            'default' => self::PAGE_SOFT_CAP,
-            'minimum' => -1,
-            'santize_callback' => 'absint',
-            'validate_callback' => 'rest_validate_request_arg',
-        );
-        $params['page'] = array(
-            'description' => 'when using pageination, represents the page of results to retrieve',
-            'type' => 'integer',
-            'default' => 1,
-            'minimum' => 1,
-            'sanitize_callback' => 'absint',
-            'validate_callback' => 'rest_validate_request_arg',
-        );
-        $params['type'] = array(
-            'description' => 'types to match',
-            //string | array : external; grouped; simple; variable; custom
-        );
-        $params['order'] = array(
-            'description' => 'how to order; ascending or descending order',
-            //string : ASC; DESC
-        );
-        $params['orderby'] = array(
-            'description' => 'by which parameter to order the resulting output',
-            //string : none; id; name; type; rand; date; modified;
-        );
-        $params['tag'] = array(
-            'description' => 'tags to match by slug',
-            //array : limit specific tags by slug
-        );
-        $params['category'] = array(
-            'description' => 'categories to match by slug',
-            //array : limit categories by slug
-        );
-        $params['status'] = array(
-            'description' => 'status to match',
-            //string | array : draft; pending; private; publish; trash
-        );
-        $params['price'] = array(
-            'description' => 'price to match',
-            //float : price to match
-        );
+
+        // $params['tag'] = array(
+        //     'description' => 'tags to match by slug',
+        //     //array : limit specific tags by slug
+        // );
+        // $params['category'] = array(
+        //     'description' => 'categories to match by slug',
+        //     //array : limit categories by slug
+        // );
+        // $params['status'] = array(
+        //     'description' => 'status to match',
+        //     //string | array : draft; pending; private; publish; trash
+        // );
+        // $params['price'] = array(
+        //     'description' => 'price to match',
+        //     //float : price to match
+        // );
 
         //TODO: keep building on schema. look towards WooCommerce Rest API for examples on structure
 
-        return $params;
+        return $schema->to_array();
     }
 
     protected function request_to_args(\WP_REST_Request $request): array
