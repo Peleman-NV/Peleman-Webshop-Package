@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PWP\includes;
+namespace PWP\includes\utilities;
 
 use WP_REST_Request;
 
@@ -109,6 +109,11 @@ class PWP_ArgBuilder
         return $this;
     }
 
+    public function get_arg(string $key): ?mixed
+    {
+        return $this->args[$key] ?: null;
+    }
+    
     /**
      * returns arg array
      *

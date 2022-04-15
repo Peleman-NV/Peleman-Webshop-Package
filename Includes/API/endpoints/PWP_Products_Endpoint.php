@@ -4,20 +4,21 @@ declare(strict_types=1);
 
 namespace PWP\includes\API\endpoints;
 
-use PWP\includes\PWP_ArgBuilder;
+use PWP\includes\utilities\PWP_ArgBuilder;
 use PWP\includes\utilities\schemas\PWP_Schema_Factory;
 use PWP\includes\API\endpoints\PWP_EndpointController;
 use PWP\includes\authentication\PWP_IApiAuthenticator;
 use PWP\includes\handlers\PWP_Product_Handler;
 use PWP\includes\utilities\schemas\PWP_Argument_Schema;
 use PWP\includes\utilities\schemas\PWP_ISchema;
-use PWP\includes\utilities\schemas\PWP_Resource_Schema;
+use PWP\includes\wrappers\product\PWP_Product;
 use WP_REST_Request;
 use WP_REST_Response;
 
 class PWP_Products_Endpoint extends PWP_EndpointController implements PWP_IEndpoint
 {
     private const PAGE_SOFT_CAP = 100;
+    private array $schema;
 
     public function __construct(string $namespace, PWP_IApiAuthenticator $authenticator)
     {
@@ -95,7 +96,7 @@ class PWP_Products_Endpoint extends PWP_EndpointController implements PWP_IEndpo
             ->add_arg('paginate', true)
             ->add_arg_from_request($request, 'limit')
             ->add_arg_from_request($request, 'page')
-            ->add_arg_from_request($request, 'sku')
+            ->add_arg_from_request($request, 'SKU')
             ->add_arg_from_request($request, 'status')
             ->add_arg_from_request($request, 'type')
             ->add_arg_from_request($request, 'tag')
@@ -119,7 +120,9 @@ class PWP_Products_Endpoint extends PWP_EndpointController implements PWP_IEndpo
             $args = new PWP_ArgBuilder();
             $args
                 ->add_required_arg_from_request($request, 'name')
+                ->add_required_arg_from_request($request, 'SKU')
                 ->add_arg_from_request($request, 'type', 'simple')
+                ->add_arg_from_request($request, 'visibility', 'hidden')
                 ->add_arg_from_request($request, 'description')
                 ->add_arg_from_request($request, 'short_description')
                 ->add_arg_from_request($request, 'attributes')
@@ -127,16 +130,21 @@ class PWP_Products_Endpoint extends PWP_EndpointController implements PWP_IEndpo
                 ->add_arg_from_request($request, 'tags')
                 ->add_arg_from_request($request, 'regular_price');
 
-            $handler = new PWP_Product_Handler();
+            $product = new PWP_Product($args->to_array());
+            if (!$product->is_SKU_unique()) {
+                throw new \Exception('product with this SKU already exists in the database!', 400);
+            }
+
+            $result = $product->save_to_product();
         } catch (\Exception $exception) {
             return new WP_REST_Response($exception->getMessage(), $exception->getCode());
         }
 
         return new WP_REST_Response(array(
             'good job! here are your args:',
-            $args->to_array()
+            $args->to_array(),
+            $result->get_data(),
         ));
-        // return $handler->create_item($args->to_array());
     }
 
     public function delete_item(\WP_REST_Request $request): object
@@ -173,7 +181,7 @@ class PWP_Products_Endpoint extends PWP_EndpointController implements PWP_IEndpo
         $schema = new PWP_Argument_Schema();
         $schema
             ->add_property(
-                'sku',
+                'SKU',
                 $factory->string_property('filter results to matching SKUs. supports partial matches.')
                     ->view()
             )

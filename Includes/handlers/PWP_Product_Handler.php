@@ -9,6 +9,7 @@ use PWP\includes\wrappers\product\PWP_Categories;
 use PWP\includes\wrappers\product\PWP_Product;
 use stdClass;
 use WC_Product;
+use WC_Product_Simple;
 
 use function PHPUnit\Framework\isNull;
 
@@ -45,8 +46,8 @@ class PWP_Product_Handler implements PWP_IHandler
             $product->set_is_translation_of($id);
         }
 
-        $product->categories()->get_term_ids_from_slugs();
-        $product->tags()->get_term_ids_from_slugs();
+        // $product->categories()->get_term_ids_from_slugs();
+        // $product->tags()->get_term_ids_from_slugs();
 
         //get attributes and set first options to default
 
@@ -90,9 +91,6 @@ class PWP_Product_Handler implements PWP_IHandler
         //create new item
         return new stdClass();
     }
-
-
-
 
     public function update_item(int $id, array $args = []): object
     {
