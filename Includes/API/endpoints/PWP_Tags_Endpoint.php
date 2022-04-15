@@ -29,7 +29,7 @@ class PWP_Tags_Endpoint extends PWP_EndpointController
                     "methods" => \WP_REST_Server::READABLE,
                     "callback" => array($this, 'get_items'),
                     "permission_callback" => array($this, 'auth_get_items'),
-                    'args' => $this->get_params_schema(),
+                    'args' => $this->get_argument_schema()->to_array(),
                 ),
                 array(
                     "methods" => \WP_REST_Server::CREATABLE,

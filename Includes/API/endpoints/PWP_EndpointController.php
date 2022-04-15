@@ -9,6 +9,8 @@ use WP_REST_Request;
 use PWP\includes\API\endpoints\PWP_IEndpoint;
 use PWP\includes\authentication\PWP_Authenticator;
 use PWP\includes\authentication\PWP_IApiAuthenticator;
+use PWP\includes\utilities\schemas\PWP_Argument_Schema;
+use PWP\includes\utilities\schemas\PWP_ISchema;
 
 defined('ABSPATH') || die;
 
@@ -140,5 +142,10 @@ abstract class PWP_EndpointController implements PWP_IEndpoint, PWP_IApiAuthenti
     public function get_item_schema() : array
     {
         return array();
+    }
+
+    public function get_argument_schema() : PWP_ISchema
+    {
+        return new PWP_Argument_Schema();
     }
 }

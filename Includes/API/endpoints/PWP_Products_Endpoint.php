@@ -9,6 +9,7 @@ use PWP\includes\utilities\schemas\PWP_Schema_Factory;
 use PWP\includes\API\endpoints\PWP_EndpointController;
 use PWP\includes\authentication\PWP_IApiAuthenticator;
 use PWP\includes\utilities\schemas\PWP_Argument_Schema;
+use PWP\includes\utilities\schemas\PWP_ISchema;
 use PWP\includes\utilities\schemas\PWP_Resource_Schema;
 
 class PWP_Products_Endpoint extends PWP_EndpointController implements PWP_IEndpoint
@@ -34,7 +35,7 @@ class PWP_Products_Endpoint extends PWP_EndpointController implements PWP_IEndpo
                     "methods" => \WP_REST_Server::READABLE,
                     "callback" => array($this, 'get_items'),
                     "permission_callback" => array($this, 'auth_get_items'),
-                    'args' => $this->get_argument_schema(),
+                    'args' => $this->get_argument_schema()->to_array(),
                 ),
                 array(
                     "methods" => \WP_REST_Server::CREATABLE,
@@ -119,7 +120,7 @@ class PWP_Products_Endpoint extends PWP_EndpointController implements PWP_IEndpo
         ));
     }
 
-    public function get_argument_schema(): array
+    public function get_argument_schema(): PWP_ISchema
     {
         $factory = new PWP_Schema_Factory('default');
         $schema = new PWP_Argument_Schema();
@@ -165,9 +166,30 @@ class PWP_Products_Endpoint extends PWP_EndpointController implements PWP_IEndpo
                     'date',
                     'modified',
                 ))->default('id')
+            )
+            ->add_property(
+                'tag',
+                $factory->array_property('limit results to specific tags by slug')
+            )
+            ->add_property(
+                'category',
+                $factory->array_property('limit results to specific categories by slug')
+            )
+            ->add_property(
+                'status',
+                $factory->multi_enum_property('status to match', array(
+                    'draft',
+                    'pending',
+                    'private',
+                    'published',
+                    'trash',
+                ))
+            )->add_property(
+                'price',
+                $factory->string_property('exact price to match')
             );
 
-        return $schema->to_array();
+        return $schema;
     }
 
     public function get_item_schema(): array
@@ -177,31 +199,6 @@ class PWP_Products_Endpoint extends PWP_EndpointController implements PWP_IEndpo
         $factory = new PWP_Schema_Factory('default');
         $schema = new PWP_Resource_Schema('product');
 
-
-        // $params['f2d-sku'] = array(
-        //     'description' => 'filter results to matching F2D SKU. supports partial matches.',
-        //     'type' => 'string',
-        //     'validate_callback' => 'rest_validate_request_arg',
-        // );
-
-        // $params['tag'] = array(
-        //     'description' => 'tags to match by slug',
-        //     //array : limit specific tags by slug
-        // );
-        // $params['category'] = array(
-        //     'description' => 'categories to match by slug',
-        //     //array : limit categories by slug
-        // );
-        // $params['status'] = array(
-        //     'description' => 'status to match',
-        //     //string | array : draft; pending; private; publish; trash
-        // );
-        // $params['price'] = array(
-        //     'description' => 'price to match',
-        //     //float : price to match
-        // );
-
-        //TODO: keep building on schema. look towards WooCommerce Rest API for examples on structure
 
         return $schema->to_array();
     }

@@ -55,7 +55,7 @@ class PWP_Plugin
     {
         //TODO: add public hookables
         $this->add_hookable(new PWP_ProductPage($this->loader));
-        // $this->add_hookable(new PWP_API_Hookable('pwp/v1'));
+        $this->add_hookable(new PWP_API_Hookable('pwp/v1'));
     }
 
     private function add_hookable(PWP_IHookableComponent $component): void
