@@ -127,12 +127,13 @@ class PWP_Products_Endpoint extends PWP_EndpointController implements PWP_IEndpo
                 ->add_arg_from_request($request, 'attributes')
                 ->add_arg_from_request($request, 'categories')
                 ->add_arg_from_request($request, 'tags')
-                ->add_arg_from_request($request, 'regular_price');
+                ->add_arg_from_request($request, 'regular_price')
+                ->add_arg_from_request($request, 'lang');
 
             $product = new PWP_Product($args->to_array());
-            if (!$product->is_SKU_unique()) {
-                throw new \Exception('product with this SKU already exists in the database!', 400);
-            }
+            // if (!$product->is_SKU_unique()) {
+            //     throw new \Exception('product with this SKU already exists in the database!', 400);
+            // }
 
             $result = $product->save_to_product();
         } catch (\Exception $exception) {

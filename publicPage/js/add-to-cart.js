@@ -55,7 +55,7 @@
                     if (response.isCustomizable === true) {
                         console.log(response.destinationUrl);
 
-                        // window.location.href = response.destinationUrl;
+                        window.location.href = response.destinationUrl;
                         return;
                     }
                     $('.single_add_to_cart_button').off(

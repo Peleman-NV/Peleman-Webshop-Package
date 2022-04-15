@@ -32,8 +32,6 @@ class PWP_Product_Handler implements PWP_IHandler
 
     public function create_item(array $data, array $args = []): object
     {
-        $product = new PWP_Product($data);
-        $product->disallow_reviews();
 
         if ($product->is_parent_product()) {
             if ($product->is_new_product()) {

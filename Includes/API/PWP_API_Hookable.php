@@ -25,7 +25,7 @@ class PWP_API_Hookable implements PWP_IHookableComponent
     protected string $rest_base;
     protected array $endpoints;
 
-    public function __construct(string $namespace)
+    public function __construct(?string $namespace)
     {
         $this->namespace = $namespace ?: 'pwp/v1';
         $authenticator = new PWP_Authenticator();
@@ -44,7 +44,7 @@ class PWP_API_Hookable implements PWP_IHookableComponent
         //  menus
     }
 
-    public function register(PWP_Plugin_Loader $loader): void
+    public function register_hooks(PWP_Plugin_Loader $loader): void
     {
         $loader->add_action(
             "rest_api_init",

@@ -9,9 +9,9 @@ use PWP\includes\hookables\PWP_IHookableComponent;
 use PWP\includes\loaders\PWP_Plugin_Loader;
 use WC_Product;
 
-class PWP_ProductPage implements PWP_IHookableComponent
+class PWP_Public_Product_Page implements PWP_IHookableComponent
 {
-    public function register(PWP_Plugin_Loader $loader): void
+    public function register_hooks(PWP_Plugin_Loader $loader): void
     {
         $loader->add_action('wp_enqueue_scripts', $this, 'enqueue_styles');
         $loader->add_action('wp_enqueue_scripts', $this, 'enqueue_ajax', 8);

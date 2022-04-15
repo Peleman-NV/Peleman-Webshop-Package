@@ -12,7 +12,6 @@ use PWP\includes\authentication\PWP_IApiAuthenticator;
 use PWP\includes\utilities\schemas\PWP_Argument_Schema;
 use PWP\includes\utilities\schemas\PWP_ISchema;
 use PWP\includes\utilities\schemas\PWP_Resource_Schema;
-use WP_REST_Controller;
 
 defined('ABSPATH') || die;
 

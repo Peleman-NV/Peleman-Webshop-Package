@@ -124,6 +124,11 @@ class PWP_Product extends PWP_Component
         return array();
     }
 
+    public function is_translation(): bool
+    {
+        return !empty($this->data->lang);
+    }
+
     public function cross_sell_SKUs(): PWP_Component
     {
         return new PWP_SKUs($this->data->cross_sell_SKUs);
@@ -145,8 +150,19 @@ class PWP_Product extends PWP_Component
         $product = new WC_Product();
 
         $product->set_name($this->data->name);
-        $product->set_SKU($this->data->SKU);
+        $product->set_reviews_allowed(false);
 
+        if ($this->is_translation()) {
+            $parentId = wc_get_product_id_by_sku($this->data->SKU);
+            if (empty($parentId)) {
+                throw new \Exception("Parent product not found (default language counterpart not found in database)", 400);
+            }
+        }
+         if ( wc_get_product_id_by_sku($this->data->SKU) > 0) {
+            throw new \Exception("product with this SKU already exists!", 400);
+        }
+
+        $product->set_SKU($this->data->SKU);
         $product->set_status($this->data->status);
 
         $product->set_catalog_visibility($this->data->visibility);
