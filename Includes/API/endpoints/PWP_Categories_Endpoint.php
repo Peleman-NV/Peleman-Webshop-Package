@@ -24,7 +24,7 @@ class PWP_Categories_Endpoint extends PWP_EndpointController implements PWP_IEnd
         );
     }
 
-    public function register(): void
+    public function register_routes(): void
     {
         register_rest_route(
             $this->namespace,

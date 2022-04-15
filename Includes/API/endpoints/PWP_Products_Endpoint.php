@@ -8,7 +8,6 @@ use PWP\includes\utilities\PWP_ArgBuilder;
 use PWP\includes\utilities\schemas\PWP_Schema_Factory;
 use PWP\includes\API\endpoints\PWP_EndpointController;
 use PWP\includes\authentication\PWP_IApiAuthenticator;
-use PWP\includes\handlers\PWP_Product_Handler;
 use PWP\includes\utilities\schemas\PWP_Argument_Schema;
 use PWP\includes\utilities\schemas\PWP_ISchema;
 use PWP\includes\wrappers\product\PWP_Product;
@@ -30,7 +29,7 @@ class PWP_Products_Endpoint extends PWP_EndpointController implements PWP_IEndpo
         );
     }
 
-    public function register(): void
+    public function register_routes(): void
     {
         register_rest_route(
             $this->namespace,

@@ -61,7 +61,7 @@ class PWP_API_Hookable implements PWP_IHookableComponent
     public function init_endpoints(): void
     {
         foreach ($this->endpoints as $endpoint) {
-            $endpoint->register();
+            $endpoint->register_routes();
         }
     }
 }

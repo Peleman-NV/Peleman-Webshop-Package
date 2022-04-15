@@ -24,7 +24,7 @@ abstract class PWP_EndpointController implements PWP_IEndpoint, PWP_IApiAuthenti
     /**
      * initialization function that registers this class' callback to the hook and rest API
      */
-    public abstract function register(): void;
+    public abstract function register_routes(): void;
 
     public function __construct(string $namespace,  PWP_Authenticator $authenticator, string $rest_base, string $title)
     {

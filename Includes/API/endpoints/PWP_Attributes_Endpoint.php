@@ -20,7 +20,7 @@ class PWP_Attributes_Endpoint extends PWP_EndpointController
             'attribute'
         );
     }
-    public function register(): void
+    public function register_routes(): void
     {
         register_rest_route(
             $this->namespace,

@@ -24,7 +24,7 @@ class PWP_Test_Endpoint extends PWP_EndpointController
         );
     }
 
-    public function register(): void
+    public function register_routes(): void
     {
         register_rest_route(
             $this->namespace,
@@ -38,7 +38,7 @@ class PWP_Test_Endpoint extends PWP_EndpointController
             ),
         );
     }
-    
+
     public function get_item(WP_REST_Request $request): object
     {
         return new WP_REST_Response('test successful!');
