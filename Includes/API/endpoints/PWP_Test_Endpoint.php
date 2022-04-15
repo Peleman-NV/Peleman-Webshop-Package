@@ -18,8 +18,9 @@ class PWP_Test_Endpoint extends PWP_EndpointController
     {
         parent::__construct(
             $namespace,
+            $authenticator,
             '/test',
-            $authenticator
+            'test'
         );
     }
 

@@ -18,8 +18,9 @@ class PWP_Categories_Endpoint extends PWP_EndpointController implements PWP_IEnd
     {
         parent::__construct(
             $namespace,
+            $authenticator,
             "/categories",
-            $authenticator
+            'category'
         );
     }
 

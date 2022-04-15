@@ -15,8 +15,9 @@ class PWP_Attributes_Endpoint extends PWP_EndpointController
     {
         parent::__construct(
             $namespace,
+            $authenticator,
             "/attributes",
-            $authenticator
+            'attribute'
         );
     }
     public function register(): void

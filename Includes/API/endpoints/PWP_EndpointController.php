@@ -11,23 +11,27 @@ use PWP\includes\authentication\PWP_Authenticator;
 use PWP\includes\authentication\PWP_IApiAuthenticator;
 use PWP\includes\utilities\schemas\PWP_Argument_Schema;
 use PWP\includes\utilities\schemas\PWP_ISchema;
+use PWP\includes\utilities\schemas\PWP_Resource_Schema;
+use WP_REST_Controller;
 
 defined('ABSPATH') || die;
 
 abstract class PWP_EndpointController implements PWP_IEndpoint, PWP_IApiAuthenticator
 {
     private PWP_Authenticator $authenticator;
+    private string $title;
 
     /**
      * initialization function that registers this class' callback to the hook and rest API
      */
     public abstract function register(): void;
 
-    public function __construct(string $namespace, string $rest_base, PWP_Authenticator $authenticator)
+    public function __construct(string $namespace,  PWP_Authenticator $authenticator, string $rest_base, string $title)
     {
         $this->namespace = $namespace;
-        $this->rest_base = $rest_base;
         $this->authenticator = $authenticator;
+        $this->rest_base = $rest_base;
+        $this->title = $title;
     }
 
     #region Callback template functions
@@ -71,7 +75,7 @@ abstract class PWP_EndpointController implements PWP_IEndpoint, PWP_IApiAuthenti
      * @param WP_REST_Request $request
      * @return WP_REST_Response|WP_Error
      */
-    public function post_item(WP_REST_Request $request): object
+    public function create_item(WP_REST_Request $request): object
     {
         throw new \Requests_Exception_HTTP_501("method not implemented!");
     }
@@ -87,6 +91,7 @@ abstract class PWP_EndpointController implements PWP_IEndpoint, PWP_IApiAuthenti
         throw new \Requests_Exception_HTTP_501("method not implemented!");
     }
     #endregion
+
     #region REST AUTHENTICATION
     /**
      * Authentication function for API Endpoint controller
@@ -139,13 +144,46 @@ abstract class PWP_EndpointController implements PWP_IEndpoint, PWP_IApiAuthenti
         return $this->authenticator->auth_update_item($request);
     }
     #endregion
-    public function get_item_schema() : array
+
+    /**
+     * get item's resource schema.
+     * schema indicates what fields are present for the particular item
+     *
+     * @return PWP_ISchema
+     */
+    protected function get_item_schema(): PWP_ISchema
     {
-        return array();
+        return new PWP_Resource_Schema($this->title);
     }
 
-    public function get_argument_schema() : PWP_ISchema
+    /**
+     * get item's resource schema as array
+     *
+     * @return array
+     */
+    public function get_item_array(): array
+    {
+        return $this->get_item_schema()->to_array();
+    }
+
+    /**
+     * get item's argument schema
+     * schema indicates what fields are available for the request arguments
+     *
+     * @return PWP_ISchema
+     */
+    protected function get_argument_schema(): PWP_ISchema
     {
         return new PWP_Argument_Schema();
+    }
+
+    /**
+     * get item's argument schema as array
+     *
+     * @return array
+     */
+    public function get_argument_array(): array
+    {
+        return $this->get_argument_schema()->to_array();
     }
 }

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace PWP\includes\API\endpoints;
 
+use PWP\includes\utilities\schemas\PWP_ISchema;
 use WP_REST_Request;
 
 interface PWP_IEndpoint
@@ -17,5 +18,5 @@ interface PWP_IEndpoint
 
     public function delete_item(WP_REST_Request $request): object;
     
-    public function post_item(WP_REST_Request $request): object;
+    public function create_item(WP_REST_Request $request): object;
 }

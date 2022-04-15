@@ -15,8 +15,9 @@ class PWP_Tags_Endpoint extends PWP_EndpointController
     {
         parent::__construct(
             $namespace,
+            $authenticator,
             "/tags",
-            $authenticator
+            'tag'
         );
     }
     public function register(): void

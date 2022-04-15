@@ -8,20 +8,24 @@ use PWP\includes\PWP_ArgBuilder;
 use PWP\includes\utilities\schemas\PWP_Schema_Factory;
 use PWP\includes\API\endpoints\PWP_EndpointController;
 use PWP\includes\authentication\PWP_IApiAuthenticator;
+use PWP\includes\handlers\PWP_Product_Handler;
 use PWP\includes\utilities\schemas\PWP_Argument_Schema;
 use PWP\includes\utilities\schemas\PWP_ISchema;
 use PWP\includes\utilities\schemas\PWP_Resource_Schema;
+use WP_REST_Request;
+use WP_REST_Response;
 
 class PWP_Products_Endpoint extends PWP_EndpointController implements PWP_IEndpoint
 {
-    private const PAGE_SOFT_CAP = 10;
+    private const PAGE_SOFT_CAP = 100;
 
     public function __construct(string $namespace, PWP_IApiAuthenticator $authenticator)
     {
         parent::__construct(
             $namespace,
+            $authenticator,
             "/products",
-            $authenticator
+            'product'
         );
     }
 
@@ -43,7 +47,7 @@ class PWP_Products_Endpoint extends PWP_EndpointController implements PWP_IEndpo
                     "permission_callback" => array($this, 'auth_post_item'),
                     'args' => array(),
                 ),
-                'schema' => array($this, 'get_item_schema'),
+                'schema' => array($this, 'get_item_array')
             )
         );
 
@@ -84,12 +88,55 @@ class PWP_Products_Endpoint extends PWP_EndpointController implements PWP_IEndpo
 
     public function get_items(\WP_REST_Request $request): object
     {
-        $args = $this->request_to_args($request);
-        $results = (array)wc_get_products($args);
+        $args = new PWP_ArgBuilder();
+
+        $args
+            ->add_arg('return', 'objects')
+            ->add_arg('paginate', true)
+            ->add_arg_from_request($request, 'limit')
+            ->add_arg_from_request($request, 'page')
+            ->add_arg_from_request($request, 'sku')
+            ->add_arg_from_request($request, 'status')
+            ->add_arg_from_request($request, 'type')
+            ->add_arg_from_request($request, 'tag')
+            ->add_arg_from_request($request, 'category')
+            ->add_arg_from_request($request, 'price')
+            ->add_arg_from_request($request, 'orderby')
+            ->add_arg_from_request($request, 'order');
+
+        $results = (array)wc_get_products($args->to_array());
 
         $results['products'] = $this->remap_results_array($results['products']);
 
-        return new \WP_REST_Response($results);
+        return new \WP_REST_Response(
+            $results
+        );
+    }
+
+    public function create_item(WP_REST_Request $request): object
+    {
+        try {
+            $args = new PWP_ArgBuilder();
+            $args
+                ->add_required_arg_from_request($request, 'name')
+                ->add_arg_from_request($request, 'type', 'simple')
+                ->add_arg_from_request($request, 'description')
+                ->add_arg_from_request($request, 'short_description')
+                ->add_arg_from_request($request, 'attributes')
+                ->add_arg_from_request($request, 'categories')
+                ->add_arg_from_request($request, 'tags')
+                ->add_arg_from_request($request, 'regular_price');
+
+            $handler = new PWP_Product_Handler();
+        } catch (\Exception $exception) {
+            return new WP_REST_Response($exception->getMessage(), $exception->getCode());
+        }
+
+        return new WP_REST_Response(array(
+            'good job! here are your args:',
+            $args->to_array()
+        ));
+        // return $handler->create_item($args->to_array());
     }
 
     public function delete_item(\WP_REST_Request $request): object
@@ -120,7 +167,7 @@ class PWP_Products_Endpoint extends PWP_EndpointController implements PWP_IEndpo
         ));
     }
 
-    public function get_argument_schema(): PWP_ISchema
+    protected function get_argument_schema(): PWP_ISchema
     {
         $factory = new PWP_Schema_Factory('default');
         $schema = new PWP_Argument_Schema();
@@ -153,7 +200,6 @@ class PWP_Products_Endpoint extends PWP_EndpointController implements PWP_IEndpo
             ->add_property(
                 'type',
                 $factory->enum_property('types to match', array_keys(wc_get_product_types()))
-                    ->default('simple')
             )
             ->add_property(
                 'orderby',
@@ -192,38 +238,10 @@ class PWP_Products_Endpoint extends PWP_EndpointController implements PWP_IEndpo
         return $schema;
     }
 
-    public function get_item_schema(): array
+    protected function get_item_schema(): PWP_ISchema
     {
-        $params = parent::get_item_schema();
-
-        $factory = new PWP_Schema_Factory('default');
-        $schema = new PWP_Resource_Schema('product');
-
-
-        return $schema->to_array();
-    }
-
-    protected function request_to_args(\WP_REST_Request $request): array
-    {
-        $args = new PWP_ArgBuilder(array(
-            'return'        => 'objects',
-            'limit'         => (int)$request['limit'] ?: self::PAGE_SOFT_CAP,
-            'page'          => (int)$request['page'] ?: 1,
-            'paginate'      => true,
-        ));
-
-        $args
-            ->add_arg_if_exists($request, 'sku')
-            ->add_arg_if_exists($request, 'f2d-sku')
-            ->add_arg_if_exists($request, 'status')
-            ->add_arg_if_exists($request, 'type')
-            ->add_arg_if_exists($request, 'tag')
-            ->add_arg_if_exists($request, 'category')
-            ->add_arg_if_exists($request, 'price')
-            ->add_arg_if_exists($request, 'orderby')
-            ->add_arg_if_exists($request, 'order');
-
-        return $args->to_array();
+        $schema = parent::get_item_schema();
+        return $schema;
     }
 
     private function remap_results_array(array $products): array

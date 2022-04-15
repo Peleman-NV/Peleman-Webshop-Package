@@ -16,12 +16,13 @@ class PWP_ArgBuilder
         $this->args = $array;
     }
 
-    public function set_arg(string $parameter, mixed $value): PWP_ArgBuilder
-    {
-        $this->args[$parameter] = $value;
-        return $this;
-    }
-
+    /**
+     * add array of args to existing args
+     *
+     * @param array $array
+     * @param boolean $overrideExisting default true; if false it will override existing keys. if true, will result in duplicate keys
+     * @return PWP_ArgBuilder
+     */
     public function add_array(array $array, bool $overrideExisting = true): PWP_ArgBuilder
     {
         if ($overrideExisting) {
@@ -33,35 +34,86 @@ class PWP_ArgBuilder
         return $this;
     }
 
-    public function add_arg(string $parameter, $argument): PWP_ArgBuilder
+    public function add_arg(string $key, $value, $default = null): PWP_ArgBuilder
     {
-        $this->args[$parameter] = $argument;
-        return $this;
-    }
-    public function add_arg_if_exists(WP_REST_Request $request, string $parameter): PWP_ArgBuilder
-    {
-        if (!empty($request[$parameter])) {
-            $this->args[$parameter] = $request[$parameter];
+        if (isset($value) && $value !== '') {
+            $this->args[$key] = $value;
+            return $this;
+        }
+        if (!is_null($default)) {
+            $this->args[$key] = $default;
         }
         return $this;
     }
 
-    public function add_arg_if_not_null(string $parameter, $argument): PWP_ArgBuilder
+    public function add_arg_from_request(WP_REST_Request $request, string $key, $default = null): PWP_ArgBuilder
     {
-        if (!is_null($argument)) {
-            $this->args[$parameter] = $argument;
+        return $this->add_arg($key, $request[$key], $default);
+    }
+
+    /**
+     * attempts to add required argument. if the argument is not set, will throw an error.
+     *
+     * @param string $key
+     * @param [type] $value
+     * @return PWP_ArgBuilder
+     */
+    public function add_required_arg(string $key, $value): PWP_ArgBuilder
+    {
+        if (isset($value) && $value !== '') {
+            $this->args[$key] = $value;
+            return $this;
+        }
+        throw new \Exception("missing required argument: {$key}", 400);
+    }
+
+    /**
+     * attempts to find a required argument in a request and add it to the arg array. if the argument is not set, will throw an error.
+     *
+     * @param WP_REST_Request $request
+     * @param string $key
+     * @return PWP_ArgBuilder
+     */
+    public function add_required_arg_from_request(WP_REST_Request $request, string $key): PWP_ArgBuilder
+    {
+        return $this->add_required_arg($key, $request[$key]);
+    }
+
+    /**
+     * will try to add a value to the arg array. will not add the key and value pair if the value is null
+     *
+     * @param string $key
+     * @param [type] $value
+     * @return PWP_ArgBuilder
+     */
+    public function add_arg_if_not_null(string $key, $value): PWP_ArgBuilder
+    {
+        if (!is_null($value)) {
+            $this->args[$key] = $value;
         }
         return $this;
     }
 
-    public function add_arg_if_not_empty(string $parameter, $argument): PWP_ArgBuilder
+    /**
+     * will try to add a value to the arg array. will not add the key and value pair if the value is empty
+     *
+     * @param string $key
+     * @param [type] $value
+     * @return PWP_ArgBuilder
+     */
+    public function add_arg_if_not_empty(string $key, $value): PWP_ArgBuilder
     {
-        if (!empty($argument)) {
-            $this->args[$parameter] = $argument;
+        if (!empty($value)) {
+            $this->args[$key] = $value;
         }
         return $this;
     }
 
+    /**
+     * returns arg array
+     *
+     * @return array
+     */
     public function to_array(): array
     {
         return $this->args;
