@@ -48,8 +48,8 @@
                 success: function (response) {
                     console.log(response);
                     if (response.status !== 'success') {
-                        $('#redirection-info').html(response.message);
-                        $('#redirection-info').addClass('ppi-response-error');
+                        // $('#redirection-info').html(response.message);
+                        // $('#redirection-info').addClass('ppi-response-error');
                         return;
                     }
                     if (response.isCustomizable === true) {

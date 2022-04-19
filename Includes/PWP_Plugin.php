@@ -39,7 +39,7 @@ class PWP_Plugin
     {
         $instance = new PWP_Plugin();
 
-        $instance->register_hooks();
+        $instance->register_hookables();
 
         do_action('PWP_plugin_loaded');
     }
@@ -50,7 +50,7 @@ class PWP_Plugin
         $component->register_hooks($this->loader);
     }
 
-    private function register_hooks()
+    private function register_hookables()
     {
         $this->loader->register_hooks();
     }

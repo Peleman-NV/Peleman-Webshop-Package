@@ -76,9 +76,12 @@ class PWP_Public_Product_Page implements PWP_IHookableComponent
         $template_id = $variant->get_meta('template_id', true, 'view');
         $variant_id = $variant->get_meta('variant_code', true, 'view');
 
+        $templateIsValid = str_contains($template_id, 'tpl');
+        $variantIsValid = str_contains($variant_id, 'var');
+
         $content_file_id = sanitize_text_field($_GET['content']);
 
-        if (empty($variant_id) || empty($template_id)) {
+        if (!$templateIsValid || !$variantIsValid) {
             wp_send_json(array(
                 'status' => 'error',
                 'message' => 'variant does not have proper template data!',

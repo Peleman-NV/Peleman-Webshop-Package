@@ -13,8 +13,6 @@ use PWP\includes\utilities\schemas\PWP_Argument_Schema;
 use PWP\includes\utilities\schemas\PWP_ISchema;
 use PWP\includes\utilities\schemas\PWP_Resource_Schema;
 
-defined('ABSPATH') || die;
-
 abstract class PWP_EndpointController implements PWP_IEndpoint, PWP_IApiAuthenticator
 {
     private PWP_Authenticator $authenticator;

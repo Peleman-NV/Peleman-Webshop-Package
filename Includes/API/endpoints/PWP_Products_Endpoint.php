@@ -122,6 +122,9 @@ class PWP_Products_Endpoint extends PWP_EndpointController implements PWP_IEndpo
                 ->add_required_arg_from_request($request, 'SKU')
                 ->add_arg_from_request($request, 'type', 'simple')
                 ->add_arg_from_request($request, 'visibility', 'hidden')
+                ->add_arg_from_request($request, 'customizable', false)
+                ->add_arg_from_request($request, 'template_id', '')
+                ->add_arg_from_request($request, 'variant_id', '')
                 ->add_arg_from_request($request, 'description')
                 ->add_arg_from_request($request, 'short_description')
                 ->add_arg_from_request($request, 'attributes')
@@ -175,7 +178,7 @@ class PWP_Products_Endpoint extends PWP_EndpointController implements PWP_IEndpo
         ));
     }
 
-    protected function get_argument_schema(): PWP_ISchema
+    public function get_argument_schema(): PWP_ISchema
     {
         $factory = new PWP_Schema_Factory('default');
         $schema = new PWP_Argument_Schema();
@@ -189,7 +192,6 @@ class PWP_Products_Endpoint extends PWP_EndpointController implements PWP_IEndpo
                 'limit',
                 $factory->int_property('maximum amount of results per call')
                     ->default(self::PAGE_SOFT_CAP)
-                    ->add_custom_arg('sanitize_callback', 'absint')
             )
             ->add_property(
                 'page',
