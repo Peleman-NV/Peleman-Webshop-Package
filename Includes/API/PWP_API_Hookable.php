@@ -8,11 +8,17 @@ use PWP\includes\loaders\PWP_Plugin_Loader;
 use PWP\includes\API\endpoints\PWP_IEndpoint;
 use PWP\includes\API\endpoints\PWP_Tags_Endpoint;
 use PWP\includes\API\endpoints\PWP_Test_Endpoint;
+use PWP\includes\API\endpoints\PWP_Menus_Endpoint;
 use PWP\includes\authentication\PWP_Authenticator;
 use PWP\includes\hookables\PWP_IHookableComponent;
+use PWP\includes\API\endpoints\PWP_Images_Endpoint;
+use PWP\includes\API\endpoints\PWP_Orders_Endpoint;
 use PWP\includes\API\endpoints\PWP_Products_Endpoint;
+use PWP\includes\API\endpoints\PWP_Customers_Endpoint;
 use PWP\includes\API\endpoints\PWP_Attributes_Endpoint;
 use PWP\includes\API\endpoints\PWP_Categories_Endpoint;
+use PWP\includes\API\endpoints\PWP_Attribute_Terms_Endpoint;
+use PWP\includes\API\endpoints\PWP_Product_Variations_Endpoint;
 
 defined('ABSPATH') || die;
 
@@ -31,17 +37,20 @@ class PWP_API_Hookable implements PWP_IHookableComponent
         $authenticator = new PWP_Authenticator();
 
         $this->add_endpoint(new PWP_Test_Endpoint($this->namespace, $authenticator));
-
         $this->add_endpoint(new PWP_Products_Endpoint($this->namespace, $authenticator));
+        $this->add_endpoint(new PWP_Product_Variations_Endpoint($this->namespace, $authenticator));
+
         $this->add_endpoint(new PWP_Tags_Endpoint($this->namespace, $authenticator));
         $this->add_endpoint(new PWP_Categories_Endpoint($this->namespace, $authenticator));
         $this->add_endpoint(new PWP_Attributes_Endpoint($this->namespace, $authenticator));
+        $this->add_endpoint(new PWP_Attribute_Terms_Endpoint($this->namespace, $authenticator));
 
-        //TODO: add endpoints
-        //  images
-        //  categories
-        //  variations
-        //  menus
+        $this->add_endpoint(new PWP_Images_Endpoint($this->namespace, $authenticator));
+        $this->add_endpoint(new PWP_Customers_Endpoint($this->namespace, $authenticator));
+        $this->add_endpoint(new PWP_Orders_Endpoint($this->namespace, $authenticator));
+        
+        $this->add_endpoint(new PWP_Menus_Endpoint($this->namespace, $authenticator));
+
     }
 
     public function register_hooks(PWP_Plugin_Loader $loader): void

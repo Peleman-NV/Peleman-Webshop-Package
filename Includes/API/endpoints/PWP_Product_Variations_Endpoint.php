@@ -7,7 +7,7 @@ namespace PWP\includes\API\endpoints;
 use PWP\includes\authentication\PWP_IApiAuthenticator;
 use WP_REST_Request;
 
-class PWP_Product_Variants_Endpoint extends PWP_EndpointController
+class PWP_Product_Variations_Endpoint extends PWP_EndpointController
 {
     public function __construct(string $namespace, PWP_IApiAuthenticator $authenticator)
     {
