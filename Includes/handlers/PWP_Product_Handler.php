@@ -4,17 +4,75 @@ declare(strict_types=1);
 
 namespace PWP\includes\handlers;
 
-use PWP\includes\API\endpoints\PWP_Attributes_Endpoint;
-use PWP\includes\wrappers\product\PWP_Categories;
-use PWP\includes\wrappers\product\PWP_Product;
-use stdClass;
 use WC_Product;
-use WC_Product_Simple;
-
 use function PHPUnit\Framework\isNull;
+use PWP\includes\exceptions\PWP_Not_Found_Exception;
+use PWP\includes\exceptions\PWP_Not_Implemented_Exception;
 
 class PWP_Product_Handler implements PWP_IHandler
 {
+
+    public function create_item(string $identifier, array $args = []): object
+    {
+        $args = (object)$args;
+        try {
+            $product = new WC_Product();
+
+            $product->set_name($args->name);
+            $product->set_reviews_allowed(false);
+
+            if (!empty($args->lang)) {
+                $parentId = wc_get_product_id_by_sku($args->SKU);
+                if (empty($parentId)) {
+                    throw new \Exception("Parent product not found (default language counterpart not found in database)", 400);
+                }
+            }
+            if (wc_get_product_id_by_sku($args->SKU) > 0) {
+                throw new \Exception("product with this SKU already exists!", 400);
+            }
+
+            $product->set_SKU($args->SKU);
+            $product->set_status($args->status);
+
+            $product->set_catalog_visibility($args->visibility ?: 'hidden');
+
+            if (!empty($args->parent_id)) {
+                $product->set_parent_id($args->parent);
+            }
+            $product->set_price($this->price);
+            $product->set_regular_price($args->regular_price);
+            $product->set_sale_price($args->sale_price);
+
+            $product->set_upsell_ids($this->get_ids_from_skus($args->upsell_SKUs));
+            $product->set_cross_sell_ids($this->get_ids_from_skus($args->cross_sell_SKUs));
+
+            $product->set_tag_ids($this->get_tag_ids($args->tags));
+            $product->set_category_ids($this->get_category_ids($args->categories));
+            $product->set_attributes($this->get_attributes($args->attributes));
+            $product->set_default_attributes($this->get_default_attributes($args->default_attributes));
+
+            $product->set_image_id($args->main_image_id);
+            $product->set_gallery_image_ids($this->get_images($args->images));
+
+            $product->set_meta_data(array('customizable' => $args->customizable ?: false));
+            $product->set_meta_data(array('template-id' => $args->template_id));
+            $product->set_meta_data(array('template-variant-id' => $args->template_variant_id));
+            if (!empty($args->lang)) {
+                $product->set_meta_data(array('lang' => $args->lang));
+            }
+        } catch (\Exception $exception) {
+            throw $exception;
+        }
+
+        $id = $product->save();
+
+        if ($id <= 0) {
+            throw new \Exception("something went wrong when trying to save a new product!", 500);
+        }
+
+        return $product;
+    }
+
     public function get_item(int $id, array $args = []): object
     {
         $response = wc_get_product($id);
@@ -27,78 +85,23 @@ class PWP_Product_Handler implements PWP_IHandler
 
     public function get_items(array $args = []): array
     {
-        return wc_get_products($args);
-    }
+        $args['paginate'] = 'true';
+        $args['return'] = 'objects';
 
-    public function create_item(array $args = []): object
-    {
-        $product = new PWP_Product($args);
+        $results = wc_get_products($args);
+        $results['products'] = $this->remap_results_array($results['products']);
 
-        if ($product->is_parent_product()) {
-            if ($product->is_new_product()) {
-                throw new \Exception("parent product not found (you are trying to upload a translated product, but its default language counterpart cannot be found!)s", 400);
-            }
-
-            $childId = apply_filters('wmpl_object_id', $product->product_id(), 'post', false, $product->lang());
-            $isNewProduct = empty($childId);
-            if ($isNewProduct) $id = $childId;
-            $product->set_is_translation_of($id);
-        }
-
-        // $product->categories()->get_term_ids_from_slugs();
-        // $product->tags()->get_term_ids_from_slugs();
-
-        //get attributes and set first options to default
-
-        foreach ($product->attributes() as $key => $attribute) {
-            $attributeKey = $this->get_attribute_id_by_slug($attribute['slug']);
-
-            if (is_null($attributeKey)) {
-                continue;
-            }
-
-            $attribute['id'] = $attributeKey;
-
-            if ($attribute['default'] !== false) {
-                $data['default_attributes'][$key]['id'] = $attribute['id'];
-                if (!empty($attribute->default)) {
-                    $data['default_attributes'][$key]['option'] = $attribute['default'];
-                    continue;
-                }
-                $data['default_attributes'][$key]['option'] = $attribute['options'][0];
-            }
-        }
-
-        //get images
-        if (!empty($data['images'])) {
-            foreach ($data['images'] as $image) {
-                // $imageId = $this->getImageIdByName($image['name'])};
-            }
-        }
-
-        //handle up- & cross-sell products
-        if (!is_null($data['upsell_skus'])) {
-            $data['upsell_ids'] = $this->get_product_ids_for_skus($data['upsell_skus']);
-        }
-
-        if (!is_null($data['upsell_skus'])) {
-            $data['cross_sell_ids'] = $this->get_product_ids_for_skus($data['upsell_skus']);
-        }
-
-        //handle videos
-
-        //create new item
-        return new stdClass();
+        return $results;
     }
 
     public function update_item(int $id, array $args = []): object
     {
-        return new stdClass;
+        throw new PWP_Not_Implemented_Exception();
     }
 
     public function delete_item(int $id, array $args = []): bool
     {
-        $forceDelete = (bool)$args['force'];
+        $forceDelete = $args['force'] ? (bool)$args['force'] : false;
 
         $product = $this->get_item($id, $args);
         if (!$product instanceof WC_Product) throw new \Exception("value retrieved by database not of proper type!", 404);
@@ -110,56 +113,81 @@ class PWP_Product_Handler implements PWP_IHandler
         return $product->delete($forceDelete);
     }
 
-    #region utility methods
-    /**
-     * Undocumented function
-     *
-     * @param array $skus
-     * @return int[]
-     */
-    private function get_product_ids_for_skus(array $skus): array
+    private function get_ids_from_skus(?array $skus): array
     {
+        if (is_null($skus)) return array();
         $ids = array();
         foreach ($skus as $sku) {
             $id = wc_get_product_id_by_sku($sku);
-            if (empty($id)) {
-                throw new \Exception("invalid product SKU entered!");
-            }
-            $ids[] = (int)$id;
+            if ($id <= 0) throw new \Exception("invalid product SKU entered: {$sku}");
+
+            $ids[] = $id;
         }
 
         return $ids;
     }
 
-    // private function get_category_ids_from_slugs(PWP_Categories $categories): PWP_Cate
-    // {
-    //     return $this->get_term_ids_from_slugs($categories->toArray(), new PWP_Category_Handler());
-    // }
-
-    // private function get_tag_ids_from_slugs(PWP_Tags $tags): array
-    // {
-    //     return $this->get_term_ids_from_slugs($tags->toArray, new PWP_Tag_Handler());
-    // }
-
-    private function get_term_ids_from_slugs(array $terms, PWP_Term_Handler $handler): array
+    private function get_images(?array $ids): array
     {
-        foreach ($terms as $term) {
-            if (!is_int($term['slug'])) {
-                $term['id'] = $handler->get_item_by_slug($term['slug'])->term_id;
-                //TODO: handle term id not found or invalid
+        throw new PWP_Not_Implemented_Exception();
+    }
+
+    private function get_tag_ids(?array $slugs): array
+    {
+        if (is_null($slugs)) return array();
+
+        $tagIds = array();
+        $handler = new PWP_Tag_Handler();
+        foreach ($slugs as $slug) {
+            $result =  $handler->get_item_by_slug($slug);
+            if (isNull($result)) {
+                throw new PWP_Not_Found_Exception("tag with slug {$slug} not found in system");
             }
+            $tagIds[] = $result->term_id;
         }
-        return $terms;
+
+        return $tagIds;
     }
 
-    private function get_attribute_id_by_slug(string $slug): ?array
+    private function get_category_ids(?array $slugs): array
     {
-        $handler = new PWP_Product_Attribute_Handler();
-        $attribute = $handler->get_attribute_by_slug($slug);
-        if (is_null($attribute)) {
-            return null;
-        }
-        return $attribute['id'];
+        throw new PWP_Not_Implemented_Exception();
     }
-    #endregion
+
+    private function get_attributes(?array $slugs): array
+    {
+        if (is_null($slugs)) return [];
+
+        $handler = new PWP_Product_Attribute_Handler();
+        $attributeIds = array();
+        foreach ($slugs as $slug) {
+            $attribute = $handler->get_attribute_by_slug($slug);
+            if (is_null($attribute)) {
+                continue;
+            }
+            $attributeIds[] = $attribute['id'];
+        }
+
+        return $attributeIds;
+    }
+
+    private function get_default_attributes(?array $slugs): array
+    {
+        throw new PWP_Not_Implemented_Exception();
+    }
+
+    private function remap_results_array(array $products): array
+    {
+        return array_map(
+            function ($product) {
+                if (!$product instanceof \WC_Product) {
+                    return $product;
+                }
+                $data = $product->get_data();
+                $data['variations'] = $product->get_children();
+                return $data;
+            },
+            $products
+        );
+    }
 }

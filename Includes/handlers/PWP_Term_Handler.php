@@ -17,6 +17,32 @@ abstract class PWP_Term_Handler implements PWP_IHandler
         $this->taxonomy = $taxonomy;
         $this->longTypeName = $typeLongName;
     }
+    
+    public function create_item(string $identifier, array $args = []): object
+    {
+        if (!isset($args['slug'])) {
+            $slug = strtolower($identifier);
+            $slug = str_replace(' ', '_', $slug);
+        }
+
+        $term = $this->get_item_by_slug($slug);
+
+        if ($term) {
+            throw new \Exception("tag with this slug already exists in the database");
+            return [];
+        }
+
+        $result =  wp_insert_term($identifier, $this->taxonomy, array(
+            'slug' => $slug,
+            'description' => $args['$description'],
+        ));
+
+        // if (isset($args['seoData'])) {
+        //     $this->update_or_add_label_seo_data($result['term_taxonomy_id'], $args['seoData']);
+        // }
+
+        return new WP_Term($result['term_id']);
+    }
 
     public function get_item(int $id, array $args = []): ?WP_Term
     {
@@ -24,16 +50,16 @@ abstract class PWP_Term_Handler implements PWP_IHandler
         return $term;
     }
 
-    public function get_taxonomy(): string
-    {
-        return $this->taxonomy;
-    }
-
     public function get_items(array $args = []): array
     {
         $args['taxonomy'] = $this->get_taxonomy();
         $terms = get_terms($args);
         return $terms;
+    }
+
+    public function update_item(int $id, array $args = []): object
+    {
+        return new WP_Term(0);
     }
 
     public function delete_item(int $id, array $args = []): bool
@@ -59,37 +85,6 @@ abstract class PWP_Term_Handler implements PWP_IHandler
         return $this->delete_item($term->term_id, $args);
     }
 
-    public function create_item(array $args = []): object
-    {
-        if (!isset($args['slug'])) {
-            $slug = strtolower($args['name']);
-            $slug = str_replace(' ', '_', $slug);
-        }
-
-        $term = $this->get_item_by_slug($slug);
-
-        if ($term) {
-            throw new \Exception("tag with this slug already exists in the database");
-            return [];
-        }
-
-        $result =  wp_insert_term($args['name'], $this->taxonomy, array(
-            'slug' => $slug,
-            'description' => $args['$description'],
-        ));
-
-        // if (isset($args['seoData'])) {
-        //     $this->update_or_add_label_seo_data($result['term_taxonomy_id'], $args['seoData']);
-        // }
-
-        return new WP_Term($result['term_id']);
-    }
-
-    public function update_item(int $id, array $args = []): object
-    {
-        return new WP_Term(0);
-    }
-
     final public function get_item_by_slug(string $slug): ?\WP_Term
     {
         $result = get_term_by('slug', $slug, $this->taxonomy);
@@ -106,9 +101,14 @@ abstract class PWP_Term_Handler implements PWP_IHandler
     {
         $currentSeoMetaData = get_option('wpseo_taxonomy_meta');
 
-        $currentSeoMetaData[$this->type][$objectId]['wpseo_focuskw'] = $seoData->focus_keyword;
-        $currentSeoMetaData[$this->type][$objectId]['wpseo_desc'] = $seoData->description;
+        $currentSeoMetaData[$this->taxonomy][$objectId]['wpseo_focuskw'] = $seoData->focus_keyword;
+        $currentSeoMetaData[$this->taxonomy][$objectId]['wpseo_desc'] = $seoData->description;
 
         update_option('wpseo_taxonomy_meta', $currentSeoMetaData);
+    }
+
+    public function get_taxonomy(): string
+    {
+        return $this->taxonomy;
     }
 }

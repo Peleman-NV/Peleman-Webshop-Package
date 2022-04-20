@@ -4,16 +4,15 @@ declare(strict_types=1);
 
 namespace PWP\includes\API\endpoints;
 
-use Exception;
 use WP_REST_Request;
 use WP_REST_Response;
 use PWP\includes\handlers\PWP_Tag_Handler;
-use PWP\includes\authentication\PWP_IApiAuthenticator;
 use PWP\includes\utilities\PWP_ArgBuilder;
-use PWP\includes\utilities\schemas\PWP_Argument_Schema;
 use PWP\includes\utilities\schemas\PWP_ISchema;
+use PWP\includes\authentication\PWP_IApiAuthenticator;
 use PWP\includes\utilities\schemas\PWP_Schema_Factory;
-use WP_Term;
+use PWP\includes\utilities\schemas\PWP_Argument_Schema;
+use PWP\includes\exceptions\PWP_Not_Implemented_Exception;
 
 class PWP_Tags_Endpoint extends PWP_EndpointController
 {
@@ -36,7 +35,7 @@ class PWP_Tags_Endpoint extends PWP_EndpointController
                     "methods" => \WP_REST_Server::READABLE,
                     "callback" => array($this, 'get_items'),
                     "permission_callback" => array($this, 'auth_get_items'),
-                    // 'args' => $this->get_argument_schema()->to_array(),
+                    'args' => $this->get_argument_schema()->to_array(),
                 ),
                 array(
                     "methods" => \WP_REST_Server::CREATABLE,
@@ -62,6 +61,24 @@ class PWP_Tags_Endpoint extends PWP_EndpointController
                 ),
             )
         );
+    }
+    
+    public function create_item(WP_REST_Request $request): object
+    {
+        try {
+            $args = new PWP_ArgBuilder();
+            $args
+                ->add_required_arg_from_request($request, 'name')
+                ->add_arg_from_request($request, 'slug')
+                ->add_arg_from_request($request, 'description');
+
+            $handler = new PWP_Tag_Handler();
+            $response = $handler->create_item($args->to_array());
+
+            return rest_ensure_response($handler->get_item($response['term_id']));
+        } catch (\Exception $exception) {
+            return new WP_REST_Response($exception->getMessage(), $exception->getCode());
+        }
     }
 
     public function get_items(WP_REST_Request $request): object
@@ -92,22 +109,9 @@ class PWP_Tags_Endpoint extends PWP_EndpointController
         return new WP_REST_RESPONSE($data);
     }
 
-    public function create_item(WP_REST_Request $request): object
+    public function update_item(WP_REST_Request $request): object
     {
-        try {
-            $args = new PWP_ArgBuilder();
-            $args
-                ->add_required_arg_from_request($request, 'name')
-                ->add_arg_from_request($request, 'slug')
-                ->add_arg_from_request($request, 'description');
-
-            $handler = new PWP_Tag_Handler();
-            $response = $handler->create_item($args->to_array());
-
-            return rest_ensure_response($handler->get_item($response['term_id']));
-        } catch (\Exception $exception) {
-            return new WP_REST_Response($exception->getMessage(), $exception->getCode());
-        }
+        return new PWP_Not_Implemented_Exception();
     }
 
     public function delete_item(WP_REST_Request $request): object
@@ -136,6 +140,12 @@ class PWP_Tags_Endpoint extends PWP_EndpointController
                 $factory->string_property("HTML description of the resource")
             );
 
+        return $schema;
+    }
+
+    public function get_item_schema(): PWP_ISchema
+    {
+        $schema = parent::get_item_schema();
         return $schema;
     }
 }

@@ -29,7 +29,7 @@ class PWP_Product_Attribute_Handler implements PWP_IHandler
         return $attributes;
     }
 
-    public function create_item(array $args = []): object
+    public function create_item(string $identifier, array $args = []): object
     {
         // $id = wc_create_attribute($data);
         //TODO: implementation

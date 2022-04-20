@@ -19,7 +19,7 @@ abstract class PWP_Component
         return (array)$this->data;
     }
 
-    public static function null(): PWP_Component
+    public static function null(): self
     {
         if (!isset(self::$nullInstance)) {
             self::$nullInstance = new PWP_NullComponent();

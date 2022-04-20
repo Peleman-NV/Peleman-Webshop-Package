@@ -4,19 +4,20 @@ declare(strict_types=1);
 
 namespace PWP\includes\API\endpoints;
 
-use PWP\includes\utilities\PWP_ArgBuilder;
 use PWP\includes\utilities\schemas\PWP_Schema_Factory;
 use PWP\includes\API\endpoints\PWP_EndpointController;
 use PWP\includes\authentication\PWP_IApiAuthenticator;
+use PWP\includes\handlers\PWP_Product_Handler;
 use PWP\includes\utilities\schemas\PWP_Argument_Schema;
 use PWP\includes\utilities\schemas\PWP_ISchema;
-use PWP\includes\wrappers\product\PWP_Product_Handler;
 use WP_REST_Request;
 use WP_REST_Response;
 
 class PWP_Products_Endpoint extends PWP_EndpointController implements PWP_IEndpoint
 {
     private const PAGE_SOFT_CAP = 100;
+    //variable for caching a schema. 
+    // TODO: look into how we can do this
     private array $schema;
 
     public function __construct(string $namespace, PWP_IApiAuthenticator $authenticator)
@@ -71,110 +72,52 @@ class PWP_Products_Endpoint extends PWP_EndpointController implements PWP_IEndpo
         );
     }
 
-    public function get_item(\WP_REST_Request $request): object
+    public function create_item(\WP_REST_Request $request): object
     {
-        $product = wc_get_product($request['id']);
+        $handler = new PWP_Product_Handler();
 
-        if (!$product) {
-            throw new \Requests_Exception_HTTP_404(
-                "product not found in database"
-            );
-        }
-
-        $json = $product->get_data();
-
-        return new \WP_REST_Response($json);
-    }
-
-    public function get_items(\WP_REST_Request $request): object
-    {
-        $args = new PWP_ArgBuilder();
-
-        $args
-            ->add_arg('return', 'objects')
-            ->add_arg('paginate', true)
-            ->add_arg_from_request($request, 'limit')
-            ->add_arg_from_request($request, 'page')
-            ->add_arg_from_request($request, 'SKU')
-            ->add_arg_from_request($request, 'status')
-            ->add_arg_from_request($request, 'type')
-            ->add_arg_from_request($request, 'tag')
-            ->add_arg_from_request($request, 'category')
-            ->add_arg_from_request($request, 'price')
-            ->add_arg_from_request($request, 'orderby')
-            ->add_arg_from_request($request, 'order');
-
-        $results = (array)wc_get_products($args->to_array());
-
-        $results['products'] = $this->remap_results_array($results['products']);
-
-        return new \WP_REST_Response(
-            $results
-        );
-    }
-
-    public function create_item(WP_REST_Request $request): object
-    {
         try {
-            $args = new PWP_ArgBuilder();
-            $args
-                ->add_required_arg_from_request($request, 'name')
-                ->add_required_arg_from_request($request, 'SKU')
-                ->add_arg_from_request($request, 'type', 'simple')
-                ->add_arg_from_request($request, 'visibility', 'hidden')
-                ->add_arg_from_request($request, 'customizable', false)
-                ->add_arg_from_request($request, 'template_id', '')
-                ->add_arg_from_request($request, 'variant_id', '')
-                ->add_arg_from_request($request, 'description')
-                ->add_arg_from_request($request, 'short_description')
-                ->add_arg_from_request($request, 'attributes')
-                ->add_arg_from_request($request, 'categories')
-                ->add_arg_from_request($request, 'tags')
-                ->add_arg_from_request($request, 'regular_price')
-                ->add_arg_from_request($request, 'lang');
-
-            $product = new PWP_Product_Handler($args->to_array());
-            // if (!$product->is_SKU_unique()) {
-            //     throw new \Exception('product with this SKU already exists in the database!', 400);
-            // }
-
-            $result = $product->save_to_product();
+            $result = $handler->create_item($request['name'], $request->get_body_params());
         } catch (\Exception $exception) {
             return new WP_REST_Response($exception->getMessage(), $exception->getCode());
         }
 
         return new WP_REST_Response(array(
             'good job! here are your args:',
-            $args->to_array(),
+            $request->get_body_params(),
             $result->get_data(),
         ));
     }
 
+    public function get_item(\WP_REST_Request $request): object
+    {
+        $handler = new PWP_Product_Handler();
+        $product = $handler->get_item($request['id'], $request->get_url_params());
+
+        return new \WP_REST_Response($product->get_data());
+    }
+
+    public function get_items(\WP_REST_Request $request): object
+    {
+        $handler = new PWP_Product_Handler();
+        $args = $request->get_url_params();
+
+        $results = $handler->get_items($args);
+
+        return new \WP_REST_Response(
+            $results
+        );
+    }
+
     public function delete_item(\WP_REST_Request $request): object
     {
-        $product = wc_get_product($request['id']);
-
-        if (!$product) {
-            throw new \Requests_Exception_HTTP_404(
-                "product not found in database"
-            );
-        }
-
-        $forceDelete = filter_var($request['force'], FILTER_VALIDATE_BOOLEAN);
-        $childIds = $product->get_children();
-
-        foreach ($childIds as $id) {
-            $child = wc_get_product($id);
-            if ($child instanceof \WC_Product) {
-                $child->delete($forceDelete);
-            }
-        }
+        $handler = new PWP_Product_Handler();
+        $handler->delete_item($request['id'], $request->get_body_params());
 
         return new \WP_REST_Response(array(
-            'message' => $forceDelete ?
+            'message' => isset($request->get_body_params()['force']) ?
                 'product permanently deleted successfullly!' :
                 'product moved to trash successfully!',
-            'data' => json_decode((string)$product, true),
         ));
     }
 
@@ -244,20 +187,5 @@ class PWP_Products_Endpoint extends PWP_EndpointController implements PWP_IEndpo
     {
         $schema = parent::get_item_schema();
         return $schema;
-    }
-
-    private function remap_results_array(array $products): array
-    {
-        return array_map(
-            function ($product) {
-                if (!$product instanceof \WC_Product) {
-                    return $product;
-                }
-                $data = $product->get_data();
-                $data['variations'] = $product->get_children();
-                return $data;
-            },
-            $products
-        );
     }
 }

@@ -51,6 +51,11 @@ class PWP_ArgBuilder
         return $this->add_arg($key, $request[$key], $default);
     }
 
+    public function add_arg_from_array(array $source, string $key, $default = null): PWP_ArgBuilder
+    {
+        return $this->add_arg($key, $source[$key], $default);
+    }
+
     /**
      * attempts to add required argument. if the argument is not set, will throw an error.
      *

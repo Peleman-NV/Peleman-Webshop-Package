@@ -34,6 +34,17 @@ abstract class PWP_EndpointController implements PWP_IEndpoint, PWP_IApiAuthenti
     #region Callback template functions
 
     /**
+     * POST new item
+     *
+     * @param WP_REST_Request $request
+     * @return WP_REST_Response|WP_Error
+     */
+    public function create_item(WP_REST_Request $request): object
+    {
+        throw new \Requests_Exception_HTTP_501("method not implemented!");
+    }
+
+    /**
      * GET individual item
      *
      * @param WP_REST_Request $request
@@ -67,17 +78,6 @@ abstract class PWP_EndpointController implements PWP_IEndpoint, PWP_IApiAuthenti
     }
 
     /**
-     * POST new item
-     *
-     * @param WP_REST_Request $request
-     * @return WP_REST_Response|WP_Error
-     */
-    public function create_item(WP_REST_Request $request): object
-    {
-        throw new \Requests_Exception_HTTP_501("method not implemented!");
-    }
-
-    /**
      * DELETE item
      *
      * @param WP_REST_Request $request
@@ -90,6 +90,16 @@ abstract class PWP_EndpointController implements PWP_IEndpoint, PWP_IApiAuthenti
     #endregion
 
     #region REST AUTHENTICATION
+    
+    /**
+     * @param WP_REST_Request $request
+     * @return boolean
+     * @throws \Requests_exception_HTTP
+     */
+    public function auth_post_item(WP_REST_Request $request): bool
+    {
+        return $this->authenticator->auth_post_item($request);
+    }
     /**
      * Authentication function for API Endpoint controller
      * by default, uses the API authenticator class. In specific conditions, it might be worthwhile to overwrite this function to loosen or open up access for certain endpoints
@@ -116,29 +126,19 @@ abstract class PWP_EndpointController implements PWP_IEndpoint, PWP_IApiAuthenti
      * @return boolean
      * @throws \Requests_exception_HTTP
      */
-    public function auth_delete_item(WP_REST_Request $request): bool
-    {
-        return $this->authenticator->auth_delete_item($request);
-    }
-
-    /**
-     * @param WP_REST_Request $request
-     * @return boolean
-     * @throws \Requests_exception_HTTP
-     */
-    public function auth_post_item(WP_REST_Request $request): bool
-    {
-        return $this->authenticator->auth_post_item($request);
-    }
-
-    /**
-     * @param WP_REST_Request $request
-     * @return boolean
-     * @throws \Requests_exception_HTTP
-     */
     public function auth_update_item(WP_REST_Request $request): bool
     {
         return $this->authenticator->auth_update_item($request);
+    }
+    
+    /**
+     * @param WP_REST_Request $request
+     * @return boolean
+     * @throws \Requests_exception_HTTP
+     */
+    public function auth_delete_item(WP_REST_Request $request): bool
+    {
+        return $this->authenticator->auth_delete_item($request);
     }
     #endregion
 

@@ -25,7 +25,7 @@ class PWP_VersionNumber
      * @param string $version number as string. MUST be semantic, and in the format of ```INT.INT.INT.STRING```, separated by periods 
      * @return PWP_VersionNumber
      */
-    public static function from_string(string $version): PWP_VersionNumber
+    public static function from_string(string $version): self
     {
         $version = explode('.', $version, 4);
         return new PWP_VersionNumber((int)$version[0], (int)$version[1], (int)$version[2], $version[3] ?: '');
@@ -40,7 +40,7 @@ class PWP_VersionNumber
      * @param string $rest
      * @return PWP_VersionNumber
      */
-    public static function from_ints(int $major, int $minor, int $patch, ?string $rest = null): PWP_VersionNumber
+    public static function from_ints(int $major, int $minor, int $patch, ?string $rest = null): self
     {
         return new PWP_VersionNumber($major, $minor, $patch, $rest);
     }
