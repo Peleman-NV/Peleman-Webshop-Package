@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace PWP\includes\API\endpoints;
 
-use PWP\includes\utilities\schemas\PWP_ISchema;
 use WP_REST_Request;
 
 interface PWP_IEndpoint

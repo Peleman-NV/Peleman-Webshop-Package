@@ -21,7 +21,53 @@ abstract class PWP_EndpointController implements PWP_IEndpoint, PWP_IApiAuthenti
     /**
      * initialization function that registers this class' callback to the hook and rest API
      */
-    public abstract function register_routes(): void;
+    public function register_routes(): void
+    {
+        register_rest_route(
+            $this->namespace,
+            $this->rest_base,
+            array(
+                array(
+                    "methods" => \WP_REST_Server::READABLE,
+                    "callback" => array($this, 'get_items'),
+                    "permission_callback" => array($this, 'auth_get_items'),
+                    'args' => $this->get_argument_schema()->to_array(),
+                ),
+                array(
+                    "methods" => \WP_REST_Server::CREATABLE,
+                    "callback" => array($this, 'create_item'),
+                    "permission_callback" => array($this, 'auth_post_item'),
+                    'args' => array(),
+                ),
+                'schema' => array($this, 'get_item_array')
+            )
+        );
+
+        register_rest_route(
+            $this->namespace,
+            $this->rest_base . "/(?P<id>\d+)",
+            array(
+                array(
+                    "methods" => \WP_REST_Server::DELETABLE,
+                    "callback" => array($this, 'delete_item'),
+                    "permission_callback" => array($this, 'auth_delete_item'),
+                    'args' => array(),
+                ),
+                array(
+                    "methods" => \WP_REST_Server::READABLE,
+                    "callback" => array($this, 'get_item'),
+                    "permission_callback" => array($this, 'auth_get_item'),
+                    'args' => array(),
+                ),
+                array(
+                    "methods" => \WP_REST_Server::EDITABLE,
+                    "callback" => array($this, 'update_item'),
+                    "permission_callback" => array($this, 'auth_update_item'),
+                    'args' => array(),
+                )
+            )
+        );
+    }
 
     public function __construct(string $namespace,  PWP_Authenticator $authenticator, string $rest_base, string $title)
     {

@@ -20,44 +20,7 @@ class PWP_Attributes_Endpoint extends PWP_EndpointController
             'attribute'
         );
     }
-    public function register_routes(): void
-    {
-        register_rest_route(
-            $this->namespace,
-            $this->rest_base,
-            array(
-                array(
-                    "methods" => \WP_REST_Server::READABLE,
-                    "callback" => array($this, 'get_items'),
-                    "permission_callback" => array($this, 'auth_get_items'),
-                    'args' => $this->get_argument_schema()->to_array(),
-                ),
-                array(
-                    "methods" => \WP_REST_Server::CREATABLE,
-                    "callback" => array($this, 'create_item'),
-                    "permission_callback" => array($this, 'auth_post_item'),
-                ),
-            )
-        );
-
-        register_rest_route(
-            $this->namespace,
-            $this->rest_base . "/(?P<id>\d+)",
-            array(
-                array(
-                    "methods" => \WP_REST_Server::DELETABLE,
-                    "callback" => array($this, 'delete_item'),
-                    "permission_callback" => array($this, 'auth_delete_item'),
-                ),
-                array(
-                    "methods" => \WP_REST_Server::READABLE,
-                    "callback" => array($this, 'get_item'),
-                    "permission_callback" => array($this, 'auth_get_item'),
-                ),
-            )
-        );
-    }
-
+    
     public function get_items(WP_REST_Request $request): object
     {
         $handler = new PWP_Product_Attribute_Handler('');

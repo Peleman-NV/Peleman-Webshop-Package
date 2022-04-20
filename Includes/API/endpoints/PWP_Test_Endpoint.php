@@ -24,24 +24,29 @@ class PWP_Test_Endpoint extends PWP_EndpointController
         );
     }
 
-    public function register_routes(): void
-    {
-        register_rest_route(
-            $this->namespace,
-            $this->rest_base,
-            array(
-                array(
-                    'methods' => WP_REST_Server::ALLMETHODS,
-                    'callback' => array($this, 'get_item'),
-                    'permission_callback' => array($this, 'auth_get_item'),
-                ),
-            ),
-        );
-    }
-
     public function get_item(WP_REST_Request $request): object
     {
         return new WP_REST_Response('test successful!');
+    }
+
+    public function get_items(WP_REST_Request $request): object
+    {
+        return $this->get_item($request);
+    }
+
+    public function create_item(WP_REST_Request $request): object
+    {
+        return $this->get_item($request);
+    }
+
+    public function delete_item(WP_REST_Request $request): object
+    {
+        return $this->get_item($request);
+    }
+
+    public function update_item(WP_REST_Request $request): object
+    {
+        return $this->get_item($request);
     }
 
     public function auth_get_item(WP_REST_Request $request): bool
