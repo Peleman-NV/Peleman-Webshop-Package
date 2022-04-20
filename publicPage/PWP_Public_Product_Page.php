@@ -20,7 +20,7 @@ class PWP_Public_Product_Page implements PWP_IHookableComponent
         $loader->add_filter('woocommerce_product_single_add_to_cart_text', $this, 'change_add_to_cart_text_for_product');
 
         $loader->add_ajax_action('ajax_redirect_to_editor', $this, 'ajax_redirect_to_editor');
-        // $loader->add_ajax_nopriv_action('ajax_redirect_to_editor', $this, 'ajax_redirect_to_editor');
+        $loader->add_ajax_nopriv_action('ajax_redirect_to_editor', $this, 'ajax_redirect_to_editor');
     }
 
     public function enqueue_styles(): void
@@ -90,7 +90,8 @@ class PWP_Public_Product_Page implements PWP_IHookableComponent
         }
         $language = 'en';
 
-        $destination = $client->get_new_project_url($template_id, $variant_id, $language);
+        // $destination = $client->get_new_project_url($template_id, $variant_id, $language);
+        $destination = 'https://deveditor.peleman.com/?projecturl=pie/projects/625e933128f37/var133714.json';
         wp_send_json(array(
             'status' => 'success',
             'message' => 'all is well',

@@ -14,7 +14,7 @@ abstract class PWP_Component
         $this->data = (object)$data;
     }
 
-    public function toArray(): array
+    public function to_array(): array
     {
         return (array)$this->data;
     }

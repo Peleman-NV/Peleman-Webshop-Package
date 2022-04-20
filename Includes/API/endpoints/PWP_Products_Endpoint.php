@@ -10,7 +10,7 @@ use PWP\includes\API\endpoints\PWP_EndpointController;
 use PWP\includes\authentication\PWP_IApiAuthenticator;
 use PWP\includes\utilities\schemas\PWP_Argument_Schema;
 use PWP\includes\utilities\schemas\PWP_ISchema;
-use PWP\includes\wrappers\product\PWP_Product;
+use PWP\includes\wrappers\product\PWP_Product_Handler;
 use WP_REST_Request;
 use WP_REST_Response;
 
@@ -133,7 +133,7 @@ class PWP_Products_Endpoint extends PWP_EndpointController implements PWP_IEndpo
                 ->add_arg_from_request($request, 'regular_price')
                 ->add_arg_from_request($request, 'lang');
 
-            $product = new PWP_Product($args->to_array());
+            $product = new PWP_Product_Handler($args->to_array());
             // if (!$product->is_SKU_unique()) {
             //     throw new \Exception('product with this SKU already exists in the database!', 400);
             // }
@@ -187,31 +187,26 @@ class PWP_Products_Endpoint extends PWP_EndpointController implements PWP_IEndpo
                 'SKU',
                 $factory->string_property('filter results to matching SKUs. supports partial matches.')
                     ->view()
-            )
-            ->add_property(
+            )->add_property(
                 'limit',
                 $factory->int_property('maximum amount of results per call')
                     ->default(self::PAGE_SOFT_CAP)
-            )
-            ->add_property(
+            )->add_property(
                 'page',
                 $factory->int_property('when using pageination, represents the page of results to retrieve.')
                     ->default(1)
                     ->add_custom_arg('min', -1)
                     ->add_custom_arg('sanitize_callback', 'absint')
-            )
-            ->add_property(
+            )->add_property(
                 'order',
                 $factory->enum_property('how to order; ascending or descending', array(
                     'ASC',
                     'DESC'
                 ))->default('ASC')
-            )
-            ->add_property(
+            )->add_property(
                 'type',
                 $factory->enum_property('types to match', array_keys(wc_get_product_types()))
-            )
-            ->add_property(
+            )->add_property(
                 'orderby',
                 $factory->enum_property('by which parameter to order the resulting output', array(
                     'none',
@@ -222,16 +217,13 @@ class PWP_Products_Endpoint extends PWP_EndpointController implements PWP_IEndpo
                     'date',
                     'modified',
                 ))->default('id')
-            )
-            ->add_property(
+            )->add_property(
                 'tag',
                 $factory->array_property('limit results to specific tags by slug')
-            )
-            ->add_property(
+            )->add_property(
                 'category',
                 $factory->array_property('limit results to specific categories by slug')
-            )
-            ->add_property(
+            )->add_property(
                 'status',
                 $factory->multi_enum_property('status to match', array(
                     'draft',

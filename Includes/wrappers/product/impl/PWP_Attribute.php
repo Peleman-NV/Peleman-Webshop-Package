@@ -6,6 +6,6 @@ namespace PWP\includes\wrappers\product\impl;
 
 use PWP\includes\wrappers\PWP_Component;
 
-class PWP_Attributes extends PWP_Component
+class PWP_Attribute extends PWP_Component
 {
 }
