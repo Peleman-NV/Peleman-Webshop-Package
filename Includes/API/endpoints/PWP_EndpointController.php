@@ -9,6 +9,7 @@ use WP_REST_Response;
 use PWP\includes\API\endpoints\PWP_IEndpoint;
 use PWP\includes\authentication\PWP_Authenticator;
 use PWP\includes\authentication\PWP_IApiAuthenticator;
+use PWP\includes\handlers\PWP_IHandler;
 use PWP\includes\utilities\schemas\PWP_Argument_Schema;
 use PWP\includes\utilities\schemas\PWP_ISchema;
 use PWP\includes\utilities\schemas\PWP_Resource_Schema;
@@ -21,10 +22,11 @@ abstract class PWP_EndpointController implements PWP_IEndpoint, PWP_IApiAuthenti
     /**
      * initialization function that registers this class' callback to the hook and rest API
      */
-    public function register_routes(): void
+    public function register_routes(string $namespace, PWP_IApiAuthenticator $authenticator): void
     {
+        $this->authenticator = $authenticator;
         register_rest_route(
-            $this->namespace,
+            $namespace,
             $this->rest_base,
             array(
                 array(
@@ -44,7 +46,7 @@ abstract class PWP_EndpointController implements PWP_IEndpoint, PWP_IApiAuthenti
         );
 
         register_rest_route(
-            $this->namespace,
+            $namespace,
             $this->rest_base . "/(?P<id>\d+)",
             array(
                 array(
@@ -69,10 +71,8 @@ abstract class PWP_EndpointController implements PWP_IEndpoint, PWP_IApiAuthenti
         );
     }
 
-    public function __construct(string $namespace,  PWP_IApiAuthenticator $authenticator, string $rest_base, string $title)
+    public function __construct(string $rest_base, string $title)
     {
-        $this->namespace = $namespace;
-        $this->authenticator = $authenticator;
         $this->rest_base = $rest_base;
         $this->title = $title;
     }

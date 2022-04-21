@@ -5,12 +5,14 @@ declare(strict_types=1);
 namespace PWP\includes\handlers;
 
 use PWP\includes\exceptions\PWP_Not_Implemented_Exception;
+use PWP\includes\utilities\PWP_ILogger;
 
 class PWP_Product_Attribute_Handler implements PWP_IHandler
 {
 
-    public function __construct()
+    public function __construct(PWP_ILogger $logger)
     {
+        $this->logger = $logger;
     }
 
     public function get_item(int $id, array $args = []): object

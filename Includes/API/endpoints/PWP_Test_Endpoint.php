@@ -13,11 +13,9 @@ defined('ABSPATH') || die;
 
 class PWP_Test_Endpoint extends PWP_EndpointController
 {
-    public function __construct(string $namespace, PWP_IApiAuthenticator $authenticator)
+    public function __construct()
     {
         parent::__construct(
-            $namespace,
-            $authenticator,
             '/test',
             'test'
         );

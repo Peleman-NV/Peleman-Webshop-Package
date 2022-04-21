@@ -6,8 +6,10 @@ namespace PWP\includes\API\endpoints;
 
 use PWP\includes\utilities\schemas\PWP_Schema_Factory;
 use PWP\includes\API\endpoints\PWP_EndpointController;
+use PWP\includes\API\PWP_API_Logger;
 use PWP\includes\authentication\PWP_IApiAuthenticator;
 use PWP\includes\handlers\PWP_Product_Handler;
+use PWP\includes\utilities\PWP_Null_Logger;
 use PWP\includes\utilities\schemas\PWP_Argument_Schema;
 use PWP\includes\utilities\schemas\PWP_ISchema;
 use WP_REST_Request;
@@ -20,19 +22,18 @@ class PWP_Products_Endpoint extends PWP_EndpointController implements PWP_IEndpo
     // TODO: look into how we can do this
     private array $schema;
 
-    public function __construct(string $namespace, PWP_IApiAuthenticator $authenticator)
+    public function __construct()
     {
         parent::__construct(
-            $namespace,
-            $authenticator,
             "/products",
             'product'
         );
-    }    
+    }
 
     public function create_item(WP_REST_Request $request): WP_REST_Response
     {
-        $handler = new PWP_Product_Handler();
+        $logger = (bool)$request['logs'] ? new PWP_API_Logger() :  new PWP_Null_Logger();
+        $handler = new PWP_Product_Handler($logger);
 
         try {
             $result = $handler->create_item($request['name'], $request->get_body_params());
@@ -49,7 +50,8 @@ class PWP_Products_Endpoint extends PWP_EndpointController implements PWP_IEndpo
 
     public function get_item(WP_REST_Request $request): WP_REST_Response
     {
-        $handler = new PWP_Product_Handler();
+        $logger = (bool)$request['logs'] ? new PWP_API_Logger() :  new PWP_Null_Logger();
+        $handler = new PWP_Product_Handler($logger);
         $product = $handler->get_item($request['id'], $request->get_url_params());
 
         return new \WP_REST_Response($product->get_data());
@@ -57,14 +59,14 @@ class PWP_Products_Endpoint extends PWP_EndpointController implements PWP_IEndpo
 
     public function get_items(WP_REST_Request $request): WP_REST_Response
     {
-        $handler = new PWP_Product_Handler();
+        $logger = (bool)$request['logs'] ? new PWP_API_Logger() :  new PWP_Null_Logger();
+        $handler = new PWP_Product_Handler($logger);
         $args = $request->get_url_params();
 
         $results = $handler->get_items($args);
+        $results['logs'] = $logger->get_logs();
 
-        return new \WP_REST_Response(
-            $results
-        );
+        return new \WP_REST_Response($results);
     }
 
     public function update_item(WP_REST_Request $request): WP_REST_Response
@@ -74,7 +76,8 @@ class PWP_Products_Endpoint extends PWP_EndpointController implements PWP_IEndpo
 
     public function delete_item(WP_REST_Request $request): WP_REST_Response
     {
-        $handler = new PWP_Product_Handler();
+        $logger = (bool)$request['logs'] ? new PWP_API_Logger() :  new PWP_Null_Logger();
+        $handler = new PWP_Product_Handler($logger);
         $handler->delete_item($request['id'], $request->get_body_params());
 
         return new WP_REST_Response(array(
@@ -141,6 +144,9 @@ class PWP_Products_Endpoint extends PWP_EndpointController implements PWP_IEndpo
             )->add_property(
                 'price',
                 $factory->string_property('exact price to match')
+            )->add_property(
+                'logs',
+                $factory->bool_property('whether the function will return a log of events or not, included in the response.')
             );
 
         return $schema;

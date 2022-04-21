@@ -18,6 +18,7 @@ use PWP\includes\API\endpoints\PWP_Customers_Endpoint;
 use PWP\includes\API\endpoints\PWP_Attributes_Endpoint;
 use PWP\includes\API\endpoints\PWP_Categories_Endpoint;
 use PWP\includes\API\endpoints\PWP_Attribute_Terms_Endpoint;
+use PWP\includes\API\endpoints\PWP_Languages_Endpoint;
 use PWP\includes\API\endpoints\PWP_Product_Variations_Endpoint;
 
 defined('ABSPATH') || die;
@@ -36,20 +37,22 @@ class PWP_API_Hookable implements PWP_IHookableComponent
         $this->namespace = $namespace ?: 'pwp/v1';
         $authenticator = new PWP_Authenticator();
 
-        $this->add_endpoint(new PWP_Test_Endpoint($this->namespace, $authenticator));
-        $this->add_endpoint(new PWP_Products_Endpoint($this->namespace, $authenticator));
-        $this->add_endpoint(new PWP_Product_Variations_Endpoint($this->namespace, $authenticator));
+        $this->add_endpoint(new PWP_Test_Endpoint());
+        $this->add_endpoint(new PWP_Products_Endpoint());
+        $this->add_endpoint(new PWP_Product_Variations_Endpoint());
 
-        $this->add_endpoint(new PWP_Tags_Endpoint($this->namespace, $authenticator));
-        $this->add_endpoint(new PWP_Categories_Endpoint($this->namespace, $authenticator));
-        $this->add_endpoint(new PWP_Attributes_Endpoint($this->namespace, $authenticator));
-        $this->add_endpoint(new PWP_Attribute_Terms_Endpoint($this->namespace, $authenticator));
+        $this->add_endpoint(new PWP_Tags_Endpoint());
+        $this->add_endpoint(new PWP_Categories_Endpoint());
+        $this->add_endpoint(new PWP_Attributes_Endpoint());
+        $this->add_endpoint(new PWP_Attribute_Terms_Endpoint());
 
-        $this->add_endpoint(new PWP_Images_Endpoint($this->namespace, $authenticator));
-        $this->add_endpoint(new PWP_Customers_Endpoint($this->namespace, $authenticator));
-        $this->add_endpoint(new PWP_Orders_Endpoint($this->namespace, $authenticator));
+        $this->add_endpoint(new PWP_Images_Endpoint());
+        $this->add_endpoint(new PWP_Customers_Endpoint());
+        $this->add_endpoint(new PWP_Orders_Endpoint());
         
-        $this->add_endpoint(new PWP_Menus_Endpoint($this->namespace, $authenticator));
+        $this->add_endpoint(new PWP_Menus_Endpoint());
+
+        $this->add_endpoint(new PWP_Languages_Endpoint());
 
     }
 
@@ -70,7 +73,7 @@ class PWP_API_Hookable implements PWP_IHookableComponent
     public function init_endpoints(): void
     {
         foreach ($this->endpoints as $endpoint) {
-            $endpoint->register_routes();
+            $endpoint->register_routes($this->namespace, $authenticator));
         }
     }
 }

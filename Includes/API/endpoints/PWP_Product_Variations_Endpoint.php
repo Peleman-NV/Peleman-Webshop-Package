@@ -11,11 +11,9 @@ use PWP\includes\authentication\PWP_IApiAuthenticator;
 
 class PWP_Product_Variations_Endpoint extends PWP_EndpointController
 {
-    public function __construct(string $namespace, PWP_IApiAuthenticator $authenticator)
+    public function __construct()
     {
         parent::__construct(
-            $namespace,
-            $authenticator,
             '/products/(?P<productId>\d+)/variations',
             'variations'
         );

@@ -8,9 +8,16 @@ use WC_Product;
 use function PHPUnit\Framework\isNull;
 use PWP\includes\exceptions\PWP_Not_Found_Exception;
 use PWP\includes\exceptions\PWP_Not_Implemented_Exception;
+use PWP\includes\utilities\PWP_ILogger;
 
 class PWP_Product_Handler implements PWP_IHandler
 {
+    protected $logger;
+
+    public function __construct(PWP_ILogger $logger)
+    {
+        $this->logger = $logger;
+    }
 
     public function create_item(string $identifier, array $args = []): object
     {
@@ -88,7 +95,7 @@ class PWP_Product_Handler implements PWP_IHandler
         $args['paginate'] = 'true';
         $args['return'] = 'objects';
 
-        $results = wc_get_products($args);
+        $results = (array)wc_get_products($args);
         $results['products'] = $this->remap_results_array($results['products']);
 
         return $results;
@@ -137,7 +144,7 @@ class PWP_Product_Handler implements PWP_IHandler
         if (is_null($slugs)) return array();
 
         $tagIds = array();
-        $handler = new PWP_Tag_Handler();
+        $handler = new PWP_Tag_Handler($this->logger);
         foreach ($slugs as $slug) {
             $result =  $handler->get_item_by_slug($slug);
             if (isNull($result)) {
@@ -158,7 +165,7 @@ class PWP_Product_Handler implements PWP_IHandler
     {
         if (is_null($slugs)) return [];
 
-        $handler = new PWP_Product_Attribute_Handler();
+        $handler = new PWP_Product_Attribute_Handler($this->logger);
         $attributeIds = array();
         foreach ($slugs as $slug) {
             $attribute = $handler->get_attribute_by_slug($slug);

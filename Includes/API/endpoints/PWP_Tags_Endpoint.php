@@ -6,8 +6,10 @@ namespace PWP\includes\API\endpoints;
 
 use WP_REST_Request;
 use WP_REST_Response;
+use PWP\includes\API\PWP_API_Logger;
 use PWP\includes\handlers\PWP_Tag_Handler;
 use PWP\includes\utilities\PWP_ArgBuilder;
+use PWP\includes\utilities\PWP_Null_Logger;
 use PWP\includes\utilities\schemas\PWP_ISchema;
 use PWP\includes\authentication\PWP_IApiAuthenticator;
 use PWP\includes\utilities\schemas\PWP_Schema_Factory;
@@ -16,11 +18,9 @@ use PWP\includes\exceptions\PWP_Not_Implemented_Exception;
 
 class PWP_Tags_Endpoint extends PWP_EndpointController
 {
-    public function __construct(string $namespace, PWP_IApiAuthenticator $authenticator)
+    public function __construct()
     {
         parent::__construct(
-            $namespace,
-            $authenticator,
             "/tags",
             'tag'
         );
@@ -29,14 +29,11 @@ class PWP_Tags_Endpoint extends PWP_EndpointController
     public function create_item(WP_REST_Request $request): WP_REST_Response
     {
         try {
-            $args = new PWP_ArgBuilder();
-            $args
-                ->add_required_arg_from_request($request, 'name')
-                ->add_arg_from_request($request, 'slug')
-                ->add_arg_from_request($request, 'description');
+            $args = $request->get_body_params();
 
-            $handler = new PWP_Tag_Handler();
-            $response = $handler->create_item($args->to_array());
+            $logger = (bool)$request['logs'] ? new PWP_API_Logger() :  new PWP_Null_Logger();
+            $handler = new PWP_Tag_Handler($logger);
+            $response = $handler->create_item($request['name'], $args);
 
             return rest_ensure_response($handler->get_item($response['term_id']));
         } catch (\Exception $exception) {
@@ -47,16 +44,17 @@ class PWP_Tags_Endpoint extends PWP_EndpointController
     public function get_items(WP_REST_Request $request): WP_REST_Response
     {
         try {
-            $handler = new PWP_Tag_Handler();
-            $args = new PWP_ArgBuilder();
-            $args
-                ->add_arg_from_request($request, 'hide_empty', false)
-                ->add_arg_from_request($request, 'number', 0)
-                ->add_arg_from_request($request, 'offset', 0)
-                ->add_arg_from_request($request, 'count', false)
-                ->add_arg_from_request($request, 'slug');
+            $logger = (bool)$request['logs'] ? new PWP_API_Logger() :  new PWP_Null_Logger();
+            $handler = new PWP_Tag_Handler($logger);
+            // $args = new PWP_ArgBuilder();
+            // $args
+            //     ->add_arg_from_request($request, 'hide_empty', false)
+            //     ->add_arg_from_request($request, 'number', 0)
+            //     ->add_arg_from_request($request, 'offset', 0)
+            //     ->add_arg_from_request($request, 'count', false)
+            //     ->add_arg_from_request($request, 'slug');
 
-            $data = $handler->get_items($args->to_array());
+            $data = $handler->get_items($request->get_body_params());
         } catch (\Exception $exception) {
             $data = new WP_REST_Response($exception->getMessage(), $exception->getCode());
         }
@@ -67,7 +65,8 @@ class PWP_Tags_Endpoint extends PWP_EndpointController
     public function get_item(WP_REST_Request $request): WP_REST_Response
     {
         $id = (int)$request['id'];
-        $handler = new PWP_Tag_Handler();
+        $logger = (bool)$request['logs'] ? new PWP_API_Logger() :  new PWP_Null_Logger();
+        $handler = new PWP_Tag_Handler($logger);
         $data = $handler->get_item($id);
         return new WP_REST_RESPONSE($data);
     }
@@ -79,7 +78,8 @@ class PWP_Tags_Endpoint extends PWP_EndpointController
 
     public function delete_item(WP_REST_Request $request): WP_REST_Response
     {
-        $handler = new PWP_Tag_Handler();
+        $logger = (bool)$request['logs'] ? new PWP_API_Logger() :  new PWP_Null_Logger();
+        $handler = new PWP_Tag_Handler($logger);
         $outcome = $handler->delete_item($request['id']);
 
         return new WP_REST_Response($outcome ? 'tag successfully deleted' : 'tag not deleted for unknown reasons', 200);

@@ -10,11 +10,9 @@ use PWP\includes\authentication\PWP_IApiAuthenticator;
 
 class PWP_Customers_Endpoint extends PWP_EndpointController
 {
-    public function __construct(string $namespace, PWP_IApiAuthenticator $authenticator)
+    public function __construct()
     {
         parent::__construct(
-            $namespace,
-            $authenticator,
             "/customers",
             'customer'
         );

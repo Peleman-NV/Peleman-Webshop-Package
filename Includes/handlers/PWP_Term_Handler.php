@@ -4,15 +4,18 @@ declare(strict_types=1);
 
 namespace PWP\includes\handlers;
 
+use PWP\includes\utilities\PWP_ILogger;
 use WP_Error;
 
 abstract class PWP_Term_Handler implements PWP_IHandler
 {
+    protected PWP_ILogger $logger;
     private string $taxonomy;
     private string $longTypeName;
 
-    public function __construct(string $taxonomy, string $typeLongName)
+    public function __construct(string $taxonomy, string $typeLongName, PWP_ILogger $logger)
     {
+        $this->logger = $logger;
         $this->taxonomy = $taxonomy;
         $this->longTypeName = $typeLongName;
     }
@@ -28,7 +31,6 @@ abstract class PWP_Term_Handler implements PWP_IHandler
 
         if ($term) {
             throw new \Exception("tag with this slug already exists in the database");
-            return [];
         }
 
         $result =  wp_insert_term($identifier, $this->taxonomy, array(
