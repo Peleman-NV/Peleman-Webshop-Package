@@ -21,13 +21,13 @@ class PWP_Attributes_Endpoint extends PWP_EndpointController
         );
     }
     
-    public function get_items(WP_REST_Request $request): object
+    public function get_items(WP_REST_Request $request): WP_REST_Response
     {
         $handler = new PWP_Product_Attribute_Handler('');
         return new WP_REST_Response($handler->get_items());
     }
 
-    public function get_item(WP_REST_Request $request): object
+    public function get_item(WP_REST_Request $request): WP_REST_Response
     {
         $handler = new PWP_Product_Attribute_Handler('');
         return new WP_REST_Response($handler->get_item((int)$request['id']));

@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace PWP\includes\API\endpoints;
 
+use WP_REST_Request;
+use WP_REST_Response;
 use PWP\includes\API\endpoints\PWP_EndpointController;
 use PWP\includes\authentication\PWP_IApiAuthenticator;
 use PWP\includes\exceptions\PWP_Not_Implemented_Exception;
 use PWP\includes\handlers\PWP_Category_Handler;
 use PWP\includes\utilities\PWP_ArgBuilder;
-use WP_REST_Request;
-use WP_REST_Response;
 
 class PWP_Categories_Endpoint extends PWP_EndpointController implements PWP_IEndpoint
 {
@@ -25,7 +25,7 @@ class PWP_Categories_Endpoint extends PWP_EndpointController implements PWP_IEnd
         );
     }
 
-    public function create_item(WP_REST_Request $request): object
+    public function create_item(WP_REST_Request $request): WP_REST_Response
     {
         try {
             $args = new PWP_ArgBuilder();
@@ -42,24 +42,24 @@ class PWP_Categories_Endpoint extends PWP_EndpointController implements PWP_IEnd
         }
     }
 
-    public function get_items(WP_REST_Request $request): object
+    public function get_items(WP_REST_Request $request): WP_REST_Response
     {
         $handler = new PWP_Category_Handler();
         return new WP_REST_Response($handler->get_items());
     }
 
-    public function get_item(WP_REST_Request $request): object
+    public function get_item(WP_REST_Request $request): WP_REST_Response
     {
-        return new PWP_Not_Implemented_Exception();
+        throw new PWP_Not_Implemented_Exception();
     }
 
-    public function update_item(WP_REST_Request $request): object
+    public function update_item(WP_REST_Request $request): WP_REST_Response
     {
-        return new PWP_Not_Implemented_Exception();
+        throw new PWP_Not_Implemented_Exception();
     }
 
-    public function delete_item(WP_REST_Request $request): object
+    public function delete_item(WP_REST_Request $request): WP_REST_Response
     {
-        return new PWP_Not_Implemented_Exception();
+        throw new PWP_Not_Implemented_Exception();
     }
 }

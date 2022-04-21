@@ -26,7 +26,7 @@ class PWP_Tags_Endpoint extends PWP_EndpointController
         );
     }
     
-    public function create_item(WP_REST_Request $request): object
+    public function create_item(WP_REST_Request $request): WP_REST_Response
     {
         try {
             $args = new PWP_ArgBuilder();
@@ -44,7 +44,7 @@ class PWP_Tags_Endpoint extends PWP_EndpointController
         }
     }
 
-    public function get_items(WP_REST_Request $request): object
+    public function get_items(WP_REST_Request $request): WP_REST_Response
     {
         try {
             $handler = new PWP_Tag_Handler();
@@ -64,7 +64,7 @@ class PWP_Tags_Endpoint extends PWP_EndpointController
         return new WP_REST_Response($data);
     }
 
-    public function get_item(WP_REST_Request $request): object
+    public function get_item(WP_REST_Request $request): WP_REST_Response
     {
         $id = (int)$request['id'];
         $handler = new PWP_Tag_Handler();
@@ -72,12 +72,12 @@ class PWP_Tags_Endpoint extends PWP_EndpointController
         return new WP_REST_RESPONSE($data);
     }
 
-    public function update_item(WP_REST_Request $request): object
+    public function update_item(WP_REST_Request $request): WP_REST_Response
     {
-        return new PWP_Not_Implemented_Exception();
+        throw new PWP_Not_Implemented_Exception();
     }
 
-    public function delete_item(WP_REST_Request $request): object
+    public function delete_item(WP_REST_Request $request): WP_REST_Response
     {
         $handler = new PWP_Tag_Handler();
         $outcome = $handler->delete_item($request['id']);

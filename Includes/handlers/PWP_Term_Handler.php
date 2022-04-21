@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace PWP\includes\handlers;
 
 use WP_Error;
-use WP_Term;
 
 abstract class PWP_Term_Handler implements PWP_IHandler
 {
@@ -17,7 +16,7 @@ abstract class PWP_Term_Handler implements PWP_IHandler
         $this->taxonomy = $taxonomy;
         $this->longTypeName = $typeLongName;
     }
-    
+
     public function create_item(string $identifier, array $args = []): object
     {
         if (!isset($args['slug'])) {
@@ -41,13 +40,16 @@ abstract class PWP_Term_Handler implements PWP_IHandler
         //     $this->update_or_add_label_seo_data($result['term_taxonomy_id'], $args['seoData']);
         // }
 
-        return new WP_Term($result['term_id']);
+        return new \WP_Term($result['term_id']);
     }
 
-    public function get_item(int $id, array $args = []): ?WP_Term
+    public function get_item(int $id, array $args = []): ?\WP_Term
     {
         $term = get_term($id, $this->taxonomy, OBJECT);
-        return $term;
+        if ($term instanceof \WP_Term) {
+            return $term;
+        }
+        return null;
     }
 
     public function get_items(array $args = []): array
@@ -59,7 +61,7 @@ abstract class PWP_Term_Handler implements PWP_IHandler
 
     public function update_item(int $id, array $args = []): object
     {
-        return new WP_Term(0);
+        return new \WP_Term(0);
     }
 
     public function delete_item(int $id, array $args = []): bool

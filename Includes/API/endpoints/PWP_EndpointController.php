@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace PWP\includes\API\endpoints;
 
-use WP_Error;
 use WP_REST_Request;
+use WP_REST_Response;
 use PWP\includes\API\endpoints\PWP_IEndpoint;
 use PWP\includes\authentication\PWP_Authenticator;
 use PWP\includes\authentication\PWP_IApiAuthenticator;
@@ -69,7 +69,7 @@ abstract class PWP_EndpointController implements PWP_IEndpoint, PWP_IApiAuthenti
         );
     }
 
-    public function __construct(string $namespace,  PWP_Authenticator $authenticator, string $rest_base, string $title)
+    public function __construct(string $namespace,  PWP_IApiAuthenticator $authenticator, string $rest_base, string $title)
     {
         $this->namespace = $namespace;
         $this->authenticator = $authenticator;
@@ -83,9 +83,11 @@ abstract class PWP_EndpointController implements PWP_IEndpoint, PWP_IApiAuthenti
      * POST new item
      *
      * @param WP_REST_Request $request
-     * @return WP_REST_Response|WP_Error
+     * @return WP_REST_Response
+     * 
+     * @throws Requests_Exception_HTTP
      */
-    public function create_item(WP_REST_Request $request): object
+    public function create_item(WP_REST_Request $request): WP_REST_Response
     {
         throw new \Requests_Exception_HTTP_501("method not implemented!");
     }
@@ -94,9 +96,11 @@ abstract class PWP_EndpointController implements PWP_IEndpoint, PWP_IApiAuthenti
      * GET individual item
      *
      * @param WP_REST_Request $request
-     * @return WP_REST_Response|WP_Error
+     * @return WP_REST_Response
+     *     
+     * @throws Requests_Exception_HTTP
      */
-    public function get_item(WP_REST_Request $request): object
+    public function get_item(WP_REST_Request $request): WP_REST_Response
     {
         throw new \Requests_Exception_HTTP_501("method not implemented!");
     }
@@ -105,9 +109,11 @@ abstract class PWP_EndpointController implements PWP_IEndpoint, PWP_IApiAuthenti
      * GET grouped items
      *
      * @param WP_REST_Request $request
-     * @return WP_REST_Response|WP_Error
+     * @return WP_REST_Response
+     * 
+     * @throws Requests_Exception_HTTP
      */
-    public function get_items(WP_REST_Request $request): object
+    public function get_items(WP_REST_Request $request): WP_REST_Response
     {
         throw new \Requests_Exception_HTTP_501("method not implemented!");
     }
@@ -116,9 +122,11 @@ abstract class PWP_EndpointController implements PWP_IEndpoint, PWP_IApiAuthenti
      * PUT/PATCH item
      *
      * @param WP_REST_Request $request
-     * @return WP_REST_Response|WP_Error
+     * @return WP_REST_Response
+     * 
+     * @throws Requests_Exception_HTTP
      */
-    public function update_item(WP_REST_Request $request): object
+    public function update_item(WP_REST_Request $request): WP_REST_Response
     {
         throw new \Requests_Exception_HTTP_501("method not implemented!");
     }
@@ -127,16 +135,18 @@ abstract class PWP_EndpointController implements PWP_IEndpoint, PWP_IApiAuthenti
      * DELETE item
      *
      * @param WP_REST_Request $request
-     * @return WP_REST_Response|WP_Error
+     * @return WP_REST_Response
+     * 
+     * @throws Requests_Exception_HTTP
      */
-    public function delete_item(WP_REST_Request $request): object
+    public function delete_item(WP_REST_Request $request): WP_REST_Response
     {
         throw new \Requests_Exception_HTTP_501("method not implemented!");
     }
     #endregion
 
     #region REST AUTHENTICATION
-    
+
     /**
      * @param WP_REST_Request $request
      * @return boolean
@@ -176,7 +186,7 @@ abstract class PWP_EndpointController implements PWP_IEndpoint, PWP_IApiAuthenti
     {
         return $this->authenticator->auth_update_item($request);
     }
-    
+
     /**
      * @param WP_REST_Request $request
      * @return boolean

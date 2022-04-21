@@ -10,6 +10,7 @@ use PWP\includes\authentication\PWP_IApiAuthenticator;
 use PWP\includes\handlers\PWP_Product_Handler;
 use PWP\includes\utilities\schemas\PWP_Argument_Schema;
 use PWP\includes\utilities\schemas\PWP_ISchema;
+use WP_REST_Request;
 use WP_REST_Response;
 
 class PWP_Products_Endpoint extends PWP_EndpointController implements PWP_IEndpoint
@@ -29,7 +30,7 @@ class PWP_Products_Endpoint extends PWP_EndpointController implements PWP_IEndpo
         );
     }    
 
-    public function create_item(\WP_REST_Request $request): object
+    public function create_item(WP_REST_Request $request): WP_REST_Response
     {
         $handler = new PWP_Product_Handler();
 
@@ -46,7 +47,7 @@ class PWP_Products_Endpoint extends PWP_EndpointController implements PWP_IEndpo
         ));
     }
 
-    public function get_item(\WP_REST_Request $request): object
+    public function get_item(WP_REST_Request $request): WP_REST_Response
     {
         $handler = new PWP_Product_Handler();
         $product = $handler->get_item($request['id'], $request->get_url_params());
@@ -54,7 +55,7 @@ class PWP_Products_Endpoint extends PWP_EndpointController implements PWP_IEndpo
         return new \WP_REST_Response($product->get_data());
     }
 
-    public function get_items(\WP_REST_Request $request): object
+    public function get_items(WP_REST_Request $request): WP_REST_Response
     {
         $handler = new PWP_Product_Handler();
         $args = $request->get_url_params();
@@ -66,17 +67,17 @@ class PWP_Products_Endpoint extends PWP_EndpointController implements PWP_IEndpo
         );
     }
 
-    public function update_item(\WP_REST_Request $request): object
+    public function update_item(WP_REST_Request $request): WP_REST_Response
     {
         return parent::update_item($request);
     }
 
-    public function delete_item(\WP_REST_Request $request): object
+    public function delete_item(WP_REST_Request $request): WP_REST_Response
     {
         $handler = new PWP_Product_Handler();
         $handler->delete_item($request['id'], $request->get_body_params());
 
-        return new \WP_REST_Response(array(
+        return new WP_REST_Response(array(
             'message' => isset($request->get_body_params()['force']) ?
                 'product permanently deleted successfullly!' :
                 'product moved to trash successfully!',
