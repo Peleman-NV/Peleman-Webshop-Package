@@ -41,7 +41,7 @@ abstract class PWP_EndpointController implements PWP_IEndpoint, PWP_IApiAuthenti
                     "permission_callback" => array($this, 'auth_post_item'),
                     'args' => array(),
                 ),
-                'schema' => array($this, 'get_item_array')
+                // 'schema' => array($this, 'get_item_array')
             )
         );
 

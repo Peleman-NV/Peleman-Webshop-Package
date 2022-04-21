@@ -6,6 +6,7 @@ namespace PWP\includes\handlers;
 
 use PWP\includes\utilities\PWP_ILogger;
 use WP_Error;
+use WP_Term;
 
 abstract class PWP_Term_Handler implements PWP_IHandler
 {
@@ -22,7 +23,10 @@ abstract class PWP_Term_Handler implements PWP_IHandler
 
     public function create_item(string $identifier, array $args = []): object
     {
-        if (!isset($args['slug'])) {
+        $parent = $this->find_parent((int)$args['parent-id'], $args['parent-slug']);
+
+        $slug = $args['slug'];
+        if (!isset($slug)) {
             $slug = strtolower($identifier);
             $slug = str_replace(' ', '_', $slug);
         }
@@ -30,19 +34,20 @@ abstract class PWP_Term_Handler implements PWP_IHandler
         $term = $this->get_item_by_slug($slug);
 
         if ($term) {
-            throw new \Exception("tag with this slug already exists in the database");
+            throw new \Exception("tag with this slug already exists in the database", 404);
         }
 
         $result =  wp_insert_term($identifier, $this->taxonomy, array(
             'slug' => $slug,
-            'description' => $args['$description'],
+            'description' => $args['description'],
+            'parent' => $parent->term_id ?: 0,
         ));
 
         // if (isset($args['seoData'])) {
         //     $this->update_or_add_label_seo_data($result['term_taxonomy_id'], $args['seoData']);
         // }
 
-        return new \WP_Term($result['term_id']);
+        return get_term($result['term_id']);
     }
 
     public function get_item(int $id, array $args = []): ?\WP_Term
@@ -114,5 +119,26 @@ abstract class PWP_Term_Handler implements PWP_IHandler
     public function get_taxonomy(): string
     {
         return $this->taxonomy;
+    }
+
+    private function find_parent(?int $id, ?string $slug): ?WP_Term
+    {
+        if (is_null($id) && is_null($slug)) return null;
+
+        if (!empty($id) || 0 >= $id) {
+            $parent = $this->get_item($id);
+            if (!empty($parent)) {
+                return $parent;
+            }
+        }
+
+        if (!empty($slug)) {
+            $parent = $this->get_item_by_slug($slug);
+            if (!empty($parent)) {
+                return $parent;
+            }
+        }
+
+        throw new \Exception("Parent not found!", 404);
     }
 }

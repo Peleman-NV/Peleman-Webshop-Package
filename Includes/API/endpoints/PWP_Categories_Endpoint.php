@@ -15,6 +15,7 @@ use PWP\includes\API\endpoints\PWP_EndpointController;
 use PWP\includes\authentication\PWP_IApiAuthenticator;
 use PWP\includes\utilities\schemas\PWP_Schema_Factory;
 use PWP\includes\exceptions\PWP_Not_Implemented_Exception;
+use WP_Term;
 
 class PWP_Categories_Endpoint extends PWP_EndpointController implements PWP_IEndpoint
 {
@@ -30,15 +31,14 @@ class PWP_Categories_Endpoint extends PWP_EndpointController implements PWP_IEnd
     public function create_item(WP_REST_Request $request): WP_REST_Response
     {
         try {
-            $args = new PWP_ArgBuilder();
-            $args
-                ->add_arg_from_request($request, 'slug')
-                ->add_arg_from_request($request, 'description');
 
             $handler = $this->prepare_handler();
-            $response = $handler->create_item($request['name'], $args->to_array());
+            $response = $handler->create_item($request['name'], $request->get_body_params());
 
-            return rest_ensure_response($handler->get_item($response['term_id']));
+            if($response instanceof WP_Term)
+            {
+            return rest_ensure_response($response->data);
+            }
         } catch (\Exception $exception) {
             return new WP_REST_Response($exception->getMessage(), $exception->getCode());
         }
@@ -73,7 +73,7 @@ class PWP_Categories_Endpoint extends PWP_EndpointController implements PWP_IEnd
 
     function get_argument_schema(): PWP_ISchema
     {
-        $factory = new PWP_Schema_Factory('default');
+        $factory = new PWP_Schema_Factory(PWP_TEXT_DOMAIN);
         $schema = parent::get_argument_schema();
         $schema
             ->add_property(
@@ -83,18 +83,39 @@ class PWP_Categories_Endpoint extends PWP_EndpointController implements PWP_IEnd
             )->add_property(
                 'slug',
                 $factory->string_property("slug of the category. If not given, will create a new slug from the name.")
-            )
-            ->add_property(
+            )->add_property(
                 'description',
                 $factory->string_property('description of the category')
-            )
-            ->add_property(
+            )->add_property(
                 'lang',
-                $factory->enum_property('language of the category for use with WPML', array('en', 'es'))
-            )
-            ->add_property(
+                $factory->enum_property(
+                    'language of the category for use with WPML',
+                    array(
+                        'en',
+                        'es'
+                    )
+                )
+            )->add_property(
                 'parent-id',
-                $factory->int_property('id of the parent category, if applicable.')
+                $factory->int_property('id of the parent category, if applicable. recommended to not pass this AND the parent-slug parameter at the same time.')
+            )->add_property(
+                'parent-slug',
+                $factory->string_property('slug of the parent category, if applicable. recommended to not pass this AND the parent-id parameter at the same time.')
+            )->add_property(
+                'display',
+                $factory->enum_property(
+                    'category archive display type',
+                    array(
+                        'default',
+                        'products',
+                        'subcategories',
+                        'both'
+                    )
+                )
+                    ->default('default')
+            )->add_property(
+                'image-id',
+                $factory->int_property('id of the category display image')
             );
 
         return $schema;

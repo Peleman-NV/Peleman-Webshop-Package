@@ -89,7 +89,7 @@ class PWP_Products_Endpoint extends PWP_EndpointController implements PWP_IEndpo
 
     public function get_argument_schema(): PWP_ISchema
     {
-        $factory = new PWP_Schema_Factory('default');
+        $factory = new PWP_Schema_Factory(PWP_TEXT_DOMAIN);
         $schema = new PWP_Argument_Schema();
         $schema
             ->add_property(
