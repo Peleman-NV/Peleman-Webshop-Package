@@ -49,6 +49,11 @@ class PWP_Product_Attribute_Handler implements PWP_IHandler
         return false;
     }
 
+    public function batch_items(array $data, array $args = []): array
+    {
+        return [];
+    }
+
     public function get_attribute_by_slug(string $slug): object
     {
         $attributes = $this->get_items();

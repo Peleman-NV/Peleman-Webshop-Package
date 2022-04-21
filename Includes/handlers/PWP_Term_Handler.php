@@ -86,6 +86,11 @@ abstract class PWP_Term_Handler implements PWP_IHandler
         return true;
     }
 
+    public function batch_items(array $data, array $args = []): array
+    {
+        return [];
+    }
+
     public function delete_item_by_slug(string $slug, array $args = []): bool
     {
         $term = $this->get_item_by_slug($slug);

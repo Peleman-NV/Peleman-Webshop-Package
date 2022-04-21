@@ -16,4 +16,6 @@ interface PWP_IHandler
     public function update_item(int $id, array $args = []): object;
 
     public function delete_item(int $id, array $args = []): bool;
+
+    public function batch_items(array $data, array $args = []): array;
 }

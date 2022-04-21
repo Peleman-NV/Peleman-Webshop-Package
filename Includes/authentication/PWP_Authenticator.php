@@ -35,4 +35,9 @@ class PWP_Authenticator implements PWP_IApiAuthenticator
     {
         return true;
     }
+
+    public function auth_batch_items(WP_REST_Request $request): bool
+    {
+        return true;
+    }
 }

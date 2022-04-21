@@ -20,11 +20,73 @@ use WP_Term;
 class PWP_Categories_Endpoint extends PWP_EndpointController implements PWP_IEndpoint
 {
 
-    public function __construct()
+    public function __construct(PWP_IApiAuthenticator $authenticator)
     {
         parent::__construct(
             "/categories",
-            'category'
+            'category',
+            $this->authenticator = $authenticator
+        );
+    }
+
+    public function register_routes(string $namespace): void
+    {
+        register_rest_route(
+            $namespace,
+            $this->rest_base,
+            array(
+                array(
+                    "methods" => \WP_REST_Server::READABLE,
+                    "callback" => array($this, 'get_items'),
+                    "permission_callback" => array($this, 'auth_get_items'),
+                    'args' => $this->get_argument_schema()->to_array(),
+                ),
+                array(
+                    "methods" => \WP_REST_Server::CREATABLE,
+                    "callback" => array($this, 'create_item'),
+                    "permission_callback" => array($this, 'auth_post_item'),
+                    'args' => array(),
+                ),
+                // 'schema' => array($this, 'get_item_array')
+            )
+        );
+
+        register_rest_route(
+            $namespace,
+            $this->rest_base . "/(?P<id>\d+)",
+            array(
+                array(
+                    "methods" => \WP_REST_Server::DELETABLE,
+                    "callback" => array($this, 'delete_item'),
+                    "permission_callback" => array($this, 'auth_delete_item'),
+                    'args' => array(),
+                ),
+                array(
+                    "methods" => \WP_REST_Server::READABLE,
+                    "callback" => array($this, 'get_item'),
+                    "permission_callback" => array($this, 'auth_get_item'),
+                    'args' => array(),
+                ),
+                array(
+                    "methods" => \WP_REST_Server::EDITABLE,
+                    "callback" => array($this, 'update_item'),
+                    "permission_callback" => array($this, 'auth_update_item'),
+                    'args' => array(),
+                )
+            )
+        );
+
+        Register_rest_route(
+            $namespace,
+            $this->rest_base . '/batch',
+            array(
+                array(
+                    'methods' => \WP_REST_Server::EDITABLE,
+                    'callback' => array($this, 'batch_items'),
+                    "permission_callback" => array($this, 'auth_batch_items'),
+                    'args' => array(),
+                )
+            )
         );
     }
 
@@ -35,9 +97,8 @@ class PWP_Categories_Endpoint extends PWP_EndpointController implements PWP_IEnd
             $handler = $this->prepare_handler();
             $response = $handler->create_item($request['name'], $request->get_body_params());
 
-            if($response instanceof WP_Term)
-            {
-            return rest_ensure_response($response->data);
+            if ($response instanceof WP_Term) {
+                return rest_ensure_response($response->data);
             }
         } catch (\Exception $exception) {
             return new WP_REST_Response($exception->getMessage(), $exception->getCode());
@@ -63,6 +124,15 @@ class PWP_Categories_Endpoint extends PWP_EndpointController implements PWP_IEnd
     public function delete_item(WP_REST_Request $request): WP_REST_Response
     {
         throw new PWP_Not_Implemented_Exception();
+    }
+
+    public function batch_items(WP_REST_Request $request): WP_REST_Response
+    {
+        $updates = $request['update'];
+        $create = $request['create'];
+        $delete = $request['delete'];
+
+        return new WP_REST_Response("we're not quite there yet, but we will be soon!", 501);
     }
 
     private function prepare_handler(): PWP_IHandler

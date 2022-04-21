@@ -7,74 +7,27 @@ namespace PWP\includes\API\endpoints;
 use WP_REST_Request;
 use WP_REST_Response;
 use PWP\includes\API\endpoints\PWP_IEndpoint;
-use PWP\includes\authentication\PWP_Authenticator;
 use PWP\includes\authentication\PWP_IApiAuthenticator;
-use PWP\includes\handlers\PWP_IHandler;
 use PWP\includes\utilities\schemas\PWP_Argument_Schema;
 use PWP\includes\utilities\schemas\PWP_ISchema;
 use PWP\includes\utilities\schemas\PWP_Resource_Schema;
 
 abstract class PWP_EndpointController implements PWP_IEndpoint, PWP_IApiAuthenticator
 {
-    private PWP_Authenticator $authenticator;
+    private PWP_IApiAuthenticator $authenticator;
     private string $title;
+    private const BATCH_LIMIT = 100;
 
     /**
      * initialization function that registers this class' callback to the hook and rest API
      */
-    public function register_routes(string $namespace, PWP_IApiAuthenticator $authenticator): void
-    {
-        $this->authenticator = $authenticator;
-        register_rest_route(
-            $namespace,
-            $this->rest_base,
-            array(
-                array(
-                    "methods" => \WP_REST_Server::READABLE,
-                    "callback" => array($this, 'get_items'),
-                    "permission_callback" => array($this, 'auth_get_items'),
-                    'args' => $this->get_argument_schema()->to_array(),
-                ),
-                array(
-                    "methods" => \WP_REST_Server::CREATABLE,
-                    "callback" => array($this, 'create_item'),
-                    "permission_callback" => array($this, 'auth_post_item'),
-                    'args' => array(),
-                ),
-                // 'schema' => array($this, 'get_item_array')
-            )
-        );
-
-        register_rest_route(
-            $namespace,
-            $this->rest_base . "/(?P<id>\d+)",
-            array(
-                array(
-                    "methods" => \WP_REST_Server::DELETABLE,
-                    "callback" => array($this, 'delete_item'),
-                    "permission_callback" => array($this, 'auth_delete_item'),
-                    'args' => array(),
-                ),
-                array(
-                    "methods" => \WP_REST_Server::READABLE,
-                    "callback" => array($this, 'get_item'),
-                    "permission_callback" => array($this, 'auth_get_item'),
-                    'args' => array(),
-                ),
-                array(
-                    "methods" => \WP_REST_Server::EDITABLE,
-                    "callback" => array($this, 'update_item'),
-                    "permission_callback" => array($this, 'auth_update_item'),
-                    'args' => array(),
-                )
-            )
-        );
-    }
-
-    public function __construct(string $rest_base, string $title)
+    public abstract function register_routes(string $namespace): void;
+    
+    public function __construct(string $rest_base, string $title, PWP_IApiAuthenticator $authenticator)
     {
         $this->rest_base = $rest_base;
         $this->title = $title;
+        $this->authenticator = $authenticator;
     }
 
     #region Callback template functions
@@ -143,6 +96,19 @@ abstract class PWP_EndpointController implements PWP_IEndpoint, PWP_IApiAuthenti
     {
         throw new \Requests_Exception_HTTP_501("method not implemented!");
     }
+
+    /**
+     * BATCH items
+     *
+     * @param WP_REST_Request $request
+     * @return boolean
+     * 
+     * @throws Requests_Exception_HTTP
+     */
+    public function batch_items(WP_REST_Request $request): WP_REST_Response
+    {
+        throw new \Requests_Exception_HTTP_501("method not implemented!");
+    }
     #endregion
 
     #region REST AUTHENTICATION
@@ -195,6 +161,11 @@ abstract class PWP_EndpointController implements PWP_IEndpoint, PWP_IApiAuthenti
     public function auth_delete_item(WP_REST_Request $request): bool
     {
         return $this->authenticator->auth_delete_item($request);
+    }
+
+    public function auth_batch_items(WP_REST_Request $request): bool
+    {
+        return $this->authenticator->auth_batch_items($request);
     }
     #endregion
 

@@ -17,4 +17,6 @@ interface PWP_IApiAuthenticator
     public function auth_update_item(WP_REST_Request $request): bool;
 
     public function auth_delete_item(WP_REST_Request $request): bool;
+
+    public function auth_batch_items(WP_REST_Request $request): bool;
 }

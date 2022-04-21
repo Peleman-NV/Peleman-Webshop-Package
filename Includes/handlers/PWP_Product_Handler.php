@@ -120,6 +120,10 @@ class PWP_Product_Handler implements PWP_IHandler
         return $product->delete($forceDelete);
     }
 
+    public function batch_items(array $data, array $args = []): array
+    {
+        return [];
+    }
     private function get_ids_from_skus(?array $skus): array
     {
         if (is_null($skus)) return array();

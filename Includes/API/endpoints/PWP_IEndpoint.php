@@ -10,7 +10,7 @@ use WP_REST_Response;
 
 interface PWP_IEndpoint
 {
-    public function register_routes(string $namespace, PWP_IApiAuthenticator $authenticator): void;
+    public function register_routes(string $namespace): void;
 
     public function get_item(WP_REST_Request $request): WP_REST_Response;
     public function get_items(WP_REST_Request $request): WP_REST_Response;
@@ -20,4 +20,6 @@ interface PWP_IEndpoint
     public function delete_item(WP_REST_Request $request): WP_REST_Response;
     
     public function create_item(WP_REST_Request $request): WP_REST_Response;
+
+    public function batch_items(WP_REST_Request $request): WP_REST_Response;
 }

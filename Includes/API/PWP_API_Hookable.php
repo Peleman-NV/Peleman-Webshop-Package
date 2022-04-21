@@ -40,23 +40,23 @@ class PWP_API_Hookable implements PWP_IHookableComponent
         $this->authenticator = new PWP_Authenticator();
 
         //TODO: look into why this endpoint specifically crashes the wp-admin panel
-        // $this->add_endpoint(new PWP_Products_Endpoint());
-        $this->add_endpoint(new PWP_Product_Variations_Endpoint());
+        // $this->add_endpoint(new PWP_Products_Endpoint($this->authenticator));
+        $this->add_endpoint(new PWP_Product_Variations_Endpoint($this->authenticator));
 
-        $this->add_endpoint(new PWP_Tags_Endpoint());
-        $this->add_endpoint(new PWP_Categories_Endpoint());
-        $this->add_endpoint(new PWP_Attributes_Endpoint());
-        $this->add_endpoint(new PWP_Attribute_Terms_Endpoint());
+        $this->add_endpoint(new PWP_Tags_Endpoint($this->authenticator));
+        $this->add_endpoint(new PWP_Categories_Endpoint($this->authenticator));
+        $this->add_endpoint(new PWP_Attributes_Endpoint($this->authenticator));
+        $this->add_endpoint(new PWP_Attribute_Terms_Endpoint($this->authenticator));
 
-        $this->add_endpoint(new PWP_Images_Endpoint());
-        $this->add_endpoint(new PWP_Customers_Endpoint());
-        $this->add_endpoint(new PWP_Orders_Endpoint());
+        $this->add_endpoint(new PWP_Images_Endpoint($this->authenticator));
+        $this->add_endpoint(new PWP_Customers_Endpoint($this->authenticator));
+        $this->add_endpoint(new PWP_Orders_Endpoint($this->authenticator));
 
-        $this->add_endpoint(new PWP_Menus_Endpoint());
+        $this->add_endpoint(new PWP_Menus_Endpoint($this->authenticator));
 
         //Testing Endpoints; to be removed when no longer relevant
-        $this->add_endpoint(new PWP_Test_Endpoint());
-        $this->add_endpoint(new PWP_Languages_Endpoint());
+        $this->add_endpoint(new PWP_Test_Endpoint($this->authenticator));
+        $this->add_endpoint(new PWP_Languages_Endpoint($this->authenticator));
     }
 
     public function register_hooks(PWP_Plugin_Loader $loader): void
@@ -76,7 +76,7 @@ class PWP_API_Hookable implements PWP_IHookableComponent
     public function init_endpoints(): void
     {
         foreach ($this->endpoints as $endpoint) {
-            $endpoint->register_routes($this->namespace, $this->authenticator);
+            $endpoint->register_routes($this->namespace);
         }
     }
 }
