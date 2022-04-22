@@ -27,15 +27,34 @@ class PWP_Admin_Notice_Poster implements PWP_IHookableComponent
         $loader->add_action('admin_notices', $this, 'display_notices');
     }
 
-    public function add_admin_notice(PWP_Admin_Notice $notice): void
+    private function add_admin_notice(PWP_Admin_Notice $notice): void
     {
         $this->notices[] = $notice;
     }
 
+    public function new_error_notice(string $content, bool $dismissible = false): void
+    {
+        $this->add_admin_notice(PWP_Admin_Notice::new_error_notice($content, $dismissible));
+    }
+
+    public function new_info_notice(string $content, bool $dismissible = false): void
+    {
+        $this->add_admin_notice(PWP_Admin_Notice::new_info_notice($content, $dismissible));
+    }
+
+    public function new_warning_notice(string $content, bool $dismissible = false): void
+    {
+        $this->add_admin_notice(PWP_Admin_Notice::new_warning_notice($content, $dismissible));
+    }
+
+    public function new_success_notice(string $content, bool $dismissible = false): void
+    {
+        $this->add_admin_notice(PWP_Admin_Notice::new_success_notice($content, $dismissible));
+    }
+
     public function display_notices(): void
     {
-        foreach($this->notices as $notice)
-        {
+        foreach ($this->notices as $notice) {
             printf($notice->get_content());
         }
         $this->clear_notices();

@@ -72,11 +72,11 @@ class PWP_Plugin
     private function check_requirements(): bool
     {
         if (!\is_plugin_active('woocommerce/woocommerce.php')) {
-            $this->noticePoster->add_admin_notice(PWP_Admin_Notice::new_warning_notice("{$this->plugin_name} needs Woocommerce to function properly!", true));
+            $this->noticePoster->new_warning_notice("{$this->plugin_name} needs Woocommerce to function properly!", true);
         }
 
         if (!\is_plugin_active('sitepress-multilingual-cms/sitepress.php')) {
-            $this->noticePoster->add_admin_notice(PWP_Admin_Notice::new_error_notice("{$this->plugin_name} needs WPML to function properly", true));
+            $this->noticePoster->new_error_notice("{$this->plugin_name} needs WPML to function properly", true);
         }
 
         return true;
