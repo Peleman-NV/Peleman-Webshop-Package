@@ -7,30 +7,53 @@ interface for API endpoints
 ## PWP_Endpoint
 abstract class for API endpoints. Contains necessary functionality for the proper operation of all endpoints.
 
+Endpoints are intended to work with `PWP_I_Handler` classes, but there is no concrete requirement for this; all logic could easily be handled within the endpoint itself. This is not recommended.
+
 API Endpoints can have up to five endpoints:
 ### __GET__
 retrieve multiple or a single item at the endpoint
-* get_item(args);
-* get_items(identifier, args);
+
+```php
+    get_item(WP_REST_Request $request): WP_REST_Response
+```
+```php
+    get_items(WP_REST_Request $request): WP_REST_Response
+```
 
 ### __POST__
 create a new item at the endpoint
-* create_item(identifier, args);
+
+```php
+    create_item(WP_REST_Request $request): WP_REST_Response
+```
 
 ### __PUT__/__PATCH__
 update an existing item at the endpoint
-* update_item(identifier, args);
+
+```php
+    update_item(WP_REST_Request $request): WP_REST_Response
+```
 
 ### __DELETE__
 delete an existing item at the endpoint
-* delete_item(identifier, args);
+
+```php
+    delete_item(WP_REST_Request $request): WP_REST_Response
+```
 
 ### __BATCH__
 batch items to post/update/delete. goes up to 100 items max
-* batch items(args);
 
-as well as a matchin method for each to authorize/authenticate each route, and functions to call/generate item schemas
+```php
+    batch_items(WP_REST_Request $request): WP_REST_Response
+```
+to batch a series of functions, call a `POST` request with an array in the body containing 3 sub-arrays:
 
+* __create__ (matches `POST` request)
+* __update__ (matches `PUT`| `PATCH` request)
+* __delete__ (matches `DELETE` request)
+
+    _each of these should follow the parameter structure of their respective request._
 ___
 # concrete endpoints
 
@@ -97,7 +120,11 @@ ___
 
     `GET` | `POST` | `BATCH`
     ___
-    `POST` parameters:
+    ### `GET` parameters:
+
+    * TO BE DONE
+    ___
+    ### `POST` parameters:
 
     * __name__   `REQUIRED`
         > __`string`__ - name of the category
@@ -113,6 +140,7 @@ ___
         > __`string`__ - language code of a translated category. should match the suffix of the slug if present
 
             accepted values will generally be two-character strings, dependant on the local WPML pluging settings. if the matching language code isn't found in the installed languages, an error will be thrown.
+
             ie. 
 
             en
