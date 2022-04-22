@@ -8,7 +8,7 @@ use PWP\includes\utilities\PWP_ILogger;
 use WP_Error;
 use WP_Term;
 
-abstract class PWP_Term_Handler implements PWP_IHandler
+abstract class PWP_Term_Handler implements PWP_I_Handler
 {
     protected PWP_ILogger $logger;
     private string $taxonomy;
@@ -44,7 +44,7 @@ abstract class PWP_Term_Handler implements PWP_IHandler
         ));
 
         // if (isset($args['seoData'])) {
-        //     $this->update_or_add_label_seo_data($result['term_taxonomy_id'], $args['seoData']);
+        //     $this->define_seo_meta_data($result['term_taxonomy_id'], $args['seoData']);
         // }
 
         return get_term($result['term_id']);
@@ -86,11 +86,6 @@ abstract class PWP_Term_Handler implements PWP_IHandler
         return true;
     }
 
-    public function batch_items(array $data, array $args = []): array
-    {
-        return [];
-    }
-
     public function delete_item_by_slug(string $slug, array $args = []): bool
     {
         $term = $this->get_item_by_slug($slug);
@@ -111,7 +106,7 @@ abstract class PWP_Term_Handler implements PWP_IHandler
         return !$result ? $result : null;
     }
 
-    final private function update_or_add_label_seo_data($objectId, $seoData)
+    final private function define_seo_meta_data($objectId, $seoData)
     {
         $currentSeoMetaData = get_option('wpseo_taxonomy_meta');
 

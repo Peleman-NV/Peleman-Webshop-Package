@@ -10,7 +10,7 @@ use PWP\includes\exceptions\PWP_Not_Found_Exception;
 use PWP\includes\exceptions\PWP_Not_Implemented_Exception;
 use PWP\includes\utilities\PWP_ILogger;
 
-class PWP_Product_Handler implements PWP_IHandler
+class PWP_Product_Handler implements PWP_I_Handler
 {
     protected $logger;
 
@@ -120,10 +120,6 @@ class PWP_Product_Handler implements PWP_IHandler
         return $product->delete($forceDelete);
     }
 
-    public function batch_items(array $data, array $args = []): array
-    {
-        return [];
-    }
     private function get_ids_from_skus(?array $skus): array
     {
         if (is_null($skus)) return array();

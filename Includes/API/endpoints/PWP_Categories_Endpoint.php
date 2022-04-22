@@ -6,8 +6,7 @@ namespace PWP\includes\API\endpoints;
 
 use WP_REST_Request;
 use WP_REST_Response;
-use PWP\includes\handlers\PWP_IHandler;
-use PWP\includes\utilities\PWP_ArgBuilder;
+use PWP\includes\handlers\PWP_I_Handler;
 use PWP\includes\utilities\PWP_Null_Logger;
 use PWP\includes\handlers\PWP_Category_Handler;
 use PWP\includes\utilities\schemas\PWP_ISchema;
@@ -129,13 +128,27 @@ class PWP_Categories_Endpoint extends PWP_EndpointController implements PWP_IEnd
     public function batch_items(WP_REST_Request $request): WP_REST_Response
     {
         $updates = $request['update'];
-        $create = $request['create'];
-        $delete = $request['delete'];
+        $creates = $request['create'];
+        $deletes = $request['delete'];
+
+        $handler = $this->prepare_handler();
+
+        foreach ($updates as $update) {
+            $handler->update_item($update['id'], $update);
+        }
+
+        foreach ($creates as $create) {
+            $handler->create_item($create['name'], $create);
+        }
+
+        foreach ($deletes as $delete) {
+            $handler->delete_item($delete['id'], $create);
+        }
 
         return new WP_REST_Response("we're not quite there yet, but we will be soon!", 501);
     }
 
-    private function prepare_handler(): PWP_IHandler
+    private function prepare_handler(): PWP_Category_Handler
     {
         $logger = new PWP_Null_Logger();
         return new PWP_Category_Handler($logger);
@@ -148,33 +161,36 @@ class PWP_Categories_Endpoint extends PWP_EndpointController implements PWP_IEnd
         $schema
             ->add_property(
                 'name',
-                $factory->string_property('name of the attribute')
+                $factory->string_property('name of the category')
                     ->required()
             )->add_property(
                 'slug',
-                $factory->string_property("slug of the category. If not given, will create a new slug from the name.")
+                $factory->string_property("slug of the category. If not given, will create a new slug from the name. should not contain spaces")
             )->add_property(
-                'description',
-                $factory->string_property('description of the category')
+                'parent_id',
+                $factory->int_property('id of the parent category, if applicable. will precede the parent_slug if present')
             )->add_property(
-                'lang',
+                'parent_slug',
+                $factory->string_property('slug of the parent category, if applicable. will supercede the parent_id if present')
+            )->add_property(
+                'english_slug',
+                $factory->string_property('slug of the default language category, used for uploading translated categories')
+            )->add_property(
+                'language_code',
                 $factory->enum_property(
-                    'language of the category for use with WPML',
+                    'language code of a translated category. should match the suffix of the slug if present',
                     array(
                         'en',
                         'es'
                     )
                 )
             )->add_property(
-                'parent-id',
-                $factory->int_property('id of the parent category, if applicable. recommended to not pass this AND the parent-slug parameter at the same time.')
-            )->add_property(
-                'parent-slug',
-                $factory->string_property('slug of the parent category, if applicable. recommended to not pass this AND the parent-id parameter at the same time.')
+                'description',
+                $factory->string_property('description of the category')
             )->add_property(
                 'display',
                 $factory->enum_property(
-                    'category archive display type',
+                    'how the category is displayed in the archive',
                     array(
                         'default',
                         'products',
@@ -184,9 +200,22 @@ class PWP_Categories_Endpoint extends PWP_EndpointController implements PWP_IEnd
                 )
                     ->default('default')
             )->add_property(
-                'image-id',
-                $factory->int_property('id of the category display image')
+                'image_id',
+                $factory->int_property('id of the image to be used with this category in displaying categories')
+            )
+            ->add_property(
+                'seo',
+                $factory->array_property('search engine optimization properties')
+                    ->add_property(
+                        'focus_keyword',
+                        $factory->string_property('focus keyword for YOAST SEO')
+                    )
+                    ->add_property(
+                        'description',
+                        $factory->string_property('description of the SEO data for YOAST')
+                    )
             );
+
 
         return $schema;
     }

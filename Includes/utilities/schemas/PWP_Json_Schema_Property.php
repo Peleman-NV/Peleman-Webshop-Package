@@ -32,6 +32,7 @@ class PWP_Json_Schema_Property implements PWP_IProperty
         $this->required = false;
         $this->readonly = false;
     }
+
     public function required($required = true): PWP_Json_Schema_Property
     {
         $this->isRequired = $required;

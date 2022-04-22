@@ -13,8 +13,31 @@ class PWP_Json_Array_property extends PWP_Json_Schema_Property
         parent::__construct($domain, $description, 'array', $args);
     }
 
-    public function add_property(string $name, PWP_Json_Schema_Property $property)
+    public function add_properties(array $properties): self
+    {
+        $this->properties = array_merge($this->properties, $properties);
+        return $this;
+    }
+
+    public function add_property(string $name, PWP_IProperty $property): self
     {
         $this->properties[$name] = $property;
+        return $this;
+    }
+
+    public function to_array(): array
+    {
+        $schema = parent::to_array();
+
+        $object = array('type' => 'object,');
+        $props = array();
+        foreach ($this->properties as $key => $property) {
+            $props[$key] = $property->to_array();
+        }
+
+        $object['properties'] = $props;
+        $schema['items'] = $object;
+
+        return $schema;
     }
 }

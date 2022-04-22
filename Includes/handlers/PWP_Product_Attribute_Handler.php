@@ -7,7 +7,7 @@ namespace PWP\includes\handlers;
 use PWP\includes\exceptions\PWP_Not_Implemented_Exception;
 use PWP\includes\utilities\PWP_ILogger;
 
-class PWP_Product_Attribute_Handler implements PWP_IHandler
+class PWP_Product_Attribute_Handler implements PWP_I_Handler
 {
 
     public function __construct(PWP_ILogger $logger)
@@ -47,11 +47,6 @@ class PWP_Product_Attribute_Handler implements PWP_IHandler
     public function delete_item(int $id, array $args = []): bool
     {
         return false;
-    }
-
-    public function batch_items(array $data, array $args = []): array
-    {
-        return [];
     }
 
     public function get_attribute_by_slug(string $slug): object

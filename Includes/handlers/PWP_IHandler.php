@@ -6,7 +6,7 @@ namespace PWP\includes\handlers;
 
 use PWP\includes\utilities\PWP_ILogger;
 
-interface PWP_IHandler
+interface PWP_I_Handler
 {
     public function create_item(string $identifier, array $args = []): object;
 
@@ -16,6 +16,4 @@ interface PWP_IHandler
     public function update_item(int $id, array $args = []): object;
 
     public function delete_item(int $id, array $args = []): bool;
-
-    public function batch_items(array $data, array $args = []): array;
 }
