@@ -23,29 +23,25 @@ abstract class PWP_Term_Handler implements PWP_I_Handler
 
     public function create_item(string $identifier, array $args = []): object
     {
-        $parent = $this->find_parent((int)$args['parent-id'], $args['parent-slug']);
+        $parent = $this->find_parent((int)$args['parent_id'], $args['parent_slug']);
 
-        $slug = $args['slug'];
-        if (!isset($slug)) {
-            $slug = strtolower($identifier);
-            $slug = str_replace(' ', '_', $slug);
-        }
+        $slug = $args['slug'] ?: $this->generate_slug($identifier, $args['language_code']);
+        $description = $args['description'] ?: '';
 
-        $term = $this->get_item_by_slug($slug);
-
-        if ($term) {
-            throw new \Exception("tag with this slug already exists in the database", 404);
+        if ($this->get_item_by_slug($slug)) {
+            throw new \Exception("{$this->longTypeName} with this slug already exists", 404);
         }
 
         $result =  wp_insert_term($identifier, $this->taxonomy, array(
             'slug' => $slug,
-            'description' => $args['description'],
+            'description' => $description,
             'parent' => $parent->term_id ?: 0,
         ));
 
-        // if (isset($args['seoData'])) {
-        //     $this->define_seo_meta_data($result['term_taxonomy_id'], $args['seoData']);
-        // }
+        if (isset($args['seo'])) {
+            $seo = $args['seo'];
+            $this->define_seo_meta_data($result['term_id'], $seo['focus_keyword'], $seo['description']);
+        }
 
         return get_term($result['term_id']);
     }
@@ -106,12 +102,12 @@ abstract class PWP_Term_Handler implements PWP_I_Handler
         return !$result ? $result : null;
     }
 
-    final private function define_seo_meta_data($objectId, $seoData)
+    final private function define_seo_meta_data($objectId, string $keyword, string $description)
     {
         $currentSeoMetaData = get_option('wpseo_taxonomy_meta');
 
-        $currentSeoMetaData[$this->taxonomy][$objectId]['wpseo_focuskw'] = $seoData->focus_keyword;
-        $currentSeoMetaData[$this->taxonomy][$objectId]['wpseo_desc'] = $seoData->description;
+        $currentSeoMetaData[$this->taxonomy][$objectId]['wpseo_focuskw'] = $keyword;
+        $currentSeoMetaData[$this->taxonomy][$objectId]['wpseo_desc'] = $description;
 
         update_option('wpseo_taxonomy_meta', $currentSeoMetaData);
     }
@@ -140,5 +136,16 @@ abstract class PWP_Term_Handler implements PWP_I_Handler
         }
 
         throw new \Exception("Parent not found!", 404);
+    }
+
+    function generate_slug(string $name, ?string $lang = null): string
+    {
+        $slug = strtolower($name);
+        $slug = str_replace(' ', '_', $slug);
+
+        if (!empty($lang)) {
+            $slug .= "-{$lang}";
+        }
+        return $slug;
     }
 }
