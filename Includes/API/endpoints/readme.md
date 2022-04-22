@@ -122,7 +122,7 @@ ___
     ___
     ### `GET` parameters:
 
-    * TO BE DONE
+        TODO
     ___
     ### `POST` parameters:
 
