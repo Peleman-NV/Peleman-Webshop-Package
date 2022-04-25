@@ -8,14 +8,13 @@ use PWP\adminPage\hookables\PWP_Admin_Notice_Poster;
 use PWP\includes\API\PWP_API_Hookable;
 use PWP\includes\hookables\PWP_IHookableComponent;
 use PWP\includes\loaders\PWP_Plugin_Loader;
-use PWP\includes\utilities\PWP_Admin_Notice;
 use PWP\publicPage\PWP_Public_Product_Page;
-
-defined('ABSPATH') || exit;
 
 if (!function_exists('is_plugin_active')) {
     include_once(ABSPATH . '/wp-admin/includes/plugin.php');
 }
+
+defined('ABSPATH') || exit;
 
 class PWP_Plugin
 {

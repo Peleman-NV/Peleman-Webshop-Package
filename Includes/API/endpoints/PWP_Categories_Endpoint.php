@@ -100,7 +100,10 @@ class PWP_Categories_Endpoint extends PWP_EndpointController implements PWP_IEnd
                 return rest_ensure_response($response->data);
             }
         } catch (\Exception $exception) {
-            return new WP_REST_Response($exception->getMessage(), $exception->getCode());
+            return new WP_REST_Response(array(
+                'code' => $exception->getCode(),
+                'message' => $exception->getMessage(),
+            ), $exception->getCode());
         }
     }
 

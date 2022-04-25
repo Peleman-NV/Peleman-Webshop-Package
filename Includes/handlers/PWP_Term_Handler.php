@@ -4,141 +4,111 @@ declare(strict_types=1);
 
 namespace PWP\includes\handlers;
 
-use PWP\includes\utilities\PWP_ILogger;
 use WP_Error;
-use WP_Term;
+use PWP\includes\handlers\Items\PWP_Term;
+use PWP\includes\exceptions\PWP_Not_Implemented_Exception;
+
+include_once(ABSPATH . '/wp-admin/includes/plugin.php');
 
 abstract class PWP_Term_Handler implements PWP_I_Handler
 {
-    protected PWP_ILogger $logger;
-    private string $taxonomy;
-    private string $longTypeName;
+    private PWP_Term $item;
 
-    public function __construct(string $taxonomy, string $typeLongName, PWP_ILogger $logger)
+    /**
+     * Undocumented function
+     *
+     * @param string $taxonomy taxonomy of the term that this handler will create
+     * @param string $beautyName beauty name to display in error messages
+     * @param string $elementType element type of the term; for use with WPML translations.
+     * @param PWP_ILogger $logger
+     */
+    public function __construct(string $taxonomy, string $beautyName, string $elementType)
     {
-        $this->logger = $logger;
-        $this->taxonomy = $taxonomy;
-        $this->longTypeName = $typeLongName;
+        $this->item = new PWP_Term($taxonomy, $beautyName, $elementType);
     }
 
-    public function create_item(string $identifier, array $args = []): object
+    public function create_item(string $identifier, array $args = []): \WP_Term
     {
-        $parent = $this->find_parent((int)$args['parent_id'], $args['parent_slug']);
-
         $slug = $args['slug'] ?: $this->generate_slug($identifier, $args['language_code']);
-        $description = $args['description'] ?: '';
 
-        if ($this->get_item_by_slug($slug)) {
-            throw new \Exception("{$this->longTypeName} with this slug already exists", 404);
+        if ($this->item->get_item_by_slug($slug)) {
+            throw new \Exception("{$this->beautyName} with the slug {$slug} already exists", 404);
         }
 
-        $result =  wp_insert_term($identifier, $this->taxonomy, array(
-            'slug' => $slug,
-            'description' => $description,
-            'parent' => $parent->term_id ?: 0,
-        ));
+        $parent = $this->find_parent((int)$args['parent_id'], $args['parent_slug']);
+        $parentId = $parent ? $parent->term_id : 0;
 
-        if (isset($args['seo'])) {
-            $seo = $args['seo'];
-            $this->define_seo_meta_data($result['term_id'], $seo['focus_keyword'], $seo['description']);
-        }
+        $term = $this->item->create_item($identifier, $slug, $args['description'], $parentId);
+        $this->item->set_seo_data($term, $args['seo']['focus_keyword'], $args['seo']['description']);
+        $this->item->set_translation_data($term, $this->item->get_item_by_slug($args['english_slug']), $args['language_code']);
 
-        return get_term($result['term_id']);
+        return $term;
     }
 
     public function get_item(int $id, array $args = []): ?\WP_Term
     {
-        $term = get_term($id, $this->taxonomy, OBJECT);
-        if ($term instanceof \WP_Term) {
-            return $term;
-        }
-        return null;
+        return $this->item->get_item_by_id($id);
     }
 
     public function get_items(array $args = []): array
     {
-        $args['taxonomy'] = $this->get_taxonomy();
+        $args['taxonomy'] = $this->item->get_taxonomy();
         $terms = get_terms($args);
         return $terms;
     }
 
     public function update_item(int $id, array $args = []): object
     {
-        return new \WP_Term(0);
+        throw new PWP_Not_Implemented_Exception(sprintf("%s : %s: function %s not implemented!", __FILE__, __LINE__, __METHOD__));
     }
 
     public function delete_item(int $id, array $args = []): bool
     {
-        $outcome = wp_delete_term($id, $this->taxonomy, $args);
+        $outcome = $this->item->delete_item($id, $args);
+
         if ($outcome instanceof WP_Error || !$outcome) {
-            throw new \Exception("{$this->longTypeName} not found", 404);
-            return false;
+            throw new \Exception("was not capable of deleting item. {$this->beautyName} not found", 404);
         }
         if ($outcome === 0) {
             throw new \Exception("attempted to delete default category", 400);
-            return false;
         }
 
-        return true;
+        return $outcome;
+    }
+
+    final public function update_item_by_slug(string $slug, array $args = []): ?\WP_TERM
+    {
+        //TODO: write implementation
+        throw new PWP_Not_Implemented_Exception(sprintf("%s : %s: function %s not implemented!", __FILE__, __LINE__, __METHOD__));
+        return null;
     }
 
     public function delete_item_by_slug(string $slug, array $args = []): bool
     {
-        $term = $this->get_item_by_slug($slug);
-        if (empty($term)) throw new \Exception("term with slug {$slug} not found", 404);
+        $term = $this->item->get_item_by_slug($slug);
+        if (empty($term)) {
+            throw new \Exception("term with slug {$slug} not found", 404);
+        }
 
         return $this->delete_item($term->term_id, $args);
     }
 
-    final public function get_item_by_slug(string $slug): ?\WP_Term
+    private function find_parent(int $id = 0, string $slug = ''): ?\WP_Term
     {
-        $result = get_term_by('slug', $slug, $this->taxonomy);
-        return !empty($result) ? $result : null;
-    }
-
-    final public function get_item_by_name(string $name): ?\WP_Term
-    {
-        $result = get_term_by('name', $name, $this->taxonomy);
-        return !$result ? $result : null;
-    }
-
-    final private function define_seo_meta_data($objectId, string $keyword, string $description)
-    {
-        $currentSeoMetaData = get_option('wpseo_taxonomy_meta');
-
-        $currentSeoMetaData[$this->taxonomy][$objectId]['wpseo_focuskw'] = $keyword;
-        $currentSeoMetaData[$this->taxonomy][$objectId]['wpseo_desc'] = $description;
-
-        update_option('wpseo_taxonomy_meta', $currentSeoMetaData);
-    }
-
-    public function get_taxonomy(): string
-    {
-        return $this->taxonomy;
-    }
-
-    private function find_parent(?int $id, ?string $slug): ?WP_Term
-    {
-        if (is_null($id) && is_null($slug)) return null;
-
-        if (!empty($id) || 0 >= $id) {
-            $parent = $this->get_item($id);
-            if (!empty($parent)) {
-                return $parent;
-            }
+        $parent = $this->item->get_item_by_id($id);
+        if (!empty($parent)) {
+            return $parent;
         }
 
-        if (!empty($slug)) {
-            $parent = $this->get_item_by_slug($slug);
-            if (!empty($parent)) {
-                return $parent;
-            }
+        $parent = $this->item->get_item_by_slug($slug);
+        if (!empty($parent)) {
+            return $parent;
         }
 
-        throw new \Exception("Parent not found!", 404);
+        return null;
     }
 
-    function generate_slug(string $name, ?string $lang = null): string
+    private function generate_slug(string $name, ?string $lang = null): string
     {
         $slug = strtolower($name);
         $slug = str_replace(' ', '_', $slug);
