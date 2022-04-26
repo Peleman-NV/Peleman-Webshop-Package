@@ -41,7 +41,7 @@ class PWP_WPDB
      * @param string $query
      * @return int|bool
      */
-    public function query(string $query): mixed
+    public function query(string $query)
     {
         return $this->db->query($query);
     }
@@ -58,7 +58,7 @@ class PWP_WPDB
     }
 
     /**
-     * Undocumented function
+     * prepare query for term translation updating. works with WPML's wp_icl_translations table.
      *
      * @param string $lang 2 character lower-case language code of the current entry.
      * @param string $sourceLang 2 character lower-case language code of the default/parent entry.

@@ -30,7 +30,7 @@ abstract class PWP_Term_SVC implements PWP_I_SVC
         $this->sourceLang = $sourceLang;
     }
 
-    public function create_item(string $name, string $slug = '', ?string $description, ?int $parentId)
+    final public function create_item(string $name, string $slug = '', ?string $description, ?int $parentId)
     {
         $termData =  wp_insert_term($name, $this->taxonomy, array(
             'slug' => $slug,
@@ -45,6 +45,11 @@ abstract class PWP_Term_SVC implements PWP_I_SVC
         return $this->get_item_by_id($termData['term_id']);
     }
 
+    final public function get_name(): string
+    {
+        return $this->beautyName;
+    }
+
     /**
      * Undocumented function
      *
@@ -54,12 +59,10 @@ abstract class PWP_Term_SVC implements PWP_I_SVC
      * @param array $args
      * @return \WP_Term
      */
-    public function update_item(\WP_Term $term, bool $useNullValues = false, array $args = []): \WP_Term
+    final public function update_item(\WP_Term $term, array $args = [], bool $useNullValues = false): \WP_Term
     {
-        if ($useNullValues) {
-            $args = array_filter($args, function ($entry) {
-                return !($entry === null || $entry === '' || $entry === [] || isset($entry));
-            });
+        if (!$useNullValues) {
+            $args = $this->filter_null_values_from_array($args);
         }
 
         wp_update_term($term->id, $term->taxonomy, $args);
@@ -118,7 +121,7 @@ abstract class PWP_Term_SVC implements PWP_I_SVC
         $taxonomyId = $translatedTerm->term_taxonomy_id;
         $trid = $sitepress->get_element_trid($originalTerm->term_id, $this->elementType);
 
-        $result = $wpdb->query($wpdb->prepare_term_translation_query($lang, $this->sourceLang, $trid, $this->elementType, $taxonomyId));
+        $result = $wpdb->query($wpdb->prepare_term_translation_query($lang, $this->sourceLang, (int)$trid, $this->elementType, $taxonomyId));
 
         return !$result;
     }
@@ -128,5 +131,12 @@ abstract class PWP_Term_SVC implements PWP_I_SVC
         $result = wp_delete_term($id, $this->taxonomy, $args);
         if ($result === true) return true;
         return false;
+    }
+
+    final private function filter_null_values_from_array(array $array): array
+    {
+        return array_filter($array, function ($entry) {
+            return !($entry === null || $entry === '' || $entry === [] || isset($entry));
+        });
     }
 }

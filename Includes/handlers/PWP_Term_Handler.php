@@ -6,17 +6,16 @@ namespace PWP\includes\handlers;
 
 use WP_Error;
 use PWP\includes\exceptions\PWP_Not_Implemented_Exception;
-use PWP\includes\handlers\Items\PWP_I_SVC;
-use PWP\includes\handlers\Items\PWP_Term_SVC;
+use PWP\includes\handlers\services\PWP_Term_SVC;
 use WP_Term;
 
 include_once(ABSPATH . '/wp-admin/includes/plugin.php');
 
 abstract class PWP_Term_Handler implements PWP_I_Handler
 {
-    private PWP_Term_SVC $service;
+    protected PWP_Term_SVC $service;
 
-    public function __construct(PWP_I_SVC $service)
+    public function __construct(PWP_Term_SVC $service)
     {
         $this->service = $service;
     }
@@ -24,20 +23,45 @@ abstract class PWP_Term_Handler implements PWP_I_Handler
     public function create_item(string $identifier, array $args = []): \WP_Term
     {
         $slug = $args['slug'] ?: $this->generate_slug($identifier, $args['language_code']);
-
         if ($this->service->get_item_by_slug($slug)) {
             throw new \Exception("{$this->beautyName} with the slug {$slug} already exists", 404);
         }
 
-        $parent = $this->find_parent((int)$args['parent_id'], $args['parent_slug']);
-        $parentId = $parent ? $parent->term_id : 0;
+        $englishSlug = $args['english_slug'];
+        $langCode = $args['language_code'];
 
-        $term = $this->service->create_item($identifier, $slug, $args['description'], $parentId);
+        if (isset($englishSlug)) {
+            if (!isset($langCode)) {
+                throw new \Exception("English slug has been entered, but no language code. Translations require both the slug and code.");
+            }
 
+            if (!$this->service->get_item_by_slug($englishSlug)) {
+                throw new \Exception("invalid English slug {$englishSlug} has been passed.");
+            }
+
+            //create translated term
+            $term = $this->create_new_item($identifier, $slug, $args['description'] ?: '', (int)$args['parent_id'], $args['parent_slug']);
+            $this->service->set_seo_data($term, $args['seo']['focus_keyword'], $args['seo']['description']);
+
+            $this->service->set_translation_data($term, $this->service->get_item_by_slug($englishSlug), $langCode);
+
+            return $term;
+        }
+
+        //create regular term.
+
+        $term = $this->create_new_item($identifier, $slug, $args['description'] ?: '', (int)$args['parent_id'], $args['parent_slug']);
         $this->service->set_seo_data($term, $args['seo']['focus_keyword'], $args['seo']['description']);
-        $this->service->set_translation_data($term, $this->service->get_item_by_slug($args['english_slug']), $args['language_code']);
 
         return $term;
+    }
+
+    private function create_new_item(string $identifier, string $slug, string $description = '', int $parentId, string $parentSlug): \WP_Term
+    {
+        $parent = $this->find_parent($parentId, $parentSlug);
+        $parentId = $parent ? $parent->term_id : 0;
+
+        return $this->service->create_item($identifier, $slug, $description, $parentId);
     }
 
     public function get_item(int $id, array $args = []): ?\WP_Term

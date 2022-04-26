@@ -12,8 +12,8 @@ use PWP\includes\utilities\schemas\PWP_ISchema;
 use PWP\includes\API\endpoints\PWP_EndpointController;
 use PWP\includes\authentication\PWP_IApiAuthenticator;
 use PWP\includes\utilities\schemas\PWP_Schema_Factory;
-use PWP\includes\handlers\Items\PWP_Product_Category_SVC;
 use PWP\includes\exceptions\PWP_Not_Implemented_Exception;
+use PWP\includes\handlers\services\PWP_Product_Category_SVC;
 
 class PWP_Categories_Endpoint extends PWP_EndpointController implements PWP_IEndpoint
 {

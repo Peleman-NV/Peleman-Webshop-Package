@@ -10,6 +10,6 @@ class PWP_Category_Handler extends PWP_Term_Handler
 {
     public function __construct()
     {
-        $this->service = new PWP_Product_Category_SVC();
+       parent::__construct(new PWP_Product_Category_SVC());
     }
 }

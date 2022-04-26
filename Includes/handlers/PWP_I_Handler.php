@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace PWP\includes\handlers;
 
-use PWP\includes\utilities\PWP_ILogger;
-
 interface PWP_I_Handler
 {
     public function create_item(string $identifier, array $args = []): object;
