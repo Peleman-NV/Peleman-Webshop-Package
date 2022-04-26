@@ -6,13 +6,18 @@ namespace PWP\includes\utilities;
 
 use wpdb;
 
+/**
+ * wrapper/decorator class for the standard wpdb global object. can be used to retrieve the wpdb global statically, or
+ * direclty call some of its more common functionality. the main benefit of this class is that it is typed,
+ * whereas the global wpdb value is not.
+ */
 class PWP_WPDB
 {
-    public wpdb $db;
+    private wpdb $db;
+
     public function __construct()
     {
-        global $wpdb;
-        $this->db = $wpdb;
+        $this->db = self::get_wpdb();
     }
 
     public function prefix(): string
@@ -29,5 +34,50 @@ class PWP_WPDB
     {
         global $wpdb;
         return $wpdb;
+    }
+
+    /**
+     * see the wpdb class query function for more about how this function works
+     * @param string $query
+     * @return int|bool
+     */
+    public function query(string $query): mixed
+    {
+        return $this->db->query($query);
+    }
+
+    /**
+     * see the wpdb class get_results function for more about how this function works
+     *
+     * @param string $query
+     * @return object
+     */
+    public function get_results(string $query): object
+    {
+        return $this->db->get_results($query);
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param string $lang 2 character lower-case language code of the current entry.
+     * @param string $sourceLang 2 character lower-case language code of the default/parent entry.
+     * @param integer $trid short for translation id. translations share their trid in the table
+     * @param string $elementType identifier for the type of element which is translated. not the same as a taxonomy
+     * @param integer $taxonomyId id of the taxonomy which is translated. 
+     * @return string the completed query as a string
+     */
+    final public function prepare_term_translation_query(string $lang, string $sourceLang, int $trid, string $elementType, int $taxonomyId): string
+    {
+        $table = $this->db->prefix . 'icl_translations';
+
+        return $this->db->prepare(
+            "UPDATE {$table} SET language_code = '%s', source_language_code = '%s', trid = %d WHERE element_type = '%s' AND element_id = %d;",
+            $lang,
+            $sourceLang,
+            $trid,
+            $elementType,
+            $taxonomyId
+        );
     }
 }

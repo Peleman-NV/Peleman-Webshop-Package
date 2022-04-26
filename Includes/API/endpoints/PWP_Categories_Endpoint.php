@@ -4,21 +4,19 @@ declare(strict_types=1);
 
 namespace PWP\includes\API\endpoints;
 
+use WP_Term;
 use WP_REST_Request;
 use WP_REST_Response;
-use PWP\includes\handlers\PWP_I_Handler;
-use PWP\includes\utilities\PWP_Null_Logger;
 use PWP\includes\handlers\PWP_Category_Handler;
 use PWP\includes\utilities\schemas\PWP_ISchema;
 use PWP\includes\API\endpoints\PWP_EndpointController;
 use PWP\includes\authentication\PWP_IApiAuthenticator;
 use PWP\includes\utilities\schemas\PWP_Schema_Factory;
+use PWP\includes\handlers\Items\PWP_Product_Category_SVC;
 use PWP\includes\exceptions\PWP_Not_Implemented_Exception;
-use WP_Term;
 
 class PWP_Categories_Endpoint extends PWP_EndpointController implements PWP_IEndpoint
 {
-
     public function __construct(PWP_IApiAuthenticator $authenticator)
     {
         parent::__construct(
@@ -92,8 +90,7 @@ class PWP_Categories_Endpoint extends PWP_EndpointController implements PWP_IEnd
     public function create_item(WP_REST_Request $request): WP_REST_Response
     {
         try {
-
-            $handler = $this->prepare_handler();
+            $handler = new PWP_Category_Handler();
             $response = $handler->create_item($request['name'], $request->get_body_params());
 
             if ($response instanceof WP_Term) {
@@ -109,8 +106,8 @@ class PWP_Categories_Endpoint extends PWP_EndpointController implements PWP_IEnd
 
     public function get_items(WP_REST_Request $request): WP_REST_Response
     {
-        $handler = $this->prepare_handler();
-        return new WP_REST_Response($handler->get_items());
+        $handler = new PWP_Product_Category_SVC();
+        return new WP_REST_Response($handler->get_items((array)$request));
     }
 
     public function get_item(WP_REST_Request $request): WP_REST_Response
@@ -134,27 +131,28 @@ class PWP_Categories_Endpoint extends PWP_EndpointController implements PWP_IEnd
         $creates = $request['create'];
         $deletes = $request['delete'];
 
-        $handler = $this->prepare_handler();
+        $notices = array();
+
+        $handler = new PWP_Category_Handler();
 
         foreach ($updates as $update) {
-            $handler->update_item($update['id'], $update);
+            try {
+                $term = $handler->update_item_by_slug($update['slug'], $update);
+                $notices[] = "successfully updated category {$term->slug}";
+            } catch (\Exception $exception) {
+                $notices[] = "error when updating category {$update['id']}: {$exception->getMessage()}";
+            }
         }
 
         foreach ($creates as $create) {
-            $handler->create_item($create['name'], $create);
+            $notices[] = $handler->create_item($create['name'], $create);
         }
 
         foreach ($deletes as $delete) {
-            $handler->delete_item($delete['id'], $create);
+            $notices[] = $handler->delete_item_by_slug($delete['slug'], $create);
         }
 
         return new WP_REST_Response("we're not quite there yet, but we will be soon!", 501);
-    }
-
-    private function prepare_handler(): PWP_Category_Handler
-    {
-        $logger = new PWP_Null_Logger();
-        return new PWP_Category_Handler($logger);
     }
 
     function get_argument_schema(): PWP_ISchema

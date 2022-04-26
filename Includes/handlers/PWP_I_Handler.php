@@ -13,7 +13,16 @@ interface PWP_I_Handler
     public function get_item(int $id, array $args = []): ?object;
     public function get_items(array $args = []): array;
 
-    public function update_item(int $id, array $args = []): object;
+    /**
+     * Undocumented function
+     *
+     * @param integer $id
+     * @param array $args
+     * @param boolean $useEmpty default false. determines if values that have been left empty in the args
+     * should be persisted anyway.
+     * @return object
+     */
+    public function update_item(int $id, array $args = [], bool $useNullValues = false): object;
 
     public function delete_item(int $id, array $args = []): bool;
 }

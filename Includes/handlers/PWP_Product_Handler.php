@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace PWP\includes\handlers;
 
 use WC_Product;
-use function PHPUnit\Framework\isNull;
 use PWP\includes\exceptions\PWP_Not_Found_Exception;
 use PWP\includes\exceptions\PWP_Not_Implemented_Exception;
+use PWP\includes\handlers\services\PWP_Product_Category_SVC;
 use PWP\includes\utilities\PWP_ILogger;
 
 class PWP_Product_Handler implements PWP_I_Handler
@@ -83,7 +83,7 @@ class PWP_Product_Handler implements PWP_I_Handler
     public function get_item(int $id, array $args = []): object
     {
         $response = wc_get_product($id);
-        if (!$response || isNull($response)) {
+        if (!$response || is_null($response)) {
             throw new \Exception("no product matching id {$id} found in database!", 404);
         }
 
@@ -144,10 +144,10 @@ class PWP_Product_Handler implements PWP_I_Handler
         if (is_null($slugs)) return array();
 
         $tagIds = array();
-        $handler = new PWP_Tag_Handler($this->logger);
+        $handler = new PWP_Product_Category_SVC();
         foreach ($slugs as $slug) {
             $result =  $handler->get_item_by_slug($slug);
-            if (isNull($result)) {
+            if (is_null($result)) {
                 throw new PWP_Not_Found_Exception("tag with slug {$slug} not found in system");
             }
             $tagIds[] = $result->term_id;

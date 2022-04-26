@@ -4,14 +4,12 @@ declare(strict_types=1);
 
 namespace PWP\includes\handlers;
 
-use WP_Term;
-use PWP\includes\utilities\PWP_ILogger;
-use PWP\includes\wrappers\PWP_Category;
+use PWP\includes\handlers\services\PWP_Product_Category_SVC;
 
 class PWP_Category_Handler extends PWP_Term_Handler
 {
-    public function __construct(PWP_ILogger $logger)
+    public function __construct()
     {
-        parent::__construct('product_cat', 'product category', 'tax_product_cat', $logger);
+        $this->service = new PWP_Product_Category_SVC();
     }
 }

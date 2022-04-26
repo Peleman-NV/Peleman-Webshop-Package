@@ -25,7 +25,7 @@
             $('#ppi-loading').removeClass('ppi-hidden');
             e.preventDefault();
             const variationId = $("[name='variation_id']").val();
-            const templateVariationId = $("[name='")
+            // const templateVariationId = $("[name='").val();
             const contentFileId = $("[name='content_file_id']").val();
             getRedirect(variationId, contentFileId);
         }
