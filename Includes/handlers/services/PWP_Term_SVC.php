@@ -78,6 +78,7 @@ abstract class PWP_Term_SVC implements PWP_I_SVC
     final public function get_items(array $args = []): array
     {
         $args['taxonomy'] = $this->taxonomy;
+        $args['hide_empty'] = false;
         return get_terms($args);
     }
 

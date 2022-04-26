@@ -106,8 +106,8 @@ class PWP_Categories_Endpoint extends PWP_EndpointController implements PWP_IEnd
 
     public function get_items(WP_REST_Request $request): WP_REST_Response
     {
-        $handler = new PWP_Product_Category_SVC();
-        return new WP_REST_Response($handler->get_items((array)$request));
+        $handler = new PWP_Category_Handler();
+        return new WP_REST_Response($handler->get_items($request->get_params()));
     }
 
     public function get_item(WP_REST_Request $request): WP_REST_Response

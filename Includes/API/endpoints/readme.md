@@ -123,6 +123,8 @@ ___
     ### `GET` parameters:
 
         TODO
+    * __lang__
+        > __`string`__ - language of categories. default is 'en'
     ___
     ### `POST` parameters:
 

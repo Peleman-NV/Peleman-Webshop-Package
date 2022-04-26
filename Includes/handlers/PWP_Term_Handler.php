@@ -56,7 +56,7 @@ abstract class PWP_Term_Handler implements PWP_I_Handler
         return $term;
     }
 
-    private function create_new_item(string $identifier, string $slug, string $description = '', int $parentId, string $parentSlug): \WP_Term
+    private function create_new_item(string $identifier, string $slug, string $description = '', ?int $parentId, ?string $parentSlug): \WP_Term
     {
         $parent = $this->find_parent($parentId, $parentSlug);
         $parentId = $parent ? $parent->term_id : 0;
@@ -110,16 +110,21 @@ abstract class PWP_Term_Handler implements PWP_I_Handler
         return $this->delete_item($term->term_id, $args);
     }
 
-    private function find_parent(int $id = 0, string $slug = ''): ?\WP_Term
+    private function find_parent(?int $id, ?string $slug): ?\WP_Term
     {
-        $parent = $this->service->get_item_by_id($id);
-        if (!empty($parent)) {
-            return $parent;
+        if (!empty($id)) {
+            $parent = $this->service->get_item_by_id($id);
+            if (!empty($parent)) {
+                return $parent;
+            }
         }
 
-        $parent = $this->service->get_item_by_slug($slug);
-        if (!empty($parent)) {
-            return $parent;
+        if (!empty($slug)) {
+
+            $parent = $this->service->get_item_by_slug($slug);
+            if (!empty($parent)) {
+                return $parent;
+            }
         }
 
         return null;
