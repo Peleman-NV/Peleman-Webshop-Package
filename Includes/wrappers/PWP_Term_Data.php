@@ -1,0 +1,74 @@
+<?php
+
+declare(strict_types=1);
+
+namespace PWP\includes\wrappers;
+
+class PWP_Term_Data extends PWP_Component
+{
+    public function __construct(array $data = [])
+    {
+        parent::__construct($data);
+        //TODO: should an empty slug auto-generate, or should it throw an error?
+        $this->slug = $this->data->slug ?: $this->generate_slug($this->data->name, $this->data->language_code);
+    }
+
+    final protected function generate_slug(string $name, ?string $lang = null): string
+    {
+        $slug = str_replace(' ', '_', strtolower($name));
+
+        if (!empty($lang)) {
+            $slug .= "-{$lang}";
+        }
+        $this->data->slug = $slug;
+        return $slug;
+    }
+
+    final public function get_seo_data(): ?PWP_SEO_Data
+    {
+        if (!isset($this->data->seo)) return null;
+        return new PWP_SEO_Data($this->data->seo);
+    }
+
+    final public function get_english_slug(): string
+    {
+        return $this->data->english_slug ?: '';
+    }
+
+    final public function get_language_code(): string
+    {
+        return $this->data->language_code ?: '';
+    }
+
+    final public function get_name(): string
+    {
+        return $this->data->name;
+    }
+
+    final public function get_slug(): string
+    {
+        if (empty($this->data->slug))
+            $this->data->slug = $this->generate_slug($this->data->name, $this->data->language_code);
+        return $this->data->slug;
+    }
+
+    final public function get_description(): string
+    {
+        return $this->data->description ?: '';
+    }
+
+    final public function get_parent_slug(): string
+    {
+        return $this->data->parent_slug ?: '';
+    }
+
+    final public function get_parent_id(): int
+    {
+        return (int)($this->data->parent_id ?: '');
+    }
+
+    final public function set_parent_id(int $id): void
+    {
+        $this->data->parent_id = $id;
+    }
+}

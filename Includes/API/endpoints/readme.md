@@ -124,7 +124,7 @@ ___
 
         TODO
     * __lang__
-        > __`string`__ - language of categories. default is 'en'
+        > __`string`__ - language of categories. default is `en`.
     ___
     ### `POST` parameters:
 

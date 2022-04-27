@@ -19,53 +19,53 @@ class PWP_Product_Handler implements PWP_I_Handler
         $this->logger = $logger;
     }
 
-    public function create_item(string $identifier, array $args = []): object
+    public function create_item(array $createData, array $args = []): object
     {
-        $args = (object)$args;
+        $createData = (object)$createData;
         try {
             $product = new WC_Product();
 
-            $product->set_name($args->name);
+            $product->set_name($createData->name);
             $product->set_reviews_allowed(false);
 
-            if (!empty($args->lang)) {
-                $parentId = wc_get_product_id_by_sku($args->SKU);
+            if (!empty($createData->lang)) {
+                $parentId = wc_get_product_id_by_sku($createData->SKU);
                 if (empty($parentId)) {
                     throw new \Exception("Parent product not found (default language counterpart not found in database)", 400);
                 }
             }
-            if (wc_get_product_id_by_sku($args->SKU) > 0) {
+            if (wc_get_product_id_by_sku($createData->SKU) > 0) {
                 throw new \Exception("product with this SKU already exists!", 400);
             }
 
-            $product->set_SKU($args->SKU);
-            $product->set_status($args->status);
+            $product->set_SKU($createData->SKU);
+            $product->set_status($createData->status);
 
-            $product->set_catalog_visibility($args->visibility ?: 'hidden');
+            $product->set_catalog_visibility($createData->visibility ?: 'hidden');
 
-            if (!empty($args->parent_id)) {
-                $product->set_parent_id($args->parent);
+            if (!empty($createData->parent_id)) {
+                $product->set_parent_id($createData->parent);
             }
-            $product->set_price($this->price);
-            $product->set_regular_price($args->regular_price);
-            $product->set_sale_price($args->sale_price);
+            $product->set_price($createData->price);
+            $product->set_regular_price($createData->regular_price);
+            $product->set_sale_price($createData->sale_price);
 
-            $product->set_upsell_ids($this->get_ids_from_skus($args->upsell_SKUs));
-            $product->set_cross_sell_ids($this->get_ids_from_skus($args->cross_sell_SKUs));
+            $product->set_upsell_ids($this->get_ids_from_skus($createData->upsell_SKUs));
+            $product->set_cross_sell_ids($this->get_ids_from_skus($createData->cross_sell_SKUs));
 
-            $product->set_tag_ids($this->get_tag_ids($args->tags));
-            $product->set_category_ids($this->get_category_ids($args->categories));
-            $product->set_attributes($this->get_attributes($args->attributes));
-            $product->set_default_attributes($this->get_default_attributes($args->default_attributes));
+            $product->set_tag_ids($this->get_tag_ids($createData->tags));
+            $product->set_category_ids($this->get_category_ids($createData->categories));
+            $product->set_attributes($this->get_attributes($createData->attributes));
+            $product->set_default_attributes($this->get_default_attributes($createData->default_attributes));
 
-            $product->set_image_id($args->main_image_id);
-            $product->set_gallery_image_ids($this->get_images($args->images));
+            $product->set_image_id($createData->main_image_id);
+            $product->set_gallery_image_ids($this->get_images($createData->images));
 
-            $product->set_meta_data(array('customizable' => $args->customizable ?: false));
-            $product->set_meta_data(array('template-id' => $args->template_id));
-            $product->set_meta_data(array('template-variant-id' => $args->template_variant_id));
-            if (!empty($args->lang)) {
-                $product->set_meta_data(array('lang' => $args->lang));
+            $product->set_meta_data(array('customizable' => $createData->customizable ?: false));
+            $product->set_meta_data(array('template-id' => $createData->template_id));
+            $product->set_meta_data(array('template-variant-id' => $createData->template_variant_id));
+            if (!empty($createData->lang)) {
+                $product->set_meta_data(array('lang' => $createData->lang));
             }
         } catch (\Exception $exception) {
             throw $exception;
@@ -101,7 +101,7 @@ class PWP_Product_Handler implements PWP_I_Handler
         return $results;
     }
 
-    public function update_item(int $id, array $args = []): object
+    public function update_item(int $id, array $createData, array $args = [], bool $useNullValues = false): object
     {
         throw new PWP_Not_Implemented_Exception();
     }

@@ -4,14 +4,19 @@ declare(strict_types=1);
 
 namespace PWP\includes\handlers\services;
 
+use PWP\includes\exceptions\PWP_Invalid_Input_Exception;
+use PWP\includes\exceptions\PWP_Not_Found_Exception;
+use PWP\includes\exceptions\PWP_WP_Error_Exception;
 use PWP\includes\utilities\PWP_WPDB;
 use PWP\includes\handlers\services\PWP_I_SVC;
+use PWP\includes\wrappers\PWP_SEO_Data;
 
 abstract class PWP_Term_SVC implements PWP_I_SVC
 {
     private string $taxonomy;
     private string $beautyName;
-    private string $elementType;
+    private string $taxonomyType;
+
     private string $sourceLang;
 
     /**
@@ -19,23 +24,24 @@ abstract class PWP_Term_SVC implements PWP_I_SVC
      *
      * @param string $taxonomy taxonomy of the term
      * @param string $beautyName beautified name for use in human readable errors.
-     * @param string $elementType name of the element for use with WPML translations. 
+     * @param string $taxonomyType name of the element for use with WPML translations. 
      * @param string $sourceLang 2 letter lower-case language code. default is en (English)
      */
-    public function __construct(string $taxonomy, string $elementType, string $beautyName, string $sourceLang = 'en')
+    public function __construct(string $taxonomy, string $taxonomyType, string $beautyName, string $sourceLang = 'en')
     {
         $this->taxonomy = $taxonomy;
         $this->beautyName = $beautyName;
-        $this->elementType = $elementType;
+        $this->taxonomyType = $taxonomyType;
+
         $this->sourceLang = $sourceLang;
     }
 
-    final public function create_item(string $name, string $slug = '', ?string $description, ?int $parentId)
+    final public function create_item(string $name, string $slug, string $description = '', int $parentId = 0)
     {
         $termData =  wp_insert_term($name, $this->taxonomy, array(
             'slug' => $slug,
-            'description' => $description ?: '',
-            'parent' => $parentId ?: 0
+            'description' => $description,
+            'parent' => $parentId
         ));
 
         if ($termData instanceof \WP_Error) {
@@ -65,8 +71,13 @@ abstract class PWP_Term_SVC implements PWP_I_SVC
             $args = $this->filter_null_values_from_array($args);
         }
 
-        wp_update_term($term->id, $term->taxonomy, $args);
-        return $term;
+        $termData = wp_update_term($term->term_id, $term->taxonomy, $args);
+        if ($termData instanceof \WP_Error) {
+            throw new \Exception($termData->get_error_message(), $termData->get_error_code());
+        }
+
+        //get fresh version of the term
+        return $this->get_item_by_id($term->term_id);
     }
 
     /**
@@ -82,32 +93,39 @@ abstract class PWP_Term_SVC implements PWP_I_SVC
         return get_terms($args);
     }
 
-    final public function get_item_by_id(int $id): ?\WP_Term
+    final public function get_item_by_id(int $id): \WP_Term
     {
         $termData = get_term_by('id', $id, $this->taxonomy,);
-        return $termData ?: null;
+        if (!$termData)
+            throw new PWP_Not_Found_Exception("could not find term within taxonomy {$this->beautyName} with id {$id}");
+        return $termData;
     }
 
-    final public function get_item_by_name(string $name): ?\WP_Term
+    final public function get_item_by_name(string $name): \WP_Term
     {
         $termData = get_term_by('name', $name, $this->taxonomy);
-        return $termData ?: null;
+        if (!$termData)
+            throw new PWP_Not_Found_Exception("could not find term within taxonomy {$this->beautyName} with name {$name}");
+        return $termData;
     }
 
-    final public function get_item_by_slug(string $slug): ?\WP_Term
+
+    final public function get_item_by_slug(string $slug): \WP_Term
     {
         $termData = get_term_by('slug', $slug, $this->taxonomy);
-        return $termData ?: null;
+        if (!$termData)
+            throw new PWP_Not_Found_Exception("could not find term within taxonomy {$this->beautyName} with slug {$slug}");
+        return $termData;
     }
 
-    final public function set_seo_data(\WP_Term $term, string $focusKeyword, string $description): void
+    final public function set_seo_data(\WP_Term $term, PWP_SEO_Data $data): void
     {
         if (!isset($seoData)) return;
 
         $currentSeoMetaData = get_option('wpseo_taxonomy_meta');
 
-        $currentSeoMetaData[$this->taxonomy][$term->id]['wpseo_focuskw'] = $seoData[] = $focusKeyword;
-        $currentSeoMetaData[$this->taxonomy][$$term->id]['wpseo_desc'] = $seoData['description'] = $description;
+        $currentSeoMetaData[$this->taxonomy][$term->id]['wpseo_focuskw'] = $data->get_focus_keyword();
+        $currentSeoMetaData[$this->taxonomy][$$term->id]['wpseo_desc'] = $data->get_description();
 
         update_option('wpseo_taxonomy_meta', $currentSeoMetaData);
     }
@@ -120,24 +138,48 @@ abstract class PWP_Term_SVC implements PWP_I_SVC
         $wpdb = new PWP_WPDB();
 
         $taxonomyId = $translatedTerm->term_taxonomy_id;
-        $trid = $sitepress->get_element_trid($originalTerm->term_id, $this->elementType);
+        $trid = $sitepress->get_element_trid($originalTerm->term_id, $this->taxonomyType);
 
-        $result = $wpdb->query($wpdb->prepare_term_translation_query($lang, $this->sourceLang, (int)$trid, $this->elementType, $taxonomyId));
+        $result = $wpdb->query($wpdb->prepare_term_translation_query($lang, $this->sourceLang, (int)$trid, $this->taxonomyType, $taxonomyId));
 
         return !$result;
     }
 
-    final public function delete_item(int $id, array $args = []): bool
+    final public function delete_item(int $id): bool
     {
-        $result = wp_delete_term($id, $this->taxonomy, $args);
+        $result = wp_delete_term($id, $this->taxonomy);
         if ($result === true) return true;
+
+        if ($result instanceof \WP_Error) {
+            throw new PWP_WP_Error_Exception($result);
+        }
+        if ($result === 0) {
+            throw new PWP_Invalid_Input_Exception("tried to delete {$this->beautyName}, which is a default category and not allowed.");
+        }
+
         return false;
     }
 
     final private function filter_null_values_from_array(array $array): array
     {
         return array_filter($array, function ($entry) {
-            return !($entry === null || $entry === '' || $entry === [] || isset($entry));
+            return !($entry === null || $entry === '' || $entry === [] || !isset($entry));
         });
+    }
+
+    final public function get_beauty_name(): string
+    {
+        return $this->beautyName;
+    }
+
+    final public function get_taxonomy(): string
+    {
+        return $this->taxonomy;
+    }
+
+    final public function get_taxonomy_type(): string
+    {
+
+        return $this->taxonomyType;
     }
 }

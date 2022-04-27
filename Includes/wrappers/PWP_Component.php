@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PWP\includes\wrappers;
 
-abstract class PWP_Component
+abstract class PWP_Component implements PWP_I_Component
 {
     protected object $data;
 

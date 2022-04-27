@@ -14,6 +14,7 @@ use PWP\includes\authentication\PWP_IApiAuthenticator;
 use PWP\includes\utilities\schemas\PWP_Schema_Factory;
 use PWP\includes\exceptions\PWP_Not_Implemented_Exception;
 use PWP\includes\handlers\services\PWP_Product_Category_SVC;
+use PWP\includes\wrappers\PWP_Category_Data;
 
 class PWP_Categories_Endpoint extends PWP_EndpointController implements PWP_IEndpoint
 {
@@ -50,7 +51,7 @@ class PWP_Categories_Endpoint extends PWP_EndpointController implements PWP_IEnd
 
         register_rest_route(
             $namespace,
-            $this->rest_base . "/(?P<id>\d+)",
+            $this->rest_base . "/(?P<slug>\w+)",
             array(
                 array(
                     "methods" => \WP_REST_Server::DELETABLE,
@@ -117,7 +118,17 @@ class PWP_Categories_Endpoint extends PWP_EndpointController implements PWP_IEnd
 
     public function update_item(WP_REST_Request $request): WP_REST_Response
     {
-        throw new PWP_Not_Implemented_Exception();
+        try {
+            $handler = new PWP_Category_Handler();
+            $response = $handler->update_item_by_slug($request['slug'], $request->get_body_params());
+            return new WP_REST_Response($response->data);
+        } catch (\Exception $exception) {
+            return new WP_REST_Response(array(
+                'code' => $exception->getCode(),
+                'message' => $exception->getMessage(),
+                'data' => $exception->getTraceAsString()
+            ), $exception->getCode());
+        }
     }
 
     public function delete_item(WP_REST_Request $request): WP_REST_Response
@@ -145,7 +156,12 @@ class PWP_Categories_Endpoint extends PWP_EndpointController implements PWP_IEnd
         }
 
         foreach ($creates as $create) {
-            $notices[] = $handler->create_item($create['name'], $create);
+            try {
+                $term = $handler->create_item($create['name'], $create);
+                $notices[] = "successfully created category {$term->name}";
+            } catch (\Exception $exception) {
+                $notices[] = "error when creating category {$create['name']}: {$exception->getMessage()}";
+            }
         }
 
         foreach ($deletes as $delete) {
