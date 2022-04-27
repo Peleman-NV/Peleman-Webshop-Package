@@ -6,26 +6,19 @@ namespace PWP\includes\API;
 
 use PWP\includes\loaders\PWP_Plugin_Loader;
 use PWP\includes\API\endpoints\PWP_I_Endpoint;
-use PWP\includes\API\endpoints\PWP_Tags_Endpoint;
+
 use PWP\includes\API\endpoints\PWP_Test_Endpoint;
-use PWP\includes\API\endpoints\PWP_Menus_Endpoint;
+
 use PWP\includes\authentication\PWP_Authenticator;
 use PWP\includes\hookables\PWP_IHookableComponent;
-use PWP\includes\API\endpoints\PWP_Images_Endpoint;
-use PWP\includes\API\endpoints\PWP_Orders_Endpoint;
-use PWP\includes\API\endpoints\PWP_Products_Endpoint;
-use PWP\includes\API\endpoints\PWP_Customers_Endpoint;
-use PWP\includes\API\endpoints\PWP_Languages_Endpoint;
+
 use PWP\includes\authentication\PWP_IApiAuthenticator;
-use PWP\includes\API\endpoints\PWP_Attributes_Endpoint;
-use PWP\includes\API\endpoints\PWP_Categories_Endpoint;
-use PWP\includes\API\endpoints\PWP_Categories_GET_Endpoint;
-use PWP\includes\API\endpoints\PWP_Attribute_Terms_Endpoint;
-use PWP\includes\API\endpoints\PWP_Categories_READ_Endpoint;
-use PWP\includes\API\endpoints\PWP_Categories_BATCH_Endpoint;
-use PWP\includes\API\endpoints\PWP_Categories_CREATE_Endpoint;
-use PWP\includes\API\endpoints\PWP_Categories_DELETE_Endpoint;
-use PWP\includes\API\endpoints\PWP_Product_Variations_Endpoint;
+
+use PWP\includes\API\endpoints\categories\PWP_Categories_READ_Endpoint;
+use PWP\includes\API\endpoints\categories\PWP_Categories_BATCH_Endpoint;
+use PWP\includes\API\endpoints\categories\PWP_Categories_CREATE_Endpoint;
+use PWP\includes\API\endpoints\categories\PWP_Categories_DELETE_Endpoint;
+use PWP\includes\API\endpoints\categories\PWP_Categories_FIND_Endpoint;
 
 defined('ABSPATH') || die;
 
@@ -60,9 +53,11 @@ class PWP_API_Hookable implements PWP_IHookableComponent
 
         $this->add_endpoint(new PWP_Categories_CREATE_Endpoint($this->rest_base, $this->authenticator));
         $this->add_endpoint(new PWP_Categories_READ_Endpoint($this->rest_base, $this->authenticator));
+        $this->add_endpoint(new PWP_Categories_FIND_Endpoint($this->rest_base, $this->authenticator));
         $this->add_endpoint(new PWP_Categories_BATCH_Endpoint($this->rest_base, $this->authenticator));
         $this->add_endpoint(new PWP_Categories_DELETE_Endpoint($this->rest_base, $this->authenticator));
-        
+        $this->add_endpoint(new PWP_Categories_DELETE_Endpoint($this->rest_base, $this->authenticator));
+
         // $this->add_endpoint(new PWP_Attributes_Endpoint($this->authenticator));
         // $this->add_endpoint(new PWP_Attribute_Terms_Endpoint($this->authenticator));
 
