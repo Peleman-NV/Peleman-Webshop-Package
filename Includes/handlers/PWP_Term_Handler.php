@@ -25,37 +25,36 @@ abstract class PWP_Term_Handler implements PWP_I_Handler, PWP_I_Slug_Handler
         $this->service = $service;
     }
 
-    public function create_item(array $createData, array $args = []): \WP_Term
+    public function create_item(PWP_Term_Data $createData, array $args = []): \WP_Term
     {
-        $data = new PWP_Term_Data($createData);
-        $slug = $data->get_slug();
+        $slug = $createData->get_slug();
         if ($this->service->get_item_by_slug($slug)) {
             throw new PWP_Resource_Already_Exists_Exception("{$this->service->get_beauty_name()} with the slug {$slug} already exists");
         }
 
-        if (!empty($data->get_english_slug())) {
-            if (!empty($data->get_language_code())) {
+        if (!empty($createData->get_english_slug())) {
+            if (!empty($createData->get_language_code())) {
                 throw new PWP_Invalid_Input_Exception("English slug has been entered, but no language code. Translations require both the slug and code.");
             }
 
-            if (!$this->service->get_item_by_slug($data->get_english_slug())) {
-                throw new PWP_Invalid_Input_Exception("invalid English slug {$data->get_english_slug()} has been passed.");
+            if (!$this->service->get_item_by_slug($createData->get_english_slug())) {
+                throw new PWP_Invalid_Input_Exception("invalid English slug {$createData->get_english_slug()} has been passed.");
             }
 
             //create translated term
-            $term = $this->create_new_item($data);
-            $this->service->set_seo_data($term, $data->get_seo_data());
+            $term = $this->create_new_item($createData);
+            $this->service->set_seo_data($term, $createData->get_seo_data());
 
-            $parent =  $this->service->get_item_by_slug($data->get_english_slug());
-            $this->service->set_translation_data($term, $parent, $data->get_language_code());
+            $parent =  $this->service->get_item_by_slug($createData->get_english_slug());
+            $this->service->set_translation_data($term, $parent, $createData->get_language_code());
 
             return $term;
         }
 
         //create regular term.
 
-        $term = $this->create_new_item($data);
-        $this->service->set_seo_data($term, $data->get_seo_data());
+        $term = $this->create_new_item($createData);
+        $this->service->set_seo_data($term, $createData->get_seo_data());
 
         return $term;
     }

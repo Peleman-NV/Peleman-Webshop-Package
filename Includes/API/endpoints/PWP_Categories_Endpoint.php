@@ -11,6 +11,7 @@ use PWP\includes\handlers\PWP_Category_Handler;
 use PWP\includes\utilities\schemas\PWP_ISchema;
 use PWP\includes\API\endpoints\PWP_EndpointController;
 use PWP\includes\authentication\PWP_IApiAuthenticator;
+use PWP\includes\exceptions\PWP_API_Exception;
 use PWP\includes\utilities\schemas\PWP_Schema_Factory;
 use PWP\includes\exceptions\PWP_Not_Implemented_Exception;
 use PWP\includes\handlers\services\PWP_Product_Category_SVC;
@@ -95,7 +96,7 @@ class PWP_Categories_Endpoint extends PWP_EndpointController implements PWP_IEnd
             $response = $handler->create_item($request['name'], $request->get_body_params());
 
             if ($response instanceof WP_Term) {
-                return rest_ensure_response($response->data);
+                return new WP_REST_RESPONSE($response->data);
             }
         } catch (\Exception $exception) {
             return new WP_REST_Response(array(
@@ -113,7 +114,17 @@ class PWP_Categories_Endpoint extends PWP_EndpointController implements PWP_IEnd
 
     public function get_item(WP_REST_Request $request): WP_REST_Response
     {
-        throw new PWP_Not_Implemented_Exception();
+        try {
+            $handler = new PWP_Category_Handler();
+        } catch (\Exception $exception) {
+            return new WP_REST_Response(array(
+                'code' => $exception->getCode(),
+                'message' => $exception->getMessage(),
+                'data' => $exception->getTraceAsString()
+            ), $exception->getCode());
+        }
+
+        throw new PWP_Not_Implemented_Exception(__METHOD__);
     }
 
     public function update_item(WP_REST_Request $request): WP_REST_Response
@@ -133,7 +144,11 @@ class PWP_Categories_Endpoint extends PWP_EndpointController implements PWP_IEnd
 
     public function delete_item(WP_REST_Request $request): WP_REST_Response
     {
-        throw new PWP_Not_Implemented_Exception();
+        try {
+            throw new PWP_Not_Implemented_Exception(__METHOD__);
+        } catch (PWP_API_Exception $exception) {
+            return $exception->to_rest_response();
+        }
     }
 
     public function batch_items(WP_REST_Request $request): WP_REST_Response

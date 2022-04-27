@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PWP\includes\exceptions;
 
-class PWP_Invalid_Input_Exception extends \Exception
+class PWP_Invalid_Input_Exception extends PWP_API_Exception
 {
     public function __construct(string $message = '', \Throwable $previous = null)
     {

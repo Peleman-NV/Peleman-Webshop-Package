@@ -71,4 +71,9 @@ class PWP_Term_Data extends PWP_Component
     {
         $this->data->parent_id = $id;
     }
+
+    final public function set_parent_slug(string $slug): void
+    {
+        $this->data->parent_slug = $slug;
+    }
 }

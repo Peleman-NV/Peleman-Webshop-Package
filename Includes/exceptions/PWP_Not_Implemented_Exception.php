@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace PWP\includes\exceptions;
 
-class PWP_Not_Implemented_Exception extends \Exception
+class PWP_Not_Implemented_Exception extends PWP_API_Exception
 {
-    public function __construct(string $message = '', \Throwable $previous = null)
+    public function __construct(string $methodName, \Throwable $previous = null)
     {
-        parent::__construct(!empty($message) ? $message : 'method not implemented', 501, $previous);
+        parent::__construct("method {$methodName} not implemented in file {$this->getFile()} > {$this->getLine()}", 501, $previous);
     }
 }
