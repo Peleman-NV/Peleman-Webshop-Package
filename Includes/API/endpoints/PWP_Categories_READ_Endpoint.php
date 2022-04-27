@@ -7,86 +7,30 @@ namespace PWP\includes\API\endpoints;
 use WP_Term;
 use WP_REST_Request;
 use WP_REST_Response;
+
+use PWP\includes\exceptions\PWP_API_Exception;
 use PWP\includes\handlers\PWP_Category_Handler;
 use PWP\includes\utilities\schemas\PWP_ISchema;
-use PWP\includes\API\endpoints\PWP_EndpointController;
 use PWP\includes\authentication\PWP_IApiAuthenticator;
-use PWP\includes\exceptions\PWP_API_Exception;
 use PWP\includes\utilities\schemas\PWP_Schema_Factory;
+use PWP\includes\API\endpoints\PWP_Abstract_READ_Endpoint;
 use PWP\includes\exceptions\PWP_Not_Implemented_Exception;
-use PWP\includes\handlers\services\PWP_Product_Category_SVC;
-use PWP\includes\wrappers\PWP_Category_Data;
+use PWP\includes\utilities\schemas\PWP_Argument_Schema;
 
-class PWP_Categories_Endpoint extends PWP_EndpointController implements PWP_IEndpoint
+class PWP_Categories_READ_Endpoint extends PWP_Abstract_READ_Endpoint
 {
-    public function __construct(PWP_IApiAuthenticator $authenticator)
+    public function __construct(string $rest_base, PWP_IApiAuthenticator $authenticator)
     {
         parent::__construct(
-            "/categories",
+            $rest_base . "/categories",
             'category',
             $this->authenticator = $authenticator
         );
     }
 
-    public function register_routes(string $namespace): void
+    public function do_action(WP_REST_Request $request): WP_REST_Response
     {
-        register_rest_route(
-            $namespace,
-            $this->rest_base,
-            array(
-                array(
-                    "methods" => \WP_REST_Server::READABLE,
-                    "callback" => array($this, 'get_items'),
-                    "permission_callback" => array($this, 'auth_get_items'),
-                    'args' => $this->get_argument_schema()->to_array(),
-                ),
-                array(
-                    "methods" => \WP_REST_Server::CREATABLE,
-                    "callback" => array($this, 'create_item'),
-                    "permission_callback" => array($this, 'auth_post_item'),
-                    'args' => array(),
-                ),
-                // 'schema' => array($this, 'get_item_array')
-            )
-        );
-
-        register_rest_route(
-            $namespace,
-            $this->rest_base . "/(?P<slug>\w+)",
-            array(
-                array(
-                    "methods" => \WP_REST_Server::DELETABLE,
-                    "callback" => array($this, 'delete_item'),
-                    "permission_callback" => array($this, 'auth_delete_item'),
-                    'args' => array(),
-                ),
-                array(
-                    "methods" => \WP_REST_Server::READABLE,
-                    "callback" => array($this, 'get_item'),
-                    "permission_callback" => array($this, 'auth_get_item'),
-                    'args' => array(),
-                ),
-                array(
-                    "methods" => \WP_REST_Server::EDITABLE,
-                    "callback" => array($this, 'update_item'),
-                    "permission_callback" => array($this, 'auth_update_item'),
-                    'args' => array(),
-                )
-            )
-        );
-
-        Register_rest_route(
-            $namespace,
-            $this->rest_base . '/batch',
-            array(
-                array(
-                    'methods' => \WP_REST_Server::EDITABLE,
-                    'callback' => array($this, 'batch_items'),
-                    "permission_callback" => array($this, 'auth_batch_items'),
-                    'args' => array(),
-                )
-            )
-        );
+        return new WP_REST_Response('nope');
     }
 
     public function create_item(WP_REST_Request $request): WP_REST_Response
@@ -189,7 +133,7 @@ class PWP_Categories_Endpoint extends PWP_EndpointController implements PWP_IEnd
     function get_argument_schema(): PWP_ISchema
     {
         $factory = new PWP_Schema_Factory(PWP_TEXT_DOMAIN);
-        $schema = parent::get_argument_schema();
+        $schema = new PWP_Argument_Schema();
         $schema
             ->add_property(
                 'name',

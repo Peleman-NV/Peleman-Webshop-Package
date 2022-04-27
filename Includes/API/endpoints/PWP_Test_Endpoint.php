@@ -22,81 +22,23 @@ class PWP_Test_Endpoint extends PWP_EndpointController
         );
     }
 
-    public function register_routes(string $namespace): void
+    public function do_action(WP_REST_Request $request): WP_REST_Response
     {
-        register_rest_route(
-            $namespace,
-            $this->rest_base,
-            array(
-                array(
-                    "methods" => \WP_REST_Server::READABLE,
-                    "callback" => array($this, 'get_items'),
-                    "permission_callback" => array($this, 'auth_get_items'),
-                    'args' => $this->get_argument_schema()->to_array(),
-                ),
-                array(
-                    "methods" => \WP_REST_Server::CREATABLE,
-                    "callback" => array($this, 'create_item'),
-                    "permission_callback" => array($this, 'auth_post_item'),
-                    'args' => array(),
-                ),
-                // 'schema' => array($this, 'get_item_array')
-            )
-        );
-
-        register_rest_route(
-            $namespace,
-            $this->rest_base . "/(?P<id>\d+)",
-            array(
-                array(
-                    "methods" => \WP_REST_Server::DELETABLE,
-                    "callback" => array($this, 'delete_item'),
-                    "permission_callback" => array($this, 'auth_delete_item'),
-                    'args' => array(),
-                ),
-                array(
-                    "methods" => \WP_REST_Server::READABLE,
-                    "callback" => array($this, 'get_item'),
-                    "permission_callback" => array($this, 'auth_get_item'),
-                    'args' => array(),
-                ),
-                array(
-                    "methods" => \WP_REST_Server::EDITABLE,
-                    "callback" => array($this, 'update_item'),
-                    "permission_callback" => array($this, 'auth_update_item'),
-                    'args' => array(),
-                )
-            )
-        );
+        return new WP_REST_Response('test successful!', 200);
     }
 
-    public function get_item(WP_REST_Request $request): WP_REST_Response
-    {
-        return new WP_REST_Response('test successful!');
-    }
-
-    public function get_items(WP_REST_Request $request): WP_REST_Response
-    {
-        return $this->get_item($request);
-    }
-
-    public function create_item(WP_REST_Request $request): WP_REST_Response
-    {
-        return $this->get_item($request);
-    }
-
-    public function delete_item(WP_REST_Request $request): WP_REST_Response
-    {
-        return $this->get_item($request);
-    }
-
-    public function update_item(WP_REST_Request $request): WP_REST_Response
-    {
-        return $this->get_item($request);
-    }
-
-    public function auth_get_item(WP_REST_Request $request): bool
+    public function authenticate(WP_REST_Request $request): bool
     {
         return true;
+    }
+
+    public function get_arguments(): array
+    {
+        return [];
+    }
+
+    public function get_methods(): string
+    {
+        return \WP_REST_Server::ALLMETHODS;
     }
 }

@@ -15,7 +15,7 @@ use PWP\includes\utilities\schemas\PWP_ISchema;
 use WP_REST_Request;
 use WP_REST_Response;
 
-class PWP_Products_Endpoint extends PWP_EndpointController implements PWP_IEndpoint
+class PWP_Products_Endpoint extends PWP_EndpointController implements PWP_I_Endpoint
 {
     private const PAGE_SOFT_CAP = 100;
     //variable for caching a schema. 

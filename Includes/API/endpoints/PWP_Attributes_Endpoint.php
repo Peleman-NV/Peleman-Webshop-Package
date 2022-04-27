@@ -6,12 +6,13 @@ namespace PWP\includes\API\endpoints;
 
 use WP_REST_Request;
 use WP_REST_Response;
+use PWP\includes\handlers\PWP_I_Handler;
 use PWP\includes\utilities\PWP_Null_Logger;
 use PWP\includes\authentication\PWP_IApiAuthenticator;
-use PWP\includes\handlers\PWP_I_Handler;
 use PWP\includes\handlers\PWP_Product_Attribute_Handler;
+use PWP\includes\exceptions\PWP_Not_Implemented_Exception;
 
-class PWP_Attributes_Endpoint extends PWP_EndpointController
+class PWP_Attributes_Endpoint extends PWP_Abstract_READ_Endpoint
 {
     public function __construct(PWP_IApiAuthenticator $authenticator)
     {
@@ -22,52 +23,9 @@ class PWP_Attributes_Endpoint extends PWP_EndpointController
         );
     }
 
-    public function register_routes(string $namespace): void
+    public function do_action(WP_REST_Request $request): WP_REST_Response
     {
-        register_rest_route(
-            $namespace,
-            $this->rest_base,
-            array(
-                array(
-                    "methods" => \WP_REST_Server::READABLE,
-                    "callback" => array($this, 'get_items'),
-                    "permission_callback" => array($this, 'auth_get_items'),
-                    'args' => $this->get_argument_schema()->to_array(),
-                ),
-                array(
-                    "methods" => \WP_REST_Server::CREATABLE,
-                    "callback" => array($this, 'create_item'),
-                    "permission_callback" => array($this, 'auth_post_item'),
-                    'args' => array(),
-                ),
-                // 'schema' => array($this, 'get_item_array')
-            )
-        );
-
-        register_rest_route(
-            $namespace,
-            $this->rest_base . "/(?P<id>\d+)",
-            array(
-                array(
-                    "methods" => \WP_REST_Server::DELETABLE,
-                    "callback" => array($this, 'delete_item'),
-                    "permission_callback" => array($this, 'auth_delete_item'),
-                    'args' => array(),
-                ),
-                array(
-                    "methods" => \WP_REST_Server::READABLE,
-                    "callback" => array($this, 'get_item'),
-                    "permission_callback" => array($this, 'auth_get_item'),
-                    'args' => array(),
-                ),
-                array(
-                    "methods" => \WP_REST_Server::EDITABLE,
-                    "callback" => array($this, 'update_item'),
-                    "permission_callback" => array($this, 'auth_update_item'),
-                    'args' => array(),
-                )
-            )
-        );
+        throw new PWP_Not_Implemented_Exception(__METHOD__);
     }
 
     public function get_items(WP_REST_Request $request): WP_REST_Response
