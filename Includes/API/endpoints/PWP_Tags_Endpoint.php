@@ -26,55 +26,17 @@ class PWP_Tags_Endpoint extends PWP_EndpointController
             $this->authenticator = $authenticator
         );
     }
+    // $this->rest_base . "/(?P<id>\d+)",
 
-    public function register_routes(string $namespace): void
+    public function do_action(WP_REST_Request $request): WP_REST_Response
     {
-        register_rest_route(
-            $namespace,
-            $this->rest_base,
-            array(
-                array(
-                    "methods" => \WP_REST_Server::READABLE,
-                    "callback" => array($this, 'get_items'),
-                    "permission_callback" => array($this, 'auth_get_items'),
-                    'args' => $this->get_argument_schema()->to_array(),
-                ),
-                array(
-                    "methods" => \WP_REST_Server::CREATABLE,
-                    "callback" => array($this, 'create_item'),
-                    "permission_callback" => array($this, 'auth_post_item'),
-                    'args' => array(),
-                ),
-                // 'schema' => array($this, 'get_item_array')
-            )
-        );
-
-        register_rest_route(
-            $namespace,
-            $this->rest_base . "/(?P<id>\d+)",
-            array(
-                array(
-                    "methods" => \WP_REST_Server::DELETABLE,
-                    "callback" => array($this, 'delete_item'),
-                    "permission_callback" => array($this, 'auth_delete_item'),
-                    'args' => array(),
-                ),
-                array(
-                    "methods" => \WP_REST_Server::READABLE,
-                    "callback" => array($this, 'get_item'),
-                    "permission_callback" => array($this, 'auth_get_item'),
-                    'args' => array(),
-                ),
-                array(
-                    "methods" => \WP_REST_Server::EDITABLE,
-                    "callback" => array($this, 'update_item'),
-                    "permission_callback" => array($this, 'auth_update_item'),
-                    'args' => array(),
-                )
-            )
-        );
+        throw new PWP_Not_Implemented_Exception(__METHOD__);
     }
 
+    public function authenticate(WP_REST_Request $request): bool
+    {
+        throw new PWP_Not_Implemented_Exception(__METHOD__);
+    }
     public function create_item(WP_REST_Request $request): WP_REST_Response
     {
         try {
@@ -122,7 +84,7 @@ class PWP_Tags_Endpoint extends PWP_EndpointController
 
     public function update_item(WP_REST_Request $request): WP_REST_Response
     {
-        throw new PWP_Not_Implemented_Exception();
+        throw new PWP_Not_Implemented_Exception(__METHOD__);
     }
 
     public function delete_item(WP_REST_Request $request): WP_REST_Response
@@ -133,8 +95,11 @@ class PWP_Tags_Endpoint extends PWP_EndpointController
 
         return new WP_REST_Response($outcome ? 'tag successfully deleted' : 'tag not deleted for unknown reasons', 200);
     }
-
-    public function get_argument_schema(): PWP_ISchema
+    public function get_methods(): string
+    {
+        return \WP_REST_Server::ALLMETHODS;
+    }
+    public function get_arguments(): array
     {
         $factory = new PWP_Schema_Factory('default');
         $schema = new PWP_Argument_Schema();
@@ -152,12 +117,6 @@ class PWP_Tags_Endpoint extends PWP_EndpointController
                 $factory->string_property("HTML description of the resource")
             );
 
-        return $schema;
-    }
-
-    public function get_item_schema(): PWP_ISchema
-    {
-        $schema = parent::get_item_schema();
-        return $schema;
+        return $schema->to_array();
     }
 }

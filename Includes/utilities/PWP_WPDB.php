@@ -50,9 +50,9 @@ class PWP_WPDB
      * see the wpdb class get_results function for more about how this function works
      *
      * @param string $query
-     * @return object
+     * @return array|object
      */
-    public function get_results(string $query): object
+    public function get_results(string $query)
     {
         return $this->db->get_results($query);
     }
@@ -78,6 +78,17 @@ class PWP_WPDB
             $trid,
             $elementType,
             $taxonomyId
+        );
+    }
+
+    final public function prepare_term_children_query(int $id, string $taxonomy): string
+    {
+        $table = $this->db->prefix . 'term_taxonomy';
+
+        return $this->db->prepare(
+            "SELECT term_id FROM {$table} where parent = %d AND taxonomy = '%s';",
+            $id,
+            $taxonomy,
         );
     }
 }

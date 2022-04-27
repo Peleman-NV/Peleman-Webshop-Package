@@ -8,6 +8,9 @@ use WP_REST_Request;
 use WP_REST_Response;
 use PWP\includes\API\endpoints\PWP_EndpointController;
 use PWP\includes\authentication\PWP_IApiAuthenticator;
+use PWP\includes\handlers\PWP_Category_Handler;
+use PWP\includes\handlers\services\PWP_Product_Category_SVC;
+use PWP\includes\utilities\PWP_WPDB;
 
 defined('ABSPATH') || die;
 
@@ -24,7 +27,12 @@ class PWP_Test_Endpoint extends PWP_EndpointController
 
     public function do_action(WP_REST_Request $request): WP_REST_Response
     {
-        return new WP_REST_Response('test successful!', 200);
+        // return new WP_REST_Response('test successful!', 200);
+        $handler = new PWP_Category_Handler();
+        $term = $handler->get_item_by_slug('thermal_binding_covers');
+        $service = new PWP_Product_Category_SVC();
+
+        return new WP_REST_Response($service->get_children($term));
     }
 
     public function authenticate(WP_REST_Request $request): bool

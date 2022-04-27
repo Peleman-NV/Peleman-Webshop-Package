@@ -1,5 +1,16 @@
 # endpoints
-folder containing the individual endpoint classes for the API.
+folder containing endpoint classes for the REST API
+
+a standard REST API allows for four operations:
+
+`GET` - get data from the API without changing it.
+ in this context, `GET` is handled by two abstract methods:
+    `PWP_Abstract_READ_Endpoint`: will get multiple entries from the database
+    `PWP_Abstract_FIND_Endpoint`: will try to find one specific entry in the database
+`POST` - upload data to the API, to create a new entry. In this context handled by `PWP_Abstract__CREATE_Endpoint`
+`PUT` - try to alter the data of an existing entry in the API system. handled by `PWP_Abstract_UPDATE_Endpoint`
+`DELETE` - remove an existing entry in the system. handled by `PWP_Abstract_DELETE_Endpoint`
+
 
 ## PWP_I_Endpoint
 interface for API endpoints

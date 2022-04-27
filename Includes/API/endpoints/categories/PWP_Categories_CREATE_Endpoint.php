@@ -30,7 +30,7 @@ class PWP_Categories_CREATE_Endpoint extends PWP_Abstract_CREATE_Endpoint
     {
         try {
             $handler = new PWP_Category_Handler();
-            $response = $handler->create_item($request['name'], $request->get_body_params());
+            $response = $handler->create_item($request->get_body_params());
 
             if ($response instanceof WP_Term) {
                 return new WP_REST_RESPONSE($response->data);

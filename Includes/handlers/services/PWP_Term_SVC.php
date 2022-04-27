@@ -10,6 +10,7 @@ use PWP\includes\exceptions\PWP_WP_Error_Exception;
 use PWP\includes\utilities\PWP_WPDB;
 use PWP\includes\handlers\services\PWP_I_SVC;
 use PWP\includes\wrappers\PWP_SEO_Data;
+use WP_Term;
 
 abstract class PWP_Term_SVC implements PWP_I_SVC
 {
@@ -93,29 +94,47 @@ abstract class PWP_Term_SVC implements PWP_I_SVC
         return get_terms($args);
     }
 
-    final public function get_item_by_id(int $id): \WP_Term
+    final public function get_item_by_id(int $id): ?\WP_Term
     {
         $termData = get_term_by('id', $id, $this->taxonomy,);
         if (!$termData)
-            throw new PWP_Not_Found_Exception("could not find term within taxonomy {$this->beautyName} with id {$id}");
+            return null;
+        // throw new PWP_Not_Found_Exception("could not find term within taxonomy {$this->beautyName} with id {$id}");
         return $termData;
     }
 
-    final public function get_item_by_name(string $name): \WP_Term
+    final public function get_item_by_name(string $name): ?\WP_Term
     {
         $termData = get_term_by('name', $name, $this->taxonomy);
         if (!$termData)
-            throw new PWP_Not_Found_Exception("could not find term within taxonomy {$this->beautyName} with name {$name}");
+            return null;
+        // throw new PWP_Not_Found_Exception("could not find term within taxonomy {$this->beautyName} with name {$name}");
         return $termData;
     }
 
 
-    final public function get_item_by_slug(string $slug): \WP_Term
+    final public function get_item_by_slug(string $slug): ?\WP_Term
     {
         $termData = get_term_by('slug', $slug, $this->taxonomy);
         if (!$termData)
-            throw new PWP_Not_Found_Exception("could not find term within taxonomy {$this->beautyName} with slug {$slug}");
+            return null;
+        // throw new PWP_Not_Found_Exception("could not find term within taxonomy {$this->beautyName} with slug {$slug}");
         return $termData;
+    }
+
+    final public function get_children(WP_Term $term)
+    {
+        $wpdb = new PWP_WPDB();
+        $results = $wpdb->get_results($wpdb->prepare_term_children_query($term->term_id, $term->taxonomy));
+        // return $wpdb->get_results($wpdb->prepare_term_children_query($term->term_id, $term->taxonomy));
+
+        $children = array();
+        foreach($results as $id)
+        {
+            $children[] = $this->get_item_by_id((int)$id->term_id);
+        }
+
+        return $children;
     }
 
     final public function set_seo_data(\WP_Term $term, PWP_SEO_Data $data): void

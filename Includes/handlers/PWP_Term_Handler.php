@@ -44,7 +44,9 @@ abstract class PWP_Term_Handler implements PWP_I_Handler, PWP_I_Slug_Handler
 
             //create translated term
             $term = $this->create_new_item($data);
-            $this->service->set_seo_data($term, $data->get_seo_data());
+            if (!is_null($data->get_seo_data())) {
+                $this->service->set_seo_data($term, $data->get_seo_data());
+            }
 
             $parent =  $this->service->get_item_by_slug($data->get_english_slug());
             $this->service->set_translation_data($term, $parent, $data->get_language_code());
@@ -55,7 +57,9 @@ abstract class PWP_Term_Handler implements PWP_I_Handler, PWP_I_Slug_Handler
         //create regular term.
 
         $term = $this->create_new_item($data);
-        $this->service->set_seo_data($term, $data->get_seo_data());
+        if (!is_null($data->get_seo_data())) {
+            $this->service->set_seo_data($term, $data->get_seo_data());
+        }
 
         return $term;
     }
