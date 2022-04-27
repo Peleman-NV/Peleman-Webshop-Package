@@ -6,7 +6,7 @@ namespace PWP\includes\handlers;
 
 interface PWP_I_Handler
 {
-    public function create_item(object $createData, array $args = []): object;
+    public function create_item(array $createData, array $args = []): object;
 
     public function get_item(int $id, array $args = []): ?object;
     public function get_items(array $args = []): array;

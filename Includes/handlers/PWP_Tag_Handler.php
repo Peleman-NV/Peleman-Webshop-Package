@@ -14,12 +14,12 @@ class PWP_Tag_Handler extends PWP_Term_Handler
         parent::__construct(new PWP_Term_SVC('product_tag', 'tax_product_tag', 'product tag'));
     }
 
-    public function create_item(PWP_Term_Data $createData, array $args = []): \WP_Term
+    public function create_item(array $createData, array $args = []): \WP_Term
     {
         //TODO: custom logic for this class
         //product tags do not have parents, so we should be purging that from the args array
-        $createData->set_parent_id(0);
-        $createData->set_parent_slug('');
+        $createData['parent_id'] = 0;
+        $createData['parent_slug'] = ('');
 
         return parent::create_item($createData, $args);
     }

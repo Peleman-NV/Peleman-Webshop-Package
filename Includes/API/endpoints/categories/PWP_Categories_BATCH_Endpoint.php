@@ -2,11 +2,12 @@
 
 declare(strict_types=1);
 
-namespace PWP\includes\API\endpoints;
+namespace PWP\includes\API\endpoints\categories;
 
 use PWP\includes\handlers\PWP_Category_Handler;
 use PWP\includes\authentication\PWP_Authenticator;
 use PWP\includes\exceptions\PWP_Not_Implemented_Exception;
+use PWP\includes\API\endpoints\PWP_Abstract_BATCH_Endpoint;
 
 class PWP_Categories_BATCH_Endpoint extends PWP_Abstract_BATCH_Endpoint
 {

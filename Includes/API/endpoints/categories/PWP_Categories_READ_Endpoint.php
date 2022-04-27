@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PWP\includes\API\endpoints;
+namespace PWP\includes\API\endpoints\categories;
 
 use WP_Term;
 use WP_REST_Request;

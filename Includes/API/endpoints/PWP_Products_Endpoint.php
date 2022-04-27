@@ -4,23 +4,22 @@ declare(strict_types=1);
 
 namespace PWP\includes\API\endpoints;
 
-use PWP\includes\utilities\schemas\PWP_Schema_Factory;
-use PWP\includes\API\endpoints\PWP_EndpointController;
-use PWP\includes\API\PWP_API_Logger;
-use PWP\includes\authentication\PWP_IApiAuthenticator;
-use PWP\includes\handlers\PWP_Product_Handler;
-use PWP\includes\utilities\PWP_Null_Logger;
-use PWP\includes\utilities\schemas\PWP_Argument_Schema;
-use PWP\includes\utilities\schemas\PWP_ISchema;
 use WP_REST_Request;
 use WP_REST_Response;
+use PWP\includes\API\PWP_API_Logger;
+use PWP\includes\utilities\PWP_Null_Logger;
+use PWP\includes\handlers\PWP_Product_Handler;
+use PWP\includes\utilities\schemas\PWP_ISchema;
+use PWP\includes\API\endpoints\PWP_EndpointController;
+use PWP\includes\authentication\PWP_IApiAuthenticator;
+use PWP\includes\utilities\schemas\PWP_Schema_Factory;
+use PWP\includes\utilities\schemas\PWP_Argument_Schema;
+use PWP\includes\exceptions\PWP_Not_Implemented_Exception;
+use WP_REST_Server;
 
 class PWP_Products_Endpoint extends PWP_EndpointController implements PWP_I_Endpoint
 {
     private const PAGE_SOFT_CAP = 100;
-    //variable for caching a schema. 
-    // TODO: look into how we can do this
-    private array $schema;
 
     public function __construct(PWP_IApiAuthenticator $authenticator)
     {
@@ -32,52 +31,19 @@ class PWP_Products_Endpoint extends PWP_EndpointController implements PWP_I_Endp
         );
     }
 
-    public function register_routes(string $namespace): void
+    public function do_action(WP_REST_Request $request): WP_REST_Response
     {
-        register_rest_route(
-            $namespace,
-            $this->rest_base,
-            array(
-                array(
-                    "methods" => \WP_REST_Server::READABLE,
-                    "callback" => array($this, 'get_items'),
-                    "permission_callback" => array($this, 'auth_get_items'),
-                    'args' => $this->get_argument_schema()->to_array(),
-                ),
-                array(
-                    "methods" => \WP_REST_Server::CREATABLE,
-                    "callback" => array($this, 'create_item'),
-                    "permission_callback" => array($this, 'auth_post_item'),
-                    'args' => array(),
-                ),
-                // 'schema' => array($this, 'get_item_array')
-            )
-        );
+        return new WP_REST_Response('not implemented', 503);
+    }
 
-        register_rest_route(
-            $namespace,
-            $this->rest_base . "/(?P<id>\d+)",
-            array(
-                array(
-                    "methods" => \WP_REST_Server::DELETABLE,
-                    "callback" => array($this, 'delete_item'),
-                    "permission_callback" => array($this, 'auth_delete_item'),
-                    'args' => array(),
-                ),
-                array(
-                    "methods" => \WP_REST_Server::READABLE,
-                    "callback" => array($this, 'get_item'),
-                    "permission_callback" => array($this, 'auth_get_item'),
-                    'args' => array(),
-                ),
-                array(
-                    "methods" => \WP_REST_Server::EDITABLE,
-                    "callback" => array($this, 'update_item'),
-                    "permission_callback" => array($this, 'auth_update_item'),
-                    'args' => array(),
-                )
-            )
-        );
+    public function authenticate(WP_REST_Request $request): bool
+    {
+        return true;
+    }
+
+    public function get_methods(): string
+    {
+        return WP_REST_Server::ALLMETHODS;
     }
 
     public function create_item(WP_REST_Request $request): WP_REST_Response
@@ -121,7 +87,7 @@ class PWP_Products_Endpoint extends PWP_EndpointController implements PWP_I_Endp
 
     public function update_item(WP_REST_Request $request): WP_REST_Response
     {
-        return parent::update_item($request);
+        throw new PWP_Not_Implemented_Exception(__METHOD__);
     }
 
     public function delete_item(WP_REST_Request $request): WP_REST_Response
@@ -137,7 +103,7 @@ class PWP_Products_Endpoint extends PWP_EndpointController implements PWP_I_Endp
         ));
     }
 
-    public function get_argument_schema(): PWP_ISchema
+    public function get_arguments(): array
     {
         $factory = new PWP_Schema_Factory(PWP_TEXT_DOMAIN);
         $schema = new PWP_Argument_Schema();
@@ -199,12 +165,6 @@ class PWP_Products_Endpoint extends PWP_EndpointController implements PWP_I_Endp
                 $factory->bool_property('whether the function will return a log of events or not, included in the response.')
             );
 
-        return $schema;
-    }
-
-    protected function get_item_schema(): PWP_ISchema
-    {
-        $schema = parent::get_item_schema();
-        return $schema;
+        return $schema->to_array();
     }
 }
