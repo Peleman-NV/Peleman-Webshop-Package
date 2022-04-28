@@ -122,21 +122,6 @@ abstract class PWP_Term_SVC implements PWP_I_SVC
         return $termData;
     }
 
-    final public function get_children(WP_Term $term)
-    {
-        $wpdb = new PWP_WPDB();
-        $results = $wpdb->get_results($wpdb->prepare_term_children_query($term->term_id, $term->taxonomy));
-        // return $wpdb->get_results($wpdb->prepare_term_children_query($term->term_id, $term->taxonomy));
-
-        $children = array();
-        foreach($results as $id)
-        {
-            $children[] = $this->get_item_by_id((int)$id->term_id);
-        }
-
-        return $children;
-    }
-
     final public function set_seo_data(\WP_Term $term, PWP_SEO_Data $data): void
     {
         if (!isset($seoData)) return;

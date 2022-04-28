@@ -30,7 +30,8 @@ abstract class PWP_Term_Handler implements PWP_I_Handler, PWP_I_Slug_Handler
         $data = new PWP_Term_Data($createData);
         $slug = $data->get_slug();
         if ($this->service->get_item_by_slug($slug)) {
-            throw new PWP_Resource_Already_Exists_Exception("{$this->service->get_beauty_name()} with the slug {$slug} already exists");
+            //TODO: append number to slug if one already exists
+            throw new PWP_Resource_Already_Exists_Exception("{$this->service->get_beauty_name()} with the slug {$slug} already exists. Slugs should be unique to avoid confusion.");
         }
 
         if (!empty($data->get_english_slug())) {

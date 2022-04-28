@@ -27,12 +27,7 @@ class PWP_Test_Endpoint extends PWP_EndpointController
 
     public function do_action(WP_REST_Request $request): WP_REST_Response
     {
-        // return new WP_REST_Response('test successful!', 200);
-        $handler = new PWP_Category_Handler();
-        $term = $handler->get_item_by_slug('thermal_binding_covers');
-        $service = new PWP_Product_Category_SVC();
-
-        return new WP_REST_Response($service->get_children($term));
+        return new WP_REST_Response('test successful!', 200);
     }
 
     public function authenticate(WP_REST_Request $request): bool
