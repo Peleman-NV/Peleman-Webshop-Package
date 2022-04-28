@@ -6,7 +6,6 @@ namespace PWP\includes\API\endpoints;
 
 use WP_REST_Request;
 use WP_REST_Response;
-use PWP\includes\handlers\PWP_I_Handler;
 use PWP\includes\utilities\PWP_Null_Logger;
 use PWP\includes\authentication\PWP_IApiAuthenticator;
 use PWP\includes\handlers\PWP_Product_Attribute_Handler;

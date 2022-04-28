@@ -2,20 +2,20 @@
 
 declare(strict_types=1);
 
-namespace PWP\includes\API\endpoints;
+namespace PWP\includes\API\endpoints\products;
 
+use WP_REST_Server;
 use WP_REST_Request;
 use WP_REST_Response;
 use PWP\includes\API\PWP_API_Logger;
 use PWP\includes\utilities\PWP_Null_Logger;
+use PWP\includes\API\endpoints\PWP_I_Endpoint;
 use PWP\includes\handlers\PWP_Product_Handler;
-use PWP\includes\utilities\schemas\PWP_ISchema;
 use PWP\includes\API\endpoints\PWP_EndpointController;
 use PWP\includes\authentication\PWP_IApiAuthenticator;
 use PWP\includes\utilities\schemas\PWP_Schema_Factory;
 use PWP\includes\utilities\schemas\PWP_Argument_Schema;
 use PWP\includes\exceptions\PWP_Not_Implemented_Exception;
-use WP_REST_Server;
 
 class PWP_Products_Endpoint extends PWP_EndpointController implements PWP_I_Endpoint
 {

@@ -4,16 +4,14 @@ declare(strict_types=1);
 
 namespace PWP\includes\API\endpoints;
 
-use PWP\includes\authentication\PWP_Authenticator;
-use PWP\includes\exceptions\PWP_Not_Implemented_Exception;
+use PWP\includes\authentication\PWP_IApiAuthenticator;
 
 /**
  * abstract endpoint class for DELETE requests
  */
 abstract class PWP_Abstract_DELETE_Endpoint extends PWP_EndpointController
 {
-
-    public function __construct(string $path, string $title, PWP_Authenticator $authenticator)
+    public function __construct(string $path, string $title, PWP_IApiAuthenticator $authenticator)
     {
         parent::__construct($path, $title, $authenticator);
     }

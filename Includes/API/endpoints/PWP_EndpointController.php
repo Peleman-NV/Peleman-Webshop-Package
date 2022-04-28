@@ -8,8 +8,9 @@ use PWP\includes\authentication\PWP_IApiAuthenticator;
 
 abstract class PWP_EndpointController implements PWP_I_Endpoint
 {
-    private string $path;
-    private PWP_IApiAuthenticator $authenticator;
+    protected string $path;
+    protected string $title;
+    protected PWP_IApiAuthenticator $authenticator;
 
     public function __construct(string $path, string $title, PWP_IApiAuthenticator $authenticator)
     {

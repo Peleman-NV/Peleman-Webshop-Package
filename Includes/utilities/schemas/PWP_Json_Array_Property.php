@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PWP\includes\utilities\schemas;
 
-class PWP_Json_Array_property extends PWP_Json_Schema_Property
+class PWP_Json_Array_Property extends PWP_Json_Schema_Property
 {
     private array $properties;
 
