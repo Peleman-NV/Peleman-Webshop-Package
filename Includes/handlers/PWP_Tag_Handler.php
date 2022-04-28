@@ -4,14 +4,13 @@ declare(strict_types=1);
 
 namespace PWP\includes\handlers;
 
-use PWP\includes\handlers\services\PWP_Term_SVC;
-use PWP\includes\wrappers\PWP_Term_Data;
+use PWP\includes\handlers\services\PWP_Product_Tag_SVC;
 
 class PWP_Tag_Handler extends PWP_Term_Handler
 {
     public function __construct()
     {
-        parent::__construct(new PWP_Term_SVC('product_tag', 'tax_product_tag', 'product tag'));
+        parent::__construct(new PWP_Product_Tag_SVC());
     }
 
     public function create_item(array $createData, array $args = []): \WP_Term

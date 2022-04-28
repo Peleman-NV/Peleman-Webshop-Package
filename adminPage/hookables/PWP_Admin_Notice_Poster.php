@@ -11,8 +11,6 @@ use PWP\includes\hookables\PWP_IHookableComponent;
 class PWP_Admin_Notice_Poster implements PWP_IHookableComponent
 {
     /**
-     * Undocumented variable
-     *
      * @var PWP_Admin_notice[]
      */
     private array $notices;

@@ -4,12 +4,10 @@ declare(strict_types=1);
 
 namespace PWP\includes\API\endpoints\categories;
 
-use Exception;
 use PWP\includes\handlers\PWP_Category_Handler;
 use PWP\includes\authentication\PWP_Authenticator;
 use PWP\includes\API\endpoints\PWP_Abstract_BATCH_Endpoint;
 use PWP\includes\exceptions\PWP_API_Exception;
-use WP_REST_Response;
 
 class PWP_Categories_BATCH_Endpoint extends PWP_Abstract_BATCH_Endpoint
 {
@@ -18,33 +16,38 @@ class PWP_Categories_BATCH_Endpoint extends PWP_Abstract_BATCH_Endpoint
 
     public function __construct(string $path, PWP_Authenticator $authenticator)
     {
-        parent::__construct($path, 'product categories', $authenticator);
+        parent::__construct(
+            $path,
+            'category',
+            $this->authenticator = $authenticator
+        );
     }
 
     final public function do_action(\WP_REST_Request $request): \WP_REST_Response
     {
         try {
-            if (count($request->get_body_params()) > self::BATCH_ITEM_CAP) {
+            if (count($request->get_json_params()) > self::BATCH_ITEM_CAP) {
                 return new \WP_REST_Response("batch request too large! maximum amount of permitted entries is " . self::BATCH_ITEM_CAP, 500);
             }
-
-            $creates = $request->get_body_params()['create'];
-            $updates = $request->get_body_params()['update'];
-            $deletes = $request->get_body_params()['delete'];
-
             $notices = array();
 
             $handler = new PWP_Category_Handler();
-            foreach ($creates as $create) {
-                $notices[$create['slug']] = $this->try_create_category($handler, $create);
+            foreach ($request->get_json_params()['create'] as $key => $create) {
+
+                if (!empty($create))
+                    $notices[] = $this->try_create_category($handler, $create);
             }
 
-            foreach ($updates as $update) {
-                $notices[$update['slug']] = $this->try_update_category($handler, $update);
+            foreach ($request->get_json_params()['update'] as $key => $update) {
+
+                if (!empty($update))
+                    $notices[] = $this->try_update_category($handler, $update);
             }
 
-            foreach ($deletes as $delete) {
-                $notices[$delete['slug']] = $this->try_delete_category($handler, $delete);
+            foreach ($request->get_json_params()['delete'] as $key => $delete) {
+
+                if (!empty($delete))
+                    $notices[] = $this->try_delete_category($handler, $delete);
             }
 
             $response = array(
@@ -72,36 +75,63 @@ class PWP_Categories_BATCH_Endpoint extends PWP_Abstract_BATCH_Endpoint
         return [];
     }
 
-    private function try_update_category(PWP_Category_Handler $handler, array $data = []): string
+    private function try_update_category(PWP_Category_Handler $handler, array $data = []): array
     {
         try {
-            $term = $handler->update_item_by_slug($data['slug'], $data);
-            return "successfully updated category {$term->slug}";
+            if ($handler->does_slug_exist($data['slug'])) {
+                $term = $handler->update_item_by_slug($data['slug'], $data);
+                return array(
+                    "message" => "successfully updated category {$term->slug}",
+                    "data" => $term->data,
+                );
+            } else {
+                return $this->try_create_category($handler, $data);
+            }
         } catch (PWP_API_Exception $exception) {
-            return "error when updating category {$data['slug']}: " . $exception->getMessage();
+            return array(
+                "message" => "error when updating category {$data['slug']}",
+                "error" =>  $exception->getMessage(),
+            );
+        } catch (\Exception $exception) {
+            throw new \Exception("something went wrong trying to update an existing category.", 400, $exception);
         }
     }
 
-    private function try_create_category(PWP_Category_Handler $handler, array $data = []): string
+    private function try_create_category(PWP_Category_Handler $handler, array $data = []): array
     {
         try {
-            $term = $handler->create_item($data['name'], $data);
-            return "successfully created category {$term->name}";
+            $term = $handler->create_item($data, $data);
+
+            return array(
+                "message" => "successfully created category {$term->slug}",
+                "data" => $term->data,
+            );
         } catch (PWP_API_Exception $exception) {
-            return "error when creating category {$data['name']}: " . $exception->getMessage();
+            return array(
+                "message" => "error when creating category {$data['slug']} ",
+                "error" =>  $exception->getMessage()
+            );
+        } catch (\Exception $exception) {
+            throw new \Exception("something went wrong trying to create a new category.", 400, $exception);
         }
     }
 
-    private function try_delete_category(PWP_Category_Handler $handler, array $data = []): string
+    private function try_delete_category(PWP_Category_Handler $handler, array $data = []): array
     {
         try {
             if ($handler->delete_item_by_slug($data['slug'])) {
-                return "successfully deleted category {$data['slug']}";
+                return array(
+                    "message" => "successfully deleted category {$data['slug']}"
+                );
             }
-            return "deletion of category {$data['slug']} failed for unknown reasons.";
+            return array("message" => "deletion of category {$data['slug']} failed for unknown reasons.");
         } catch (PWP_API_Exception $exception) {
-
-            return "error when deleting category {$data['slug']}:" . $exception->getMessage();
+            return array(
+                "message" => "error when deleting category {$data['slug']}:",
+                "error" =>  $exception->getMessage()
+            );
+        } catch (\Exception $exception) {
+            throw new \Exception("something went wrong trying to delete a new category.", 400, $exception);
         }
     }
 }

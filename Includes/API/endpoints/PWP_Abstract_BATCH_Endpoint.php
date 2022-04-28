@@ -31,6 +31,6 @@ abstract class PWP_Abstract_BATCH_Endpoint extends PWP_EndpointController
 
     final public function get_methods(): string
     {
-        return \WP_REST_Server::EDITABLE;
+        return \WP_REST_Server::CREATABLE;
     }
 }

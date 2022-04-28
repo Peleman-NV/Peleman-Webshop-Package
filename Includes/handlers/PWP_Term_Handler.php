@@ -29,6 +29,11 @@ abstract class PWP_Term_Handler implements PWP_I_Handler, PWP_I_Slug_Handler
     {
         $data = new PWP_Term_Data($createData);
         $slug = $data->get_slug();
+
+
+        if (empty($slug)) {
+            throw new PWP_Invalid_Input_Exception("the category slug is required!");
+        }
         if ($this->service->get_item_by_slug($slug)) {
             //TODO: append number to slug if one already exists
             throw new PWP_Resource_Already_Exists_Exception("{$this->service->get_beauty_name()} with the slug {$slug} already exists. Slugs should be unique to avoid confusion.");
@@ -77,7 +82,7 @@ abstract class PWP_Term_Handler implements PWP_I_Handler, PWP_I_Slug_Handler
         );
     }
 
-    public function get_item(int $id, array $args = []): \WP_Term
+    public function get_item(int $id, array $args = []): ?WP_Term
     {
         return $this->service->get_item_by_id($id, $args);
     }
@@ -87,7 +92,7 @@ abstract class PWP_Term_Handler implements PWP_I_Handler, PWP_I_Slug_Handler
         return $this->service->get_items($args);
     }
 
-    public function get_item_by_slug(string $slug, array $args = []): WP_Term
+    public function get_item_by_slug(string $slug, array $args = []): ?WP_Term
     {
         return $this->service->get_item_by_slug($slug, $args);
     }
@@ -105,11 +110,17 @@ abstract class PWP_Term_Handler implements PWP_I_Handler, PWP_I_Slug_Handler
 
     final public function update_item_by_slug(string $slug, array $updateData, array $args = [], bool $useNullValues = false): \WP_TERM
     {
-        $term = $this->service->get_item_by_slug($slug);
+        $targetTerm = $this->service->get_item_by_slug($slug);
         $data = new PWP_Term_Data($updateData);
 
-        $data->set_parent_id($this->service->get_item_by_slug($data->get_parent_slug())->term_id);
-        return $this->service->update_item($term, $data->to_array());
+        if (!empty($targetTerm->parent)) {
+            $data->set_parent_id($targetTerm->parent);
+        } else {
+            $parentId = $this->get_item_by_slug($data->get_parent_slug())->term_id;
+            $data->set_parent_id($parentId ?: 0);
+        }
+
+        return $this->service->update_item($targetTerm, $data->to_array());
     }
 
     public function delete_item_by_slug(string $slug, array $args = []): bool
@@ -139,5 +150,10 @@ abstract class PWP_Term_Handler implements PWP_I_Handler, PWP_I_Slug_Handler
         }
 
         return 0;
+    }
+
+    public function does_slug_exist(string $slug): bool
+    {
+        return !is_null($this->get_item_by_slug($slug));
     }
 }

@@ -26,3 +26,4 @@ node_modules/
 /vendor
 /woocommerce
 Config.php
+/.testingData

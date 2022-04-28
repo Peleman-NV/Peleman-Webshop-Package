@@ -14,7 +14,7 @@ class PWP_Categories_DELETE_Endpoint extends PWP_Abstract_DELETE_Endpoint
     public function __construct(string $path, PWP_Authenticator $authenticator)
     {
         parent::__construct(
-            $path .  "/categories/(?P<slug>\w+)",
+            $path .  "/(?P<slug>\w+)",
             'product categories',
             $authenticator
         );

@@ -4,15 +4,10 @@ declare(strict_types=1);
 
 namespace PWP\includes\wrappers;
 
+use PWP\includes\exceptions\PWP_Invalid_Input_Exception;
+
 class PWP_Term_Data extends PWP_Component
 {
-    public function __construct(array $data = [])
-    {
-        parent::__construct($data);
-        //TODO: should an empty slug auto-generate, or should it throw an error?
-        $this->slug = $this->data->slug ?: $this->generate_slug($this->data->name, $this->data->language_code);
-    }
-
     final protected function generate_slug(string $name, ?string $lang = null): string
     {
         $slug = str_replace(' ', '_', strtolower($name));
@@ -21,6 +16,8 @@ class PWP_Term_Data extends PWP_Component
             $slug .= "-{$lang}";
         }
         $this->data->slug = $slug;
+        $this->data->parent = $this->data->parent_id;
+        unset($this->data->parent_id);
         return $slug;
     }
 
@@ -64,12 +61,12 @@ class PWP_Term_Data extends PWP_Component
 
     final public function get_parent_id(): int
     {
-        return (int)($this->data->parent_id ?: '');
+        return (int)($this->data->parent ?: '');
     }
 
     final public function set_parent_id(int $id): void
     {
-        $this->data->parent_id = $id;
+        $this->data->parent = $id;
     }
 
     final public function set_parent_slug(string $slug): void

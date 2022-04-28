@@ -21,7 +21,7 @@ class PWP_Categories_CREATE_Endpoint extends PWP_Abstract_CREATE_Endpoint
     public function __construct(string $path, PWP_IApiAuthenticator $authenticator)
     {
         parent::__construct(
-            $path . "/categories",
+            $path,
             'category',
             $this->authenticator = $authenticator
         );
@@ -31,7 +31,7 @@ class PWP_Categories_CREATE_Endpoint extends PWP_Abstract_CREATE_Endpoint
     {
         try {
             $handler = new PWP_Category_Handler();
-            $response = $handler->create_item($request->get_body_params());
+            $response = $handler->create_item($request->get_json_params());
 
             if ($response instanceof WP_Term) {
                 return new WP_REST_RESPONSE($response->data);
@@ -73,7 +73,9 @@ class PWP_Categories_CREATE_Endpoint extends PWP_Abstract_CREATE_Endpoint
                     'language code of a translated category. should match the suffix of the slug if present',
                     array(
                         'en',
-                        'es'
+                        'es',
+                        'nl',
+                        'de',
                     )
                 )
             )->add_property(

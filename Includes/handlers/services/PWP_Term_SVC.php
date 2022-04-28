@@ -5,18 +5,16 @@ declare(strict_types=1);
 namespace PWP\includes\handlers\services;
 
 use PWP\includes\exceptions\PWP_Invalid_Input_Exception;
-use PWP\includes\exceptions\PWP_Not_Found_Exception;
 use PWP\includes\exceptions\PWP_WP_Error_Exception;
 use PWP\includes\utilities\PWP_WPDB;
 use PWP\includes\handlers\services\PWP_I_SVC;
 use PWP\includes\wrappers\PWP_SEO_Data;
-use WP_Term;
 
 abstract class PWP_Term_SVC implements PWP_I_SVC
 {
     private string $taxonomy;
-    private string $beautyName;
     private string $taxonomyType;
+    private string $beautyName;
 
     private string $sourceLang;
 
@@ -24,15 +22,15 @@ abstract class PWP_Term_SVC implements PWP_I_SVC
      * Undocumented function
      *
      * @param string $taxonomy taxonomy of the term
-     * @param string $beautyName beautified name for use in human readable errors.
      * @param string $taxonomyType name of the element for use with WPML translations. 
+     * @param string $beautyName beautified name for use in human readable errors.
      * @param string $sourceLang 2 letter lower-case language code. default is en (English)
      */
     public function __construct(string $taxonomy, string $taxonomyType, string $beautyName, string $sourceLang = 'en')
     {
         $this->taxonomy = $taxonomy;
-        $this->beautyName = $beautyName;
         $this->taxonomyType = $taxonomyType;
+        $this->beautyName = $beautyName;
 
         $this->sourceLang = $sourceLang;
     }
@@ -61,15 +59,16 @@ abstract class PWP_Term_SVC implements PWP_I_SVC
      * Undocumented function
      *
      * @param \WP_Term $term
+     * @param array $args
      * @param boolean $useNullValues if true, arguments that are null or empty will be persisted. 
      * if false, they will be ignored and the original value left in its place. default false.
-     * @param array $args
      * @return \WP_Term
      */
     final public function update_item(\WP_Term $term, array $args = [], bool $useNullValues = false): \WP_Term
     {
         if (!$useNullValues) {
             $args = $this->filter_null_values_from_array($args);
+            var_dump($args);
         }
 
         $termData = wp_update_term($term->term_id, $term->taxonomy, $args);
@@ -91,7 +90,7 @@ abstract class PWP_Term_SVC implements PWP_I_SVC
     {
         $args['taxonomy'] = $this->taxonomy;
         $args['hide_empty'] = false;
-        return get_terms($args);
+        return \get_terms($args);
     }
 
     final public function get_item_by_id(int $id): ?\WP_Term
@@ -124,7 +123,7 @@ abstract class PWP_Term_SVC implements PWP_I_SVC
 
     final public function set_seo_data(\WP_Term $term, PWP_SEO_Data $data): void
     {
-        if (!isset($seoData)) return;
+        // if (!isset($seoData)) return;
 
         $currentSeoMetaData = get_option('wpseo_taxonomy_meta');
 

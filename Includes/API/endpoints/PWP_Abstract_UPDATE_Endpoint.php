@@ -31,6 +31,6 @@ abstract class PWP_Abstract_UPDATE_Endpoint extends PWP_EndpointController
 
     final public function get_methods(): string
     {
-        return \WP_REST_Server::EDITABLE;
+        return 'PUT, PATCH';
     }
 }

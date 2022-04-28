@@ -19,10 +19,10 @@ use PWP\includes\utilities\schemas\PWP_Argument_Schema;
 
 class PWP_Categories_READ_Endpoint extends PWP_Abstract_READ_Endpoint
 {
-    public function __construct(string $rest_base, PWP_IApiAuthenticator $authenticator)
+    public function __construct(string $path, PWP_IApiAuthenticator $authenticator)
     {
         parent::__construct(
-            $rest_base . "/categories",
+            $path,
             'category',
             $this->authenticator = $authenticator
         );
@@ -30,7 +30,8 @@ class PWP_Categories_READ_Endpoint extends PWP_Abstract_READ_Endpoint
 
     public function do_action(WP_REST_Request $request): WP_REST_Response
     {
-        return new WP_REST_Response('nope');
+        $handler = new PWP_Category_Handler();
+        return new WP_REST_Response($handler->get_items($request->get_params()));
     }
 
     public function create_item(WP_REST_Request $request): WP_REST_Response
@@ -48,19 +49,6 @@ class PWP_Categories_READ_Endpoint extends PWP_Abstract_READ_Endpoint
                 'message' => $exception->getMessage(),
             ), $exception->getCode());
         }
-    }
-
-    public function get_items(WP_REST_Request $request): WP_REST_Response
-    {
-        $handler = new PWP_Category_Handler();
-        return new WP_REST_Response($handler->get_items($request->get_params()));
-    }
-
-    public function get_item(WP_REST_Request $request): WP_REST_Response
-    {
-
-
-        throw new PWP_Not_Implemented_Exception(__METHOD__);
     }
 
     public function update_item(WP_REST_Request $request): WP_REST_Response
