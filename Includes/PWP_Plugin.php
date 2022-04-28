@@ -6,6 +6,7 @@ namespace PWP\includes;
 
 use PWP\adminPage\hookables\PWP_Admin_Notice_Poster;
 use PWP\includes\API\endpoints\categories\PWP_API_Categories_Channel;
+use PWP\includes\API\PWP_API_Plugin;
 use PWP\includes\hookables\PWP_IHookableComponent;
 use PWP\includes\loaders\PWP_Plugin_Loader;
 use PWP\publicPage\PWP_Public_Product_Page;
@@ -39,16 +40,20 @@ class PWP_Plugin
         }
 
         if (is_admin()) {
-            //TODO: add admin hookables
+
+            /*  ADD ADMIN MENU HOOKABLES HERE */
+
             $this->add_hookable($this->noticePoster);
         }
 
-        //TODO: add public hookables
+        /*  ADD PUBLIC HOOKABLES HERE */
+
         $this->add_hookable(new PWP_Public_Product_Page());
-        $this->add_hookable(new PWP_API_Categories_Channel('pwp/v1'));
+
+        $this->add_hookable(new PWP_API_Plugin('pwp/v1'));
     }
 
-    public static function run()
+    final public static function run()
     {
         $instance = new PWP_Plugin();
 
@@ -65,7 +70,7 @@ class PWP_Plugin
 
     private function register_hookables()
     {
-        $this->loader->register_hooks();
+        $this->loader->register_hooks_to_wp();
     }
 
     private function check_requirements(): bool

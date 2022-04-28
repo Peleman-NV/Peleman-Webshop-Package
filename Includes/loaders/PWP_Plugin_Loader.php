@@ -28,7 +28,7 @@ class PWP_Plugin_Loader
         $this->loaders = array();
         $this->endpoints = array();
 
-        $this->add_action("rest_api_init", $this, "register_endpoints");
+        $this->add_action("rest_api_init", $this, "register_endpoints_to_wp");
     }
 
     /**
@@ -151,11 +151,13 @@ class PWP_Plugin_Loader
      *
      * @return void
      */
-    final public function register_hooks(): void
+    final public function register_hooks_to_wp(): void
     {
         foreach ($this->loaders as $loader) {
             $loader->register();
         }
+
+        $this->loaders = array();
     }
 
     /**
@@ -163,10 +165,12 @@ class PWP_Plugin_Loader
      *
      * @return void
      */
-    final public function register_endpoints(): void
+    final public function register_endpoints_to_wp(): void
     {
         foreach ($this->endpoints as $loader) {
             $loader->register();
         }
+
+        $this->endpoints = array();
     }
 }

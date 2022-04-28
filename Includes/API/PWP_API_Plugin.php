@@ -18,7 +18,7 @@ class PWP_API_Plugin implements PWP_IHookableComponent
 
     public function __construct(string $namespace)
     {
-        $this->namespace = $namespace ?: 'pwp/v1';
+        $this->namespace = $namespace;
         $this->add_channel(new PWP_API_Categories_Channel($this->namespace));
     }
 
