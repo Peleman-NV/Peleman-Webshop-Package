@@ -58,15 +58,7 @@ class PWP_Categories_READ_Endpoint extends PWP_Abstract_READ_Endpoint
 
     public function get_item(WP_REST_Request $request): WP_REST_Response
     {
-        try {
-            $handler = new PWP_Category_Handler();
-        } catch (\Exception $exception) {
-            return new WP_REST_Response(array(
-                'code' => $exception->getCode(),
-                'message' => $exception->getMessage(),
-                'data' => $exception->getTraceAsString()
-            ), $exception->getCode());
-        }
+
 
         throw new PWP_Not_Implemented_Exception(__METHOD__);
     }

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace PWP\includes;
 
 use PWP\adminPage\hookables\PWP_Admin_Notice_Poster;
-use PWP\includes\API\PWP_API_Hookable;
+use PWP\includes\API\endpoints\categories\PWP_API_Categories_Channel;
 use PWP\includes\hookables\PWP_IHookableComponent;
 use PWP\includes\loaders\PWP_Plugin_Loader;
 use PWP\publicPage\PWP_Public_Product_Page;
@@ -45,7 +45,7 @@ class PWP_Plugin
 
         //TODO: add public hookables
         $this->add_hookable(new PWP_Public_Product_Page());
-        $this->add_hookable(new PWP_API_Hookable('pwp/v1'));
+        $this->add_hookable(new PWP_API_Categories_Channel('pwp/v1'));
     }
 
     public static function run()

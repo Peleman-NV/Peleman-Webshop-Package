@@ -4,9 +4,12 @@ declare(strict_types=1);
 
 namespace PWP\includes\API\endpoints\categories;
 
+use PWP\includes\handlers\PWP_Category_Handler;
 use PWP\includes\authentication\PWP_Authenticator;
 use PWP\includes\API\endpoints\PWP_Abstract_FIND_Endpoint;
+use PWP\includes\exceptions\PWP_API_Exception;
 use PWP\includes\exceptions\PWP_Not_Implemented_Exception;
+use WP_REST_Response;
 
 class PWP_Categories_FIND_Endpoint extends PWP_Abstract_FIND_Endpoint
 {
@@ -22,12 +25,24 @@ class PWP_Categories_FIND_Endpoint extends PWP_Abstract_FIND_Endpoint
 
     final public function do_action(\WP_REST_Request $request): \WP_REST_Response
     {
-        return new \WP_REST_Response("we're not quite there yet, but we will be soon!", 501);
+        try {
+            $handler = new PWP_Category_Handler();
+            $response = $handler->get_item_by_slug($request['slug'], $request->get_query_params());
+            return new WP_REST_Response($response->data);
+        } catch (PWP_API_Exception $exception) {
+            return $exception->to_rest_response();
+        } catch (\Exception $exception) {
+            return new \WP_REST_Response(array(
+                'code' => $exception->getCode(),
+                'message' => $exception->getMessage(),
+                'data' => $exception->getTraceAsString()
+            ), $exception->getCode());
+        }
     }
 
     final public function authenticate(\WP_REST_Request $request): bool
     {
-        throw new PWP_Not_Implemented_Exception(__METHOD__);
+        return true;
     }
 
     final public function get_arguments(): array

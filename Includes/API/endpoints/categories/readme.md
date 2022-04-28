@@ -25,7 +25,9 @@ create a new category.
 
     > __`string`__ - name of the category
 * __slug__
-    > __`string`__ - category slug. should not contain spaces
+    > `REQUIRED` 
+    
+    > __`string`__ - category slug. should not contain spaces and should be unique
 * __parent_id__
     > __`int`__ - id of the parent category. will precede the parent-slug if present
 * __parent_slug__

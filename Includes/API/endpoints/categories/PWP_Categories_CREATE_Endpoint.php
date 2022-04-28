@@ -14,6 +14,7 @@ use PWP\includes\authentication\PWP_IApiAuthenticator;
 use PWP\includes\utilities\schemas\PWP_Schema_Factory;
 use PWP\includes\utilities\schemas\PWP_Argument_Schema;
 use PWP\includes\API\endpoints\PWP_Abstract_CREATE_Endpoint;
+use PWP\includes\exceptions\PWP_API_Exception;
 
 class PWP_Categories_CREATE_Endpoint extends PWP_Abstract_CREATE_Endpoint
 {
@@ -35,6 +36,8 @@ class PWP_Categories_CREATE_Endpoint extends PWP_Abstract_CREATE_Endpoint
             if ($response instanceof WP_Term) {
                 return new WP_REST_RESPONSE($response->data);
             }
+        } catch (PWP_API_Exception $exception) {
+            return $exception->to_rest_response();
         } catch (\Exception $exception) {
             return new WP_REST_Response(array(
                 'code' => $exception->getCode(),
@@ -104,7 +107,6 @@ class PWP_Categories_CREATE_Endpoint extends PWP_Abstract_CREATE_Endpoint
                         $factory->string_property('description of the SEO data for YOAST')
                     )
             );
-
 
         return $schema->to_array();
     }
