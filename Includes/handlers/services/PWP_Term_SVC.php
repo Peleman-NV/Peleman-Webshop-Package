@@ -10,7 +10,7 @@ use PWP\includes\utilities\PWP_WPDB;
 use PWP\includes\handlers\services\PWP_I_SVC;
 use PWP\includes\wrappers\PWP_SEO_Data;
 
-abstract class PWP_Term_SVC implements PWP_I_SVC
+class PWP_Term_SVC implements PWP_I_SVC
 {
     private string $taxonomy;
     private string $elementType;

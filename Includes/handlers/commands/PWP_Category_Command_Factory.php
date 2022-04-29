@@ -4,32 +4,41 @@ declare(strict_types=1);
 
 namespace PWP\includes\handlers\commands;
 
-use PWP\includes\exceptions\PWP_Not_Implemented_Exception;
+use PWP\includes\wrappers\PWP_Term_Data;
+use PWP\includes\handlers\PWP_Term_Handler;
 
-class PWP_Category_Command_Factory extends PWP_Abstract_Term_Command_Factory
+final class PWP_Category_Command_Factory extends PWP_Abstract_Term_Command_Factory
 {
     public function __construct()
     {
         parent::__construct('product_cat', 'tax_product_cat', "product category");
+        $this->handler = new PWP_Term_Handler($this->get_service());
     }
 
-    public function create_term_command(): PWP_Create_Term_Command
+    final public function new_create_term_command(PWP_Term_Data $data): PWP_Create_Term_Command
     {
-        throw new PWP_Not_Implemented_Exception(__METHOD__);
+        return new PWP_Create_Term_Command($this->handler, $data->get_slug(), $data);
     }
 
-    public function read_term_command(): PWP_Read_Term_Command
+    final public function new_read_term_command(array $args = []): PWP_Read_Term_Command
     {
-        throw new PWP_Not_Implemented_Exception(__METHOD__);
+        return new PWP_Read_Term_Command($this->handler, $args);
     }
 
-    public function update_term_command(): PWP_Update_Term_Command
+    final public function new_update_term_command(PWP_Term_Data $data): PWP_Update_Term_Command
     {
-        throw new PWP_Not_Implemented_Exception(__METHOD__);
+        return new PWP_Update_Term_Command($this->handler, $data->get_slug(), $data);
     }
 
-    public function delete_term_command(): PWP_Delete_Term_Command
+    final public function new_delete_term_command(string $slug): PWP_Delete_Term_Command
     {
-        throw new PWP_Not_Implemented_Exception(__METHOD__);
+        return new PWP_Delete_Term_Command($this->handler, $slug);
+    }
+
+    final public function new_create_or_update_command(PWP_Term_Data $data): PWP_I_Command
+    {
+        return $this->slug_exists($data->get_slug())
+            ? $this->new_update_term_command($data)
+            : $this->new_create_term_command($data);
     }
 }

@@ -14,13 +14,18 @@ use PWP\includes\exceptions\PWP_Resource_Already_Exists_Exception;
 
 include_once(ABSPATH . '/wp-admin/includes/plugin.php');
 
-abstract class PWP_Term_Handler implements PWP_I_Handler, PWP_I_Slug_Handler
+class PWP_Term_Handler implements PWP_I_Handler, PWP_I_Slug_Handler
 {
     protected PWP_Term_SVC $service;
 
     public function __construct(PWP_Term_SVC $service)
     {
         $this->service = $service;
+    }
+
+    public function get_service(): PWP_Term_SVC
+    {
+        return $this->service;
     }
 
     public function create_item(array $createData, array $args = []): \WP_Term

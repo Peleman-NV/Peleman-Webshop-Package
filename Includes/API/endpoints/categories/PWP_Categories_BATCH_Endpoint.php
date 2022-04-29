@@ -8,10 +8,11 @@ use PWP\includes\handlers\PWP_Category_Handler;
 use PWP\includes\authentication\PWP_Authenticator;
 use PWP\includes\API\endpoints\PWP_Abstract_BATCH_Endpoint;
 use PWP\includes\exceptions\PWP_API_Exception;
-use PWP\includes\handlers\PWP_Term_Handler;
+use PWP\includes\handlers\commands\PWP_Category_Command_Factory;
 use PWP\includes\utilities\response\PWP_Error_Response;
 use PWP\includes\utilities\response\PWP_I_Response;
 use PWP\includes\utilities\response\PWP_Response;
+use PWP\includes\wrappers\PWP_Term_Data;
 
 class PWP_Categories_BATCH_Endpoint extends PWP_Abstract_BATCH_Endpoint
 {
@@ -30,9 +31,9 @@ class PWP_Categories_BATCH_Endpoint extends PWP_Abstract_BATCH_Endpoint
     final public function do_action(\WP_REST_Request $request): \WP_REST_Response
     {
         try {
-            $createOperations = $request->get_json_params()['create'];
-            $updateOperations = $request->get_json_params()['update'];
-            $deleteOperations = $request->get_json_params()['delete'];
+            $createOperations = (array)$request->get_json_params()['create'];
+            $updateOperations = (array)$request->get_json_params()['update'];
+            $deleteOperations = (array)$request->get_json_params()['delete'];
 
             $updateCanCreate = (bool)$request->get_json_params()['updateCanCreate'] ?: false;
 
@@ -50,12 +51,13 @@ class PWP_Categories_BATCH_Endpoint extends PWP_Abstract_BATCH_Endpoint
                 )
             );
 
-            $handler = new PWP_Category_Handler();
+            $this->run_operations($createOperations, $updateOperations, $deleteOperations, $response, $updateCanCreate);
 
-            $this->run_operations($createOperations, $updateOperations, $deleteOperations, $handler, $updateCanCreate, $response);
+            $response->add_response(new PWP_Response("operation completed!"));
+
+            return new \WP_REST_Response($response->to_array());
         } catch (\Exception $exception) {
-            $response->add_response(new PWP_Error_Response(__('an unexpected error occured during batch processing'), $exception));
-        } finally {
+            $response = new PWP_Error_Response(__('an unexpected error occured during batch processing'), $exception);
             return new \WP_REST_Response($response->to_array());
         }
     }
@@ -65,42 +67,34 @@ class PWP_Categories_BATCH_Endpoint extends PWP_Abstract_BATCH_Endpoint
         return [];
     }
 
-    private function run_operations(array $createOps, array $updateOps, array $deleteOps, PWP_Term_Handler $handler, bool $updateCanCreate, PWP_Response $response): void
+    private function run_operations(array $createOps, array $updateOps, array $deleteOps, PWP_Response $response, bool $updateCanCreate = false): void
     {
+
+        $factory = new PWP_Category_Command_Factory();
+        $commands = array();
+
         foreach ($createOps as $create) {
-            $response->add_response($this->try_create_category($handler, $create));
+            $data = new PWP_Term_Data($create);
+            $commands[] = $factory->new_create_term_command($data);
         }
 
         foreach ($updateOps as $update) {
+            $data = new PWP_Term_Data($update);
             if ($updateCanCreate) {
-                $response->add_response($this->try_update_or_create_category($handler, $update));
-                continue;
+                if (!$factory->slug_exists($data->get_slug())) {
+                    $commands[] = $factory->new_create_term_command($data);
+                }
             }
-            $response->add_response($this->try_update_category($handler, $update));
+            $commands[] = $factory->new_update_term_command($data);
         }
 
         foreach ($deleteOps as $delete) {
-            $response->add_response($this->try_delete_category($handler, $delete));
+            $data = new PWP_Term_Data($delete);
+            $commands[] = $factory->new_delete_term_command($data->get_slug());
         }
-    }
 
-    private function try_update_or_create_category(PWP_Category_Handler $handler, array $data = []): PWP_I_Response
-    {
-        if (!$handler->does_slug_exist($data['slug'])) {
-            return $this->try_create_category($handler, $data);
-        }
-        return $this->try_update_category($handler, $data,);
-    }
-
-    private function try_update_category(PWP_Category_Handler $handler, array $data = []): PWP_I_Response
-    {
-        try {
-            $term = $handler->update_item_by_slug($data['slug'], $data);
-            return new PWP_Response("successfully updated category {$term->slug}", (array)$term->data);
-        } catch (PWP_API_Exception $exception) {
-            return new PWP_Error_Response("error when updating category {$data['slug']} ", $exception);
-        } catch (\Exception $exception) {
-            throw new \Exception("something went wrong trying to update a category.", 400, $exception);
+        foreach ($commands as $command) {
+            $response->add_response($command->do_action());
         }
     }
 

@@ -7,18 +7,19 @@ namespace PWP\includes\handlers\commands;
 use PWP\includes\handlers\PWP_Term_Handler;
 use PWP\includes\utilities\response\PWP_I_Response;
 use PWP\includes\utilities\response\PWP_Response;
+use PWP\includes\wrappers\PWP_Term_Data;
 
-class PWP_Create_Term_Command implements PWP_I_Command
+final class PWP_Create_Term_Command implements PWP_I_Command
 {
     private PWP_Term_Handler $handler;
     private string $slug;
-    private array $creationData;
+    private PWP_Term_Data $creationData;
 
-    public function __construct(PWP_Term_Handler $handler, string $slug, array $creationData = [])
+    public function __construct(PWP_Term_Handler $handler, string $slug, PWP_Term_Data $data)
     {
         $this->handler = $handler;
         $this->slug = $slug;
-        $this->creationData = $creationData;
+        $this->creationData = $data;
     }
 
     public function do_action(): PWP_I_Response

@@ -8,7 +8,7 @@ use PWP\includes\handlers\PWP_Term_Handler;
 use PWP\includes\utilities\response\PWP_I_Response;
 use PWP\includes\utilities\response\PWP_Response;
 
-class PWP_Delete_Term_Command implements PWP_I_Command
+final class PWP_Delete_Term_Command implements PWP_I_Command
 {
     private PWP_Term_Handler $handler;
     private string $slug;
