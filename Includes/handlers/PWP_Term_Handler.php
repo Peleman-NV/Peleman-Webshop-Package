@@ -5,9 +5,7 @@ declare(strict_types=1);
 namespace PWP\includes\handlers;
 
 use WP_Term;
-use WP_Error;
 use PWP\includes\wrappers\PWP_Term_Data;
-use PWP\includes\wrappers\PWP_Category_Data;
 use PWP\includes\handlers\services\PWP_Term_SVC;
 use PWP\includes\exceptions\PWP_Invalid_Input_Exception;
 use PWP\includes\exceptions\PWP_Not_Found_Exception;
@@ -30,42 +28,45 @@ abstract class PWP_Term_Handler implements PWP_I_Handler, PWP_I_Slug_Handler
         $data = new PWP_Term_Data($createData);
         $slug = $data->get_slug();
 
-
         if (empty($slug)) {
             throw new PWP_Invalid_Input_Exception("the category slug is required!");
         }
         if ($this->service->get_item_by_slug($slug)) {
-            //TODO: append number to slug if one already exists
             throw new PWP_Resource_Already_Exists_Exception("{$this->service->get_beauty_name()} with the slug {$slug} already exists. Slugs should be unique to avoid confusion.");
         }
 
         if (!empty($data->get_english_slug())) {
-            if (!empty($data->get_language_code())) {
-                throw new PWP_Invalid_Input_Exception("English slug has been entered, but no language code. Translations require both the slug and code.");
-            }
+            return $this->create_new_translated_term($data);
+        }
+        return $this->create_new_original_term($data);
+    }
 
-            if (!$this->service->get_item_by_slug($data->get_english_slug())) {
-                throw new PWP_Invalid_Input_Exception("invalid English slug {$data->get_english_slug()} has been passed.");
-            }
+    private function create_new_original_term(PWP_Term_Data $data): \WP_Term
+    {
+        $term = $this->create_new_item($data);
+        if (!is_null($data->get_seo_data())) {
+            $this->service->set_seo_data($term, $data->get_seo_data());
+        }
+        return $term;
+    }
 
-            //create translated term
-            $term = $this->create_new_item($data);
-            if (!is_null($data->get_seo_data())) {
-                $this->service->set_seo_data($term, $data->get_seo_data());
-            }
-
-            $parent =  $this->service->get_item_by_slug($data->get_english_slug());
-            $this->service->set_translation_data($term, $parent, $data->get_language_code());
-
-            return $term;
+    private function create_new_translated_term(PWP_Term_Data $data): \WP_Term
+    {
+        if (empty($data->get_language_code())) {
+            throw new PWP_Invalid_Input_Exception("English slug has been entered, but no language code. Translations require both the slug and code.");
         }
 
-        //create regular term.
+        if (!$this->service->get_item_by_slug($data->get_english_slug())) {
+            throw new PWP_Invalid_Input_Exception("invalid English slug {$data->get_english_slug()} has been passed.");
+        }
 
         $term = $this->create_new_item($data);
         if (!is_null($data->get_seo_data())) {
             $this->service->set_seo_data($term, $data->get_seo_data());
         }
+
+        $Englishparent =  $this->service->get_item_by_slug($data->get_english_slug());
+        $this->service->set_translation_data($term, $Englishparent, $data->get_language_code());
 
         return $term;
     }
@@ -121,6 +122,20 @@ abstract class PWP_Term_Handler implements PWP_I_Handler, PWP_I_Slug_Handler
         }
 
         return $this->service->update_item($targetTerm, $data->to_array());
+    }
+
+    /**
+     * combined utility of the update and create functions. Will try to update an item first. If it cannot find an item with a matching slug, it will instead create a new item.
+     *
+     * @param string $slug
+     * @param array $data
+     * @param array $args
+     * @param boolean $useNullValues
+     * @return \WP_Term
+     */
+    final public function update_or_create_item(string $slug, array $data, array $args, bool $useNullValues = false): \WP_Term
+    {
+        throw new PWP_Not_Implemented_Exception(__METHOD__);
     }
 
     public function delete_item_by_slug(string $slug, array $args = []): bool

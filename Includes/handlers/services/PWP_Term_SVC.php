@@ -13,7 +13,7 @@ use PWP\includes\wrappers\PWP_SEO_Data;
 abstract class PWP_Term_SVC implements PWP_I_SVC
 {
     private string $taxonomy;
-    private string $taxonomyType;
+    private string $elementType;
     private string $beautyName;
 
     private string $sourceLang;
@@ -22,14 +22,14 @@ abstract class PWP_Term_SVC implements PWP_I_SVC
      * Undocumented function
      *
      * @param string $taxonomy taxonomy of the term
-     * @param string $taxonomyType name of the element for use with WPML translations. 
+     * @param string $elementType name of the element for use with WPML translations. 
      * @param string $beautyName beautified name for use in human readable errors.
      * @param string $sourceLang 2 letter lower-case language code. default is en (English)
      */
-    public function __construct(string $taxonomy, string $taxonomyType, string $beautyName, string $sourceLang = 'en')
+    public function __construct(string $taxonomy, string $elementType, string $beautyName, string $sourceLang = 'en')
     {
         $this->taxonomy = $taxonomy;
-        $this->taxonomyType = $taxonomyType;
+        $this->elementType = $elementType;
         $this->beautyName = $beautyName;
 
         $this->sourceLang = $sourceLang;
@@ -68,7 +68,6 @@ abstract class PWP_Term_SVC implements PWP_I_SVC
     {
         if (!$useNullValues) {
             $args = $this->filter_null_values_from_array($args);
-            var_dump($args);
         }
 
         $termData = wp_update_term($term->term_id, $term->taxonomy, $args);
@@ -141,9 +140,9 @@ abstract class PWP_Term_SVC implements PWP_I_SVC
         $wpdb = new PWP_WPDB();
 
         $taxonomyId = $translatedTerm->term_taxonomy_id;
-        $trid = $sitepress->get_element_trid($originalTerm->term_id, $this->taxonomyType);
+        $trid = $sitepress->get_element_trid($originalTerm->term_taxonomy_id, $this->elementType);
 
-        $result = $wpdb->query($wpdb->prepare_term_translation_query($lang, $this->sourceLang, (int)$trid, $this->taxonomyType, $taxonomyId));
+        $result = $wpdb->query($wpdb->prepare_term_translation_query($lang, $this->sourceLang, (int)$trid, $this->elementType, $taxonomyId));
 
         return !$result;
     }
@@ -183,6 +182,6 @@ abstract class PWP_Term_SVC implements PWP_I_SVC
     final public function get_taxonomy_type(): string
     {
 
-        return $this->taxonomyType;
+        return $this->elementType;
     }
 }

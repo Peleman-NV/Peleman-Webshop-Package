@@ -58,6 +58,7 @@ class PWP_Categories_CREATE_Endpoint extends PWP_Abstract_CREATE_Endpoint
             )->add_property(
                 'slug',
                 $factory->string_property("slug of the category. If not given, will create a new slug from the name. should not contain spaces")
+                    ->required()
             )->add_property(
                 'parent_id',
                 $factory->int_property('id of the parent category, if applicable. will precede the parent_slug if present')
