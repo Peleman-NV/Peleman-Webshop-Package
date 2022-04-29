@@ -66,10 +66,6 @@ class PWP_Term_SVC implements PWP_I_SVC
      */
     final public function update_item(\WP_Term $term, array $args = [], bool $useNullValues = false): \WP_Term
     {
-        if (!$useNullValues) {
-            $args = $this->filter_null_values_from_array($args);
-        }
-
         $termData = wp_update_term($term->term_id, $term->taxonomy, $args);
         if ($termData instanceof \WP_Error) {
             throw new \Exception($termData->get_error_message(), $termData->get_error_code());
@@ -147,9 +143,9 @@ class PWP_Term_SVC implements PWP_I_SVC
         return !$result;
     }
 
-    final public function delete_item(int $id): bool
+    final public function delete_item(\WP_Term $term): bool
     {
-        $result = wp_delete_term($id, $this->taxonomy);
+        $result = wp_delete_term($term->term_id, $this->taxonomy);
         if ($result === true) return true;
 
         if ($result instanceof \WP_Error) {
@@ -162,11 +158,9 @@ class PWP_Term_SVC implements PWP_I_SVC
         return false;
     }
 
-    final private function filter_null_values_from_array(array $array): array
+    public function does_slug_exist(string $slug): bool
     {
-        return array_filter($array, function ($entry) {
-            return !($entry === null || $entry === '' || $entry === [] || !isset($entry));
-        });
+        return !is_null($this->service->get_item_by_slug($slug));
     }
 
     final public function get_beauty_name(): string

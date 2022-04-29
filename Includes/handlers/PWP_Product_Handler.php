@@ -10,6 +10,7 @@ use PWP\includes\exceptions\PWP_Not_Implemented_Exception;
 use PWP\includes\handlers\services\PWP_Product_Category_SVC;
 use PWP\includes\utilities\PWP_ILogger;
 
+
 class PWP_Product_Handler implements PWP_I_Handler
 {
     protected $logger;
@@ -103,7 +104,7 @@ class PWP_Product_Handler implements PWP_I_Handler
 
     public function update_item(int $id, array $createData, array $args = [], bool $useNullValues = false): object
     {
-        throw new PWP_Not_Implemented_Exception();
+        throw new PWP_Not_Implemented_Exception(__METHOD__);
     }
 
     public function delete_item(int $id, array $args = []): bool
@@ -136,7 +137,7 @@ class PWP_Product_Handler implements PWP_I_Handler
 
     private function get_images(?array $ids): array
     {
-        throw new PWP_Not_Implemented_Exception();
+        throw new PWP_Not_Implemented_Exception(__METHOD__);
     }
 
     private function get_tag_ids(?array $slugs): array
@@ -158,7 +159,7 @@ class PWP_Product_Handler implements PWP_I_Handler
 
     private function get_category_ids(?array $slugs): array
     {
-        throw new PWP_Not_Implemented_Exception();
+        throw new PWP_Not_Implemented_Exception(__METHOD__);
     }
 
     private function get_attributes(?array $slugs): array
@@ -180,7 +181,7 @@ class PWP_Product_Handler implements PWP_I_Handler
 
     private function get_default_attributes(?array $slugs): array
     {
-        throw new PWP_Not_Implemented_Exception();
+        throw new PWP_Not_Implemented_Exception(__METHOD__);
     }
 
     private function remap_results_array(array $products): array

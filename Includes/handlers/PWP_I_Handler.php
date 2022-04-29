@@ -4,6 +4,11 @@ declare(strict_types=1);
 
 namespace PWP\includes\handlers;
 
+/**
+ * Undocumented class
+ * 
+ * @deprecated version
+ */
 interface PWP_I_Handler
 {
     public function create_item(array $createData, array $args = []): object;

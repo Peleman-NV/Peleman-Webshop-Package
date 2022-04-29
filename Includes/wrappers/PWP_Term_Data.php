@@ -27,14 +27,19 @@ class PWP_Term_Data extends PWP_Component
         return new PWP_SEO_Data($this->data->seo);
     }
 
-    final public function get_english_slug(): string
+    final public function get_translation_data(): PWP_Translation_Data
     {
-        return $this->data->english_slug ?: '';
+        return new PWP_Translation_Data(
+            array(
+                'english_slug' => $this->data->english_slug,
+                'language_code' => $this->data->language_code,
+            )
+        );
     }
 
-    final public function get_language_code(): string
+    final public function has_translation_data(): bool
     {
-        return $this->data->language_code ?: '';
+        return ($this->data->english_slug && $this->data->language_code);
     }
 
     final public function get_name(): string
@@ -64,7 +69,7 @@ class PWP_Term_Data extends PWP_Component
         return (int)($this->data->parent ?: '');
     }
 
-    final public function set_parent_id(int $id): void
+    final public function set_parent(int $id): void
     {
         $this->data->parent = $id;
     }

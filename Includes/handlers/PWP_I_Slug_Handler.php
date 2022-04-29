@@ -4,6 +4,11 @@ declare(strict_types=1);
 
 namespace PWP\includes\handlers;
 
+/**
+ * Undocumented class
+ * 
+ * @deprecated version
+ */
 interface PWP_I_Slug_Handler
 {
     public function get_item_by_slug(string $slug, array $args = []): ?object;

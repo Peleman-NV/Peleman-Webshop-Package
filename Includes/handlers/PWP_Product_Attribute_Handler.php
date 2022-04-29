@@ -7,6 +7,11 @@ namespace PWP\includes\handlers;
 use PWP\includes\exceptions\PWP_Not_Implemented_Exception;
 use PWP\includes\utilities\PWP_ILogger;
 
+/**
+ * Undocumented class
+ * 
+ * @deprecated version
+ */
 class PWP_Product_Attribute_Handler implements PWP_I_Handler
 {
 
@@ -31,17 +36,14 @@ class PWP_Product_Attribute_Handler implements PWP_I_Handler
         return $attributes;
     }
 
-    public function create_item(string $identifier, array $args = []): object
+    public function create_item(array $createData, array $args = []): object
     {
-        // $id = wc_create_attribute($data);
-        //TODO: implementation
-        throw new PWP_Not_Implemented_Exception('not implemented');
+        throw new PWP_Not_Implemented_Exception(__METHOD__);
     }
 
-    public function update_item(int $id, array $args = []): object
+    public function update_item(int $id, array $updateData, array $args = [], bool $useNullValues = false): object
     {
-        //TODO: implementation
-        throw new PWP_Not_Implemented_Exception('not implemented');
+        throw new PWP_Not_Implemented_Exception(__METHOD__);
     }
 
     public function delete_item(int $id, array $args = []): bool

@@ -22,12 +22,12 @@ final class PWP_Category_Command_Factory extends PWP_Abstract_Term_Command_Facto
 
     final public function new_read_term_command(array $args = []): PWP_Read_Term_Command
     {
-        return new PWP_Read_Term_Command($this->handler, $args);
+        return new PWP_Read_Term_Command($this->get_service(), $args);
     }
 
     final public function new_update_term_command(PWP_Term_Data $data): PWP_Update_Term_Command
     {
-        return new PWP_Update_Term_Command($this->handler, $data->get_slug(), $data);
+        return new PWP_Update_Term_Command($this->get_service(), $data->get_slug(), $data);
     }
 
     final public function new_delete_term_command(string $slug): PWP_Delete_Term_Command

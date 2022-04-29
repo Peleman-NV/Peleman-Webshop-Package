@@ -6,6 +6,11 @@ namespace PWP\includes\handlers;
 
 use PWP\includes\handlers\services\PWP_Product_Tag_SVC;
 
+/**
+ * Undocumented class
+ * 
+ * @deprecated version
+ */
 class PWP_Tag_Handler extends PWP_Term_Handler
 {
     public function __construct()

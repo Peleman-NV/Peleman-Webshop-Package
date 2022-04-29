@@ -14,6 +14,11 @@ use PWP\includes\exceptions\PWP_Resource_Already_Exists_Exception;
 
 include_once(ABSPATH . '/wp-admin/includes/plugin.php');
 
+/**
+ * Undocumented class
+ * 
+ * @deprecated version
+ */
 class PWP_Term_Handler implements PWP_I_Handler, PWP_I_Slug_Handler
 {
     protected PWP_Term_SVC $service;
@@ -40,7 +45,7 @@ class PWP_Term_Handler implements PWP_I_Handler, PWP_I_Slug_Handler
             throw new PWP_Resource_Already_Exists_Exception("{$this->service->get_beauty_name()} with the slug {$slug} already exists. Slugs should be unique to avoid confusion.");
         }
 
-        if (!empty($data->get_english_slug())) {
+        if ($data->has_translation_data()) {
             return $this->create_new_translated_term($data);
         }
         return $this->create_new_original_term($data);
@@ -57,23 +62,7 @@ class PWP_Term_Handler implements PWP_I_Handler, PWP_I_Slug_Handler
 
     private function create_new_translated_term(PWP_Term_Data $data): \WP_Term
     {
-        if (empty($data->get_language_code())) {
-            throw new PWP_Invalid_Input_Exception("English slug has been entered, but no language code. Translations require both the slug and code.");
-        }
-
-        if (!$this->service->get_item_by_slug($data->get_english_slug())) {
-            throw new PWP_Invalid_Input_Exception("invalid English slug {$data->get_english_slug()} has been passed.");
-        }
-
-        $term = $this->create_new_item($data);
-        if (!is_null($data->get_seo_data())) {
-            $this->service->set_seo_data($term, $data->get_seo_data());
-        }
-
-        $Englishparent =  $this->service->get_item_by_slug($data->get_english_slug());
-        $this->service->set_translation_data($term, $Englishparent, $data->get_language_code());
-
-        return $term;
+        throw new PWP_Not_Implemented_Exception(__METHOD__);
     }
 
     private function create_new_item(PWP_Term_Data $data): \WP_Term
@@ -111,7 +100,7 @@ class PWP_Term_Handler implements PWP_I_Handler, PWP_I_Slug_Handler
 
     public function delete_item(int $id, array $args = []): bool
     {
-        return $this->service->delete_item($id, $args);
+        throw new PWP_Not_Implemented_Exception(__METHOD__);
     }
 
     final public function update_item_by_slug(string $slug, array $updateData, array $args = [], bool $useNullValues = false): \WP_TERM
@@ -120,10 +109,10 @@ class PWP_Term_Handler implements PWP_I_Handler, PWP_I_Slug_Handler
         $data = new PWP_Term_Data($updateData);
 
         if (!empty($targetTerm->parent)) {
-            $data->set_parent_id($targetTerm->parent);
+            $data->set_parent($targetTerm->parent);
         } else {
             $parentId = $this->get_item_by_slug($data->get_parent_slug())->term_id;
-            $data->set_parent_id($parentId ?: 0);
+            $data->set_parent($parentId ?: 0);
         }
 
         return $this->service->update_item($targetTerm, $data->to_array());
