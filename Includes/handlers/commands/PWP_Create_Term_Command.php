@@ -5,9 +5,11 @@ declare(strict_types=1);
 namespace PWP\includes\handlers\commands;
 
 use PWP\includes\wrappers\PWP_Term_Data;
+use PWP\includes\exceptions\PWP_API_Exception;
 use PWP\includes\handlers\services\PWP_Term_SVC;
 use PWP\includes\utilities\response\PWP_Response;
 use PWP\includes\utilities\response\PWP_I_Response;
+use PWP\includes\utilities\response\PWP_Error_Response;
 use PWP\includes\exceptions\PWP_Resource_Already_Exists_Exception;
 
 class PWP_Create_Term_Command implements PWP_I_Command
@@ -25,11 +27,13 @@ class PWP_Create_Term_Command implements PWP_I_Command
 
     public function do_action(): PWP_I_Response
     {
-        if ($this->service->get_item_by_slug($this->slug)) {
-            throw new PWP_Resource_Already_Exists_Exception("{$this->service->get_beauty_name()} with the slug {$this->slug} already exists. Slugs should be unique to avoid confusion.");
+        try {
+            $term = $this->create_term();
+            // $this->service->set_translation_data($term, $term, null);
+            return new PWP_Response("successfully created category {$term->slug}", (array)$term->data);
+        } catch (PWP_API_Exception $exception) {
+            return new PWP_Error_Response("error when creating category {$this->slug} ", $exception);
         }
-        $term = $this->create_term();
-        return new PWP_Response("successfully created category {$term->slug}", (array)$term->data);
     }
 
     public function undo_action(): PWP_I_Response

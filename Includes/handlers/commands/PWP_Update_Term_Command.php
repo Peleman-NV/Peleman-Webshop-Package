@@ -4,15 +4,13 @@ declare(strict_types=1);
 
 namespace PWP\includes\handlers\commands;
 
-use PWP\includes\handlers\PWP_Term_Handler;
 use PWP\includes\exceptions\PWP_API_Exception;
 use PWP\includes\handlers\services\PWP_Term_SVC;
 use PWP\includes\utilities\response\PWP_Response;
-use PWP\includes\utilities\response\PWP_I_Response;
 use PWP\includes\utilities\response\PWP_Error_Response;
 use PWP\includes\wrappers\PWP_Term_Data;
 
-final class PWP_Update_Term_Command implements PWP_I_Command
+class PWP_Update_Term_Command implements PWP_I_Command
 {
     private PWP_Term_SVC $service;
     private string $slug;
@@ -25,7 +23,7 @@ final class PWP_Update_Term_Command implements PWP_I_Command
         $this->updateData = $updateData;
     }
 
-    public function do_action(): PWP_I_Response
+    final public function do_action(): PWP_Response
     {
         try {
             $term = $this->update_item_by_slug();
@@ -38,13 +36,12 @@ final class PWP_Update_Term_Command implements PWP_I_Command
         }
     }
 
-    public function undo_action(): PWP_I_Response
+    final public function undo_action(): PWP_Response
     {
         return new PWP_Response("not implemented");
     }
 
-
-    final private function update_item_by_slug(): \WP_TERM
+    protected function update_item_by_slug(): \WP_TERM
     {
         $originalTerm = $this->service->get_item_by_slug($this->slug);
 

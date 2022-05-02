@@ -126,7 +126,7 @@ class PWP_Term_SVC implements PWP_I_SVC
         update_option('wpseo_taxonomy_meta', $currentSeoMetaData);
     }
 
-    final public function set_translation_data(\WP_Term $translatedTerm, \WP_Term $originalTerm, string $lang): bool
+    final public function set_translation_data(\WP_Term $translatedTerm, \WP_Term $originalTerm, ?string $lang): bool
     {
         if (!class_exists('SitePress')) return false;
 

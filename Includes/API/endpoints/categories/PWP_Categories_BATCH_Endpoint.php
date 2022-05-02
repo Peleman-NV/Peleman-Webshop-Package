@@ -85,6 +85,7 @@ class PWP_Categories_BATCH_Endpoint extends PWP_Abstract_BATCH_Endpoint
         }
 
         foreach ($updateOps as $update) {
+            echo " hello ";
             $data = new PWP_Term_Data($update);
             if ($updateCanCreate) {
                 $this->commands[] = $factory->new_create_or_update_command($data);
