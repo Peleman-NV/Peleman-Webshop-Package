@@ -13,7 +13,7 @@ use PWP\includes\authentication\PWP_IApiAuthenticator;
 /**
  * abstract class for the handling and registering of API Endpoints.
  */
-abstract class PWP_Abstract_API_Channel implements PWP_IHookableComponent
+class PWP_Abstract_API_Channel implements PWP_IHookableComponent
 {
     protected array $endpoints;
     protected string $namespace;

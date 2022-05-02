@@ -6,7 +6,7 @@ namespace PWP\includes\exceptions;
 
 use WP_REST_Response;
 
-abstract class PWP_API_Exception extends \Exception
+class PWP_API_Exception extends \Exception
 {
     public function __construct(string $message = '', int $code = 0, \Throwable $previous = null)
     {

@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace PWP\includes\utilities\response;
 
-use PWP\includes\exceptions\PWP_API_Exception;
-
 class PWP_Error_Response extends PWP_Response
 {
     private string $message;

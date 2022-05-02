@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace PWP\includes\handlers\services;
 
-use PWP\includes\exceptions\PWP_Invalid_Input_Exception;
-use PWP\includes\exceptions\PWP_WP_Error_Exception;
 use PWP\includes\utilities\PWP_WPDB;
-use PWP\includes\handlers\services\PWP_I_SVC;
 use PWP\includes\wrappers\PWP_SEO_Data;
+use PWP\includes\handlers\services\PWP_I_SVC;
+use PWP\includes\exceptions\PWP_WP_Error_Exception;
+use PWP\includes\exceptions\PWP_Invalid_Input_Exception;
 
 class PWP_Term_SVC implements PWP_I_SVC
 {
@@ -83,34 +83,33 @@ class PWP_Term_SVC implements PWP_I_SVC
     {
         $args['taxonomy'] = $this->taxonomy;
         $args['hide_empty'] = false;
-        return \get_terms($args);
+        return get_terms($args);
     }
 
     final public function get_item_by_id(int $id): ?\WP_Term
     {
         $termData = get_term_by('id', $id, $this->taxonomy,);
-        if (!$termData)
+        if (!$termData) {
             return null;
-        // throw new PWP_Not_Found_Exception("could not find term within taxonomy {$this->beautyName} with id {$id}");
+        }
         return $termData;
     }
 
     final public function get_item_by_name(string $name): ?\WP_Term
     {
         $termData = get_term_by('name', $name, $this->taxonomy);
-        if (!$termData)
+        if (!$termData) {
             return null;
-        // throw new PWP_Not_Found_Exception("could not find term within taxonomy {$this->beautyName} with name {$name}");
+        }
         return $termData;
     }
-
 
     final public function get_item_by_slug(string $slug): ?\WP_Term
     {
         $termData = get_term_by('slug', $slug, $this->taxonomy);
-        if (!$termData)
+        if (!$termData) {
             return null;
-        // throw new PWP_Not_Found_Exception("could not find term within taxonomy {$this->beautyName} with slug {$slug}");
+        }
         return $termData;
     }
 
@@ -126,7 +125,7 @@ class PWP_Term_SVC implements PWP_I_SVC
         update_option('wpseo_taxonomy_meta', $currentSeoMetaData);
     }
 
-    final public function set_translation_data(\WP_Term $translatedTerm, \WP_Term $originalTerm, ?string $lang): bool
+    final public function set_translation_data(\WP_Term $translatedTerm, \WP_Term $originalTerm, string $lang, ?string $sourceLang = null): bool
     {
         if (!class_exists('SitePress')) return false;
 
@@ -136,7 +135,7 @@ class PWP_Term_SVC implements PWP_I_SVC
         $taxonomyId = $translatedTerm->term_taxonomy_id;
         $trid = $sitepress->get_element_trid($originalTerm->term_taxonomy_id, $this->elementType);
 
-        $result = $wpdb->query($wpdb->prepare_term_translation_query($lang, $this->sourceLang, (int)$trid, $this->elementType, $taxonomyId));
+        $result = $wpdb->query($wpdb->prepare_term_translation_query($lang, $sourceLang, (int)$trid, $this->elementType, $taxonomyId));
 
         return !$result;
     }

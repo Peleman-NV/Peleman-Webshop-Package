@@ -12,7 +12,8 @@ abstract class PWP_Abstract_Term_Command_Factory
     private string $taxonomy;
     private string $elementType;
     private string $beautyName;
-    private PWP_Term_SVC $service;
+
+    protected PWP_Term_SVC $service;
 
     public function __construct(string $taxonomy, string $elementType, string $beautyName)
     {
@@ -30,11 +31,6 @@ abstract class PWP_Abstract_Term_Command_Factory
     abstract public function new_update_term_command(PWP_Term_Data $data): PWP_Update_Term_Command;
 
     abstract public function new_delete_term_command(string $slug): PWP_Delete_Term_Command;
-
-    final protected function get_service(): PWP_Term_SVC
-    {
-        return $this->service;
-    }
 
     final public function slug_exists(string $slug): bool
     {

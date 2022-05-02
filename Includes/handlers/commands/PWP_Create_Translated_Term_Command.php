@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace PWP\includes\handlers\commands;
 
-use PWP\includes\utilities\response\PWP_Response;
 use PWP\includes\utilities\response\PWP_I_Response;
+use PWP\includes\utilities\response\PWP_Response;
 use PWP\includes\exceptions\PWP_Invalid_Input_Exception;
 
 final class PWP_Create_Translated_Term_Command extends PWP_Create_Term_Command

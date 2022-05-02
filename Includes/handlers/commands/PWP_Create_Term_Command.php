@@ -10,13 +10,12 @@ use PWP\includes\handlers\services\PWP_Term_SVC;
 use PWP\includes\utilities\response\PWP_Response;
 use PWP\includes\utilities\response\PWP_I_Response;
 use PWP\includes\utilities\response\PWP_Error_Response;
-use PWP\includes\exceptions\PWP_Resource_Already_Exists_Exception;
 
 class PWP_Create_Term_Command implements PWP_I_Command
 {
-    private PWP_Term_SVC $service;
-    private string $slug;
-    private PWP_Term_Data $creationData;
+    protected PWP_Term_SVC $service;
+    protected string $slug;
+    protected PWP_Term_Data $creationData;
 
     public function __construct(PWP_Term_SVC $service, string $slug, PWP_Term_Data $data)
     {
@@ -75,5 +74,10 @@ class PWP_Create_Term_Command implements PWP_I_Command
     final protected function does_slug_exist(string $slug): bool
     {
         return !is_null($this->service->get_item_by_slug($slug));
+    }
+
+    final protected function service(): PWP_Term_SVC
+    {
+        return $this->service;
     }
 }

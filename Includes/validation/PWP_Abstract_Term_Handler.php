@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace PWP\includes\validation;
 
 use PWP\includes\handlers\services\PWP_Term_SVC;
-use PWP\includes\wrappers\PWP_Component;
 use PWP\includes\wrappers\PWP_Term_Data;
 
 abstract class PWP_Abstract_Term_Handler implements PWP_I_Handler
