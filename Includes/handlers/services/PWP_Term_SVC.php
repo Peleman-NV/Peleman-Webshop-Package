@@ -19,8 +19,6 @@ class PWP_Term_SVC implements PWP_I_SVC
     private string $sourceLang;
 
     /**
-     * Undocumented function
-     *
      * @param string $taxonomy taxonomy of the term
      * @param string $elementType name of the element for use with WPML translations. 
      * @param string $beautyName beautified name for use in human readable errors.

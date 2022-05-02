@@ -8,6 +8,7 @@ use WC_Product;
 use PWP\includes\exceptions\PWP_Not_Found_Exception;
 use PWP\includes\exceptions\PWP_Not_Implemented_Exception;
 use PWP\includes\handlers\services\PWP_Product_Category_SVC;
+use PWP\includes\handlers\services\PWP_Term_SVC;
 use PWP\includes\utilities\PWP_ILogger;
 
 
@@ -145,7 +146,7 @@ class PWP_Product_Handler implements PWP_I_Handler
         if (is_null($slugs)) return array();
 
         $tagIds = array();
-        $handler = new PWP_Product_Category_SVC();
+        $handler = new PWP_Term_SVC('product_cat', 'tax_product_cat', "product category");
         foreach ($slugs as $slug) {
             $result =  $handler->get_item_by_slug($slug);
             if (is_null($result)) {

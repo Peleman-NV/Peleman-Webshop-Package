@@ -2,11 +2,12 @@
     "autoload": {
         "psr-4": {
             "PWP\\": "",
-            "automattic\\": ""            
+            "automattic\\": ""
         }
     },
     "require": {
-        "automattic/woocommerce": "^3.0"
+        "automattic/woocommerce": "^3.0",
+        "wp-cli/wp-cli-bundle": "*"
     },
     "require-dev": {
         "phpunit/phpunit": "^9",

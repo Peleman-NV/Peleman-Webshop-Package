@@ -17,6 +17,9 @@ final class PWP_Category_Command_Factory extends PWP_Abstract_Term_Command_Facto
 
     final public function new_create_term_command(PWP_Term_Data $data): PWP_Create_Term_Command
     {
+        if ($data->has_translation_data()) {
+            return new PWP_Create_Translated_Term_Command($this->handler, $data->get_slug(), $data);
+        }
         return new PWP_Create_Term_Command($this->handler, $data->get_slug(), $data);
     }
 
