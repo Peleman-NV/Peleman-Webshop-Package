@@ -32,8 +32,8 @@ abstract class PWP_Abstract_Term_Command_Factory
 
     abstract public function new_delete_term_command(string $slug): PWP_Delete_Term_Command;
 
-    final public function slug_exists(string $slug): bool
+    final public function slug_exists(string $slug, string $lang): bool
     {
-        return $this->service->get_item_by_slug($slug) ? true : false;
+        return $this->service->get_item_by_slug($slug, $lang) ? true : false;
     }
 }

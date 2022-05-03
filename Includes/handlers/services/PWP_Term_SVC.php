@@ -58,11 +58,9 @@ class PWP_Term_SVC implements PWP_I_SVC
      *
      * @param \WP_Term $term
      * @param array $args
-     * @param boolean $useNullValues if true, arguments that are null or empty will be persisted. 
-     * if false, they will be ignored and the original value left in its place. default false.
      * @return \WP_Term
      */
-    final public function update_item(\WP_Term $term, array $args = [], bool $useNullValues = false): \WP_Term
+    final public function update_item(\WP_Term $term, array $args = []): \WP_Term
     {
         $termData = wp_update_term($term->term_id, $term->taxonomy, $args);
         if ($termData instanceof \WP_Error) {
@@ -86,7 +84,7 @@ class PWP_Term_SVC implements PWP_I_SVC
         return get_terms($args);
     }
 
-    final public function get_item_by_id(int $id): ?\WP_Term
+    final public function get_item_by_id(int $id, string $lang = 'en'): ?\WP_Term
     {
         $termData = get_term_by('id', $id, $this->taxonomy,);
         if (!$termData) {
@@ -97,8 +95,10 @@ class PWP_Term_SVC implements PWP_I_SVC
 
     final public function get_item_by_name(string $name): ?\WP_Term
     {
+
         $termData = get_term_by('name', $name, $this->taxonomy);
         if (!$termData) {
+            var_dump($termData);
             return null;
         }
         return $termData;
@@ -107,6 +107,7 @@ class PWP_Term_SVC implements PWP_I_SVC
     final public function get_item_by_slug(string $slug): ?\WP_Term
     {
         $termData = get_term_by('slug', $slug, $this->taxonomy);
+        var_dump($termData);
         if (!$termData) {
             return null;
         }
@@ -135,7 +136,9 @@ class PWP_Term_SVC implements PWP_I_SVC
         $taxonomyId = $translatedTerm->term_taxonomy_id;
         $trid = $sitepress->get_element_trid($originalTerm->term_taxonomy_id, $this->elementType);
 
-        $result = $wpdb->query($wpdb->prepare_term_translation_query($lang, $sourceLang, (int)$trid, $this->elementType, $taxonomyId));
+        $query = $wpdb->prepare_term_translation_query($lang, $sourceLang, (int)$trid, $this->elementType, $taxonomyId);
+        var_dump($query);
+        $result = $wpdb->query($query);
 
         return !$result;
     }

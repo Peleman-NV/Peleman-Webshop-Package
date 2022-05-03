@@ -6,11 +6,13 @@ namespace PWP\includes\API\endpoints\categories;
 
 use PWP\includes\authentication\PWP_Authenticator;
 use PWP\includes\API\endpoints\PWP_Abstract_BATCH_Endpoint;
+use PWP\includes\exceptions\PWP_API_Exception;
 use PWP\includes\handlers\commands\PWP_Category_Command_Factory;
-use PWP\includes\utilities\response\PWP_Error_Response;
+use PWP\includes\utilities\response\PWP_I_Response;
 use PWP\includes\utilities\response\PWP_Response;
 use PWP\includes\wrappers\PWP_Term_Data;
 use PWP\includes\handlers\commands\PWP_I_Command;
+use PWP\includes\utilities\response\PWP_Error_Response;
 
 class PWP_Categories_BATCH_Endpoint extends PWP_Abstract_BATCH_Endpoint
 {
@@ -99,10 +101,14 @@ class PWP_Categories_BATCH_Endpoint extends PWP_Abstract_BATCH_Endpoint
         }
     }
 
-    private function execute_commands($response): void
+    private function execute_commands(PWP_Response $response): void
     {
-        foreach ($this->commands as $command) {
-            $response->add_response($command->do_action());
+        foreach ($this->commands as $key => $command) {
+            try {
+                $response->add_response($command->do_action());
+            } catch (PWP_API_Exception $exception) {
+                $response->add_response(new PWP_Error_Response($exception->getMessage(), $exception));
+            }
         }
     }
 }

@@ -4,28 +4,32 @@ declare(strict_types=1);
 
 namespace PWP\includes\handlers\commands;
 
-use PWP\includes\utilities\response\PWP_I_Response;
-use PWP\includes\utilities\response\PWP_Response;
-use PWP\includes\exceptions\PWP_Invalid_Input_Exception;
+use PWP\includes\handlers\services\PWP_Term_SVC;
+use PWP\includes\wrappers\PWP_Term_Data;
+use WP_Term;
 
 final class PWP_Create_Translated_Term_Command extends PWP_Create_Term_Command
 {
-    public function do_action(): PWP_I_Response
+    private string $englishSlug;
+    private ?string $sourceLang;
+
+    public function __construct(PWP_Term_SVC $service, PWP_Term_Data $data)
     {
-        if (!$this->service->get_item_by_slug($this->translationData->get_english_slug())) {
-            throw new PWP_Invalid_Input_Exception("invalid English slug {$this->translationData->get_english_slug()} has been passed.");
-        }
+        parent::__construct($service, $data);
 
-        $term = $this->create_term();
-
-        $Englishparent =  $this->service->get_item_by_slug($this->translationData->get_english_slug());
-        $this->service->set_translation_data($term, $Englishparent, $this->translationData->get_language_code());
-
-        return new PWP_Response("successfully created category {$term->slug}", (array)$term->data);
+        $this->englishSlug = $data->get_translation_data()->get_english_slug();
+        $this->lang = $data->get_translation_data()->get_language_code();
+        $this->sourceLang = 'en';
     }
 
-    public function undo_action(): PWP_I_Response
+    protected function configure_translation_table(WP_Term $term): void
     {
-        return new PWP_Response("not implemented");
+        $englishParent = $this->service->get_item_by_slug($this->englishSlug, $this->lang);
+        $this->service->set_translation_data(
+            $term,
+            $englishParent,
+            $this->lang,
+            $this->sourceLang
+        );
     }
 }

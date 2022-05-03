@@ -60,21 +60,21 @@ class PWP_WPDB
     /**
      * prepare query for term translation updating. works with WPML's wp_icl_translations table.
      *
-     * @param string $lang 2 character lower-case language code of the current entry.
+     * @param string $myLang 2 character lower-case language code of the current entry.
      * @param string $sourceLang 2 character lower-case language code of the default/parent entry.
      * @param integer $trid short for translation id. translations share their trid in the table
      * @param string $elementType identifier for the type of element which is translated. not the same as a taxonomy
      * @param integer $taxonomyId id of the taxonomy which is translated. 
      * @return string the completed query as a string
      */
-    final public function prepare_term_translation_query(string $lang, ?string $sourceLang, int $trid, string $elementType, int $taxonomyId): string
+    final public function prepare_term_translation_query(string $myLang, ?string $sourceLang, int $trid, string $elementType, int $taxonomyId): string
     {
         $table = $this->db->prefix . 'icl_translations';
-        $sourceLang = is_null($sourceLang) ? 'NULL' : "'{$sourceLang}'";
+        $sourceLang = is_null($sourceLang) ? 'NULL' : "{$sourceLang}";
 
         return $this->db->prepare(
             "UPDATE {$table} SET language_code = '%s', source_language_code = %s, trid = %d WHERE element_type = '%s' AND element_id = %d;",
-            $lang,
+            $myLang,
             $sourceLang,
             $trid,
             $elementType,

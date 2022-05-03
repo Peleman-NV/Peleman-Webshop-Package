@@ -4,19 +4,43 @@ declare(strict_types=1);
 
 namespace PWP\includes\handlers\commands;
 
+use PWP\includes\handlers\services\PWP_Term_SVC;
+use PWP\includes\wrappers\PWP_Term_Data;
+use PWP\includes\wrappers\PWP_Translation_Data;
 use WP_Term;
 
 final class PWP_Update_Translated_Term_Command extends PWP_Update_Term_Command
 {
-    protected function update_item_by_slug(): \WP_Term
+    private string $englishSlug;
+    private ?string $sourceLang;
+
+    public function __construct(PWP_Term_SVC $service, PWP_Term_Data $data)
     {
-        return parent::update_item_by_slug();
+        parent::__construct($service, $data);
+
+        $this->englishSlug = $data->get_translation_data()->get_english_slug();
+        $this->lang = $data->get_translation_data()->get_language_code();
+        $this->sourceLang = 'en';
     }
 
+    protected function update_item_by_slug(): \WP_Term
+    {
+        echo ('is it here?');
+        var_dump($this->service->get_item_by_slug($this->englishSlug));
+        echo ('or here?');
+        $term = $this->service->get_item_by_slug($this->slug, $this->lang);
+
+        return $this->service->update_item($term, $this->data->to_array());
+    }
     protected function configure_translation_table(WP_Term $term): void
     {
-        $translationData = $this->updateData->get_translation_data();
-        $Englishparent =  $this->service->get_item_by_slug($translationData->get_english_slug());
-        $this->service->set_translation_data($term, $Englishparent, $translationData->get_language_code(), 'en');
+        var_dump($term);
+        $Englishparent =  $this->service->get_item_by_slug($this->englishSlug, $this->lang);
+        $this->service->set_translation_data(
+            $term,
+            $Englishparent,
+            $this->lang,
+            $this->sourceLang
+        );
     }
 }

@@ -4,50 +4,50 @@ declare(strict_types=1);
 
 namespace PWP\includes\handlers\commands;
 
+use WP_Term;
 use PWP\includes\wrappers\PWP_Term_Data;
-use PWP\includes\exceptions\PWP_API_Exception;
 use PWP\includes\handlers\services\PWP_Term_SVC;
 use PWP\includes\utilities\response\PWP_Response;
 use PWP\includes\utilities\response\PWP_I_Response;
-use PWP\includes\utilities\response\PWP_Error_Response;
+use PWP\includes\exceptions\PWP_Not_Implemented_Exception;
 
 class PWP_Create_Term_Command implements PWP_I_Command
 {
     protected PWP_Term_SVC $service;
     protected string $slug;
-    protected PWP_Term_Data $creationData;
+    protected PWP_Term_Data $data;
+    protected string $lang;
 
-    public function __construct(PWP_Term_SVC $service, string $slug, PWP_Term_Data $data)
+    public function __construct(PWP_Term_SVC $service, PWP_Term_Data $data)
     {
         $this->service = $service;
-        $this->slug = $slug;
-        $this->creationData = $data;
+        $this->data = $data;
+        $this->slug = $data->get_slug();
+        $this->lang = 'en';
     }
 
-    public function do_action(): PWP_I_Response
+    final public function do_action(): PWP_I_Response
     {
-        try {
-            $term = $this->create_term();
-            // $this->service->set_translation_data($term, $term, null);
-            return new PWP_Response("successfully created category {$term->slug}", (array)$term->data);
-        } catch (PWP_API_Exception $exception) {
-            return new PWP_Error_Response("error when creating category {$this->slug} ", $exception);
-        }
+        $term = $this->create_term();
+        $this->configure_translation_table($term);
+        // $this->configure_seo_data($term);
+
+        return new PWP_Response("successfully created category {$term->slug}", (array)$term->data);
     }
 
     public function undo_action(): PWP_I_Response
     {
-        return new PWP_Response("not implemented");
+        throw new PWP_Not_Implemented_Exception(__METHOD__);
     }
 
-    final protected function create_term(): \WP_Term
+    final protected function create_term(): WP_Term
     {
-        $parentId = $this->find_parent_id($this->creationData->get_parent_id(), $this->creationData->get_parent_slug());
+        $parentId = $this->find_parent_id($this->data->get_parent_id(), $this->data->get_parent_slug());
 
         return $this->service->create_item(
-            $this->creationData->get_name(),
-            $this->creationData->get_slug(),
-            $this->creationData->get_description(),
+            $this->data->get_name(),
+            $this->data->get_slug(),
+            $this->data->get_description(),
             $parentId
         );
     }
@@ -55,14 +55,14 @@ class PWP_Create_Term_Command implements PWP_I_Command
     protected function find_parent_id(?int $id, ?string $slug): int
     {
         if (!empty($id)) {
-            $parent = $this->service->get_item_by_id($id);
+            $parent = $this->service->get_item_by_id($id, $this->lang);
             if (!empty($parent)) {
                 return $parent->term_id;
             }
         }
 
         if (!empty($slug)) {
-            $parent = $this->service->get_item_by_slug($slug);
+            $parent = $this->service->get_item_by_slug($slug, $this->lang);
             if (!empty($parent)) {
                 return $parent->term_id;
             }
@@ -71,13 +71,16 @@ class PWP_Create_Term_Command implements PWP_I_Command
         return 0;
     }
 
-    final protected function does_slug_exist(string $slug): bool
+    protected function configure_translation_table(WP_Term $term): void
     {
-        return !is_null($this->service->get_item_by_slug($slug));
+        $this->service->set_translation_data($term, $term, $this->lang, null);
     }
 
-    final protected function service(): PWP_Term_SVC
+    protected function configure_seo_Data(WP_Term $term): void
     {
-        return $this->service;
+        $seoData = $this->data->get_seo_data();
+        if (!empty($seoData)) {
+            $this->service->set_seo_data($term, $seoData);
+        }
     }
 }
