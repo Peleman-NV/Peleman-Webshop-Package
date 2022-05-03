@@ -72,26 +72,37 @@ class PWP_WPDB
         $table = $this->db->prefix . 'icl_translations';
         $sourceLang = is_null($sourceLang) ? "NULL" : "{$sourceLang}";
 
-        $statement = $this->db->prepare(
-            "UPDATE {$table} SET language_code = '%s', source_language_code = %s, trid = %d WHERE element_type = '%s' AND element_id = %d;",
+        return $this->filter_proper_NULL($this->db->prepare(
+            "UPDATE {$table} SET language_code = %s, source_language_code = %s, trid = %d WHERE element_type = %s AND element_id = %d;",
             $myLang,
             $sourceLang,
             $trid,
             $elementType,
             $taxonomyId
-        );
-
-        return str_replace("'NULL'", "NULL", $statement);
+        ));
     }
 
     final public function prepare_term_children_query(int $id, string $taxonomy): string
     {
         $table = $this->db->prefix . 'term_taxonomy';
 
-        return $this->db->prepare(
-            "SELECT term_id FROM {$table} where parent = %d AND taxonomy = '%s';",
+        return $this->filter_proper_NULL($this->db->prepare(
+            "SELECT term_id FROM {$table} where parent = %d AND taxonomy = %s;",
             $id,
             $taxonomy,
-        );
+        ));
+    }
+
+    /**
+     * will replace 'NULL' in a query with NULL.
+     * 
+     * This function is to implement proper NULL into wpdb-prepare() functions, which otherwise will not do it accurately.
+     *
+     * @param string $query
+     * @return string
+     */
+    private function filter_proper_NULL(string $query): string
+    {
+        return str_replace("'NULL'", "NULL", $query);
     }
 }
