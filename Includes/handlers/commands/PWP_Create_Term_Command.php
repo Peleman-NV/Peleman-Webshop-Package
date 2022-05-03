@@ -4,18 +4,20 @@ declare(strict_types=1);
 
 namespace PWP\includes\handlers\commands;
 
+use PWP\includes\exceptions\PWP_API_Exception;
 use WP_Term;
 use PWP\includes\wrappers\PWP_Term_Data;
 use PWP\includes\handlers\services\PWP_Term_SVC;
 use PWP\includes\utilities\response\PWP_Response;
 use PWP\includes\utilities\response\PWP_I_Response;
 use PWP\includes\exceptions\PWP_Not_Implemented_Exception;
+use PWP\includes\validation\PWP_Validate_Term_Unique_Slug;
 
 class PWP_Create_Term_Command implements PWP_I_Command
 {
     protected PWP_Term_SVC $service;
-    protected string $slug;
     protected PWP_Term_Data $data;
+    protected string $slug;
     protected string $lang;
 
     public function __construct(PWP_Term_SVC $service, PWP_Term_Data $data)
@@ -28,11 +30,16 @@ class PWP_Create_Term_Command implements PWP_I_Command
 
     final public function do_action(): PWP_I_Response
     {
-        $term = $this->create_term();
-        $this->configure_translation_table($term);
-        // $this->configure_seo_data($term);
+        $handler = new PWP_Validate_Term_Unique_Slug($this->service);
 
-        return new PWP_Response("successfully created category {$term->slug}", (array)$term->data);
+        if ($handler->handle($this->data)) {
+            $term = $this->create_term();
+            $this->configure_translation_table($term);
+            $this->configure_seo_data($term);
+
+            return new PWP_Response("successfully created category {$term->slug}", (array)$term->data);
+        }
+        return new PWP_REsponse("could not create category {$this->slug}");
     }
 
     public function undo_action(): PWP_I_Response
@@ -55,14 +62,14 @@ class PWP_Create_Term_Command implements PWP_I_Command
     protected function find_parent_id(?int $id, ?string $slug): int
     {
         if (!empty($id)) {
-            $parent = $this->service->get_item_by_id($id, $this->lang);
+            $parent = $this->service->get_item_by_id($id);
             if (!empty($parent)) {
                 return $parent->term_id;
             }
         }
 
         if (!empty($slug)) {
-            $parent = $this->service->get_item_by_slug($slug, $this->lang);
+            $parent = $this->service->get_item_by_slug($slug);
             if (!empty($parent)) {
                 return $parent->term_id;
             }

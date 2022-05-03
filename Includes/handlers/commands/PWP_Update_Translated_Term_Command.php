@@ -25,20 +25,16 @@ final class PWP_Update_Translated_Term_Command extends PWP_Update_Term_Command
 
     protected function update_item_by_slug(): \WP_Term
     {
-        echo ('is it here?');
-        var_dump($this->service->get_item_by_slug($this->englishSlug));
-        echo ('or here?');
-        $term = $this->service->get_item_by_slug($this->slug, $this->lang);
+        $term = $this->service->get_item_by_slug($this->slug);
 
         return $this->service->update_item($term, $this->data->to_array());
     }
     protected function configure_translation_table(WP_Term $term): void
     {
-        var_dump($term);
-        $Englishparent =  $this->service->get_item_by_slug($this->englishSlug, $this->lang);
+        $englishParent = $this->service->get_item_by_slug($this->englishSlug);
         $this->service->set_translation_data(
             $term,
-            $Englishparent,
+            $englishParent,
             $this->lang,
             $this->sourceLang
         );

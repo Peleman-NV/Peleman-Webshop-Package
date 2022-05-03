@@ -29,8 +29,6 @@ class PWP_Test_Endpoint extends PWP_EndpointController
     public function do_action(WP_REST_Request $request): WP_REST_Response
     {
         return new WP_REST_Response('test successful!', 200);
-        // $service = new PWP_Term_SVC('product_cat', 'tax_product_cat', "product category");
-        // return new WP_REST_Response($service->get_item_by_slug('my_testing_cat_01-de', 'de'));
     }
 
     public function authenticate(WP_REST_Request $request): bool

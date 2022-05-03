@@ -46,12 +46,12 @@ class PWP_Update_Term_Command implements PWP_I_Command
 
     protected function update_item_by_slug(): \WP_TERM
     {
-        $term = $this->service->get_item_by_slug($this->slug, $this->lang);
+        $term = $this->service->get_item_by_slug($this->slug);
 
         if (!empty($term->parent) || $term->parent === 0) {
             $this->data->set_parent($term->parent);
         } else {
-            $parent = $this->service->get_item_by_slug($this->data->get_parent_slug(), $this->lang);
+            $parent = $this->service->get_item_by_slug($this->data->get_parent_slug());
             $this->data->set_parent($parent ? $parent->term_id : 0);
         }
         return $this->service->update_item($term, $this->data->to_array());
@@ -61,7 +61,6 @@ class PWP_Update_Term_Command implements PWP_I_Command
     {
         echo ('okay, this might be our issue');
         var_dump($term);
-        // $this->service->set_translation_data($term, $term, $this->lang, null);
     }
 
     protected function configure_seo_Data(WP_Term $term): void

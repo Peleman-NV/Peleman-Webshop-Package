@@ -107,7 +107,6 @@ class PWP_Term_SVC implements PWP_I_SVC
     final public function get_item_by_slug(string $slug): ?\WP_Term
     {
         $termData = get_term_by('slug', $slug, $this->taxonomy);
-        var_dump($termData);
         if (!$termData) {
             return null;
         }
@@ -160,7 +159,7 @@ class PWP_Term_SVC implements PWP_I_SVC
 
     public function does_slug_exist(string $slug): bool
     {
-        return !is_null($this->service->get_item_by_slug($slug));
+        return !is_null($this->get_item_by_slug($slug));
     }
 
     final public function get_beauty_name(): string

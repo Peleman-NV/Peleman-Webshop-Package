@@ -70,9 +70,9 @@ class PWP_WPDB
     final public function prepare_term_translation_query(string $myLang, ?string $sourceLang, int $trid, string $elementType, int $taxonomyId): string
     {
         $table = $this->db->prefix . 'icl_translations';
-        $sourceLang = is_null($sourceLang) ? 'NULL' : "{$sourceLang}";
+        $sourceLang = is_null($sourceLang) ? "NULL" : "{$sourceLang}";
 
-        return $this->db->prepare(
+        $statement = $this->db->prepare(
             "UPDATE {$table} SET language_code = '%s', source_language_code = %s, trid = %d WHERE element_type = '%s' AND element_id = %d;",
             $myLang,
             $sourceLang,
@@ -80,6 +80,8 @@ class PWP_WPDB
             $elementType,
             $taxonomyId
         );
+
+        return str_replace("'NULL'", "NULL", $statement);
     }
 
     final public function prepare_term_children_query(int $id, string $taxonomy): string

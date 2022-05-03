@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace PWP\includes\wrappers;
 
+use PWP\includes\wrappers\PWP_Component;
 use PWP\includes\exceptions\PWP_Invalid_Input_Exception;
 
 class PWP_Term_Data extends PWP_Component

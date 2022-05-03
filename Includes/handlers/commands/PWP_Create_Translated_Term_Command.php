@@ -24,7 +24,7 @@ final class PWP_Create_Translated_Term_Command extends PWP_Create_Term_Command
 
     protected function configure_translation_table(WP_Term $term): void
     {
-        $englishParent = $this->service->get_item_by_slug($this->englishSlug, $this->lang);
+        $englishParent = $this->service->get_item_by_slug($this->englishSlug);
         $this->service->set_translation_data(
             $term,
             $englishParent,

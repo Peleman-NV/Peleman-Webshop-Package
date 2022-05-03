@@ -7,17 +7,19 @@ namespace PWP\includes\validation;
 use PWP\includes\handlers\services\PWP_Term_SVC;
 use PWP\includes\wrappers\PWP_Term_Data;
 
-abstract class PWP_Abstract_Term_Handler implements PWP_I_Handler
+abstract class PWP_Abstract_Term_Handler
 {
-    private PWP_Abstract_Term_Handler $next;
-    protected $service;
+    private ?PWP_Abstract_Term_Handler $next;
+    protected PWP_Term_SVC $service;
 
-    public function construct(PWP_Term_SVC $service)
+    public function __construct(PWP_Term_SVC $service)
     {
+        echo ('<p>constructing...</p>');
         $this->service = $service;
+        $this->next = null;
     }
 
-    public function set_next(PWP_I_Handler $next): PWP_I_Handler
+    final public function set_next(PWP_Abstract_Term_Handler $next): PWP_Abstract_Term_Handler
     {
         $this->next = $next;
         return $this->next;
