@@ -54,7 +54,7 @@ class PWP_WPDB
      */
     public function get_results(string $query)
     {
-        return $this->db->get_results($query);
+        return $this->db->get_results($query, OBJECT);
     }
 
     /**
@@ -62,7 +62,7 @@ class PWP_WPDB
      *
      * @param string $myLang 2 character lower-case language code of the current entry.
      * @param string $sourceLang 2 character lower-case language code of the default/parent entry.
-     * @param integer $trid short for translation id. translations share their trid in the table
+     * @param integer $trid (trid) translations share their trid in the table
      * @param string $elementType identifier for the type of element which is translated. not the same as a taxonomy
      * @param integer $taxonomyId id of the taxonomy which is translated. 
      * @return string the completed query as a string
@@ -70,7 +70,7 @@ class PWP_WPDB
     final public function prepare_term_translation_query(string $myLang, ?string $sourceLang, int $trid, string $elementType, int $taxonomyId): string
     {
         $table = $this->db->prefix . 'icl_translations';
-        $sourceLang = is_null($sourceLang) ? "NULL" : "{$sourceLang}";
+        $sourceLang = is_null($sourceLang) ? 'NULL' : "{$sourceLang}";
 
         return $this->filter_proper_NULL($this->db->prepare(
             "UPDATE {$table} SET language_code = %s, source_language_code = %s, trid = %d WHERE element_type = %s AND element_id = %d;",

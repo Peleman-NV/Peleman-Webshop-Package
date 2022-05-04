@@ -15,13 +15,14 @@ abstract class PWP_Abstract_Term_Command_Factory
 
     protected PWP_Term_SVC $service;
 
-    public function __construct(string $taxonomy, string $elementType, string $beautyName)
+    public function __construct(string $taxonomy, string $elementType, string $beautyName, string $sourceLang = 'en')
     {
         $this->taxonomy = $taxonomy;
         $this->elementType = $elementType;
         $this->beautyName = $beautyName;
 
-        $this->service = new PWP_Term_SVC($taxonomy, $elementType, $beautyName, 'en');
+        $this->service = new PWP_Term_SVC($taxonomy, $elementType, $beautyName, $sourceLang);
+        $this->service->disable_sitepress_get_term_filter();
     }
 
     abstract public function new_create_term_command(PWP_Term_Data $data): PWP_Create_Term_Command;
@@ -34,6 +35,6 @@ abstract class PWP_Abstract_Term_Command_Factory
 
     final public function slug_exists(string $slug): bool
     {
-        return $this->service->get_item_by_slug($slug) ? true : false;
+        return !is_null($this->service->get_item_by_slug($slug));
     }
 }

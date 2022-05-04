@@ -14,7 +14,6 @@ abstract class PWP_Abstract_Term_Handler
 
     public function __construct(PWP_Term_SVC $service)
     {
-        echo ('<p>constructing...</p>');
         $this->service = $service;
         $this->next = null;
     }
@@ -25,6 +24,14 @@ abstract class PWP_Abstract_Term_Handler
         return $this->next;
     }
 
+    /**
+     * main validation handler function
+     * 
+     * will return `false` if validation is invalid. will automatically return `true` if validation is valid, or chain has reached its final link.
+     *
+     * @param PWP_Term_Data $request
+     * @return boolean
+     */
     abstract public function handle(PWP_Term_Data $request): bool;
 
     final protected function handle_next(PWP_Term_Data $request): bool

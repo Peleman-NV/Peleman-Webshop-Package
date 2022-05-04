@@ -10,16 +10,23 @@ class PWP_Validate_Term_Translation_Data extends PWP_Abstract_Term_Handler
 {
     public function handle(PWP_Term_Data $request): bool
     {
-        $translationData = $request->get_translation_data();
-        if (!$this->service->does_slug_exist($translationData->get_english_slug())) {
-            // throw new PWP_Invalid_Input_Exception("{$this->service->get_beauty_name()} with slug {$translationData->get_english_slug()} already exists. Slugs must be unique!");
-            return false;
-        }
-        if (!$translationData->get_language_code()) {
-            // throw new PWP_Invalid_Input_Exception("language code given for {$request->get_slug()} is not valid!");
-            return false;
+        if ($request->has_translation_data()) {
+            return $this->validate_translation_data($request);
         }
 
         return $this->handle_next($request);
+    }
+
+    public function validate_translation_data(PWP_Term_Data $request): bool
+    {
+        $translationData = $request->get_translation_data();
+        if (!$this->service->is_slug_in_use($translationData->get_english_slug())) {
+            return false;
+        }
+        if (!$translationData->get_language_code()) {
+            return false;
+        }
+
+        $this->handle_next($request);
     }
 }

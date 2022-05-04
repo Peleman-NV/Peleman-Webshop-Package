@@ -11,6 +11,8 @@ use PWP\includes\handlers\services\PWP_Term_SVC;
 use PWP\includes\utilities\response\PWP_Response;
 use PWP\includes\utilities\response\PWP_I_Response;
 use PWP\includes\exceptions\PWP_Not_Implemented_Exception;
+use PWP\includes\validation\PWP_Validate_Term_Slug_Exists;
+use SitePress;
 
 class PWP_Update_Term_Command implements PWP_I_Command
 {
@@ -29,14 +31,22 @@ class PWP_Update_Term_Command implements PWP_I_Command
 
     final public function do_action(): PWP_I_Response
     {
-        $term = $this->update_item_by_slug();
-        $this->configure_translation_table($term);
-        // $this->configure_seo_data($term);
+        $handler = new PWP_Validate_Term_Slug_Exists($this->service);
 
-        return new PWP_Response(
-            "{$this->service->get_beauty_name()} with slug {$this->slug} has been successfully updated",
-            (array)$term->data
-        );
+        if ($handler->handle($this->data)) {
+            $originalTerm = $this->service->get_item_by_slug($this->slug);
+
+            $updatedTerm = $this->update_term($originalTerm);
+
+            $this->configure_translation_table($updatedTerm);
+            $this->configure_seo_data($updatedTerm);
+
+            return new PWP_Response(
+                "{$this->service->get_beauty_name()} with slug {$this->slug} has been successfully updated",
+                (array)$updatedTerm->data
+            );
+        }
+        return new PWP_Response("{$this->service->get_beauty_name()} with slug {$this->slug} cannot be updated.");
     }
 
     final public function undo_action(): PWP_I_Response
@@ -44,23 +54,37 @@ class PWP_Update_Term_Command implements PWP_I_Command
         throw new PWP_Not_Implemented_Exception(__METHOD__);
     }
 
-    protected function update_item_by_slug(): \WP_TERM
+    protected function update_term(WP_Term $original): \WP_TERM
     {
-        $term = $this->service->get_item_by_slug($this->slug);
-
-        if (!empty($term->parent) || $term->parent === 0) {
-            $this->data->set_parent($term->parent);
+        if (!empty($original->parent)) {
+            $this->data->set_parent($original->parent);
         } else {
             $parent = $this->service->get_item_by_slug($this->data->get_parent_slug());
             $this->data->set_parent($parent ? $parent->term_id : 0);
         }
-        return $this->service->update_item($term, $this->data->to_array());
+
+        return $this->service->update_item(
+            $original,
+            $this->service->get_taxonomy(),
+            $this->data->to_array()
+        );
     }
 
     protected function configure_translation_table(WP_Term $term): void
     {
-        echo ('okay, this might be our issue');
-        var_dump($term);
+        if ($this->data->has_translation_data()) {
+            $translationData = $this->data->get_translation_data();
+            $original = $this->service->get_item_by_slug($translationData->get_english_slug());
+            if (is_null($original)) {
+                return;
+            }
+            $this->service->configure_translation(
+                $term,
+                $original,
+                $translationData->get_language_code(),
+                $this->service->get_sourcelang()
+            );
+        }
     }
 
     protected function configure_seo_Data(WP_Term $term): void

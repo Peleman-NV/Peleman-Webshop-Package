@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace PWP\includes\handlers\commands;
 
-use PWP\includes\exceptions\PWP_API_Exception;
 use WP_Term;
 use PWP\includes\wrappers\PWP_Term_Data;
 use PWP\includes\handlers\services\PWP_Term_SVC;
@@ -80,7 +79,19 @@ class PWP_Create_Term_Command implements PWP_I_Command
 
     protected function configure_translation_table(WP_Term $term): void
     {
-        $this->service->set_translation_data($term, $term, $this->lang, null);
+        if ($this->data->has_translation_data()) {
+            $translationData = $this->data->get_translation_data();
+            $original = $this->service->get_item_by_slug($translationData->get_english_slug());
+            if (is_null($original)) {
+                return;
+            }
+            $this->service->configure_translation(
+                $term,
+                $original,
+                $translationData->get_language_code(),
+                $this->service->get_sourcelang()
+            );
+        }
     }
 
     protected function configure_seo_Data(WP_Term $term): void
