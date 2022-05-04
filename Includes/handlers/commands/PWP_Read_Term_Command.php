@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace PWP\includes\handlers\commands;
 
-use PWP\includes\handlers\PWP_Term_Handler;
 use PWP\includes\handlers\services\PWP_Term_SVC;
 use PWP\includes\utilities\response\PWP_Response;
 use PWP\includes\utilities\response\PWP_I_Response;
@@ -12,9 +11,6 @@ use PWP\includes\utilities\response\PWP_I_Response;
 final class PWP_Read_Term_Command implements PWP_I_Command
 
 {
-    private PWP_Term_SVC $service;
-    private array $updateData;
-
     public function __construct(PWP_Term_SVC $service, array $args = [])
     {
         $this->service = $service;

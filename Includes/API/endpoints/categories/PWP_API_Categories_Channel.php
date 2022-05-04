@@ -27,7 +27,7 @@ class PWP_API_Categories_Channel extends PWP_Abstract_API_Channel
 
         /* REGISTER ENDPOINTS HERE */
 
-        //Testing Endpoints; to be removed when no longer relevant
+        //Testing Endpoint; to be removed when no longer relevant
         $this->add_endpoint(new PWP_Test_Endpoint($this->authenticator));
 
         $this->add_endpoint(new PWP_Categories_BATCH_Endpoint($this->rest_base, $this->authenticator));

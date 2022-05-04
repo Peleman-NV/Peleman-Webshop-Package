@@ -39,6 +39,7 @@ class PWP_Create_Term_Command implements PWP_I_Command
     {
         if ($this->validate_data()) {
             $term = $this->create_term();
+
             $this->configure_translation_table($term);
             $this->configure_seo_data($term);
 
@@ -68,16 +69,12 @@ class PWP_Create_Term_Command implements PWP_I_Command
     {
         if (!empty($id)) {
             $parent = $this->service->get_item_by_id($id);
-            if (!empty($parent)) {
-                return $parent->term_id;
-            }
+            if (!empty($parent)) return $parent->term_id;
         }
 
         if (!empty($slug)) {
             $parent = $this->service->get_item_by_slug($slug);
-            if (!empty($parent)) {
-                return $parent->term_id;
-            }
+            if (!empty($parent)) return $parent->term_id;
         }
 
         return 0;
@@ -88,9 +85,11 @@ class PWP_Create_Term_Command implements PWP_I_Command
         if ($this->data->has_translation_data()) {
             $translationData = $this->data->get_translation_data();
             $original = $this->service->get_item_by_slug($translationData->get_english_slug());
+
             if (is_null($original)) {
                 return;
             }
+
             $this->service->configure_translation(
                 $term,
                 $original,
@@ -100,11 +99,11 @@ class PWP_Create_Term_Command implements PWP_I_Command
         }
     }
 
-    protected function configure_seo_Data(WP_Term $term): void
+    protected function configure_SEO_data(WP_Term $term): void
     {
         $seoData = $this->data->get_seo_data();
         if (!empty($seoData)) {
-            $this->service->set_seo_data($term, $seoData);
+            $this->service->configure_SEO_data($term, $seoData);
         }
     }
 

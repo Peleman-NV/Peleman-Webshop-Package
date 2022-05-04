@@ -14,7 +14,6 @@ use PWP\includes\exceptions\PWP_Not_Implemented_Exception;
 use PWP\includes\validation\PWP_Abstract_Term_Handler;
 use PWP\includes\validation\PWP_Validate_Term_Slug_Exists;
 use PWP\includes\validation\PWP_Validate_Term_Translation_Data;
-use SitePress;
 
 class PWP_Update_Term_Command implements PWP_I_Command
 {
@@ -48,11 +47,11 @@ class PWP_Update_Term_Command implements PWP_I_Command
             $this->configure_seo_data($updatedTerm);
 
             return new PWP_Response(
-                "{$this->service->get_beauty_name()} with slug {$this->slug} has been successfully updated",
+                "{$this->service->get_taxonomy_name()} with slug {$this->slug} has been successfully updated",
                 (array)$updatedTerm->data
             );
         }
-        return new PWP_Response("{$this->service->get_beauty_name()} with slug {$this->slug} cannot be updated.");
+        return new PWP_Response("{$this->service->get_taxonomy_name()} with slug {$this->slug} cannot be updated.");
     }
 
     final public function undo_action(): PWP_I_Response
@@ -93,11 +92,11 @@ class PWP_Update_Term_Command implements PWP_I_Command
         }
     }
 
-    protected function configure_seo_Data(WP_Term $term): void
+    protected function configure_SEO_data(WP_Term $term): void
     {
         $seoData = $this->data->get_seo_data();
         if (!empty($seoData)) {
-            $this->service->set_seo_data($term, $seoData);
+            $this->service->configure_SEO_data($term, $seoData);
         }
     }
 

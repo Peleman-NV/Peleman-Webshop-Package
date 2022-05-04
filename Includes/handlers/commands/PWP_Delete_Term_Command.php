@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace PWP\includes\handlers\commands;
 
-use PWP\includes\handlers\PWP_Term_Handler;
 use PWP\includes\exceptions\PWP_API_Exception;
 use PWP\includes\utilities\response\PWP_Response;
 use PWP\includes\utilities\response\PWP_I_Response;
@@ -42,7 +41,7 @@ final class PWP_Delete_Term_Command implements PWP_I_Command
 
     private function delete_term(): bool
     {
-        if ($this->service->does_slug_exist($this->slug)) {
+        if (!$this->service->is_slug_in_use($this->slug)) {
             throw new PWP_Not_Found_Exception("term with slug {$this->slug} not found");
         }
         $term = $this->service->get_item_by_slug($this->slug);
