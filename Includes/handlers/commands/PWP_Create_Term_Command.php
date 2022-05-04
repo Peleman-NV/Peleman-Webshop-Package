@@ -9,7 +9,9 @@ use PWP\includes\wrappers\PWP_Term_Data;
 use PWP\includes\handlers\services\PWP_Term_SVC;
 use PWP\includes\utilities\response\PWP_Response;
 use PWP\includes\utilities\response\PWP_I_Response;
+use PWP\includes\validation\PWP_Abstract_Term_Handler;
 use PWP\includes\exceptions\PWP_Not_Implemented_Exception;
+use PWP\includes\validation\PWP_Validate_Term_Translation_Data;
 use PWP\includes\validation\PWP_Validate_Term_Unique_Slug;
 
 class PWP_Create_Term_Command implements PWP_I_Command
@@ -19,19 +21,23 @@ class PWP_Create_Term_Command implements PWP_I_Command
     protected string $slug;
     protected string $lang;
 
+    protected PWP_Abstract_Term_Handler $handler;
+
     public function __construct(PWP_Term_SVC $service, PWP_Term_Data $data)
     {
         $this->service = $service;
         $this->data = $data;
         $this->slug = $data->get_slug();
         $this->lang = 'en';
+
+        $this->handler = new PWP_Validate_Term_Unique_Slug();
+        $this->handler
+            ->set_next(new PWP_Validate_Term_Translation_Data());
     }
 
     final public function do_action(): PWP_I_Response
     {
-        $handler = new PWP_Validate_Term_Unique_Slug($this->service);
-
-        if ($handler->handle($this->data)) {
+        if ($this->validate_data()) {
             $term = $this->create_term();
             $this->configure_translation_table($term);
             $this->configure_seo_data($term);
@@ -100,5 +106,10 @@ class PWP_Create_Term_Command implements PWP_I_Command
         if (!empty($seoData)) {
             $this->service->set_seo_data($term, $seoData);
         }
+    }
+
+    protected function validate_data(): bool
+    {
+        return $this->handler->handle($this->service, $this->data);
     }
 }

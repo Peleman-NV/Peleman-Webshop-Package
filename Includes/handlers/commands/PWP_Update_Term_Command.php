@@ -11,7 +11,9 @@ use PWP\includes\handlers\services\PWP_Term_SVC;
 use PWP\includes\utilities\response\PWP_Response;
 use PWP\includes\utilities\response\PWP_I_Response;
 use PWP\includes\exceptions\PWP_Not_Implemented_Exception;
+use PWP\includes\validation\PWP_Abstract_Term_Handler;
 use PWP\includes\validation\PWP_Validate_Term_Slug_Exists;
+use PWP\includes\validation\PWP_Validate_Term_Translation_Data;
 use SitePress;
 
 class PWP_Update_Term_Command implements PWP_I_Command
@@ -21,19 +23,23 @@ class PWP_Update_Term_Command implements PWP_I_Command
     protected string $lang;
     protected PWP_Term_Data $data;
 
+    protected PWP_Abstract_Term_Handler $handler;
+
     public function __construct(PWP_Term_SVC $service, PWP_Term_Data $data)
     {
         $this->service = $service;
         $this->data = $data;
         $this->slug = $data->get_slug();
         $this->lang = 'en';
+
+        $this->handler = new PWP_Validate_Term_Slug_Exists();
+        $this->handler
+            ->set_next(new PWP_Validate_Term_Translation_Data());
     }
 
     final public function do_action(): PWP_I_Response
     {
-        $handler = new PWP_Validate_Term_Slug_Exists($this->service);
-
-        if ($handler->handle($this->data)) {
+        if ($this->validate_data()) {
             $originalTerm = $this->service->get_item_by_slug($this->slug);
 
             $updatedTerm = $this->update_term($originalTerm);
@@ -93,5 +99,10 @@ class PWP_Update_Term_Command implements PWP_I_Command
         if (!empty($seoData)) {
             $this->service->set_seo_data($term, $seoData);
         }
+    }
+
+    protected function validate_data(): bool
+    {
+        return $this->handler->handle($this->service, $this->data);
     }
 }
