@@ -48,10 +48,8 @@ class PWP_Term_Data extends PWP_Component
         return $this->data->name;
     }
 
-    final public function get_slug(): string
+    final public function get_slug(): ?string
     {
-        if (empty($this->data->slug))
-            $this->data->slug = $this->generate_slug($this->data->name, $this->data->language_code);
         return $this->data->slug;
     }
 

@@ -6,13 +6,12 @@ namespace PWP\includes\handlers\services;
 
 use PWP\includes\utilities\PWP_WPDB;
 use PWP\includes\wrappers\PWP_SEO_Data;
-use PWP\includes\handlers\services\PWP_I_SVC;
 use PWP\includes\exceptions\PWP_WP_Error_Exception;
 use PWP\includes\exceptions\PWP_Invalid_Input_Exception;
 use PWP\includes\utilities\PWP_SitePress_Wrapper;
 use WP_Term;
 
-final class PWP_Term_SVC implements PWP_I_SVC
+final class PWP_Term_SVC
 {
     private string $taxonomy;
     private string $elementType;
@@ -145,7 +144,7 @@ final class PWP_Term_SVC implements PWP_I_SVC
         return $termData;
     }
 
-    public function update_item(WP_Term $term, string $taxonomy, array $args = []): WP_Term
+    public function update_item(WP_Term $term, string $taxonomy, array $args = []): ?WP_Term
     {
         $termData = wp_update_term($term->term_id, $taxonomy, $args);
         if (is_wp_error($termData)) {

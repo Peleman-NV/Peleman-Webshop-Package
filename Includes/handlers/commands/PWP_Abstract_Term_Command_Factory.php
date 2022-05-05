@@ -9,18 +9,10 @@ use PWP\includes\wrappers\PWP_Term_Data;
 
 abstract class PWP_Abstract_Term_Command_Factory
 {
-    private string $taxonomy;
-    private string $elementType;
-    private string $beautyName;
-
     protected PWP_Term_SVC $service;
 
     public function __construct(string $taxonomy, string $elementType, string $beautyName, string $sourceLang = 'en')
     {
-        $this->taxonomy = $taxonomy;
-        $this->elementType = $elementType;
-        $this->beautyName = $beautyName;
-
         $this->service = new PWP_Term_SVC($taxonomy, $elementType, $beautyName, $sourceLang);
         $this->service->disable_sitepress_get_term_filter();
     }

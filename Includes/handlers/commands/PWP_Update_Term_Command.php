@@ -12,6 +12,7 @@ use PWP\includes\utilities\response\PWP_Response;
 use PWP\includes\utilities\response\PWP_I_Response;
 use PWP\includes\exceptions\PWP_Not_Implemented_Exception;
 use PWP\includes\validation\PWP_Abstract_Term_Handler;
+use PWP\includes\validation\PWP_Validate_Term_Slug_Characters;
 use PWP\includes\validation\PWP_Validate_Term_Slug_Exists;
 use PWP\includes\validation\PWP_Validate_Term_Translation_Data;
 
@@ -28,11 +29,12 @@ class PWP_Update_Term_Command implements PWP_I_Command
     {
         $this->service = $service;
         $this->data = $data;
-        $this->slug = $data->get_slug();
+        $this->slug = $data->get_slug() ?: '';
         $this->lang = 'en';
 
         $this->handler = new PWP_Validate_Term_Slug_Exists();
         $this->handler
+            ->set_next(new PWP_Validate_Term_Slug_Characters())
             ->set_next(new PWP_Validate_Term_Translation_Data());
     }
 
