@@ -12,8 +12,8 @@ use PWP\includes\utilities\response\PWP_I_Response;
 use PWP\includes\validation\PWP_Abstract_Term_Handler;
 use PWP\includes\exceptions\PWP_Not_Implemented_Exception;
 use PWP\includes\validation\PWP_Validate_Term_Slug_Characters;
+use PWP\includes\validation\PWP_Validate_Term_Slug_Unique;
 use PWP\includes\validation\PWP_Validate_Term_Translation_Data;
-use PWP\includes\validation\PWP_Validate_Term_Unique_Slug;
 
 class PWP_Create_Term_Command implements PWP_I_Command
 {
@@ -31,7 +31,7 @@ class PWP_Create_Term_Command implements PWP_I_Command
         $this->slug = $data->get_slug() ?: '';
         $this->lang = 'en';
 
-        $this->handler = new PWP_Validate_Term_Unique_Slug();
+        $this->handler = new PWP_Validate_Term_Slug_Unique();
         $this->handler
             ->set_next(new PWP_Validate_Term_Slug_Characters())
             ->set_next(new PWP_Validate_Term_Translation_Data());

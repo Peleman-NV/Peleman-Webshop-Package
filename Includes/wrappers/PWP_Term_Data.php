@@ -53,6 +53,11 @@ class PWP_Term_Data extends PWP_Component
         return $this->data->slug;
     }
 
+    final public function get_new_slug(): ?string
+    {
+        return $this->data->new_slug;
+    }
+
     final public function get_description(): string
     {
         return $this->data->description ?: '';
