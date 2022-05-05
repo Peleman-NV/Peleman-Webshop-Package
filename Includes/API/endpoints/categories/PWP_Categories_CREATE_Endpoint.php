@@ -4,17 +4,15 @@ declare(strict_types=1);
 
 namespace PWP\includes\API\endpoints\categories;
 
-use WP_Term;
 use WP_REST_Request;
 use WP_REST_Response;
 
-
-use PWP\includes\handlers\PWP_Category_Handler;
 use PWP\includes\authentication\PWP_IApiAuthenticator;
 use PWP\includes\utilities\schemas\PWP_Schema_Factory;
 use PWP\includes\utilities\schemas\PWP_Argument_Schema;
 use PWP\includes\API\endpoints\PWP_Abstract_CREATE_Endpoint;
-use PWP\includes\exceptions\PWP_API_Exception;
+use PWP\includes\handlers\commands\PWP_Category_Command_Factory;
+use PWP\includes\wrappers\PWP_Term_Data;
 
 class PWP_Categories_CREATE_Endpoint extends PWP_Abstract_CREATE_Endpoint
 {
@@ -29,21 +27,10 @@ class PWP_Categories_CREATE_Endpoint extends PWP_Abstract_CREATE_Endpoint
 
     public function do_action(WP_REST_Request $request): WP_REST_Response
     {
-        try {
-            $handler = new PWP_Category_Handler();
-            $response = $handler->create_item($request->get_json_params());
-
-            if ($response instanceof WP_Term) {
-                return new WP_REST_RESPONSE($response->data);
-            }
-        } catch (PWP_API_Exception $exception) {
-            return $exception->to_rest_response();
-        } catch (\Exception $exception) {
-            return new WP_REST_Response(array(
-                'code' => $exception->getCode(),
-                'message' => $exception->getMessage(),
-            ), $exception->getCode());
-        }
+        $factory = new PWP_Category_Command_Factory();
+        $data = new PWP_Term_Data($request->get_body_params());
+        $command = $factory->new_create_term_command($data);
+        return new WP_REST_Response($command->do_action()->to_array());
     }
 
     function get_arguments(): array

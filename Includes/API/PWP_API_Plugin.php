@@ -23,7 +23,7 @@ class PWP_API_Plugin implements PWP_IHookableComponent
     public function __construct(string $namespace)
     {
         $this->namespace = $namespace;
-        $authenticator = new PWP_Authenticator();
+        // $authenticator = new PWP_Authenticator();
         $this->add_channel(new PWP_API_Categories_Channel($this->namespace));
     }
 

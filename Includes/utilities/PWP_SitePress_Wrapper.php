@@ -55,8 +55,8 @@ class PWP_SitePress_Wrapper
         }
 
         add_filter("get_term", array($this->sitepress, 'get_term_adjust_id'), 1, 1);
-        add_filter("get_terms_args", array($this->sitepress, "get_terms_args_filter"), 10);
-        add_filter("terms_clauses", array($this->sitepress, "terms_clauses"), 10);
+        add_filter("get_terms_args", array($this->sitepress, "get_terms_args_filter"), 10, 2);
+        add_filter("terms_clauses", array($this->sitepress, "terms_clauses"), 10, 3);
 
         $this->sitepressOverrideActive = false;
     }

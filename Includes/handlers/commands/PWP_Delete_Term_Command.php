@@ -5,11 +5,12 @@ declare(strict_types=1);
 namespace PWP\includes\handlers\commands;
 
 use PWP\includes\exceptions\PWP_API_Exception;
+use PWP\includes\handlers\services\PWP_Term_SVC;
 use PWP\includes\utilities\response\PWP_Response;
 use PWP\includes\utilities\response\PWP_I_Response;
 use PWP\includes\exceptions\PWP_Not_Found_Exception;
-use PWP\includes\handlers\services\PWP_Term_SVC;
 use PWP\includes\utilities\response\PWP_Error_Response;
+use PWP\includes\exceptions\PWP_Not_Implemented_Exception;
 
 final class PWP_Delete_Term_Command implements PWP_I_Command
 {
@@ -36,7 +37,7 @@ final class PWP_Delete_Term_Command implements PWP_I_Command
 
     public function undo_action(): PWP_I_Response
     {
-        return new PWP_Response("not implemented");
+        throw new PWP_Not_Implemented_Exception(__METHOD__);
     }
 
     private function delete_term(): bool

@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace PWP\includes\API\endpoints\categories;
 
-use PWP\includes\exceptions\PWP_API_Exception;
-use PWP\includes\handlers\PWP_Category_Handler;
 use PWP\includes\authentication\PWP_Authenticator;
 use PWP\includes\API\endpoints\PWP_Abstract_DELETE_Endpoint;
+use PWP\includes\handlers\commands\PWP_Category_Command_Factory;
+use WP_REST_Response;
 
 class PWP_Categories_DELETE_Endpoint extends PWP_Abstract_DELETE_Endpoint
 {
@@ -23,15 +23,8 @@ class PWP_Categories_DELETE_Endpoint extends PWP_Abstract_DELETE_Endpoint
     final public function do_action(\WP_REST_Request $request): \WP_REST_Response
     {
         $slug = $request['slug'];
-        $handler = new PWP_Category_Handler();
-
-        if ($handler->delete_item_by_slug($slug))
-            return new \WP_REST_Response('category successfully deleted!');
-        else return new \WP_REST_Response('something went wrong when deleting the category');
-    }
-
-    final public function authenticate(\WP_REST_Request $request): bool
-    {
-        return true;
+        $factory = new PWP_Category_Command_Factory();
+        $command = $factory->new_delete_term_command($slug);
+        return new WP_REST_Response($command->do_action()->to_array());
     }
 }
