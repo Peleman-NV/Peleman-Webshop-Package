@@ -15,16 +15,14 @@ class PWP_Schema_Factory implements PWP_I_Schema_Factory
     public function int_property(string $description): PWP_Json_int_Property
     {
         return new PWP_Json_int_Property(
-            $this->domain,
-            $description,
+            __($description, $this->domain),
         );
     }
 
     public function string_property(string $description): PWP_Json_String_Property
     {
         return new PWP_Json_String_Property(
-            $this->domain,
-            $description,
+            __($description, $this->domain),
         );
     }
 
@@ -37,8 +35,7 @@ class PWP_Schema_Factory implements PWP_I_Schema_Factory
     public function bool_property(string $description): PWP_Json_Bool_Property
     {
         return new PWP_Json_Bool_Property(
-            $this->domain,
-            $description,
+            __($description, $this->domain),
         );
     }
 
@@ -47,13 +44,12 @@ class PWP_Schema_Factory implements PWP_I_Schema_Factory
      *
      * @param string $description
      * @param array $enumValues
-     * @return PWP_Json_Schema_Property
+     * @return PWP_Abstract_Schema_Property
      */
     public function enum_property(string $description, array $enumValues): PWP_Json_String_Property
     {
         return new PWP_Json_String_Property(
-            $this->domain,
-            $description,
+            __($description, $this->domain),
             array('enum' => $enumValues)
         );
     }
@@ -65,28 +61,29 @@ class PWP_Schema_Factory implements PWP_I_Schema_Factory
      * @param array $enumValues
      * @return PWP_Json_Array_property
      */
-    public function multi_enum_property(string $description, array $enumValues): PWP_Json_Array_property
+    public function multi_enum_property(string $description, array $enumValues, array $args = []): PWP_Json_Array_property
     {
         return new PWP_Json_Array_property(
-            $this->domain,
-            $description,
-            array('enum' => $enumValues)
+            __($description, $this->domain),
+            $this->factory,
+            array('enum' => $enumValues),
+            $args
         );
     }
 
-    public function array_property(string $description): PWP_Json_Array_property
+    public function array_property(string $description, array $args = []): PWP_Json_Array_property
     {
         return new PWP_Json_Array_property(
-            $this->domain,
-            $description,
+            __($description, $this->domain),
+            $this->factory,
+            $args
         );
     }
 
     public function object_property(string $description): PWP_Json_Object_Property
     {
         return new PWP_Json_Object_Property(
-            $this->domain,
-            $description
+            __($description, $this->domain)
         );
     }
 }

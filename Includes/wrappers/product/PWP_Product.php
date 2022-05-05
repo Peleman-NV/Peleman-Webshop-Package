@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace PWP\includes\wrappers\product;
 
+use PWP\includes\exceptions\PWP_Not_Implemented_Exception;
 use PWP\includes\handlers\PWP_Category_Handler;
 use PWP\includes\handlers\PWP_Tag_Handler;
 use WC_Product;
@@ -180,5 +181,6 @@ class PWP_Product extends PWP_Component
 
     public function save_to_product(): WC_Product
     {
+        throw new PWP_Not_Implemented_Exception(__METHOD__);
     }
 }

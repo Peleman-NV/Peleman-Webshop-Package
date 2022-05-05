@@ -7,20 +7,20 @@ namespace PWP\includes\API;
 use PWP\includes\loaders\PWP_Plugin_Loader;
 use PWP\includes\API\endpoints\PWP_I_Endpoint;
 use PWP\includes\authentication\PWP_Authenticator;
-use PWP\includes\hookables\PWP_IHookableComponent;
-use PWP\includes\authentication\PWP_IApiAuthenticator;
+use PWP\includes\hookables\PWP_I_Hookable_Component;
+use PWP\includes\authentication\PWP_I_Api_Authenticator;
 
 /**
  * abstract class for the handling and registering of API Endpoints.
  */
-class PWP_Abstract_API_Channel implements PWP_IHookableComponent
+class PWP_Abstract_API_Channel implements PWP_I_Hookable_Component
 {
     protected array $endpoints;
     protected string $namespace;
     protected string $rest_base;
-    protected PWP_IApiAuthenticator $authenticator;
+    protected PWP_I_Api_Authenticator $authenticator;
 
-    public function __construct(string $namespace, string $rest_base, PWP_IApiAuthenticator $authenticator)
+    public function __construct(string $namespace, string $rest_base, PWP_I_Api_Authenticator $authenticator)
     {
         $this->namespace = $namespace;
         $this->rest_base = $rest_base;

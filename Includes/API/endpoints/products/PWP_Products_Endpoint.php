@@ -12,7 +12,7 @@ use PWP\includes\utilities\PWP_Null_Logger;
 use PWP\includes\API\endpoints\PWP_I_Endpoint;
 use PWP\includes\handlers\PWP_Product_Handler;
 use PWP\includes\API\endpoints\PWP_EndpointController;
-use PWP\includes\authentication\PWP_IApiAuthenticator;
+use PWP\includes\authentication\PWP_I_Api_Authenticator;
 use PWP\includes\utilities\schemas\PWP_Schema_Factory;
 use PWP\includes\utilities\schemas\PWP_Argument_Schema;
 use PWP\includes\exceptions\PWP_Not_Implemented_Exception;
@@ -21,7 +21,7 @@ class PWP_Products_Endpoint extends PWP_EndpointController implements PWP_I_Endp
 {
     private const PAGE_SOFT_CAP = 100;
 
-    public function __construct(PWP_IApiAuthenticator $authenticator)
+    public function __construct(PWP_I_Api_Authenticator $authenticator)
     {
         parent::__construct(
             "/products",

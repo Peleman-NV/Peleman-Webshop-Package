@@ -144,11 +144,12 @@ final class PWP_Term_SVC
         return $termData;
     }
 
-    public function update_item(WP_Term $term, string $taxonomy, array $args = []): ?WP_Term
+    public function update_item(WP_Term $term, array $args = []): ?WP_Term
     {
-        $termData = wp_update_term($term->term_id, $taxonomy, $args);
+        $termData = wp_update_term($term->term_id, $this->taxonomy, $args);
         if (is_wp_error($termData)) {
             //TODO: implement proper error handling and reporting within batch API calls.
+            return null;
         }
 
         //get fresh version of the term
@@ -178,6 +179,39 @@ final class PWP_Term_SVC
             return -1;
         }
         return $this->sitepressHandler->sitepress->get_object_id($term->term_id, $this->elementType, false, $this->sourceLang);
+    }
+
+    /**
+     * get Term array of children of an existing term.
+     *
+     * @param WP_Term $term
+     * @return WP_Term[]
+     */
+    public function get_children(WP_Term $term): array
+    {
+        $terms = get_terms(array('taxonomy' => $this->taxonomy, 'parent' => $term->id));
+        if (is_wp_error($terms)) throw new \Exception("Fatal error: taxonomy {$this->taxonomy} not found in database");
+        return $terms;
+    }
+
+    public function unparent_children(WP_Term $term): void
+    {
+        $children = $this->service->get_children($term);
+
+        foreach ($children as $child) {
+            if ($child->parent === $term->term_id) {
+                $this->unparent_term($term);
+            }
+        }
+    }
+
+    public function unparent_term(WP_Term $term): void
+    {
+        wp_update_term($term->term_id, $this->taxonomy, array(
+            'parent' => 0,
+            'slug' => $term->slug,
+            'description' => $term->description,
+        ));
     }
 
     public function configure_SEO_data(WP_Term $term, PWP_SEO_Data $data): void

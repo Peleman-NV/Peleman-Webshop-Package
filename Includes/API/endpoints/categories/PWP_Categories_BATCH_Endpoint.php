@@ -77,29 +77,30 @@ class PWP_Categories_BATCH_Endpoint extends PWP_Abstract_BATCH_Endpoint
 
     final public function get_arguments(): array
     {
-        $schema = new PWP_Argument_Schema(new PWP_Schema_Factory(), $this->title);
-        $schema->add_bool_property(
-            "update_can_create",
-            "whether the update batch is capable of creating new entries, in case the original cannot be found."
-        )->default(false);
-        $schema->add_bool_property(
-            "can_change_parent",
-            "whether an update call can change the parent of a category. if false, can only give a parent to a category that did not have one before."
-        )->default(false);
-        $schema->add_array_property(
-            "create",
-            "array of create calls."
-        );
-        $schema->add_array_property(
-            "update",
-            "array of update calls. if add_bool_property is true, can also include create calls."
-        );
-        $schema->add_array_property(
-            "delete",
-            "array of delete calls."
-        );
+        // $schema = new PWP_Argument_Schema(new PWP_Schema_Factory(), $this->title);
+        // $schema->add_bool_property(
+        //     "update_can_create",
+        //     "whether the update batch is capable of creating new entries, in case the original cannot be found."
+        // )->default(false);
+        // $schema->add_bool_property(
+        //     "can_change_parent",
+        //     "whether an update call can change the parent of a category. if false, can only give a parent to a category that did not have one before."
+        // )->default(false);
+        // $schema->add_array_property(
+        //     "create",
+        //     "array of create calls."
+        // );
+        // $schema->add_array_property(
+        //     "update",
+        //     "array of update calls. if add_bool_property is true, can also include create calls."
+        // );
+        // $schema->add_array_property(
+        //     "delete",
+        //     "array of delete calls."
+        // );
 
-        return $schema->to_array();
+        // return $schema->to_array();
+        return [];
     }
 
     private function generate_commands(array $createOps, array $updateOps, array $deleteOps, bool $updateCanCreate = false, bool $canChangeParent = false): void

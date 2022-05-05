@@ -7,13 +7,13 @@ namespace PWP\includes\API\endpoints;
 use WP_REST_Request;
 use WP_REST_Response;
 use PWP\includes\utilities\PWP_Null_Logger;
-use PWP\includes\authentication\PWP_IApiAuthenticator;
+use PWP\includes\authentication\PWP_I_Api_Authenticator;
 use PWP\includes\handlers\PWP_Product_Attribute_Handler;
 use PWP\includes\exceptions\PWP_Not_Implemented_Exception;
 
 class PWP_Attributes_Endpoint extends PWP_Abstract_READ_Endpoint
 {
-    public function __construct(PWP_IApiAuthenticator $authenticator)
+    public function __construct(PWP_I_Api_Authenticator $authenticator)
     {
         parent::__construct(
             "/attributes",

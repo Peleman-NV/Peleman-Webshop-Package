@@ -23,7 +23,6 @@ class PWP_Activator
     }
     public function activate()
     {
-        //TODO: create tables to store authentication data
         $this->init_settings();
         $this->init_database_tables();
         $this->run_upgrades();

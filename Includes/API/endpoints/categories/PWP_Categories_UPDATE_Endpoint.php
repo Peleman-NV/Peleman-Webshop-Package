@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace PWP\includes\API\endpoints\categories;
 
 use PWP\includes\wrappers\PWP_Term_Data;
-use PWP\includes\exceptions\PWP_API_Exception;
 use PWP\includes\authentication\PWP_Authenticator;
 use PWP\includes\API\endpoints\PWP_Abstract_UPDATE_Endpoint;
 use PWP\includes\handlers\commands\PWP_Category_Command_Factory;

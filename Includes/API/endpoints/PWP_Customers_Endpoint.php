@@ -6,11 +6,11 @@ namespace PWP\includes\API\endpoints;
 
 use WP_REST_Request;
 use WP_REST_Response;
-use PWP\includes\authentication\PWP_IApiAuthenticator;
+use PWP\includes\authentication\PWP_I_Api_Authenticator;
 
 class PWP_Customers_Endpoint extends PWP_Abstract_READ_Endpoint
 {
-    public function __construct(PWP_IApiAuthenticator $authenticator)
+    public function __construct(PWP_I_Api_Authenticator $authenticator)
     {
         parent::__construct(
             "/customers",

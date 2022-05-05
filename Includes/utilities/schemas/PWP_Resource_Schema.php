@@ -25,7 +25,7 @@ class PWP_Resource_Schema extends PWP_Argument_Schema
         $this->required = array();
     }
 
-    public function add_property(string $name, PWP_IProperty $property): self
+    public function add_property(string $name, PWP_I_Property $property): self
     {
         parent::add_property($name, $property);
 

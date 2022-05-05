@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace PWP\includes\utilities\schemas;
 
-final class PWP_Json_Object_Property extends PWP_Json_Schema_Property
+final class PWP_Json_Object_Property extends PWP_Abstract_Schema_Property
 {
     private array $properties;
 
-    public function __construct(string $domain, string $description, array $args = [])
+    public function __construct(string $description, array $args = [])
     {
-        parent::__construct($domain, $description, 'object', $args);
+        parent::__construct($description, 'object', $args);
         $this->properties = array();
     }
 
@@ -20,7 +20,7 @@ final class PWP_Json_Object_Property extends PWP_Json_Schema_Property
         return $this;
     }
 
-    public function add_property(string $name, PWP_IProperty $property): self
+    public function add_property(string $name, PWP_I_Property $property): self
     {
         $this->properties[$name] = $property;
         return $this;

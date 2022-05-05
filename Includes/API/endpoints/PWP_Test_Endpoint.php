@@ -7,14 +7,14 @@ namespace PWP\includes\API\endpoints;
 use WP_REST_Request;
 use WP_REST_Response;
 use PWP\includes\API\endpoints\PWP_EndpointController;
-use PWP\includes\authentication\PWP_IApiAuthenticator;
+use PWP\includes\authentication\PWP_I_Api_Authenticator;
 use PWP\includes\handlers\services\PWP_Term_SVC;
 
 defined('ABSPATH') || die;
 
 class PWP_Test_Endpoint extends PWP_EndpointController
 {
-    public function __construct(PWP_IApiAuthenticator $authenticator)
+    public function __construct(PWP_I_Api_Authenticator $authenticator)
     {
         parent::__construct(
             '/test',

@@ -6,13 +6,13 @@ namespace PWP\includes\API;
 
 use PWP\includes\API\endpoints\categories\PWP_API_Categories_Channel;
 use PWP\includes\authentication\PWP_Authenticator;
-use PWP\includes\hookables\PWP_IHookableComponent;
+use PWP\includes\hookables\PWP_I_Hookable_Component;
 use PWP\includes\loaders\PWP_Plugin_Loader;
 
 /**
  * overarching class which contains and handles the creation/registering of API Channels
  */
-class PWP_API_Plugin implements PWP_IHookableComponent
+class PWP_API_Plugin implements PWP_I_Hookable_Component
 {
     private string $namespace;
     /**

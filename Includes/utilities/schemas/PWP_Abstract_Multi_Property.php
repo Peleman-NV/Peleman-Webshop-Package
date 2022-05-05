@@ -4,16 +4,18 @@ declare(strict_types=1);
 
 namespace PWP\includes\utilities\schemas;
 
-class PWP_Argument_Schema implements PWP_I_Schema
+use PWP\includes\utilities\schemas\PWP_I_Property;
+
+abstract class PWP_Abstract_Multi_Property extends PWP_Abstract_Schema_Property implements PWP_I_Property, PWP_I_Schema_Builder
 {
-    private array $properties;
+    protected array $properties;
     private PWP_I_Schema_Factory $factory;
 
-    #region schema methods
-    public function __construct(PWP_I_Schema_Factory $factory)
+    public function __construct(string $description, string $type, PWP_I_Schema_Factory $factory, array $args = [])
     {
         $this->factory = $factory;
         $this->properties = array();
+        parent::__construct($description, $type, $args);
     }
 
     public function add_property(string $name, PWP_I_Property $property): self
@@ -29,15 +31,6 @@ class PWP_Argument_Schema implements PWP_I_Schema
         }
         return $this;
     }
-
-    public function to_array(): array
-    {
-        return array_map(function ($e) {
-            return $e->to_array();
-        }, $this->properties);
-    }
-
-    #endregion
 
     #region factory helper methods
 

@@ -4,17 +4,17 @@ declare(strict_types=1);
 
 namespace PWP\includes\API\endpoints;
 
-use PWP\includes\authentication\PWP_IApiAuthenticator;
+use PWP\includes\authentication\PWP_I_Api_Authenticator;
 
 abstract class PWP_EndpointController implements PWP_I_Endpoint
 {
     protected string $path;
     protected string $title;
-    protected PWP_IApiAuthenticator $authenticator;
+    protected PWP_I_Api_Authenticator $authenticator;
 
     protected string $object;
 
-    public function __construct(string $path, string $title, PWP_IApiAuthenticator $authenticator)
+    public function __construct(string $path, string $title, PWP_I_Api_Authenticator $authenticator)
     {
         $this->path = $path;
         $this->title = $title;
@@ -36,7 +36,7 @@ abstract class PWP_EndpointController implements PWP_I_Endpoint
         return $this->path;
     }
 
-    public function get_authenticator(): PWP_IApiAuthenticator
+    public function get_authenticator(): PWP_I_Api_Authenticator
     {
         return $this->authenticator;
     }

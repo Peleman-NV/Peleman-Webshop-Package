@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace PWP\includes\utilities\schemas;
 
-use PWP\includes\utilities\schemas\PWP_IProperty;
+use PWP\includes\utilities\schemas\PWP_I_Property;
 
-abstract class PWP_Json_Schema_Property implements PWP_IProperty
+abstract class PWP_Abstract_Schema_Property implements PWP_I_Property
 {
     protected string $type;
     private $default;
@@ -16,65 +16,62 @@ abstract class PWP_Json_Schema_Property implements PWP_IProperty
     private bool $required;
     private bool $readonly;
 
-
     public function __construct(
-        string $domain,
         string $description,
         string $type,
         array $args = []
     ) {
-        $this->domain = $domain;
-        $this->description = esc_html__($description, $domain);
+        $this->description = $description;
         $this->type = $type;
         $this->customArgs = $args;
 
         $this->context = [];
         $this->required = false;
         $this->readonly = false;
-    }
+    } 
 
-    public function required($required = true): PWP_Json_Schema_Property
+    final public function required($required = true): PWP_Abstract_Schema_Property
     {
         $this->isRequired = $required;
         return $this;
     }
 
-    public function is_required(): bool
+    final public function is_required(): bool
     {
         return $this->required ?? false;
     }
 
-    public function readonly($readonly = true): PWP_Json_Schema_Property
+    final public function readonly($readonly = true): PWP_Abstract_Schema_Property
     {
         $this->readonly = $readonly;
         return $this;
     }
 
-    public function view(): PWP_Json_Schema_Property
+    final public function view(): PWP_Abstract_Schema_Property
     {
         $this->context[] = 'view';
         return $this;
     }
 
-    public function edit(): PWP_Json_Schema_Property
+    final public function edit(): PWP_Abstract_Schema_Property
     {
         $this->context[] = 'edit';
         return $this;
     }
 
-    public function santize_callback(string $callback): PWP_IProperty
+    final public function santize_callback(string $callback): PWP_I_Property
     {
         $this->customArgs['sanitize_callback'] = $callback;
         return $this;
     }
 
-    public function validate_callback(string $callback): PWP_IProperty
+    final public function validate_callback(string $callback): PWP_I_Property
     {
         $this->customArgs['validate_callback'] = $callback;
         return $this;
     }
 
-    public function add_custom_arg(string $name, $arg): PWP_IProperty
+    final public function add_custom_arg(string $name, $arg): PWP_I_Property
     {
         $this->customArgs[$name] = $arg;
         return $this;

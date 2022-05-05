@@ -6,9 +6,9 @@ namespace PWP\adminPage\hookables;
 
 use PWP\includes\loaders\PWP_Plugin_Loader;
 use PWP\includes\utilities\PWP_Admin_Notice;
-use PWP\includes\hookables\PWP_IHookableComponent;
+use PWP\includes\hookables\PWP_I_Hookable_Component;
 
-class PWP_Admin_Notice_Poster implements PWP_IHookableComponent
+class PWP_Admin_Notice_Poster implements PWP_I_Hookable_Component
 {
     /**
      * @var PWP_Admin_notice[]

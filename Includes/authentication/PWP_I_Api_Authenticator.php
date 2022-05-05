@@ -6,7 +6,7 @@ namespace PWP\includes\authentication;
 
 use WP_REST_Request;
 
-interface PWP_IApiAuthenticator
+interface PWP_I_Api_Authenticator
 {
     public function auth_get_item(WP_REST_Request $request): bool;
 

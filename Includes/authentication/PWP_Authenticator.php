@@ -8,7 +8,7 @@ use WP_REST_Request;
 
 defined('ABSPATH') || die;
 
-class PWP_Authenticator implements PWP_IApiAuthenticator
+class PWP_Authenticator implements PWP_I_Api_Authenticator
 {
     public function auth_get_item(WP_REST_Request $request): bool
     {

@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace PWP\includes\utilities\schemas;
 
-class PWP_Json_Array_Property extends PWP_Json_Schema_Property
+class PWP_Json_Array_Property extends PWP_Abstract_Multi_Property
 {
     private array $properties;
 
-    public function __construct(string $domain, string $description, array $args = [])
+    public function __construct(string $description, PWP_I_Schema_Factory $factory, array $args = [])
     {
-        parent::__construct($domain, $description, 'array', $args);
+        parent::__construct($description, 'array', $factory, $args);
         $this->properties = array();
     }
 
@@ -20,7 +20,7 @@ class PWP_Json_Array_Property extends PWP_Json_Schema_Property
         return $this;
     }
 
-    public function add_property(string $name, PWP_IProperty $property): self
+    public function add_property(string $name, PWP_I_Property $property): self
     {
         $this->properties[$name] = $property;
         return $this;

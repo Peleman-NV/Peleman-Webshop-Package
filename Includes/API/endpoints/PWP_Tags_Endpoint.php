@@ -11,14 +11,14 @@ use PWP\includes\handlers\PWP_Tag_Handler;
 use PWP\includes\utilities\PWP_ArgBuilder;
 use PWP\includes\utilities\PWP_Null_Logger;
 use PWP\includes\utilities\schemas\PWP_ISchema;
-use PWP\includes\authentication\PWP_IApiAuthenticator;
+use PWP\includes\authentication\PWP_I_Api_Authenticator;
 use PWP\includes\utilities\schemas\PWP_Schema_Factory;
 use PWP\includes\utilities\schemas\PWP_Argument_Schema;
 use PWP\includes\exceptions\PWP_Not_Implemented_Exception;
 
 class PWP_Tags_Endpoint extends PWP_EndpointController
 {
-    public function __construct(PWP_IApiAuthenticator $authenticator)
+    public function __construct(PWP_I_Api_Authenticator $authenticator)
     {
         parent::__construct(
             "/tags",

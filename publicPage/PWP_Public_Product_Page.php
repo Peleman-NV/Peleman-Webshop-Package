@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace PWP\publicPage;
 
 use PWP\includes\editor\PWP_editor_client;
-use PWP\includes\hookables\PWP_IHookableComponent;
+use PWP\includes\hookables\PWP_I_Hookable_Component;
 use PWP\includes\loaders\PWP_Plugin_Loader;
 use WC_Product;
 
-class PWP_Public_Product_Page implements PWP_IHookableComponent
+class PWP_Public_Product_Page implements PWP_I_Hookable_Component
 {
     public function register_hooks(PWP_Plugin_Loader $loader): void
     {

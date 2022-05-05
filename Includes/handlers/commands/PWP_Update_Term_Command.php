@@ -82,7 +82,6 @@ class PWP_Update_Term_Command implements PWP_I_Command
 
         return $this->service->update_item(
             $original,
-            $this->service->get_taxonomy(),
             $this->data->to_array()
         );
     }
