@@ -23,14 +23,18 @@ class PWP_Update_Term_Command implements PWP_I_Command
     protected string $lang;
     protected PWP_Term_Data $data;
 
+    protected bool $canChangeParent;
+
     protected PWP_Abstract_Term_Handler $handler;
 
-    public function __construct(PWP_Term_SVC $service, PWP_Term_Data $data)
+    public function __construct(PWP_Term_SVC $service, PWP_Term_Data $data, bool $canChangeParent = false)
     {
         $this->service = $service;
         $this->data = $data;
         $this->slug = $data->get_slug() ?: '';
         $this->lang = 'en';
+
+        $this->canChangeParent = $canChangeParent;
 
         $this->handler = new PWP_Validate_Term_Slug_Exists();
         $this->handler
@@ -63,12 +67,7 @@ class PWP_Update_Term_Command implements PWP_I_Command
 
     protected function update_term(WP_Term $original): \WP_TERM
     {
-        if (!empty($original->parent)) {
-            $this->data->set_parent($original->parent);
-        } else {
-            $parent = $this->service->get_item_by_slug($this->data->get_parent_slug());
-            $this->data->set_parent($parent ? $parent->term_id : 0);
-        }
+        $this->data->set_parent($this->get_parent($original));
 
         return $this->service->update_item(
             $original,
@@ -105,5 +104,14 @@ class PWP_Update_Term_Command implements PWP_I_Command
     protected function validate_data(): bool
     {
         return $this->handler->handle($this->service, $this->data);
+    }
+
+    final protected function get_parent(WP_Term $original): int
+    {
+        if ($this->canChangeParent || empty($original->parent)) {
+            $parent = $this->service->get_item_by_slug($this->data->get_parent_slug());
+            return $parent ? (int)$parent->term_id : 0;
+        }
+        return $original->parent;
     }
 }

@@ -3,13 +3,16 @@ folder containing endpoint classes for the REST API
 
 a standard REST API allows for four operations:
 
-`GET` - get data from the API without changing it.
- in this context, `GET` is handled by two abstract methods:
-    `PWP_Abstract_READ_Endpoint`: will get multiple entries from the database
-    `PWP_Abstract_FIND_Endpoint`: will try to find one specific entry in the database
-`POST` - upload data to the API, to create a new entry. In this context handled by `PWP_Abstract__CREATE_Endpoint`
-`PUT` - try to alter the data of an existing entry in the API system. handled by `PWP_Abstract_UPDATE_Endpoint`
-`DELETE` - remove an existing entry in the system. handled by `PWP_Abstract_DELETE_Endpoint`
+* `GET` - get data from the API without changing it.
+    in this context, `GET` is handled by two abstract classes:
+    * `PWP_Abstract_READ_Endpoint`: will get multiple entries from the database
+    * `PWP_Abstract_FIND_Endpoint`: will try to find one specific entry in the database
+
+* `POST` - upload data to the API, to create a new entry. In this context handled by `PWP_Abstract__CREATE_Endpoint`
+
+* `PUT` - try to alter the data of an existing entry in the API system. handled by `PWP_Abstract_UPDATE_Endpoint`
+
+* `DELETE` - remove an existing entry in the system. handled by `PWP_Abstract_DELETE_Endpoint`
 
 
 ## PWP_I_Endpoint
@@ -66,54 +69,23 @@ to batch a series of functions, call a `POST` request with an array in the body 
 
     _each of these should follow the parameter structure of their respective request._
 ___
-# concrete endpoints
+# abstract endpoints
 
-## PWP_Test_Endpoint
-- Returns a simple confirmation message when called. has no other purpose than to confirm the proper operation of the API system.
-
-        {{domain}}/wp-json/pwp/v1/test
-
-    `GET` | `POST` | `PUT` | `PATCH` | `DELETE`
-
+## PWP_Abstract_CREATE_Endpoint
+- Tries to create a single item. Matches `POST`
 ___
-## PWP_Products_Endpoint
-- Returns one or multiple products.
-
-        {{domain}}/wp-json/pwp/v1/products/?id
-
-    `GET` | `POST`
-
+## PWP_Abstract_FIND_Endpoint
+- Tries to retrieve a single item based on an identifier. Matches `GET`
 ___
-## PWP_Variations_Endpoint
-- Returns one or multiple products.
-
-        {{domain}}/wp-json/pwp/v1/products/:id/variations/?id
-
-    `GET` | `POST`
-
+## PWP_Abstract_READ_Endpoint
+- Tries to return multiple products based on a series of arguments. Matches `GET`
 ___
-## PWP_Tags_Endpoint
-- endpoint for woocommerce tags
-
-        {{domain}}/wp-json/pwp/v1/tags/?id
-
-    `GET` | `POST` | `PUT` | `PATCH` | `DELETE`
-
+## PWP_Abstract_UPDATE_Endpoint
+- Tries to update a single item based on an identifier. Matches `PUT`, `UPDATE`, and `POST`
 ___
-## PWP_Attributes_Endpoint
-- endpoint for woocommerce attributes
+## PWP_Abstract_DELETE_Endpoint
+- Tries to delete a single item based on an identifier. Matches `DELETE`
 
-        {{domain}}/wp-json/pwp/v1/attributes
-
-    `GET` | `POST`
-
-___
-## PWP_Terms_Endpoint
-- Returns one or multiple products.
-
-        {{domain}}/wp-json/pwp/v1/terms
-
-    `GET` | `POST`
 
 ___
 ## PWP_Images_Endpoint

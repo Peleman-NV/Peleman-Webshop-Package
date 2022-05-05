@@ -1,6 +1,6 @@
 # API
 
-## PWP_API_Hookable
+## PWP_API_Plugin
 
 because of wordpress's loading system, API endpoints can only be registered after the
 `rest_api_init` action is called.

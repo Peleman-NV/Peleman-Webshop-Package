@@ -24,10 +24,7 @@ abstract class PWP_Abstract_BATCH_Endpoint extends PWP_EndpointController
         return $this->get_authenticator()->auth_batch_items($request);
     }
 
-    public function get_arguments(): array
-    {
-        return [];
-    }
+    abstract public function get_arguments(): array;
 
     final public function get_methods(): string
     {

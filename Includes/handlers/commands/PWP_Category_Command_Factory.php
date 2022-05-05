@@ -23,9 +23,9 @@ final class PWP_Category_Command_Factory extends PWP_Abstract_Term_Command_Facto
         return new PWP_Read_Term_Command($this->service, $args);
     }
 
-    final public function new_update_term_command(PWP_Term_Data $data): PWP_Update_Term_Command
+    final public function new_update_term_command(PWP_Term_Data $data, bool $canChangeParent): PWP_Update_Term_Command
     {
-        return new PWP_Update_Term_Command($this->service, $data);
+        return new PWP_Update_Term_Command($this->service, $data, $canChangeParent);
     }
 
     final public function new_delete_term_command(string $slug): PWP_Delete_Term_Command
@@ -33,10 +33,10 @@ final class PWP_Category_Command_Factory extends PWP_Abstract_Term_Command_Facto
         return new PWP_Delete_Term_Command($this->service, $slug);
     }
 
-    final public function new_create_or_update_command(PWP_Term_Data $data): PWP_I_Command
+    final public function new_create_or_update_command(PWP_Term_Data $data, bool $canChangeParent): PWP_I_Command
     {
         return $this->slug_exists($data->get_slug())
-            ? $this->new_update_term_command($data)
+            ? $this->new_update_term_command($data, $canChangeParent)
             : $this->new_create_term_command($data);
     }
 }

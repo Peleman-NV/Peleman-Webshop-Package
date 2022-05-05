@@ -6,9 +6,9 @@ namespace PWP\includes\utilities\schemas;
 
 use PWP\includes\utilities\schemas\PWP_IProperty;
 
-class PWP_Json_Schema_Property implements PWP_IProperty
+abstract class PWP_Json_Schema_Property implements PWP_IProperty
 {
-    private string $type;
+    protected string $type;
     private $default;
     private array $context;
     private string $description;
@@ -59,12 +59,6 @@ class PWP_Json_Schema_Property implements PWP_IProperty
     public function edit(): PWP_Json_Schema_Property
     {
         $this->context[] = 'edit';
-        return $this;
-    }
-
-    public function default($default): PWP_Json_Schema_Property
-    {
-        $this->default = $default;
         return $this;
     }
 

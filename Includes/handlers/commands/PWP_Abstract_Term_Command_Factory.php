@@ -21,7 +21,7 @@ abstract class PWP_Abstract_Term_Command_Factory
 
     abstract public function new_read_term_command(array $args = []): PWP_Read_Term_Command;
 
-    abstract public function new_update_term_command(PWP_Term_Data $data): PWP_Update_Term_Command;
+    abstract public function new_update_term_command(PWP_Term_Data $data, bool $canChangeParent): PWP_Update_Term_Command;
 
     abstract public function new_delete_term_command(string $slug): PWP_Delete_Term_Command;
 

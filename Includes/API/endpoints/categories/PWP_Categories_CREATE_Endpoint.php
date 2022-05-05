@@ -48,68 +48,66 @@ class PWP_Categories_CREATE_Endpoint extends PWP_Abstract_CREATE_Endpoint
 
     function get_arguments(): array
     {
-        $factory = new PWP_Schema_Factory(PWP_TEXT_DOMAIN);
-        $schema = new PWP_Argument_Schema();
-        $schema
-            ->add_property(
-                'name',
-                $factory->string_property('name of the category')
-                    ->required()
-            )->add_property(
-                'slug',
-                $factory->string_property("slug of the category. If not given, will create a new slug from the name. should not contain spaces")
-                    ->required()
-            )->add_property(
-                'parent_id',
-                $factory->int_property('id of the parent category, if applicable. will precede the parent_slug if present')
-            )->add_property(
-                'parent_slug',
-                $factory->string_property('slug of the parent category, if applicable. will supercede the parent_id if present')
-            )->add_property(
-                'english_slug',
-                $factory->string_property('slug of the default language category, used for uploading translated categories')
-            )->add_property(
-                'language_code',
-                $factory->enum_property(
-                    'language code of a translated category. should match the suffix of the slug if present',
-                    array(
-                        'en',
-                        'es',
-                        'nl',
-                        'de',
-                    )
-                )
-            )->add_property(
-                'description',
-                $factory->string_property('description of the category')
-            )->add_property(
-                'display',
-                $factory->enum_property(
-                    'how the category is displayed in the archive',
-                    array(
-                        'default',
-                        'products',
-                        'subcategories',
-                        'both'
-                    )
-                )
-                    ->default('default')
-            )->add_property(
-                'image_id',
-                $factory->int_property('id of the image to be used with this category in displaying categories')
+        $schema = new PWP_Argument_Schema(new PWP_Schema_Factory(PWP_TEXT_DOMAIN));
+        $schema->add_string_property(
+            'name',
+            'name of the category'
+        )->required();
+        $schema->add_string_property(
+            'slug',
+            "slug of the category. If not given, will create a new slug from the name. should not contain spaces"
+        )->required();
+        $schema->add_int_property(
+            'parent_id',
+            'id of the parent category, if applicable. will precede the parent_slug if present'
+        );
+        $schema->add_string_property(
+            'parent_slug',
+            'slug of the parent category, if applicable. will supercede the parent_id if present'
+        );
+        $schema->add_string_property(
+            'english_slug',
+            'slug of the default language category, used for uploading translated categories'
+        );
+        $schema->add_enum_property(
+            'language_code',
+            'language code of a translated category. should match the suffix of the slug if present',
+            array(
+                'en',
+                'es',
+                'nl',
+                'de',
             )
-            ->add_property(
-                'seo',
-                $factory->array_property('search engine optimization properties')
-                    ->add_property(
-                        'focus_keyword',
-                        $factory->string_property('focus keyword for YOAST SEO')
-                    )
-                    ->add_property(
-                        'description',
-                        $factory->string_property('description of the SEO data for YOAST')
-                    )
-            );
+        )->default('en');
+        $schema->add_string_property(
+            'description',
+            'description of the category'
+        );
+        $schema->add_enum_property(
+            'display',
+            'how the category is displayed in the archive',
+            array(
+                'default',
+                'products',
+                'subcategories',
+                'both'
+            )
+        )->default('default');
+        $schema->add_int_property(
+            'image_id',
+            'id of the image to be used with this category in displaying categories'
+        );
+        // $schema->add_array_property(
+        //     'seo','search engine optimization properties')
+        //         ->add_property(
+        //             'focus_keyword',
+        //             $factory->string_property('focus keyword for YOAST SEO')
+        //         )
+        //         ->add_property(
+        //             'description',
+        //             $factory->string_property('description of the SEO data for YOAST')
+        //         )
+        // ;
 
         return $schema->to_array();
     }

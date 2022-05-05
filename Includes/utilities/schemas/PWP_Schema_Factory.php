@@ -4,44 +4,41 @@ declare(strict_types=1);
 
 namespace PWP\includes\utilities\schemas;
 
-class PWP_Schema_Factory
+class PWP_Schema_Factory implements PWP_I_Schema_Factory
 {
     private string $domain;
-    public function __construct($domain)
+    public function __construct($domain = 'default')
     {
         $this->domain = $domain;
     }
 
-    public function int_property(string $description): PWP_Json_Schema_Property
+    public function int_property(string $description): PWP_Json_int_Property
     {
-        return new PWP_Json_Schema_Property(
+        return new PWP_Json_int_Property(
             $this->domain,
             $description,
-            'integer'
         );
     }
 
-    public function string_property(string $description): PWP_Json_Schema_Property
+    public function string_property(string $description): PWP_Json_String_Property
     {
-        return new PWP_Json_Schema_Property(
+        return new PWP_Json_String_Property(
             $this->domain,
             $description,
-            'string'
         );
     }
 
-    public function uri_property(string $description): PWP_Json_Schema_Property
+    public function uri_property(string $description): PWP_Json_String_Property
     {
         return  $this->string_property($description)
             ->add_custom_arg('format', 'uri');
     }
 
-    public function bool_property(string $description): PWP_Json_Schema_Property
+    public function bool_property(string $description): PWP_Json_Bool_Property
     {
-        return new PWP_Json_Schema_Property(
+        return new PWP_Json_Bool_Property(
             $this->domain,
             $description,
-            'boolean'
         );
     }
 
@@ -52,12 +49,11 @@ class PWP_Schema_Factory
      * @param array $enumValues
      * @return PWP_Json_Schema_Property
      */
-    public function enum_property(string $description, array $enumValues): PWP_Json_Schema_Property
+    public function enum_property(string $description, array $enumValues): PWP_Json_String_Property
     {
-        return new PWP_Json_Schema_Property(
+        return new PWP_Json_String_Property(
             $this->domain,
             $description,
-            'string',
             array('enum' => $enumValues)
         );
     }
@@ -83,6 +79,14 @@ class PWP_Schema_Factory
         return new PWP_Json_Array_property(
             $this->domain,
             $description,
+        );
+    }
+
+    public function object_property(string $description): PWP_Json_Object_Property
+    {
+        return new PWP_Json_Object_Property(
+            $this->domain,
+            $description
         );
     }
 }
