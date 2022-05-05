@@ -86,16 +86,17 @@ class PWP_Product extends PWP_Component
 
     public function category_ids(): array
     {
-        $ids = array();
-        $handler =  new PWP_Category_Handler();
-        foreach ($this->categories() as $slug) {
-            $category = $handler->get_item_by_slug($slug);
-            if (!empty($category)) {
-                $ids[] = $category;
-            }
-        }
+        //FIXME: use new service based architecture.
+        // $ids = array();
+        // $handler =  new PWP_Category_Handler();
+        // foreach ($this->categories() as $slug) {
+        //     $category = $handler->get_item_by_slug($slug);
+        //     if (!empty($category)) {
+        //         $ids[] = $category;
+        //     }
+        // }
 
-        return $ids;
+        return array();
     }
 
     public function set_categories(array $categories): void
@@ -110,17 +111,19 @@ class PWP_Product extends PWP_Component
 
     public function tag_ids(): array
     {
-        $ids = array();
-        $handler =  new PWP_Tag_Handler();
-        foreach ($this->tags() as $slug) {
-            echo ($slug);
-            $tag = $handler->get_item_by_slug($slug);
-            if ($tag instanceof WP_Term) {
-                $ids[] = $tag->term_id;
-            }
-        }
+        //FIXME: use new service based architecture
+        // $ids = array();
+        // $handler =  new PWP_Tag_Handler();
+        // foreach ($this->tags() as $slug) {
+        //     echo ($slug);
+        //     $tag = $handler->get_item_by_slug($slug);
+        //     if ($tag instanceof WP_Term) {
+        //         $ids[] = $tag->term_id;
+        //     }
+        // }
 
-        return $ids;
+        // return $ids;
+        return array();
     }
 
     public function set_tags(array $tags): void
@@ -177,6 +180,5 @@ class PWP_Product extends PWP_Component
 
     public function save_to_product(): WC_Product
     {
-       
     }
 }
