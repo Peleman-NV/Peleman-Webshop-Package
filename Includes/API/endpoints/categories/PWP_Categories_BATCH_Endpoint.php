@@ -8,15 +8,12 @@ use PWP\includes\authentication\PWP_Authenticator;
 use PWP\includes\API\endpoints\PWP_Abstract_BATCH_Endpoint;
 use PWP\includes\exceptions\PWP_API_Exception;
 use PWP\includes\handlers\commands\PWP_Category_Command_Factory;
-use PWP\includes\utilities\response\PWP_I_Response;
 use PWP\includes\utilities\response\PWP_Response;
 use PWP\includes\wrappers\PWP_Term_Data;
 use PWP\includes\handlers\commands\PWP_I_Command;
 use PWP\includes\utilities\response\PWP_Error_Response;
 use PWP\includes\utilities\schemas\PWP_Argument_Schema;
-use PWP\includes\utilities\schemas\PWP_Resource_Schema;
 use PWP\includes\utilities\schemas\PWP_Schema_Factory;
-use SitePress;
 
 class PWP_Categories_BATCH_Endpoint extends PWP_Abstract_BATCH_Endpoint
 {
@@ -32,8 +29,8 @@ class PWP_Categories_BATCH_Endpoint extends PWP_Abstract_BATCH_Endpoint
     public function __construct(string $path, PWP_Authenticator $authenticator)
     {
         parent::__construct(
-            $path,
-            'category',
+            $path . "/batch",
+            'product category',
             $this->authenticator = $authenticator
         );
 
@@ -73,6 +70,7 @@ class PWP_Categories_BATCH_Endpoint extends PWP_Abstract_BATCH_Endpoint
                 __('an unexpected error occured during batch processing'),
                 $exception
             ));
+            throw $exception;
         }
         return new \WP_REST_Response($response->to_array());
     }
@@ -124,13 +122,16 @@ class PWP_Categories_BATCH_Endpoint extends PWP_Abstract_BATCH_Endpoint
 
         foreach ($deleteOps as $delete) {
             $data = new PWP_Term_Data($delete);
-            $this->commands[] = $factory->new_delete_term_command($data->get_slug());
+            $slug = $data->get_slug();
+            if (!is_null($slug)) {
+                $this->commands[] = $factory->new_delete_term_command($slug);
+            }
         }
     }
 
     private function execute_commands(PWP_Response $response): void
     {
-        foreach ($this->commands as $key => $command) {
+        foreach ($this->commands as $command) {
             try {
                 $response->add_response($command->do_action());
             } catch (PWP_API_Exception $exception) {

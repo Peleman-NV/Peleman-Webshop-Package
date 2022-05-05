@@ -13,7 +13,6 @@ use PWP\includes\exceptions\PWP_Not_Implemented_Exception;
  */
 abstract class PWP_Abstract_UPDATE_Endpoint extends PWP_EndpointController
 {
-
     public function __construct(string $path, string $title, PWP_IApiAuthenticator $authenticator)
     {
         parent::__construct($path, $title, $authenticator);
@@ -21,7 +20,7 @@ abstract class PWP_Abstract_UPDATE_Endpoint extends PWP_EndpointController
 
     public function authenticate(\WP_REST_Request $request): bool
     {
-        throw new PWP_Not_Implemented_Exception(__METHOD__);
+        return $this->get_authenticator()->auth_get_items($request);
     }
 
     public function get_arguments(): array

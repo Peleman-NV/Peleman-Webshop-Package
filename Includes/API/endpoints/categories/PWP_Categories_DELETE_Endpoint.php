@@ -22,16 +22,12 @@ class PWP_Categories_DELETE_Endpoint extends PWP_Abstract_DELETE_Endpoint
 
     final public function do_action(\WP_REST_Request $request): \WP_REST_Response
     {
-        try {
-            $slug = $request['slug'];
-            $handler = new PWP_Category_Handler();
+        $slug = $request['slug'];
+        $handler = new PWP_Category_Handler();
 
-            if ($handler->delete_item_by_slug($slug))
-                return new \WP_REST_Response('category successfully deleted!');
-            else return new \WP_REST_Response('something went wrong when deleting the category');
-        } catch (PWP_API_Exception $exception) {
-            return $exception->to_rest_response();
-        }
+        if ($handler->delete_item_by_slug($slug))
+            return new \WP_REST_Response('category successfully deleted!');
+        else return new \WP_REST_Response('something went wrong when deleting the category');
     }
 
     final public function authenticate(\WP_REST_Request $request): bool

@@ -16,7 +16,7 @@ abstract class PWP_Abstract_BATCH_Endpoint extends PWP_EndpointController
 
     public function __construct(string $path, string $title, PWP_IApiAuthenticator $authenticator)
     {
-        parent::__construct($path . '/batch', $title, $authenticator);
+        parent::__construct($path, $title, $authenticator);
     }
 
     public function authenticate(WP_REST_Request $request): bool
@@ -28,6 +28,6 @@ abstract class PWP_Abstract_BATCH_Endpoint extends PWP_EndpointController
 
     final public function get_methods(): string
     {
-        return \WP_REST_Server::CREATABLE;
+        return \WP_REST_Server::EDITABLE;
     }
 }

@@ -18,26 +18,32 @@ class PWP_Authenticator implements PWP_IApiAuthenticator
 
     public function auth_get_items(WP_REST_Request $request): bool
     {
+        //TODO: implement proper authentication functionality
         return true;
     }
 
     public function auth_delete_item(WP_REST_Request $request): bool
     {
+        //TODO: implement proper authentication functionality
         return true;
     }
 
     public function auth_post_item(WP_REST_Request $request): bool
     {
+        //TODO: implement proper authentication functionality
         return true;
     }
 
     public function auth_update_item(WP_REST_Request $request): bool
     {
+        //TODO: implement proper authentication functionality
         return true;
     }
 
     public function auth_batch_items(WP_REST_Request $request): bool
     {
+        //TODO: implement proper authentication functionality
+        // return wc_rest_check_product_term_permissions($object, 'batch');
         return true;
     }
 }

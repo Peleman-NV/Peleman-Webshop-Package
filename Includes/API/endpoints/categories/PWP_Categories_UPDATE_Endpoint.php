@@ -16,7 +16,7 @@ class PWP_Categories_UPDATE_Endpoint extends PWP_Abstract_UPDATE_Endpoint
     {
         parent::__construct(
             $path .  "/(?P<slug>\w+)",
-            'product categories',
+            'product category',
             $authenticator
         );
     }

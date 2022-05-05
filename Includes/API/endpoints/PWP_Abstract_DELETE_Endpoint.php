@@ -11,7 +11,7 @@ use PWP\includes\authentication\PWP_IApiAuthenticator;
  */
 abstract class PWP_Abstract_DELETE_Endpoint extends PWP_EndpointController
 {
-    public function __construct(string $path, string $title, PWP_IApiAuthenticator $authenticator)
+    public function __construct(string $path, string $title,  PWP_IApiAuthenticator $authenticator)
     {
         parent::__construct($path, $title, $authenticator);
     }

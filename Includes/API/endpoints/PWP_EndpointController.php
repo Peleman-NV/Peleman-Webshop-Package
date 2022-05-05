@@ -12,6 +12,8 @@ abstract class PWP_EndpointController implements PWP_I_Endpoint
     protected string $title;
     protected PWP_IApiAuthenticator $authenticator;
 
+    protected string $object;
+
     public function __construct(string $path, string $title, PWP_IApiAuthenticator $authenticator)
     {
         $this->path = $path;

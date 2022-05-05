@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace PWP\includes\handlers\commands;
 
+use PWP\includes\exceptions\PWP_API_Exception;
 use WP_Term;
 
 use PWP\includes\wrappers\PWP_Term_Data;
@@ -12,9 +13,12 @@ use PWP\includes\utilities\response\PWP_Response;
 use PWP\includes\utilities\response\PWP_I_Response;
 use PWP\includes\exceptions\PWP_Not_Implemented_Exception;
 use PWP\includes\validation\PWP_Abstract_Term_Handler;
+use PWP\includes\validation\PWP_Validate_Term_New_Slug_Characters;
+use PWP\includes\validation\PWP_Validate_Term_New_Slug_Unique;
 use PWP\includes\validation\PWP_Validate_Term_Slug_Characters;
 use PWP\includes\validation\PWP_Validate_Term_Slug_Exists;
 use PWP\includes\validation\PWP_Validate_Term_Translation_Data;
+use PWP\includes\validation\PWP_Validation_Handler;
 
 class PWP_Update_Term_Command implements PWP_I_Command
 {
@@ -36,28 +40,35 @@ class PWP_Update_Term_Command implements PWP_I_Command
 
         $this->canChangeParent = $canChangeParent;
 
-        $this->handler = new PWP_Validate_Term_Slug_Exists();
+        $this->handler = new PWP_Validation_Handler();
         $this->handler
+            ->set_next(new PWP_Validate_Term_Slug_Exists())
             ->set_next(new PWP_Validate_Term_Slug_Characters())
-            ->set_next(new PWP_Validate_Term_Translation_Data());
+            ->set_next(new PWP_Validate_Term_Translation_Data())
+            ->set_next(new PWP_Validate_Term_New_Slug_Unique())
+            ->set_next(new PWP_Validate_Term_New_Slug_Characters());
     }
 
     final public function do_action(): PWP_I_Response
     {
-        if ($this->validate_data()) {
-            $originalTerm = $this->service->get_item_by_slug($this->slug);
+        try {
+            if ($this->validate_data()) {
+                $originalTerm = $this->service->get_item_by_slug($this->slug);
 
-            $updatedTerm = $this->update_term($originalTerm);
+                $updatedTerm = $this->update_term($originalTerm);
 
-            $this->configure_translation_table($updatedTerm);
-            $this->configure_seo_data($updatedTerm);
+                $this->configure_translation_table($updatedTerm);
+                $this->configure_seo_data($updatedTerm);
 
-            return new PWP_Response(
-                "{$this->service->get_taxonomy_name()} with slug {$this->slug} has been successfully updated",
-                (array)$updatedTerm->data
-            );
+                return new PWP_Response(
+                    "{$this->service->get_taxonomy_name()} with slug {$this->slug} has been successfully updated",
+                    (array)$updatedTerm->data
+                );
+            }
+            return new PWP_Response("{$this->service->get_taxonomy_name()} with slug {$this->slug} cannot be updated.");
+        } catch (PWP_API_Exception $exception) {
+            return new PWP_Response($exception->getMessage());
         }
-        return new PWP_Response("{$this->service->get_taxonomy_name()} with slug {$this->slug} cannot be updated.");
     }
 
     final public function undo_action(): PWP_I_Response

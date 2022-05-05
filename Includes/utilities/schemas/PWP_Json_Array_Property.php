@@ -30,7 +30,7 @@ class PWP_Json_Array_Property extends PWP_Json_Schema_Property
     {
         $schema = parent::to_array();
 
-        $array = array('type' => $this->type);
+        $array = array('type' => 'object');
         $props = array();
         foreach ($this->properties as $key => $property) {
             $props[$key] = $property->to_array();

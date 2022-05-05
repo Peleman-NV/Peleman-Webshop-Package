@@ -22,7 +22,7 @@ class PWP_Categories_CREATE_Endpoint extends PWP_Abstract_CREATE_Endpoint
     {
         parent::__construct(
             $path,
-            'category',
+            'product category',
             $this->authenticator = $authenticator
         );
     }

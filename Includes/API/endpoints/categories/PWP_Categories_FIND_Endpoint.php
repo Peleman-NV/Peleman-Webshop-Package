@@ -8,7 +8,6 @@ use PWP\includes\handlers\PWP_Category_Handler;
 use PWP\includes\authentication\PWP_Authenticator;
 use PWP\includes\API\endpoints\PWP_Abstract_FIND_Endpoint;
 use PWP\includes\exceptions\PWP_API_Exception;
-use PWP\includes\exceptions\PWP_Not_Implemented_Exception;
 use WP_REST_Response;
 
 class PWP_Categories_FIND_Endpoint extends PWP_Abstract_FIND_Endpoint
@@ -18,7 +17,7 @@ class PWP_Categories_FIND_Endpoint extends PWP_Abstract_FIND_Endpoint
     {
         parent::__construct(
             $path .  "/(?P<slug>\w+)",
-            'product categories',
+            'product category',
             $authenticator
         );
     }
