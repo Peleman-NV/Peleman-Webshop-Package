@@ -48,7 +48,7 @@ class PWP_Plugin
 
         /*  ADD PUBLIC HOOKABLES HERE */
 
-        $this->add_hookable(new PWP_Public_Product_Page());
+        // $this->add_hookable(new PWP_Public_Product_Page());
         
         $this->add_hookable(new PWP_API_Plugin('pwp/v1'));
     }

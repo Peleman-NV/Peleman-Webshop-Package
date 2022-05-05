@@ -33,7 +33,7 @@ use PWP\includes\versionControl\PWP_VersionController;
 
 defined('WPINC') || die;
 
-define('PWP_VERSION', '0.3.2');
+define('PWP_VERSION', '0.3.3');
 !defined('PWP_OPTION_GROUP') ? define('PWP_OPTION_GROUP', 'PWP_OPTIONS') : null;
 !defined('PWP_TEXT_DOMAIN') ? define('PWP_TEXT_DOMAIN', 'PelemanWebshopPackage') : null;
 
