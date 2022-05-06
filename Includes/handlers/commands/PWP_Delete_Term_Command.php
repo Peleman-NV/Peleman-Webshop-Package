@@ -35,17 +35,17 @@ final class PWP_Delete_Term_Command implements PWP_I_Command
 
     public function do_action(): PWP_I_Response
     {
-        try {
-            if ($this->handler->handle($this->service, new PWP_Term_Data(['slug' => $this->slug]))) {
-                if ($this->delete_term()) {
-                    return new PWP_Response("successfully deleted category {$this->slug}");
-                }
-                return new PWP_Response("deletion of category {$this->slug} failed for unknown reasons.");
-            }
-        } catch (PWP_API_Exception $exception) {
-            return new PWP_Error_Response("error when deleting category {$this->slug}", $exception);
+        $response = $this->handler->handle($this->service, new PWP_Term_Data(['slug' => $this->slug]));
+        if (!$response->is_success()) {
+            return $response;
         }
+        
+        if ($this->delete_term()) {
+            return  PWP_Response::success("successfully deleted category {$this->slug}");
+        }
+        return PWP_Response::failure("deletion of category {$this->slug} failed for unknown reasons.");
     }
+
 
     public function undo_action(): PWP_I_Response
     {

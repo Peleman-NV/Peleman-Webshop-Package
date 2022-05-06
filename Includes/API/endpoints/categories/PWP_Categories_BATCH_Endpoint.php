@@ -12,8 +12,6 @@ use PWP\includes\utilities\response\PWP_Response;
 use PWP\includes\wrappers\PWP_Term_Data;
 use PWP\includes\handlers\commands\PWP_I_Command;
 use PWP\includes\utilities\response\PWP_Error_Response;
-use PWP\includes\utilities\schemas\PWP_Argument_Schema;
-use PWP\includes\utilities\schemas\PWP_Schema_Factory;
 
 class PWP_Categories_BATCH_Endpoint extends PWP_Abstract_BATCH_Endpoint
 {
@@ -39,39 +37,32 @@ class PWP_Categories_BATCH_Endpoint extends PWP_Abstract_BATCH_Endpoint
 
     final public function do_action(\WP_REST_Request $request): \WP_REST_Response
     {
-        try {
-            $createOperations = (array)$request->get_json_params()['create'];
-            $updateOperations = (array)$request->get_json_params()['update'];
-            $deleteOperations = (array)$request->get_json_params()['delete'];
+        $createOperations = (array)$request->get_json_params()['create'];
+        $updateOperations = (array)$request->get_json_params()['update'];
+        $deleteOperations = (array)$request->get_json_params()['delete'];
 
-            $updateCanCreate = (bool)$request->get_json_params()['update_can_create'] ?: false;
-            $canChangeParent = (bool)$request->get_json_params()['can_change_parent'] ?: false;
+        $updateCanCreate = (bool)$request->get_json_params()['update_can_create'] ?: false;
+        $canChangeParent = (bool)$request->get_json_params()['can_change_parent'] ?: false;
 
-            $operations = count(array_merge($createOperations, $updateOperations, $deleteOperations));
-            if ($operations > self::BATCH_ITEM_CAP) {
-                return new \WP_REST_Response("batch request too large! maximum amount of permitted entries is " . self::BATCH_ITEM_CAP, 500);
-            }
-
-            $response = new PWP_Response(
-                'batch',
-                array(
-                    'create operations' => count($createOperations),
-                    'update operations' => count($updateOperations),
-                    'delete operations' => count($deleteOperations),
-                )
-            );
-
-            $this->generate_commands($createOperations, $updateOperations, $deleteOperations, $updateCanCreate, $canChangeParent);
-            $this->execute_commands($response);
-
-            $response->add_response(new PWP_Response("operation completed!"));
-        } catch (\Exception $exception) {
-            $response->add_response(new PWP_Error_Response(
-                __('an unexpected error occured during batch processing'),
-                $exception
-            ));
-            throw $exception;
+        $operations = count(array_merge($createOperations, $updateOperations, $deleteOperations));
+        if ($operations > self::BATCH_ITEM_CAP) {
+            return new \WP_REST_Response("batch request too large! maximum amount of permitted entries is " . self::BATCH_ITEM_CAP, 500);
         }
+
+        $response = new PWP_Response(
+            'batch',
+            true,
+            array(
+                'create operations' => count($createOperations),
+                'update operations' => count($updateOperations),
+                'delete operations' => count($deleteOperations),
+            )
+        );
+
+        $this->generate_commands($createOperations, $updateOperations, $deleteOperations, $updateCanCreate, $canChangeParent);
+        $this->execute_commands($response);
+
+        $response->add_response(PWP_Response::success("operation completed!"));
         return new \WP_REST_Response($response->to_array());
     }
 
@@ -133,11 +124,7 @@ class PWP_Categories_BATCH_Endpoint extends PWP_Abstract_BATCH_Endpoint
     private function execute_commands(PWP_Response $response): void
     {
         foreach ($this->commands as $command) {
-            try {
-                $response->add_response($command->do_action());
-            } catch (PWP_API_Exception $exception) {
-                $response->add_response(new PWP_Error_Response($exception->getMessage(), $exception));
-            }
+            $response->add_response($command->do_action());
         }
     }
 }

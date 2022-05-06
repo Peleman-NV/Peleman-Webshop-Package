@@ -39,15 +39,16 @@ class PWP_Create_Term_Command implements PWP_I_Command
 
     final public function do_action(): PWP_I_Response
     {
-        if ($this->validate_data()) {
-            $term = $this->create_term();
-
-            $this->configure_translation_table($term);
-            $this->configure_seo_data($term);
-
-            return new PWP_Response("successfully created category {$term->slug}", (array)$term->data);
+        $response = $this->validate_data();
+        if (!$response->is_success()) {
+            return $response;
         }
-        return new PWP_REsponse("could not create category {$this->slug}");
+
+        $term = $this->create_term();
+        $this->configure_translation_table($term);
+        $this->configure_seo_data($term);
+
+        return  PWP_Response::success("successfully created category {$term->slug}", (array)$term->data);
     }
 
     public function undo_action(): PWP_I_Response
@@ -109,7 +110,7 @@ class PWP_Create_Term_Command implements PWP_I_Command
         }
     }
 
-    protected function validate_data(): bool
+    protected function validate_data(): PWP_I_Response
     {
         return $this->handler->handle($this->service, $this->data);
     }

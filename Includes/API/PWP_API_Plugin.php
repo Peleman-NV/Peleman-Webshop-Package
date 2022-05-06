@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace PWP\includes\API;
 
 use PWP\includes\API\endpoints\categories\PWP_API_Categories_Channel;
-use PWP\includes\authentication\PWP_Authenticator;
 use PWP\includes\hookables\PWP_I_Hookable_Component;
 use PWP\includes\loaders\PWP_Plugin_Loader;
 

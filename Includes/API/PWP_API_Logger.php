@@ -19,17 +19,17 @@ class PWP_API_Logger implements PWP_ILogger
 
     public function add_log(string $class, int $line, string $message): void
     {
-        $this->logs[] = PWP_API_Log::log($class, $line, $message);
+        $this->logs[] = PWP_API_Log::info($class, $line, $message);
     }
 
     public function add_notice_log(string $class, int $line, string $message): void
     {
-        $this->logs[] = PWP_API_Log::log_notice($class, $line, $message);
+        $this->logs[] = PWP_API_Log::notice($class, $line, $message);
     }
 
     public function add_warning_log(string $class, int $line, string $message): void
     {
-        $this->logs[] = PWP_API_Log::log_warning($class, $line, $message);
+        $this->logs[] = PWP_API_Log::warning($class, $line, $message);
     }
 
     public function get_logs(): array

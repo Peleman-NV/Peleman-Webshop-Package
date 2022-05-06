@@ -51,24 +51,22 @@ class PWP_Update_Term_Command implements PWP_I_Command
 
     final public function do_action(): PWP_I_Response
     {
-        try {
-            if ($this->validate_data()) {
-                $originalTerm = $this->service->get_item_by_slug($this->slug);
-
-                $updatedTerm = $this->update_term($originalTerm);
-
-                $this->configure_translation_table($updatedTerm);
-                $this->configure_seo_data($updatedTerm);
-
-                return new PWP_Response(
-                    "{$this->service->get_taxonomy_name()} with slug {$this->slug} has been successfully updated",
-                    (array)$updatedTerm->data
-                );
-            }
-            return new PWP_Response("{$this->service->get_taxonomy_name()} with slug {$this->slug} cannot be updated.");
-        } catch (PWP_API_Exception $exception) {
-            return new PWP_Response($exception->getMessage());
+        $response = $this->validate_data();
+        if (!$response->is_success()) {
+            return $response;
         }
+
+        $originalTerm = $this->service->get_item_by_slug($this->slug);
+
+        $updatedTerm = $this->update_term($originalTerm);
+
+        $this->configure_translation_table($updatedTerm);
+        $this->configure_seo_data($updatedTerm);
+
+        return PWP_Response::success(
+            "{$this->service->get_taxonomy_name()} with slug {$this->slug} has been successfully updated",
+            (array)$updatedTerm->data
+        );
     }
 
     final public function undo_action(): PWP_I_Response
@@ -111,7 +109,7 @@ class PWP_Update_Term_Command implements PWP_I_Command
         }
     }
 
-    protected function validate_data(): bool
+    protected function validate_data(): PWP_I_Response
     {
         return $this->handler->handle($this->service, $this->data);
     }

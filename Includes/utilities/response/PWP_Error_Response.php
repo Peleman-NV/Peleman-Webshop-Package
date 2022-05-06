@@ -17,7 +17,7 @@ class PWP_Error_Response extends PWP_Response
 
     public function __construct(string $message, \Exception $exception, array $additionalData = [])
     {
-        parent::__construct($message, $additionalData);
+        parent::__construct($message, false, $additionalData);
 
         $this->exCode = $exception->getCode();
         $this->exMessage = $exception->getMessage();

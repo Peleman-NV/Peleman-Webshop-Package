@@ -34,7 +34,7 @@ final class PWP_Read_Term_Command implements PWP_I_Command
         }, $items);
         $this->service->disable_sitepress_get_term_filter();
 
-        return new PWP_Response("Terms", array("results" => count($itemArray), 'items' => $itemArray));
+        return PWP_Response::success("Terms", array("results" => count($itemArray), 'items' => $itemArray));
     }
 
     public function undo_action(): PWP_I_Response
