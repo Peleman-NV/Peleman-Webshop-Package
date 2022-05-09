@@ -14,7 +14,7 @@ use WP_Term;
 final class PWP_Term_SVC
 {
     private string $taxonomy;
-    private string $elementType;
+    private string $taxonomyType;
     private string $taxonomyName;
 
     private string $sourceLang;
@@ -23,14 +23,14 @@ final class PWP_Term_SVC
 
     /**
      * @param string $taxonomy taxonomy of the term
-     * @param string $elementType name of the element for use with WPML translations.
+     * @param string $taxonomyType name of the element for use with WPML translations.
      * @param string $taxonomyName beautified name for use in human readable errors.
      * @param string $sourceLang 2 letter lower-case language code. default is en (English)
      */
-    public function __construct(string $taxonomy, string $elementType, string $taxonomyName, string $sourceLang = 'en')
+    public function __construct(string $taxonomy, string $taxonomyType, string $taxonomyName, string $sourceLang = 'en')
     {
         $this->taxonomy = $taxonomy;
-        $this->elementType = $elementType;
+        $this->taxonomyType = $taxonomyType;
         $this->taxonomyName = $taxonomyName;
 
         $this->sourceLang = $sourceLang;
@@ -51,7 +51,7 @@ final class PWP_Term_SVC
     public function get_taxonomy_type(): string
     {
 
-        return $this->elementType;
+        return $this->taxonomyType;
     }
 
     public function get_sourcelang(): ?string
@@ -178,7 +178,7 @@ final class PWP_Term_SVC
         if (is_null($this->sitepressHandler->sitepress)) {
             return -1;
         }
-        return $this->sitepressHandler->sitepress->get_object_id($term->term_id, $this->elementType, false, $this->sourceLang);
+        return $this->sitepressHandler->sitepress->get_object_id($term->term_id, $this->taxonomyType, false, $this->sourceLang);
     }
 
     /**
@@ -236,11 +236,11 @@ final class PWP_Term_SVC
 
         $taxonomyId = $translatedTerm->term_taxonomy_id;
         $parentTaxonomyId = $originalTerm->term_taxonomy_id;
-        $trid = $this->sitepressHandler->sitepress->get_element_trid($parentTaxonomyId, $this->elementType);
+        $trid = $this->sitepressHandler->sitepress->get_element_trid($parentTaxonomyId, $this->taxonomyType);
 
         $sourceLang = $this->sourceLang !== $lang ? $this->sourceLang : null;
 
-        $query = $wpdb->prepare_term_translation_query($lang, $sourceLang, (int)$trid, $this->elementType, $taxonomyId);
+        $query = $wpdb->prepare_term_translation_query($lang, $sourceLang, (int)$trid, $this->taxonomyType, $taxonomyId);
         $result = $wpdb->query($query);
 
         return !$result;
@@ -256,7 +256,7 @@ final class PWP_Term_SVC
         if (is_null($this->sitepressHandler->sitepress)) {
             return -1;
         }
-        $trid = $this->sitepressHandler->sitepress->get_element_trid($original->term_id, $this->elementType);
+        $trid = $this->sitepressHandler->sitepress->get_element_trid($original->term_id, $this->taxonomyType);
         var_dump($trid);
         return (int)$trid ?: 0;
     }

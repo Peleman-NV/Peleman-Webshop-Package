@@ -11,9 +11,9 @@ abstract class PWP_Abstract_Term_Command_Factory
 {
     protected PWP_Term_SVC $service;
 
-    public function __construct(string $taxonomy, string $elementType, string $beautyName, string $sourceLang = 'en')
+    public function __construct(PWP_Term_SVC $service)
     {
-        $this->service = new PWP_Term_SVC($taxonomy, $elementType, $beautyName, $sourceLang);
+        $this->service = $service;
         $this->service->disable_sitepress_get_term_filter();
     }
 

@@ -9,9 +9,10 @@ use PWP\includes\wrappers\PWP_Term_Data;
 
 final class PWP_Category_Command_Factory extends PWP_Abstract_Term_Command_Factory
 {
-    public function __construct()
+    public function __construct(string $defaultLang = 'en')
     {
-        parent::__construct('product_cat', 'tax_product_cat', "product category");
+        $service = new PWP_Term_SVC('product_cat', 'tax_product_cat', "product category", $defaultLang);
+        parent::__construct($service);
     }
 
     final public function new_create_term_command(PWP_Term_Data $data): PWP_Create_Term_Command
