@@ -16,7 +16,7 @@ use PWP\includes\utilities\response\PWP_Error_Response;
 class PWP_Categories_BATCH_Endpoint extends PWP_Abstract_BATCH_Endpoint
 {
 
-    private const BATCH_ITEM_CAP = 100;
+    private const BATCH_ITEM_CAP = 200;
     /**
      * Undocumented variable
      *

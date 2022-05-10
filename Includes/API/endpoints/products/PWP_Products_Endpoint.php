@@ -19,7 +19,7 @@ use PWP\includes\exceptions\PWP_Not_Implemented_Exception;
 
 class PWP_Products_Endpoint extends PWP_EndpointController implements PWP_I_Endpoint
 {
-    private const PAGE_SOFT_CAP = 100;
+    private const PAGE_SOFT_CAP = 200;
 
     public function __construct(PWP_I_Api_Authenticator $authenticator)
     {
@@ -33,7 +33,7 @@ class PWP_Products_Endpoint extends PWP_EndpointController implements PWP_I_Endp
 
     public function do_action(WP_REST_Request $request): WP_REST_Response
     {
-        return new WP_REST_Response('not implemented', 503);
+        return new WP_REST_Response('not implemented', 501);
     }
 
     public function authenticate(WP_REST_Request $request): bool
