@@ -6,8 +6,6 @@ namespace PWP\includes\utilities\schemas;
 
 class PWP_Json_Array_Property extends PWP_Abstract_Multi_Property
 {
-    private array $properties;
-
     public function __construct(string $description, PWP_I_Schema_Factory $factory, array $args = [])
     {
         parent::__construct($description, 'array', $factory, $args);

@@ -60,4 +60,10 @@ class PWP_SitePress_Wrapper
 
         $this->sitepressOverrideActive = false;
     }
+
+    final public function get_active_languages(bool $refresh = false, bool $majorFirst = false): array
+    {
+        $langs = $this->sitepress->get_active_languages($refresh, $majorFirst);
+        return array_keys($langs);
+    }
 }

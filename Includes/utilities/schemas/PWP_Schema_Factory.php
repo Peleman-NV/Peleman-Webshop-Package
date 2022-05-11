@@ -65,7 +65,7 @@ class PWP_Schema_Factory implements PWP_I_Schema_Factory
     {
         return new PWP_Json_Array_property(
             __($description, $this->domain),
-            $this->factory,
+            $this,
             array('enum' => $enumValues),
             $args
         );
@@ -75,7 +75,7 @@ class PWP_Schema_Factory implements PWP_I_Schema_Factory
     {
         return new PWP_Json_Array_property(
             __($description, $this->domain),
-            $this->factory,
+            $this,
             $args
         );
     }

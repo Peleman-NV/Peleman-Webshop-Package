@@ -4,12 +4,14 @@ declare(strict_types=1);
 
 namespace PWP\includes\API\endpoints\categories;
 
-use PWP\includes\authentication\PWP_Authenticator;
-use PWP\includes\API\endpoints\PWP_Abstract_BATCH_Endpoint;
-use PWP\includes\handlers\commands\PWP_Category_Command_Factory;
-use PWP\includes\utilities\response\PWP_Response;
 use PWP\includes\wrappers\PWP_Term_Data;
 use PWP\includes\handlers\commands\PWP_I_Command;
+use PWP\includes\utilities\response\PWP_Response;
+use PWP\includes\authentication\PWP_Authenticator;
+use PWP\includes\utilities\schemas\PWP_Schema_Factory;
+use PWP\includes\utilities\schemas\PWP_Argument_Schema;
+use PWP\includes\API\endpoints\PWP_Abstract_BATCH_Endpoint;
+use PWP\includes\handlers\commands\PWP_Category_Command_Factory;
 
 class PWP_Categories_BATCH_Endpoint extends PWP_Abstract_BATCH_Endpoint
 {
@@ -64,30 +66,29 @@ class PWP_Categories_BATCH_Endpoint extends PWP_Abstract_BATCH_Endpoint
 
     final public function get_arguments(): array
     {
-        // $schema = new PWP_Argument_Schema(new PWP_Schema_Factory(), $this->title);
-        // $schema->add_bool_property(
-        //     "update_can_create",
-        //     "whether the update batch is capable of creating new entries, in case the original cannot be found."
-        // )->default(false);
-        // $schema->add_bool_property(
-        //     "can_change_parent",
-        //     "whether an update call can change the parent of a category. if false, can only give a parent to a category that did not have one before."
-        // )->default(false);
-        // $schema->add_array_property(
-        //     "create",
-        //     "array of create calls."
-        // );
-        // $schema->add_array_property(
-        //     "update",
-        //     "array of update calls. if add_bool_property is true, can also include create calls."
-        // );
-        // $schema->add_array_property(
-        //     "delete",
-        //     "array of delete calls."
-        // );
+        $schema = new PWP_Argument_Schema(new PWP_Schema_Factory(), $this->title);
+        $schema->add_bool_property(
+            "update_can_create",
+            "whether the update batch is capable of creating new entries, in case the original cannot be found."
+        )->default(false);
+        $schema->add_bool_property(
+            "can_change_parent",
+            "whether an update call can change the parent of a category. if false, can only give a parent to a category that did not have one before."
+        )->default(false);
+        $schema->add_array_property(
+            "create",
+            "array of create calls."
+        );
+        $schema->add_array_property(
+            "update",
+            "array of update calls. if add_bool_property is true, can also include create calls."
+        );
+        $schema->add_array_property(
+            "delete",
+            "array of delete calls."
+        );
 
-        // return $schema->to_array();
-        return [];
+        return $schema->to_array();
     }
 
     private function generate_commands(array $createOps, array $updateOps, array $deleteOps, bool $updateCanCreate = false, bool $canChangeParent = false): void

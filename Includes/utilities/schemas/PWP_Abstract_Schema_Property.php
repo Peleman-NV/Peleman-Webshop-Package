@@ -14,7 +14,7 @@ abstract class PWP_Abstract_Schema_Property implements PWP_I_Property
     private string $description;
     private array $customArgs;
     private bool $required;
-    private bool $readonly;
+    private bool $readOnly;
 
     public function __construct(
         string $description,
@@ -27,23 +27,23 @@ abstract class PWP_Abstract_Schema_Property implements PWP_I_Property
 
         $this->context = [];
         $this->required = false;
-        $this->readonly = false;
-    } 
+        $this->readOnly = false;
+    }
 
     final public function required($required = true): PWP_Abstract_Schema_Property
     {
-        $this->isRequired = $required;
+        $this->required= $required;
         return $this;
     }
 
     final public function is_required(): bool
     {
-        return $this->required ?? false;
+        return $this->required;
     }
 
-    final public function readonly($readonly = true): PWP_Abstract_Schema_Property
+    final public function readOnly($readOnly = true): PWP_Abstract_Schema_Property
     {
-        $this->readonly = $readonly;
+        $this->readOnly = $readOnly;
         return $this;
     }
 
@@ -82,10 +82,11 @@ abstract class PWP_Abstract_Schema_Property implements PWP_I_Property
         $schema = array(
             'description' => $this->description,
             'type' => $this->type,
+            'required' => $this->is_required(),
         );
 
-        if ($this->readonly) {
-            $schema['readonly'] = $this->readonly;
+        if ($this->readOnly) {
+            $schema['readOnly'] = $this->readOnly;
         }
         if ($this->default) {
             $schema['default'] = $this->default;
