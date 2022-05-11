@@ -6,10 +6,7 @@ namespace PWP\includes\API\endpoints\categories;
 
 use WP_REST_Request;
 use WP_REST_Response;
-
 use PWP\includes\authentication\PWP_I_Api_Authenticator;
-use PWP\includes\utilities\schemas\PWP_Schema_Factory;
-use PWP\includes\utilities\schemas\PWP_Argument_Schema;
 use PWP\includes\API\endpoints\PWP_Abstract_CREATE_Endpoint;
 use PWP\includes\handlers\commands\PWP_Category_Command_Factory;
 use PWP\includes\wrappers\PWP_Term_Data;
