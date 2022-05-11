@@ -260,6 +260,12 @@ final class PWP_Term_SVC
         var_dump($trid);
         return (int)$trid ?: 0;
     }
+
+    final public function change_slug(string $oldSlug, string $newSlug): ?\WP_Term
+    {
+        $term = $this->get_item_by_slug($oldSlug);
+        return $this->update_item($term, array('slug' => $newSlug));
+    }
     #endregion
 
     #region sitepress settings
