@@ -221,7 +221,7 @@ final class PWP_Term_SVC
         $currentSeoMetaData = get_option('wpseo_taxonomy_meta');
 
         $currentSeoMetaData[$this->taxonomy][$term->id]['wpseo_focuskw'] = $data->get_focus_keyword();
-        $currentSeoMetaData[$this->taxonomy][$$term->id]['wpseo_desc'] = $data->get_description();
+        $currentSeoMetaData[$this->taxonomy][$term->id]['wpseo_desc'] = $data->get_description();
 
         update_option('wpseo_taxonomy_meta', $currentSeoMetaData);
     }

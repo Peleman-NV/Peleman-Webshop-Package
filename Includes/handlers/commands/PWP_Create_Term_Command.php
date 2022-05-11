@@ -7,12 +7,14 @@ namespace PWP\includes\handlers\commands;
 use WP_Term;
 use PWP\includes\wrappers\PWP_Term_Data;
 use PWP\includes\handlers\services\PWP_Term_SVC;
-use PWP\includes\utilities\response\PWP_Response;
-use PWP\includes\utilities\response\PWP_I_Response;
+use PWP\includes\utilities\notification\PWP_Error_Notice;
+use PWP\includes\utilities\notification\PWP_Success_Notice;
 use PWP\includes\validation\PWP_Abstract_Term_Handler;
-use PWP\includes\exceptions\PWP_Not_Implemented_Exception;
-use PWP\includes\validation\PWP_Validate_Term_Slug_Characters;
+use PWP\includes\utilities\notification\PWP_Notification;
 use PWP\includes\validation\PWP_Validate_Term_Slug_Unique;
+use PWP\includes\utilities\notification\PWP_I_Notification;
+use PWP\includes\utilities\response\PWP_I_Response_Component;
+use PWP\includes\validation\PWP_Validate_Term_Slug_Characters;
 use PWP\includes\validation\PWP_Validate_Term_Translation_Data;
 
 class PWP_Create_Term_Command implements PWP_I_Command
@@ -31,29 +33,36 @@ class PWP_Create_Term_Command implements PWP_I_Command
         $this->slug = $data->get_slug() ?: '';
         $this->lang = 'en';
 
-        $this->handler = new PWP_Validate_Term_Slug_Unique();
+        $this->handler = new PWP_Validate_Term_Slug_Unique($this->service);
         $this->handler
-            ->set_next(new PWP_Validate_Term_Slug_Characters())
-            ->set_next(new PWP_Validate_Term_Translation_Data());
+            ->set_next(new PWP_Validate_Term_Slug_Characters($this->service))
+            ->set_next(new PWP_Validate_Term_Translation_Data($this->service));
     }
 
-    final public function do_action(): PWP_I_Response
+    final public function do_action(): PWP_I_Response_Component
     {
-        $response = $this->validate_data();
-        if (!$response->is_success()) {
-            return $response;
+        $notification = new PWP_Notification();
+        if (!$this->validate_data($notification)) {
+            return $notification;
         }
 
         $term = $this->create_term();
         $this->configure_translation_table($term);
         $this->configure_seo_data($term);
 
-        return  PWP_Response::success("successfully created category {$term->slug}", (array)$term->data);
+        return new PWP_Success_Notice(
+            "created term",
+            "successfully created new term {$term->name} with slug {$term->slug}.",
+            (array)$term->data
+        );
     }
 
-    public function undo_action(): PWP_I_Response
+    public function undo_action(): PWP_I_Response_Component
     {
-        throw new PWP_Not_Implemented_Exception(__METHOD__);
+        return new PWP_Error_Notice(
+            "method not implemented",
+            "method " . __METHOD__ . " not implemented. Undo actions on database entries are not doable."
+        );
     }
 
     final protected function create_term(): WP_Term
@@ -110,8 +119,8 @@ class PWP_Create_Term_Command implements PWP_I_Command
         }
     }
 
-    protected function validate_data(): PWP_I_Response
+    protected function validate_data(PWP_I_Notification $notification): bool
     {
-        return $this->handler->handle($this->service, $this->data);
+        return $this->handler->handle($this->data, $notification);
     }
 }

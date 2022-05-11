@@ -4,18 +4,17 @@ declare(strict_types=1);
 
 namespace PWP\includes\handlers\commands;
 
-use PWP\includes\exceptions\PWP_API_Exception;
-use PWP\includes\handlers\services\PWP_Term_SVC;
-use PWP\includes\utilities\response\PWP_Response;
-use PWP\includes\utilities\response\PWP_I_Response;
-use PWP\includes\exceptions\PWP_Not_Found_Exception;
-use PWP\includes\utilities\response\PWP_Error_Response;
-use PWP\includes\exceptions\PWP_Not_Implemented_Exception;
-use PWP\includes\validation\PWP_Abstract_Term_Handler;
-use PWP\includes\validation\PWP_Validate_Term_Slug_Exists;
-use PWP\includes\validation\PWP_Validation_Handler;
-use PWP\includes\wrappers\PWP_Term_Data;
 use WP_Term;
+use PWP\includes\wrappers\PWP_Term_Data;
+use PWP\includes\handlers\services\PWP_Term_SVC;
+use PWP\includes\utilities\notification\PWP_Error_Notice;
+use PWP\includes\validation\PWP_Validation_Handler;
+use PWP\includes\validation\PWP_Abstract_Term_Handler;
+use PWP\includes\utilities\notification\PWP_Notification;
+use PWP\includes\validation\PWP_Validate_Term_Slug_Exists;
+use PWP\includes\utilities\notification\PWP_I_Notification;
+use PWP\includes\utilities\notification\PWP_Success_Notice;
+use PWP\includes\utilities\response\PWP_I_Response_Component;
 
 final class PWP_Delete_Term_Command implements PWP_I_Command
 {
@@ -29,27 +28,37 @@ final class PWP_Delete_Term_Command implements PWP_I_Command
         $this->service = $service;
         $this->slug = $slug;
 
-        $this->handler = new PWP_Validation_Handler();
-        $this->handler->set_next(new PWP_Validate_Term_Slug_Exists());
+        $this->handler = new PWP_Validation_Handler($this->service);
+        $this->handler->set_next(new PWP_Validate_Term_Slug_Exists($this->service));
     }
 
-    public function do_action(): PWP_I_Response
+    public function do_action(): PWP_I_Response_Component
     {
-        $response = $this->handler->handle($this->service, new PWP_Term_Data(['slug' => $this->slug]));
-        if (!$response->is_success()) {
-            return $response;
-        }
-        
+        $notification = new PWP_Notification();
+        $data = new PWP_Term_Data(['slug' => $this->slug]);
+        $response = $this->handler->handle($data, $notification);
+
+        if (!$response) return $notification;
         if ($this->delete_term()) {
-            return  PWP_Response::success("successfully deleted category {$this->slug}");
+            return $notification->add_error(
+                "category could not be deleted",
+                "deletion of {$this->service->get_taxonomy_name()} {$this->slug} failed for unknown reasons."
+            );
         }
-        return PWP_Response::failure("deletion of category {$this->slug} failed for unknown reasons.");
+
+        return new PWP_Success_Notice(
+            "term deleted",
+            "term {$this->service->get_taxonomy_name()} with slug {$this->slug} has been successfully deleted!"
+        );
     }
 
 
-    public function undo_action(): PWP_I_Response
+    public function undo_action(): PWP_I_Response_Component
     {
-        throw new PWP_Not_Implemented_Exception(__METHOD__);
+        return new PWP_Error_Notice(
+            "method not implemented",
+            "method " . __METHOD__ . " not implemented"
+        );
     }
 
     private function delete_term(): bool

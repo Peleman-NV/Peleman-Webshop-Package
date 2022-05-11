@@ -4,21 +4,22 @@ declare(strict_types=1);
 
 namespace PWP\includes\handlers\commands;
 
-use PWP\includes\exceptions\PWP_API_Exception;
 use WP_Term;
 
 use PWP\includes\wrappers\PWP_Term_Data;
 use PWP\includes\handlers\services\PWP_Term_SVC;
-use PWP\includes\utilities\response\PWP_Response;
-use PWP\includes\utilities\response\PWP_I_Response;
-use PWP\includes\exceptions\PWP_Not_Implemented_Exception;
+use PWP\includes\validation\PWP_Validation_Handler;
+use PWP\includes\utilities\notification\PWP_Success_Notice;
 use PWP\includes\validation\PWP_Abstract_Term_Handler;
-use PWP\includes\validation\PWP_Validate_Term_New_Slug_Characters;
+use PWP\includes\utilities\notification\PWP_Notification;
+use PWP\includes\exceptions\PWP_Not_Implemented_Exception;
+use PWP\includes\validation\PWP_Validate_Term_Slug_Exists;
+use PWP\includes\utilities\notification\PWP_I_Notification;
+use PWP\includes\utilities\response\PWP_I_Response_Component;
 use PWP\includes\validation\PWP_Validate_Term_New_Slug_Unique;
 use PWP\includes\validation\PWP_Validate_Term_Slug_Characters;
-use PWP\includes\validation\PWP_Validate_Term_Slug_Exists;
 use PWP\includes\validation\PWP_Validate_Term_Translation_Data;
-use PWP\includes\validation\PWP_Validation_Handler;
+use PWP\includes\validation\PWP_Validate_Term_New_Slug_Characters;
 
 class PWP_Update_Term_Command implements PWP_I_Command
 {
@@ -40,20 +41,20 @@ class PWP_Update_Term_Command implements PWP_I_Command
 
         $this->canChangeParent = $canChangeParent;
 
-        $this->handler = new PWP_Validation_Handler();
+        $this->handler = new PWP_Validation_Handler($this->service);
         $this->handler
-            ->set_next(new PWP_Validate_Term_Slug_Exists())
-            ->set_next(new PWP_Validate_Term_Slug_Characters())
-            ->set_next(new PWP_Validate_Term_Translation_Data())
-            ->set_next(new PWP_Validate_Term_New_Slug_Unique())
-            ->set_next(new PWP_Validate_Term_New_Slug_Characters());
+            ->set_next(new PWP_Validate_Term_Slug_Exists($this->service))
+            ->set_next(new PWP_Validate_Term_Slug_Characters($this->service))
+            ->set_next(new PWP_Validate_Term_Translation_Data($this->service))
+            ->set_next(new PWP_Validate_Term_New_Slug_Unique($this->service))
+            ->set_next(new PWP_Validate_Term_New_Slug_Characters($this->service));
     }
 
-    final public function do_action(): PWP_I_Response
+    final public function do_action(): PWP_I_Response_Component
     {
-        $response = $this->validate_data();
-        if (!$response->is_success()) {
-            return $response;
+        $notification = new PWP_Notification();
+        if (!$this->validate_data($notification)) {
+            return $notification;
         }
 
         $originalTerm = $this->service->get_item_by_slug($this->slug);
@@ -63,15 +64,20 @@ class PWP_Update_Term_Command implements PWP_I_Command
         $this->configure_translation_table($updatedTerm);
         $this->configure_seo_data($updatedTerm);
 
-        return PWP_Response::success(
+        return new PWP_Success_Notice(
+            "update successful",
             "{$this->service->get_taxonomy_name()} with slug {$this->slug} has been successfully updated",
             (array)$updatedTerm->data
         );
     }
 
-    final public function undo_action(): PWP_I_Response
+    final public function undo_action(): PWP_I_Response_Component
     {
-        throw new PWP_Not_Implemented_Exception(__METHOD__);
+        $notification = new PWP_Notification();
+        return $notification->add_error(
+            "method not implemented",
+            "method " . __METHOD__ . " not implemented"
+        );
     }
 
     protected function update_term(WP_Term $original): \WP_TERM
@@ -109,9 +115,9 @@ class PWP_Update_Term_Command implements PWP_I_Command
         }
     }
 
-    protected function validate_data(): PWP_I_Response
+    protected function validate_data(PWP_I_Notification $notification): bool
     {
-        return $this->handler->handle($this->service, $this->data);
+        return $this->handler->handle($this->data, $notification);
     }
 
     final protected function get_parent(WP_Term $original): int

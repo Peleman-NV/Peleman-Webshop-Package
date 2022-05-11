@@ -11,15 +11,13 @@ use PWP\includes\handlers\commands\PWP_Category_Command_Factory;
 use PWP\includes\utilities\response\PWP_Response;
 use PWP\includes\wrappers\PWP_Term_Data;
 use PWP\includes\handlers\commands\PWP_I_Command;
-use PWP\includes\utilities\response\PWP_Error_Response;
+use PWP\includes\utilities\response\PWP_Error_Notice_Response;
 
 class PWP_Categories_BATCH_Endpoint extends PWP_Abstract_BATCH_Endpoint
 {
-
     private const BATCH_ITEM_CAP = 200;
+
     /**
-     * Undocumented variable
-     *
      * @var PWP_I_Command[]
      */
     private array $commands;
@@ -124,7 +122,8 @@ class PWP_Categories_BATCH_Endpoint extends PWP_Abstract_BATCH_Endpoint
     private function execute_commands(PWP_Response $response): void
     {
         foreach ($this->commands as $command) {
-            $response->add_response($command->do_action());
+            $notification = $command->do_action();
+            $response->add_response($notification);
         }
     }
 }

@@ -4,15 +4,18 @@ declare(strict_types=1);
 
 namespace PWP\includes\utilities\response;
 
-class PWP_Response implements PWP_I_Response
+use PWP\includes\utilities\notification\PWP_I_Notification;
+
+class PWP_Response implements PWP_I_Response, PWP_I_Response_Component
 {
-    private bool $success;
     protected string $message;
     private array $data;
+    private int $httpCode;
     /**
-     * @var PWP_I_Response[]
+     * @var PWP_I_Response_Component[]
      */
     private array $components;
+
 
     public function __construct(string $message, bool $success = true, array $additionalData = [])
     {
@@ -22,10 +25,14 @@ class PWP_Response implements PWP_I_Response
         $this->components = array();
     }
 
-    public function add_response(PWP_I_Response $response): void
+    public function add_response(PWP_I_Response_Component $response): void
     {
         $this->components[] = $response;
-        $this->success = $response->is_success();
+    }
+
+    public function get_http_code(): int
+    {
+        return $this->httpCode;
     }
 
     public function get_data(): array
@@ -50,11 +57,6 @@ class PWP_Response implements PWP_I_Response
         }
 
         return $response;
-    }
-
-    public function is_success(): bool
-    {
-        return $this->success;
     }
 
     public static function success(string $message, array $additionalData = []): self

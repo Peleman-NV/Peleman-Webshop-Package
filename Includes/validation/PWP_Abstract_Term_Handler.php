@@ -5,17 +5,18 @@ declare(strict_types=1);
 namespace PWP\includes\validation;
 
 use PWP\includes\handlers\services\PWP_Term_SVC;
-use PWP\includes\utilities\response\PWP_I_Response;
-use PWP\includes\utilities\response\PWP_Response;
+use PWP\includes\utilities\notification\PWP_I_Notification;
 use PWP\includes\wrappers\PWP_Term_Data;
 
 abstract class PWP_Abstract_Term_Handler
 {
     private ?PWP_Abstract_Term_Handler $next;
+    protected PWP_Term_SVC $service;
 
-    public function __construct()
+    public function __construct(PWP_Term_SVC $service)
     {
         $this->next = null;
+        $this->service = $service;
     }
 
     /**
@@ -30,12 +31,12 @@ abstract class PWP_Abstract_Term_Handler
         return $this->next;
     }
 
-    abstract public function handle(PWP_Term_SVC $service, PWP_Term_Data $request): PWP_I_Response;
+    abstract public function handle(PWP_Term_Data $request, PWP_I_Notification $notification): bool;
 
-    final protected function handle_next(PWP_Term_SVC $service, PWP_Term_Data $request): PWP_I_Response
+    final protected function handle_next(PWP_Term_Data $request, PWP_I_Notification $notification): bool
     {
         return is_null($this->next)
-            ? PWP_Response::success("validation chain complete")
-            : $this->next->handle($service, $request);
+            ? $notification->is_success()
+            : $this->next->handle($request, $notification);
     }
 }

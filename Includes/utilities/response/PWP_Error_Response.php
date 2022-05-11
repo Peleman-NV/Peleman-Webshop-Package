@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PWP\includes\utilities\response;
 
-class PWP_Error_Response extends PWP_Response
+class PWP_Error_Notice_Response extends PWP_Response
 {
     private string $message;
 
@@ -24,7 +24,7 @@ class PWP_Error_Response extends PWP_Response
         $this->file = $exception->getFile();
         $this->line = $exception->getLine();
 
-        $this->previous = new PWP_Error_Response($this->exceptionMessage, $exception->getPrevious());
+        $this->previous = new PWP_Error_Notice_Response($this->exceptionMessage, $exception->getPrevious());
     }
     public function to_array(): array
     {
