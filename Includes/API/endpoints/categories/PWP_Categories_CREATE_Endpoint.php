@@ -52,7 +52,7 @@ class PWP_Categories_CREATE_Endpoint extends PWP_Abstract_CREATE_Endpoint
             'id of the parent category, if applicable. will precede the parent_slug if present'
         );
         $schema->add_string_property(
-            'parent_slug',
+            'parent',
             'slug of the parent category, if applicable. will supercede the parent_id if present'
         );
         $schema->add_string_property(

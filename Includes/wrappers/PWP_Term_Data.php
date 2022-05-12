@@ -65,21 +65,21 @@ class PWP_Term_Data extends PWP_Component
 
     final public function get_parent_slug(): string
     {
-        return $this->data->parent_slug ?: '';
+        return $this->data->parent ?: '';
     }
 
     final public function get_parent_id(): int
     {
-        return (int)($this->data->parent ?: '');
+        return (int)($this->data->parent_id ?: '');
     }
 
     final public function set_parent(int $id): void
     {
-        $this->data->parent = $id;
+        $this->data->parent_id = $id;
     }
 
     final public function set_parent_slug(string $slug): void
     {
-        $this->data->parent_slug = $slug;
+        $this->data->parent = $slug;
     }
 }

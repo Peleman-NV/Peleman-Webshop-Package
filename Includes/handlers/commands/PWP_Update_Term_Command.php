@@ -9,12 +9,13 @@ use WP_Term;
 use PWP\includes\wrappers\PWP_Term_Data;
 use PWP\includes\handlers\services\PWP_Term_SVC;
 use PWP\includes\validation\PWP_Validation_Handler;
-use PWP\includes\utilities\notification\PWP_Success_Notice;
 use PWP\includes\validation\PWP_Abstract_Term_Handler;
 use PWP\includes\utilities\notification\PWP_Notification;
 use PWP\includes\exceptions\PWP_Not_Implemented_Exception;
 use PWP\includes\validation\PWP_Validate_Term_Slug_Exists;
 use PWP\includes\utilities\notification\PWP_I_Notification;
+use PWP\includes\utilities\notification\PWP_Success_Notice;
+use PWP\includes\validation\PWP_Validate_Term_Parent_Exists;
 use PWP\includes\utilities\response\PWP_I_Response_Component;
 use PWP\includes\validation\PWP_Validate_Term_New_Slug_Unique;
 use PWP\includes\validation\PWP_Validate_Term_Slug_Characters;
@@ -45,6 +46,7 @@ class PWP_Update_Term_Command implements PWP_I_Command
         $this->handler
             ->set_next(new PWP_Validate_Term_Slug_Exists($this->service))
             ->set_next(new PWP_Validate_Term_Slug_Characters($this->service))
+            ->set_next(new PWP_Validate_Term_Parent_Exists($this->service))
             ->set_next(new PWP_Validate_Term_Translation_Data($this->service))
             ->set_next(new PWP_Validate_Term_New_Slug_Unique($this->service))
             ->set_next(new PWP_Validate_Term_New_Slug_Characters($this->service));
@@ -52,6 +54,8 @@ class PWP_Update_Term_Command implements PWP_I_Command
 
     final public function do_action(): PWP_I_Response_Component
     {
+        echo $this->data->get_parent_slug();
+        echo 'hello';
         $notification = new PWP_Notification();
         if (!$this->validate_data($notification)) {
             return $notification;

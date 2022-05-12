@@ -35,33 +35,17 @@ class PWP_Categories_BATCH_Endpoint extends PWP_Abstract_BATCH_Endpoint
 
     final public function do_action(\WP_REST_Request $request): \WP_REST_Response
     {
-        $createOperations = (array)$request->get_json_params()['create'];
-        $updateOperations = (array)$request->get_json_params()['update'];
-        $deleteOperations = (array)$request->get_json_params()['delete'];
+        $schema = $this->get_arguments();
+        $request = $request->get_json_params();
 
-        $updateCanCreate = (bool)$request->get_json_params()['update_can_create'] ?: false;
-        $canChangeParent = (bool)$request->get_json_params()['can_change_parent'] ?: false;
+        rest_validate_value_from_schema($request, $schema);
+        $sanitized = rest_sanitize_value_from_schema($request, $schema);
 
-        $operations = count(array_merge($createOperations, $updateOperations, $deleteOperations));
-        if ($operations > self::BATCH_ITEM_CAP) {
-            return new \WP_REST_Response("batch request too large! maximum amount of permitted entries is " . self::BATCH_ITEM_CAP, 500);
+        if (!is_wp_error($sanitized)) {
+            $response = $this->handle_request($sanitized);
+            return new \WP_REST_Response($response->to_array());
         }
-
-        $response = new PWP_Response(
-            'batch',
-            true,
-            array(
-                'create operations' => count($createOperations),
-                'update operations' => count($updateOperations),
-                'delete operations' => count($deleteOperations),
-            )
-        );
-
-        $this->generate_commands($createOperations, $updateOperations, $deleteOperations, $updateCanCreate, $canChangeParent);
-        $this->execute_commands($response);
-
-        $response->add_response(PWP_Response::success("operation completed!"));
-        return new \WP_REST_Response($response->to_array());
+        return new \WP_REST_Response($sanitized->errors, 400);
     }
 
     final public function get_arguments(): array
@@ -89,6 +73,37 @@ class PWP_Categories_BATCH_Endpoint extends PWP_Abstract_BATCH_Endpoint
         );
 
         return $schema->to_array();
+    }
+
+    private function handle_request(array $request): PWP_Response
+    {
+        $createOperations = (array)$request['create'];
+        $updateOperations = (array)$request['update'];
+        $deleteOperations = (array)$request['delete'];
+
+        $updateCanCreate = (bool)$request['update_can_create'] ?: false;
+        $canChangeParent = (bool)$request['can_change_parent'] ?: false;
+
+        $operations = count(array_merge($createOperations, $updateOperations, $deleteOperations));
+        if ($operations > self::BATCH_ITEM_CAP) {
+            return new \WP_REST_Response("batch request too large! maximum amount of permitted entries is " . self::BATCH_ITEM_CAP, 500);
+        }
+
+        $response = new PWP_Response(
+            'batch',
+            true,
+            array(
+                'create operations' => count($createOperations),
+                'update operations' => count($updateOperations),
+                'delete operations' => count($deleteOperations),
+            )
+        );
+
+        $this->generate_commands($createOperations, $updateOperations, $deleteOperations, $updateCanCreate, $canChangeParent);
+        $this->execute_commands($response);
+
+        $response->add_response(PWP_Response::success("operation completed!"));
+        return $response;
     }
 
     private function generate_commands(array $createOps, array $updateOps, array $deleteOps, bool $updateCanCreate = false, bool $canChangeParent = false): void

@@ -14,6 +14,7 @@ use PWP\includes\utilities\notification\PWP_Notification;
 use PWP\includes\validation\PWP_Validate_Term_Slug_Unique;
 use PWP\includes\utilities\notification\PWP_I_Notification;
 use PWP\includes\utilities\response\PWP_I_Response_Component;
+use PWP\includes\validation\PWP_Validate_Term_Parent_Exists;
 use PWP\includes\validation\PWP_Validate_Term_Slug_Characters;
 use PWP\includes\validation\PWP_Validate_Term_Translation_Data;
 
@@ -36,6 +37,7 @@ class PWP_Create_Term_Command implements PWP_I_Command
         $this->handler = new PWP_Validate_Term_Slug_Unique($this->service);
         $this->handler
             ->set_next(new PWP_Validate_Term_Slug_Characters($this->service))
+            ->set_next(new PWP_Validate_Term_Parent_Exists($this->service))
             ->set_next(new PWP_Validate_Term_Translation_Data($this->service));
     }
 
