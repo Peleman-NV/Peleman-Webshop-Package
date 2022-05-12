@@ -54,8 +54,6 @@ class PWP_Update_Term_Command implements PWP_I_Command
 
     final public function do_action(): PWP_I_Response_Component
     {
-        echo $this->data->get_parent_slug();
-        echo 'hello';
         $notification = new PWP_Notification();
         if (!$this->validate_data($notification)) {
             return $notification;
