@@ -81,6 +81,7 @@ class PWP_Categories_BATCH_Endpoint extends PWP_Abstract_BATCH_Endpoint
         $updateOperations = (array)$request['update'];
         $deleteOperations = (array)$request['delete'];
 
+
         $updateCanCreate = (bool)$request['update_can_create'] ?: false;
         $canChangeParent = (bool)$request['can_change_parent'] ?: false;
 
