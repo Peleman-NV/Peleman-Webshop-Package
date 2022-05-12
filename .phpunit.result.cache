@@ -1,1 +1,1 @@
-{"version":1,"defects":[],"times":{"PWP\\Tests\\InitialTest::testBasicTestingOperation":0.004}}
+{"version":1,"defects":[],"times":{"PWP\\Tests\\InitialTest::testBasicTestingOperation":0.004,"PWP\\Tests\\InitialTest::testDataProvision with data set #0":0.001,"PWP\\Tests\\InitialTest::testDataProvision with data set #1":0,"PWP\\Tests\\InitialTest::testDataProvision with data set #2":0,"PWP\\Tests\\InitialTest::testDataProvision with data set #3":0}}

@@ -6,7 +6,7 @@
             "name": "category name",
             "slug": "unique_slug",
             "description": "description",
-            "parent_slug": "",
+            "parent": "",
             "english_slug": "",
             "language_code": "",
             "SEO": {
@@ -20,7 +20,7 @@
             "name": "category name",
             "slug": "unique_slug",
             "description": "description",
-            "parent_slug": "",
+            "parent": "",
             "english_slug": "",
             "language_code": "",
             "SEO": {
