@@ -7,7 +7,6 @@ namespace PWP\includes\validation;
 use PWP\includes\handlers\services\PWP_Term_SVC;
 use PWP\includes\wrappers\PWP_Term_Data;
 use PWP\includes\utilities\notification\PWP_I_Notification;
-use PWP\includes\utilities\response\PWP_Response;
 
 class PWP_Validate_Term_New_Slug_Characters extends PWP_Abstract_Term_Handler
 {
@@ -24,7 +23,10 @@ class PWP_Validate_Term_New_Slug_Characters extends PWP_Abstract_Term_Handler
         $slug = $request->get_new_slug();
 
         if (!is_null($slug) && !preg_match($this->expression, $slug)) {
-            $notification->add_error("invalid characters in slug", "Slug {$slug} not of valid format. can only have lowercase letters, numbers, dashes, and underscores");
+            $notification->add_error(
+                __("Invalid characters in slug", PWP_TEXT_DOMAIN),
+                "Slug {$slug} not of valid format. can only have lowercase letters, numbers, dashes, and underscores"
+            );
         }
         return
             $this->handle_next($request, $notification);

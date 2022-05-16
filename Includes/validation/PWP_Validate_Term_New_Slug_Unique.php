@@ -14,7 +14,10 @@ class PWP_Validate_Term_New_Slug_Unique extends PWP_Abstract_Term_Handler
         $slug = $request->get_new_slug();
 
         if (!is_null($slug) && $this->service->is_slug_in_use($slug)) {
-            $notification->add_error("slug exists", "{$slug} is already in use for a {$this->service->get_taxonomy_name()} term");
+            $notification->add_error(
+                __("Slug not unique", PWP_TEXT_DOMAIN),
+                "{$slug} is already in use for a {$this->service->get_taxonomy_name()} term"
+            );
         }
         return $this->handle_next($request, $notification);
     }

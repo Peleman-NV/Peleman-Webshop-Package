@@ -14,10 +14,16 @@ class PWP_Validate_Term_Translation_Data extends PWP_Abstract_Term_Handler
         if ($request->has_translation_data()) {
             $translationData = $request->get_translation_data();
             if (!$this->service->is_slug_in_use($translationData->get_english_slug())) {
-                $notification->add_error("translation original not found", "translation data for term with slug {$request->get_slug()} does not have a valid or existing english parent slug.");
+                $notification->add_error(
+                    __("Translation original not found", PWP_TEXT_DOMAIN),
+                    "Translation data for term with slug {$request->get_slug()} does not have a valid or existing english parent slug."
+                );
             }
             if (!$translationData->get_language_code()) {
-                $notification->add_error("language code missing", "translation data for term with slug {$request->get_slug()} lacks a language code");
+                $notification->add_error(
+                    __("Language code missing", PWP_TEXT_DOMAIN),
+                    "Translation data for term with slug {$request->get_slug()} lacks a language code"
+                );
             }
         }
 

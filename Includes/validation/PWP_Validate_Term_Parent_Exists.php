@@ -13,7 +13,10 @@ class PWP_Validate_Term_Parent_Exists extends PWP_Abstract_Term_Handler
     {
         $parentSlug = $request->get_parent_slug() ?: '';
         if (!empty($parentSlug) && !$this->service->is_slug_in_use($parentSlug)) {
-            $notification->add_error("parent term not found", "parent term {$this->service->get_taxonomy_name()} with slug {$parentSlug} does not exist");
+            $notification->add_error(
+                __("Parent term not found", PWP_TEXT_DOMAIN),
+                "Parent term {$this->service->get_taxonomy_name()} with slug {$parentSlug} does not exist"
+            );
         }
         return $this->handle_next($request, $notification);
     }

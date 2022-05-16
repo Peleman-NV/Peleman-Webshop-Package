@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace PWP\includes\validation;
 
 use PWP\includes\wrappers\PWP_Term_Data;
-use PWP\includes\utilities\response\PWP_Response;
 use PWP\includes\utilities\notification\PWP_I_Notification;
 
 class PWP_Validate_Term_Slug_Unique extends PWP_Abstract_Term_Handler
@@ -14,7 +13,10 @@ class PWP_Validate_Term_Slug_Unique extends PWP_Abstract_Term_Handler
     {
         $slug = $request->get_slug();
         if ($this->service->is_slug_in_use($slug)) {
-            $notification->add_error("slug not unique", "{$slug} is already in use for a {$this->service->get_taxonomy_name()} term");
+            $notification->add_error(
+                __("Slug not unique", PWP_TEXT_DOMAIN),
+                "{$slug} is already in use for a {$this->service->get_taxonomy_name()} term"
+            );
         }
         return $this->handle_next($request, $notification);
     }
