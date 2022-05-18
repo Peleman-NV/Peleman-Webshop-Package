@@ -7,7 +7,7 @@ namespace PWP\publicPage;
 use PWP\includes\editor\PWP_editor_client;
 use PWP\includes\hookables\PWP_I_Hookable_Component;
 use PWP\includes\loaders\PWP_Plugin_Loader;
-use PWP\includes\wrappers\PWP_File_Component;
+use PWP\includes\wrappers\PWP_File_Data;
 use WC_Product;
 
 class PWP_Public_Product_Page implements PWP_I_Hookable_Component
@@ -127,7 +127,7 @@ class PWP_Public_Product_Page implements PWP_I_Hookable_Component
          * 5) Generate success response with PDF details
          */
 
-        $file = new PWP_File_Component($_FILES['file']);
+        $file = new PWP_File_Data($_FILES['file']);
         var_dump($file);
     }
 }

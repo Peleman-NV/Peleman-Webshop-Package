@@ -25,7 +25,7 @@ class PWP_Validate_Term_New_Slug_Characters extends PWP_Abstract_Term_Handler
         if (!is_null($slug) && !preg_match($this->expression, $slug)) {
             $notification->add_error(
                 __("Invalid characters in slug", PWP_TEXT_DOMAIN),
-                "Slug {$slug} not of valid format. can only have lowercase letters, numbers, dashes, and underscores"
+                sprintf(__("Slug %s not of valid format. can only have lowercase letters, numbers, dashes, and underscores.", PWP_TEXT_DOMAIN), $slug)
             );
         }
         return

@@ -15,7 +15,11 @@ class PWP_Validate_Term_Slug_Exists extends PWP_Abstract_Term_Handler
         if (empty($slug) || !$this->service->is_slug_in_use($slug)) {
             $notification->add_error(
                 __("Term not found", PWP_TEXT_DOMAIN),
-                "term {$this->service->get_taxonomy_name()} with slug {$slug} does not exist"
+                sprintf(
+                    __("term %s with slug %s does not exist", PWP_TEXT_DOMAIN),
+                    $this->service->get_taxonomy_name(),
+                    $slug
+                )
             );
         }
         return $this->handle_next($request, $notification);
