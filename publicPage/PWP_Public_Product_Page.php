@@ -7,6 +7,7 @@ namespace PWP\publicPage;
 use PWP\includes\editor\PWP_editor_client;
 use PWP\includes\hookables\PWP_I_Hookable_Component;
 use PWP\includes\loaders\PWP_Plugin_Loader;
+use PWP\includes\wrappers\PWP_File_Component;
 use WC_Product;
 
 class PWP_Public_Product_Page implements PWP_I_Hookable_Component
@@ -21,6 +22,9 @@ class PWP_Public_Product_Page implements PWP_I_Hookable_Component
 
         $loader->add_ajax_action('ajax_redirect_to_editor', $this, 'ajax_redirect_to_editor');
         $loader->add_ajax_nopriv_action('ajax_redirect_to_editor', $this, 'ajax_redirect_to_editor');
+
+        $loader->add_ajax_action('ajax_upload_content', $this, 'ajax_upload_content');
+        $loader->add_ajax_nopriv_action('ajax_upload_content', $this, 'ajax_upload_content');
     }
 
     public function enqueue_styles(): void
@@ -37,6 +41,16 @@ class PWP_Public_Product_Page implements PWP_I_Hookable_Component
             array(
                 'ajax_url' => admin_url('admin-ajax.php'),
                 'nonce' => wp_create_nonce('pwp_add_to_cart_nonce')
+            )
+        );
+
+        wp_enqueue_script('pwp-ajax-upload', plugins_url('js/upload-content.js', __FILE__), array('jquery'), rand(0, 2000), true);
+        wp_localize_script(
+            'pwp-ajax-upload',
+            'ajax_upload_content_object',
+            array(
+                'ajax_url' => admin_url('admin-ajax.php'),
+                'nonce' => wp_create_nonce('pwp_upload_content_nonce')
             )
         );
     }
@@ -70,7 +84,7 @@ class PWP_Public_Product_Page implements PWP_I_Hookable_Component
 
     public function ajax_redirect_to_editor(): void
     {
-        $client = new PWP_editor_client('deveditor.peleman.com');
+        // $client = new PWP_editor_client('deveditor.peleman.com');
 
         $variant = wc_get_product((int)sanitize_text_field($_GET['variant']));
         $template_id = $variant->get_meta('template_id', true, 'view');
@@ -99,5 +113,21 @@ class PWP_Public_Product_Page implements PWP_I_Hookable_Component
             'destinationUrl' => $destination,
         ), 200);
         return;
+    }
+
+    public function ajax_upload_content_object(): void
+    {
+        /**
+         * //TODO: implement full functionality of PPI content uploader
+         * STEPS:
+         * 1) check ajax nonce
+         * 2) check if file upload is successful (should work with the error code from the $FILES global)
+         * 3) check if PDF is valid
+         * 4) Save PDF
+         * 5) Generate success response with PDF details
+         */
+
+        $file = new PWP_File_Component($_FILES['file']);
+        var_dump($file);
     }
 }
