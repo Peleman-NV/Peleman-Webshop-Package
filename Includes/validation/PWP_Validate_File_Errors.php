@@ -13,7 +13,7 @@ class PWP_Validate_File_Errors extends PWP_Abstract_File_Handler
     {
         if (!empty($file->get_error())) {
             $notification->add_error(
-                __("upload error", PWP_TEXT_DOMAIN),
+                __("file upload error", PWP_TEXT_DOMAIN),
                 $this->code_to_message($file->get_error())
             );
         }
