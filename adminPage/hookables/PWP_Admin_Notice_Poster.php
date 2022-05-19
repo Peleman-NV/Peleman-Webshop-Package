@@ -4,11 +4,10 @@ declare(strict_types=1);
 
 namespace PWP\adminPage\hookables;
 
-use PWP\includes\loaders\PWP_Plugin_Loader;
+use PWP\includes\hookables\PWP_Abstract_Action_Component;
 use PWP\includes\utilities\PWP_Admin_Notice;
-use PWP\includes\hookables\PWP_I_Hookable_Component;
 
-class PWP_Admin_Notice_Poster implements PWP_I_Hookable_Component
+class PWP_Admin_Notice_Poster extends PWP_Abstract_Action_Component
 {
     /**
      * @var PWP_Admin_notice[]
@@ -18,11 +17,15 @@ class PWP_Admin_Notice_Poster implements PWP_I_Hookable_Component
     public function __construct()
     {
         $this->notices = array();
+        parent::__construct('admin_notices');
     }
 
-    public function register_hooks(PWP_Plugin_Loader $loader): void
+    public function action_callback(...$args): void
     {
-        $loader->add_action('admin_notices', $this, 'display_notices');
+        foreach ($this->notices as $notice) {
+            printf($notice->get_content());
+        }
+        $this->clear_notices();
     }
 
     private function add_admin_notice(PWP_Admin_Notice $notice): void
@@ -48,14 +51,6 @@ class PWP_Admin_Notice_Poster implements PWP_I_Hookable_Component
     public function new_success_notice(string $content, bool $dismissible = false): void
     {
         $this->add_admin_notice(PWP_Admin_Notice::new_success_notice($content, $dismissible));
-    }
-
-    public function display_notices(): void
-    {
-        foreach ($this->notices as $notice) {
-            printf($notice->get_content());
-        }
-        $this->clear_notices();
     }
 
     private function clear_notices(): void

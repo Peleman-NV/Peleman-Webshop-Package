@@ -12,9 +12,10 @@ use PWP\includes\handlers\commands\PWP_Category_Command_Factory;
 
 class PWP_Categories_READ_Endpoint extends PWP_Abstract_READ_Endpoint
 {
-    public function __construct(string $path, PWP_I_Api_Authenticator $authenticator)
+    public function __construct(string $namespace, string $path, PWP_I_API_Authenticator $authenticator)
     {
         parent::__construct(
+            $namespace,
             $path,
             'product category',
             $this->authenticator = $authenticator

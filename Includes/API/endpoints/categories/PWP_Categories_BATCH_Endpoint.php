@@ -7,10 +7,10 @@ namespace PWP\includes\API\endpoints\categories;
 use PWP\includes\wrappers\PWP_Term_Data;
 use PWP\includes\handlers\commands\PWP_I_Command;
 use PWP\includes\utilities\response\PWP_Response;
-use PWP\includes\authentication\PWP_Authenticator;
 use PWP\includes\utilities\schemas\PWP_Schema_Factory;
 use PWP\includes\utilities\schemas\PWP_Argument_Schema;
 use PWP\includes\API\endpoints\PWP_Abstract_BATCH_Endpoint;
+use PWP\includes\authentication\PWP_I_Api_Authenticator;
 use PWP\includes\handlers\commands\PWP_Category_Command_Factory;
 
 class PWP_Categories_BATCH_Endpoint extends PWP_Abstract_BATCH_Endpoint
@@ -22,9 +22,10 @@ class PWP_Categories_BATCH_Endpoint extends PWP_Abstract_BATCH_Endpoint
      */
     private array $commands;
 
-    public function __construct(string $path, PWP_Authenticator $authenticator)
+    public function __construct(string $namespace, string $path, PWP_I_Api_Authenticator $authenticator)
     {
         parent::__construct(
+            $namespace,
             $path . "/batch",
             'product category',
             $this->authenticator = $authenticator

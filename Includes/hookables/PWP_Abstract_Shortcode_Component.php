@@ -27,5 +27,5 @@ abstract class PWP_Abstract_Shortcode_Component implements PWP_I_Hookable_Compon
         );
     }
 
-    public abstract function shortcode_callback(...$args);
+    public abstract function shortcode_callback(...$args): void;
 }

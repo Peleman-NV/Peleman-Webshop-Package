@@ -40,7 +40,6 @@ abstract class PWP_Abstract_Ajax_Component implements PWP_I_Hookable_Component
 
         $this->priority = $priority;
         $this->accepted_args = $accepted_args;
-        echo $this->jsFilePath;
     }
 
     final public function register_hooks(PWP_Plugin_Loader $loader): void

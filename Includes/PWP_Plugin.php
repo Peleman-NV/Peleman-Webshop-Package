@@ -20,11 +20,11 @@ defined('ABSPATH') || exit;
 class PWP_Plugin
 {
     use PWP_Hookable_Parent_Trait;
+
     private PWP_Plugin_Loader $loader;
     private string $version;
     private string $plugin_name;
     private PWP_Admin_Notice_Poster $noticePoster;
-
 
     private function __construct()
     {
@@ -34,7 +34,7 @@ class PWP_Plugin
         $this->loader = new PWP_Plugin_Loader();
         $this->noticePoster = new PWP_Admin_Notice_Poster();
 
-        if (!$this->check_requirements()) {
+        if (!$this->check_if_requirements_met()) {
             return;
         }
 
@@ -67,7 +67,7 @@ class PWP_Plugin
         $this->loader->register_hooks_to_wp();
     }
 
-    private function check_requirements(): bool
+    private function check_if_requirements_met(): bool
     {
         if (!\is_plugin_active('woocommerce/woocommerce.php')) {
             $this->noticePoster->new_warning_notice("{$this->plugin_name} needs Woocommerce to function properly!", true);

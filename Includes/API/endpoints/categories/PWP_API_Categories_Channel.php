@@ -30,16 +30,16 @@ class PWP_API_Categories_Channel extends PWP_Abstract_API_Channel
         //Testing Endpoint; to be removed when no longer relevant
         $this->add_endpoint(new PWP_Test_Endpoint($this->authenticator));
 
-        $this->add_endpoint(new PWP_Categories_BATCH_Endpoint($this->rest_base, $this->authenticator));
+        $this->add_endpoint(new PWP_Categories_BATCH_Endpoint($this->namespace, $this->rest_base, $this->authenticator));
 
-        $this->add_endpoint(new PWP_Categories_CREATE_Endpoint($this->rest_base, $this->authenticator));
+        $this->add_endpoint(new PWP_Categories_CREATE_Endpoint($this->namespace, $this->rest_base, $this->authenticator));
 
-        $this->add_endpoint(new PWP_Categories_READ_Endpoint($this->rest_base, $this->authenticator));
-        $this->add_endpoint(new PWP_Categories_FIND_Endpoint($this->rest_base, $this->authenticator));
+        $this->add_endpoint(new PWP_Categories_READ_Endpoint($this->namespace, $this->rest_base, $this->authenticator));
+        $this->add_endpoint(new PWP_Categories_FIND_Endpoint($this->namespace, $this->rest_base, $this->authenticator));
 
-        $this->add_endpoint(new PWP_Categories_UPDATE_Endpoint($this->rest_base, $this->authenticator));
+        $this->add_endpoint(new PWP_Categories_UPDATE_Endpoint($this->namespace, $this->rest_base, $this->authenticator));
 
-        $this->add_endpoint(new PWP_Categories_DELETE_Endpoint($this->rest_base, $this->authenticator));
+        $this->add_endpoint(new PWP_Categories_DELETE_Endpoint($this->namespace, $this->rest_base, $this->authenticator));
 
         // $this->add_endpoint(new PWP_Categories_UNPARENT_Endpoint($this->rest_base, $this->authenticator));
     }

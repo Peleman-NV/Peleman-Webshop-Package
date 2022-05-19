@@ -16,9 +16,10 @@ use PWP\includes\utilities\PWP_SitePress_Wrapper;
 
 class PWP_Categories_CREATE_Endpoint extends PWP_Abstract_CREATE_Endpoint
 {
-    public function __construct(string $path, PWP_I_Api_Authenticator $authenticator)
+    public function __construct(string $namespace, string $path, PWP_I_API_Authenticator $authenticator)
     {
         parent::__construct(
+            $namespace,
             $path,
             'product category',
             $this->authenticator = $authenticator

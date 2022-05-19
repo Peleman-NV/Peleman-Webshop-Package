@@ -13,12 +13,6 @@ use WP_REST_Request;
  */
 abstract class PWP_Abstract_BATCH_Endpoint extends PWP_Endpoint_Controller
 {
-
-    public function __construct(string $path, string $title, PWP_I_Api_Authenticator $authenticator)
-    {
-        parent::__construct($path, $title, $authenticator);
-    }
-
     public function authenticate(WP_REST_Request $request): bool
     {
         return $this->get_authenticator()->auth_batch_items($request);
