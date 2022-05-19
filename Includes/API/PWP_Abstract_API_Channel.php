@@ -32,7 +32,12 @@ class PWP_Abstract_API_Channel implements PWP_I_Hookable_Component
     final public function register_hooks(PWP_Plugin_Loader $loader): void
     {
         foreach ($this->endpoints as $endpoint) {
-            $loader->add_API_Endpoint($this->namespace, $endpoint);
+            $loader->add_API_Endpoint($this->definition->get_namespace(), $endpoint);
         }
+    }
+
+    final public function get_definition(): PWP_Channel_Definition
+    {
+        return $this->definition;
     }
 }

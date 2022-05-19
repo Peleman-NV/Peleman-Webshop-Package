@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace PWP\publicPage;
 
+use Imagick;
 use setasign\Fpdi\Fpdi;
 use PWP\includes\wrappers\PWP_File_Data;
 use PWP\includes\hookables\PWP_Abstract_Ajax_Component;
@@ -47,10 +48,58 @@ class pwp_upload_content extends PWP_Abstract_Ajax_Component
             return;
         }
 
-        $variant_id = sanitize_text_field($_POST['variant_id']);
+        $variantId = sanitize_text_field($_POST['variant_id']);
+
+        // page & dimension validation
+        $variant = $this->getVariantContentParameters($variantId);
+        if ($variant['min_pages'] != "" && $pages < $variant['min_pages']) {
+            $response['status'] = 'error';
+            $response['file']['pages'] = $pages;
+            $response['message'] = __("Your file has too few pages.", PPI_TEXT_DOMAIN);
+        }
+        if ($variant['max_pages'] != "" && $pages > $variant['max_pages']) {
+            $response['status'] = 'error';
+            $response['file']['pages'] = $pages;
+            $response['message'] = __("Your file has too many pages.", PPI_TEXT_DOMAIN);
+        }
+
+
+        $id = $this->generate_content_file_id($variantId);
+        $path = $this->save_file($id);
+        $this->generate_thumbnail($path, $id);
     }
 
     public function callback_nopriv(): void
     {
+    }
+
+    private function generate_content_file_id(string $variantId): string
+    {
+        return sprintf(
+            "%u_%u_%s",
+            get_current_user_id(),
+            base64_encode((string)(microtime(true) * 1000)),
+            $variantId
+        );
+    }
+
+    private function save_file(string $contentFileId): string
+    {
+        mkdir(realpath(PPI_UPLOAD_DIR) . '/' . $contentFileId);
+        $newFilenameWithPath = realpath(PPI_UPLOAD_DIR) . '/' . $contentFileId . '/content.pdf';
+        move_uploaded_file($_FILES['file']['tmp_name'], $newFilenameWithPath);
+        return realpath($newFilenameWithPath);
+    }
+
+    private function generate_thumbnail(string $filePath, string $contentFileId): void
+    {
+        $imagick = new Imagick();
+        $imagick->readImage($filePath . '[0]');
+        $imagick->setImageFormat('jpg');
+        $thumbnailWithPath = realpath(PPI_THUMBNAIL_DIR) . '/' . $contentFileId . '.jpg';
+        $imagick->setImageAlphaChannel(Imagick::ALPHACHANNEL_DEACTIVATE);
+        $imagick->setCompressionQuality(25);
+        $imagick->scaleImage(150, 0);
+        $imagick->writeImage($thumbnailWithPath);
     }
 }

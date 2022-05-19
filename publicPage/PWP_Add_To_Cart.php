@@ -26,6 +26,7 @@ class pwp_add_to_cart extends PWP_Abstract_Ajax_Component
         $template_id = $variant->get_meta('template_id', true, 'view');
         $variant_id = $variant->get_meta('variant_code', true, 'view');
 
+        //TODO: better validation. check if these actually exist in the database
         $templateIsValid = str_contains($template_id, 'tpl');
         $variantIsValid = str_contains($variant_id, 'var');
 

@@ -6,21 +6,17 @@ namespace PWP\includes\API\endpoints;
 
 use WP_REST_Request;
 use WP_REST_Response;
-use PWP\includes\API\endpoints\PWP_EndpointController;
+
 use PWP\includes\authentication\PWP_I_Api_Authenticator;
-use PWP\includes\exceptions\PWP_API_Exception;
-use PWP\includes\handlers\services\PWP_Term_SVC;
-use PWP\includes\validation\PWP_Validate_Throw_Exception;
-use PWP\includes\wrappers\PWP_Term_Data;
-use WCML\MultiCurrency\ExchangeRateServices\Service;
 
 defined('ABSPATH') || die;
 
 class PWP_Test_Endpoint extends PWP_Endpoint_Controller
 {
-    public function __construct(PWP_I_Api_Authenticator $authenticator)
+    public function __construct(string $namespace, PWP_I_Api_Authenticator $authenticator)
     {
         parent::__construct(
+            $namespace,
             '/test',
             'test',
             $this->authenticator = $authenticator
