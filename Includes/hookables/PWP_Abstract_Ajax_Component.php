@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PWP\includes;
+namespace PWP\includes\hookables;
 
 use PWP\includes\loaders\PWP_Plugin_Loader;
 use PWP\includes\hookables\PWP_I_Hookable_Component;
@@ -10,10 +10,13 @@ use PWP\includes\hookables\PWP_I_Hookable_Component;
 abstract class PWP_Abstract_Ajax_Component implements PWP_I_Hookable_Component
 {
 
-    protected string $nonceName;
-    protected string $scriptHandle;
-    protected string $objectName;
-    protected string $jsFilePath;
+    private string $nonceName;
+    private string $scriptHandle;
+    private string $objectName;
+    private string $jsFilePath;
+
+    private int $priority;
+    private int $accepted_args;
 
     private const CALLBACK = 'callback';
     private const CALLBACK_NOPRIV = 'callback_nopriv';
@@ -25,13 +28,18 @@ abstract class PWP_Abstract_Ajax_Component implements PWP_I_Hookable_Component
      * @param string $handle script handle to which data will be attached.
      * @param string $objectName name for the Javascript object that is to be passed directly.
      * @param string $jsFilePath path of the Javascript file relative to the component file location.
+     * @param integer $priority when executing, the priority of this hook. default `10`
+     * @param integer $accepted_args amount of arguments this hook accepts. default `1`
      */
-    public function __construct(string $nonceName, string $handle, string $objectName, string $jsFilePath)
+    public function __construct(string $nonceName, string $handle, string $objectName, string $jsFilePath, int $priority = 10, int $accepted_args = 1)
     {
         $this->nonceName = $nonceName;
         $this->scriptHandle = $handle;
         $this->objectName = $objectName;
         $this->jsFilePath = $jsFilePath;
+
+        $this->priority = $priority;
+        $this->accepted_args = $accepted_args;
         echo $this->jsFilePath;
     }
 
@@ -39,15 +47,20 @@ abstract class PWP_Abstract_Ajax_Component implements PWP_I_Hookable_Component
     {
         $loader->add_action('wp_enqueue_scripts', $this, 'enqueue_ajax', 8);
 
-        $loader->add_ajax_action(
-            $this->objectName,
+        $loader->add_action(
+            "wp_ajax_{$this->objectName}",
             $this,
-            self::CALLBACK
+            self::CALLBACK,
+            $this->priority,
+            $this->accepted_args
         );
-        $loader->add_ajax_nopriv_action(
-            $this->objectName,
+
+        $loader->add_action(
+            "wp_ajax_nopriv_{$this->objectName}",
             $this,
-            self::CALLBACK_NOPRIV
+            self::CALLBACK_NOPRIV,
+            $this->priority,
+            $this->accepted_args
         );
     }
 

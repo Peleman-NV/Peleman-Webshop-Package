@@ -6,7 +6,7 @@ namespace PWP\publicPage;
 
 use setasign\Fpdi\Fpdi;
 use PWP\includes\wrappers\PWP_File_Data;
-use PWP\includes\PWP_Abstract_Ajax_Component;
+use PWP\includes\hookables\PWP_Abstract_Ajax_Component;
 
 class pwp_upload_content extends PWP_Abstract_Ajax_Component
 {

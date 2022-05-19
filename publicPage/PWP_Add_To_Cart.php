@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PWP\publicPage;
 
-use PWP\includes\PWP_Abstract_Ajax_Component;
+use PWP\includes\hookables\PWP_Abstract_Ajax_Component;
 
 class pwp_add_to_cart extends PWP_Abstract_Ajax_Component
 {
