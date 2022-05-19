@@ -17,7 +17,7 @@ if (!function_exists('is_plugin_active')) {
 
 defined('ABSPATH') || exit;
 
-class PWP_Plugin
+class PWP_Plugin implements PWP_I_Hookable_Component
 {
     use PWP_Hookable_Parent_Trait;
 
@@ -42,27 +42,26 @@ class PWP_Plugin
 
             /*  ADD ADMIN MENU HOOKABLES HERE */
 
-            $this->add_child_hookable($this->noticePoster);
+            $this->add_hookable($this->noticePoster);
         }
 
         /*  ADD PUBLIC HOOKABLES HERE */
 
-        $this->add_child_hookable(new PWP_Public_Product_Page());
-
-        $this->add_child_hookable(new PWP_API_Plugin('pwp/v1'));
+        $this->add_hookable(new PWP_Public_Product_Page());
+        $this->add_hookable(new PWP_API_Plugin('pwp/v1'));
 
         /* REGISTER CHILD HOOKS WITH LOADER */
-        $this->register_child_hooks($this->loader);
+        $this->register_hooks($this->loader);
     }
 
     final public static function run()
     {
         $instance = new PWP_Plugin();
-        $instance->register_hookables();
+        $instance->register_components();
         do_action('PWP_plugin_loaded');
     }
 
-    private function register_hookables()
+    private function register_components()
     {
         $this->loader->register_hooks_to_wp();
     }

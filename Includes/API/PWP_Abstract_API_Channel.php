@@ -6,7 +6,6 @@ namespace PWP\includes\API;
 
 use PWP\includes\loaders\PWP_Plugin_Loader;
 use PWP\includes\API\endpoints\PWP_I_Endpoint;
-use PWP\includes\authentication\PWP_Authenticator;
 use PWP\includes\hookables\PWP_I_Hookable_Component;
 use PWP\includes\authentication\PWP_I_Api_Authenticator;
 

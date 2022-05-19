@@ -21,7 +21,7 @@ trait PWP_Hookable_Parent_Trait
         $this->hookables = array();
     }
 
-    public function add_child_hookable(PWP_I_Hookable_Component $hookable): void
+    public function add_hookable(PWP_I_Hookable_Component $hookable): void
     {
         $this->hookables[] = $hookable;
     }
@@ -30,7 +30,7 @@ trait PWP_Hookable_Parent_Trait
     {
         unset($this->hookables[$hookable]);
     }
-    public function register_child_hooks(PWP_Plugin_Loader $loader): void
+    public function register_hooks(PWP_Plugin_Loader $loader): void
     {
         foreach ($this->hookables as $hookable) {
             $hookable->register_hooks($loader);

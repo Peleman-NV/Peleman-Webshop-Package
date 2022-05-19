@@ -7,7 +7,6 @@ namespace PWP\includes\API\endpoints\categories;
 use PWP\includes\API\PWP_Abstract_API_Channel;
 use PWP\includes\API\endpoints\PWP_I_Endpoint;
 use PWP\includes\API\endpoints\PWP_Test_Endpoint;
-use PWP\includes\API\PWP_Channel_Definition;
 use PWP\includes\authentication\PWP_Authenticator;
 use PWP\includes\authentication\PWP_I_Api_Authenticator;
 
