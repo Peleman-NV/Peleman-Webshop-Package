@@ -4,55 +4,29 @@ declare(strict_types=1);
 
 namespace PWP\publicPage;
 
-use PWP\includes\editor\PWP_editor_client;
-use PWP\includes\hookables\PWP_I_Hookable_Component;
-use PWP\includes\loaders\PWP_Plugin_Loader;
-use PWP\includes\wrappers\PWP_File_Data;
 use WC_Product;
+use setasign\Fpdi\Tfpdf\Fpdi;
+use PWP\includes\wrappers\PWP_File_Data;
+use PWP\includes\loaders\PWP_Plugin_Loader;
+use PWP\includes\hookables\PWP_I_Hookable_Component;
+use PWP\includes\traits\PWP_Hookable_Parent_Trait;
 
 class PWP_Public_Product_Page implements PWP_I_Hookable_Component
 {
+    use PWP_Hookable_Parent_Trait;
+
     public function register_hooks(PWP_Plugin_Loader $loader): void
     {
-        $loader->add_action('wp_enqueue_scripts', $this, 'enqueue_styles');
+        $loader->add_action('wp_enqueue_styles', $this, 'enqueue_styles');
         $loader->add_action('wp_enqueue_scripts', $this, 'enqueue_ajax', 8);
 
         $loader->add_filter('woocommerce_product_add_to_cart_text', $this, 'change_add_to_cart_text_for_archive');
         $loader->add_filter('woocommerce_product_single_add_to_cart_text', $this, 'change_add_to_cart_text_for_product');
 
-        $loader->add_ajax_action('ajax_redirect_to_editor', $this, 'ajax_redirect_to_editor');
-        $loader->add_ajax_nopriv_action('ajax_redirect_to_editor', $this, 'ajax_redirect_to_editor');
+        $this->add_child_hookable(new pwp_upload_content());
+        $this->add_child_hookable(new pwp_add_to_cart());
 
-        $loader->add_ajax_action('ajax_upload_content', $this, 'ajax_upload_content');
-        $loader->add_ajax_nopriv_action('ajax_upload_content', $this, 'ajax_upload_content');
-    }
-
-    public function enqueue_styles(): void
-    {
-        //enqueue CSS and JS scripts
-    }
-
-    public function enqueue_ajax(): void
-    {
-        wp_enqueue_script('pwp-ajax-add-to-cart', plugins_url('js/add-to-cart.js', __FILE__), array('jquery'), rand(0, 2000), true);
-        wp_localize_script(
-            'pwp-ajax-add-to-cart',
-            'ajax_redirect_to_editor_object',
-            array(
-                'ajax_url' => admin_url('admin-ajax.php'),
-                'nonce' => wp_create_nonce('pwp_add_to_cart_nonce')
-            )
-        );
-
-        wp_enqueue_script('pwp-ajax-upload', plugins_url('js/upload-content.js', __FILE__), array('jquery'), rand(0, 2000), true);
-        wp_localize_script(
-            'pwp-ajax-upload',
-            'ajax_upload_content_object',
-            array(
-                'ajax_url' => admin_url('admin-ajax.php'),
-                'nonce' => wp_create_nonce('pwp_upload_content_nonce')
-            )
-        );
+        $this->register_child_hooks($loader);
     }
 
     public function change_add_to_cart_text_for_product(string $defaultText): string
@@ -80,54 +54,5 @@ class PWP_Public_Product_Page implements PWP_I_Hookable_Component
         }
 
         return $defaultText;
-    }
-
-    public function ajax_redirect_to_editor(): void
-    {
-        // $client = new PWP_editor_client('deveditor.peleman.com');
-
-        $variant = wc_get_product((int)sanitize_text_field($_GET['variant']));
-        $template_id = $variant->get_meta('template_id', true, 'view');
-        $variant_id = $variant->get_meta('variant_code', true, 'view');
-
-        $templateIsValid = str_contains($template_id, 'tpl');
-        $variantIsValid = str_contains($variant_id, 'var');
-
-        $content_file_id = sanitize_text_field($_GET['content']);
-
-        if (!$templateIsValid || !$variantIsValid) {
-            wp_send_json(array(
-                'status' => 'error',
-                'message' => 'variant does not have proper template data!',
-            ));
-            return;
-        }
-        $language = 'en';
-
-        // $destination = $client->get_new_project_url($template_id, $variant_id, $language);
-        $destination = 'https://deveditor.peleman.com/?projecturl=pie/projects/625e933128f37/var133714.json';
-        wp_send_json(array(
-            'status' => 'success',
-            'message' => 'all is well',
-            'isCustomizable' => true,
-            'destinationUrl' => $destination,
-        ), 200);
-        return;
-    }
-
-    public function ajax_upload_content_object(): void
-    {
-        /**
-         * //TODO: implement full functionality of PPI content uploader
-         * STEPS:
-         * 1) check ajax nonce
-         * 2) check if file upload is successful (should work with the error code from the $FILES global)
-         * 3) check if PDF is valid
-         * 4) Save PDF
-         * 5) Generate success response with PDF details
-         */
-
-        $file = new PWP_File_Data($_FILES['file']);
-        var_dump($file);
     }
 }

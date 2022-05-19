@@ -15,15 +15,6 @@ class PWP_File_Data extends PWP_Component
     {
         return $this->data->type;
     }
-    /**
-     * not applicatble: full_path only available as of PHP 8.1.0.
-     *
-     * @return string
-     */
-    // public function get_full_path(): string
-    // {
-    //     return $this->data->full_path;
-    // }
 
     public function get_tmp_name(): string
     {

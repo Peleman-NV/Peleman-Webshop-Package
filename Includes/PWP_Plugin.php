@@ -8,6 +8,7 @@ use PWP\adminPage\hookables\PWP_Admin_Notice_Poster;
 use PWP\includes\API\PWP_API_Plugin;
 use PWP\includes\hookables\PWP_I_Hookable_Component;
 use PWP\includes\loaders\PWP_Plugin_Loader;
+use PWP\includes\traits\PWP_Hookable_Parent_Trait;
 use PWP\publicPage\PWP_Public_Product_Page;
 
 if (!function_exists('is_plugin_active')) {
@@ -18,12 +19,12 @@ defined('ABSPATH') || exit;
 
 class PWP_Plugin
 {
+    use PWP_Hookable_Parent_Trait;
     private PWP_Plugin_Loader $loader;
     private string $version;
     private string $plugin_name;
     private PWP_Admin_Notice_Poster $noticePoster;
 
-    private array $components;
 
     private function __construct()
     {
@@ -31,7 +32,6 @@ class PWP_Plugin
         $this->version = defined('PWP_VERSION') ? PWP_VERSION : '1.0.0';
         $this->plugin_name = 'Peleman Webshop Package';
         $this->loader = new PWP_Plugin_Loader();
-        $this->components = array();
         $this->noticePoster = new PWP_Admin_Notice_Poster();
 
         if (!$this->check_requirements()) {
@@ -42,29 +42,24 @@ class PWP_Plugin
 
             /*  ADD ADMIN MENU HOOKABLES HERE */
 
-            $this->add_hookable($this->noticePoster);
+            $this->add_child_hookable($this->noticePoster);
         }
 
         /*  ADD PUBLIC HOOKABLES HERE */
 
-        // $this->add_hookable(new PWP_Public_Product_Page());
+        $this->add_child_hookable(new PWP_Public_Product_Page());
 
-        $this->add_hookable(new PWP_API_Plugin('pwp/v1'));
+        $this->add_child_hookable(new PWP_API_Plugin('pwp/v1'));
+
+        /* REGISTER CHILD HOOKS WITH LOADER */
+        $this->register_child_hooks($this->loader);
     }
 
     final public static function run()
     {
         $instance = new PWP_Plugin();
-
         $instance->register_hookables();
-
         do_action('PWP_plugin_loaded');
-    }
-
-    private function add_hookable(PWP_I_Hookable_Component $component): void
-    {
-        $this->components[] = $component;
-        $component->register_hooks($this->loader);
     }
 
     private function register_hookables()
