@@ -17,9 +17,6 @@ class PWP_Public_Product_Page implements PWP_I_Hookable_Component
 
     public function register_hooks(PWP_Plugin_Loader $loader): void
     {
-        $loader->add_action('wp_enqueue_styles', $this, 'enqueue_styles');
-        $loader->add_action('wp_enqueue_scripts', $this, 'enqueue_ajax', 8);
-
         $loader->add_filter('woocommerce_product_add_to_cart_text', $this, 'change_add_to_cart_text_for_archive');
         $loader->add_filter('woocommerce_product_single_add_to_cart_text', $this, 'change_add_to_cart_text_for_product');
 

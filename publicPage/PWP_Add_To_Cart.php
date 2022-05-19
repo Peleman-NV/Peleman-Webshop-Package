@@ -18,7 +18,7 @@ class pwp_add_to_cart extends PWP_Abstract_Ajax_Component
         );
     }
 
-    public function execute(): void
+    public function callback(): void
     {
         // $client = new PWP_editor_client('deveditor.peleman.com');
 
@@ -51,8 +51,8 @@ class pwp_add_to_cart extends PWP_Abstract_Ajax_Component
         return;
     }
 
-    public function execute_nopriv(): void
+    public function callback_nopriv(): void
     {
-        $this->execute();
+        $this->callback();
     }
 }

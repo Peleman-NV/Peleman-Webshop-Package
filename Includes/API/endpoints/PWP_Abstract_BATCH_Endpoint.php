@@ -11,7 +11,7 @@ use WP_REST_Request;
  * abstract endpoint class for BATCH requests
  * allow a user to upload an array of data, and CREATE/UPDATE/DELETE multiple items in one call
  */
-abstract class PWP_Abstract_BATCH_Endpoint extends PWP_EndpointController
+abstract class PWP_Abstract_BATCH_Endpoint extends PWP_Endpoint_Controller
 {
 
     public function __construct(string $path, string $title, PWP_I_Api_Authenticator $authenticator)

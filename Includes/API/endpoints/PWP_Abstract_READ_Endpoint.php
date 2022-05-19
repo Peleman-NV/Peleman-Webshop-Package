@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace PWP\includes\API\endpoints;
 
-use PWP\includes\API\endpoints\PWP_EndpointController;
+use PWP\includes\API\endpoints\PWP_Endpoint_Controller;
 use PWP\includes\authentication\PWP_I_Api_Authenticator;
 
 /**
  * abstract endpoint class for GET requests without a parameter
  * will try to find all items that match the request GET parameters
  */
-abstract class PWP_Abstract_READ_Endpoint extends PWP_EndpointController
+abstract class PWP_Abstract_READ_Endpoint extends PWP_Endpoint_Controller
 {
 
     public function __construct(string $path, string $title, PWP_I_Api_Authenticator $authenticator)

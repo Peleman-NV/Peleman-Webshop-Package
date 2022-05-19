@@ -15,6 +15,9 @@ abstract class PWP_Abstract_Ajax_Component implements PWP_I_Hookable_Component
     protected string $objectName;
     protected string $jsFilePath;
 
+    private const CALLBACK = 'callback';
+    private const CALLBACK_NOPRIV = 'callback_nopriv';
+
     /**
      * Undocumented function
      *
@@ -36,13 +39,27 @@ abstract class PWP_Abstract_Ajax_Component implements PWP_I_Hookable_Component
     {
         $loader->add_action('wp_enqueue_scripts', $this, 'enqueue_ajax', 8);
 
-        $loader->add_ajax_action($this->objectName, $this, 'execute');
-        $loader->add_ajax_nopriv_action($this->objectName, $this, 'execute_nopriv');
+        $loader->add_ajax_action(
+            $this->objectName,
+            $this,
+            self::CALLBACK
+        );
+        $loader->add_ajax_nopriv_action(
+            $this->objectName,
+            $this,
+            self::CALLBACK_NOPRIV
+        );
     }
 
     final public function enqueue_ajax(): void
     {
-        wp_enqueue_script($this->scriptHandle, $this->jsFilePath, array('jquery'), rand(0, 2000), true);
+        wp_enqueue_script(
+            $this->scriptHandle,
+            $this->jsFilePath,
+            array('jquery'),
+            rand(0, 2000),
+            true
+        );
         wp_localize_script(
             $this->scriptHandle,
             $this->objectName,
@@ -58,12 +75,12 @@ abstract class PWP_Abstract_Ajax_Component implements PWP_I_Hookable_Component
      *
      * @return void
      */
-    public abstract function execute(): void;
+    public abstract function callback(): void;
 
     /**
      * functionality of the component for unauthenticated users
      *
      * @return void
      */
-    public abstract function execute_nopriv(): void;
+    public abstract function callback_nopriv(): void;
 }

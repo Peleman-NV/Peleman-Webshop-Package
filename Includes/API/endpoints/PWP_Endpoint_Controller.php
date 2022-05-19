@@ -6,7 +6,7 @@ namespace PWP\includes\API\endpoints;
 
 use PWP\includes\authentication\PWP_I_Api_Authenticator;
 
-abstract class PWP_EndpointController implements PWP_I_Endpoint
+abstract class PWP_Endpoint_Controller implements PWP_I_Endpoint
 {
     protected string $path;
     protected string $title;

@@ -20,7 +20,7 @@ class pwp_upload_content extends PWP_Abstract_Ajax_Component
         );
     }
 
-    public function execute(): void
+    public function callback(): void
     {
         /**
          * //TODO: implement full functionality of PPI content uploader
@@ -50,7 +50,7 @@ class pwp_upload_content extends PWP_Abstract_Ajax_Component
         $variant_id = sanitize_text_field($_POST['variant_id']);
     }
 
-    public function execute_nopriv(): void
+    public function callback_nopriv(): void
     {
     }
 }

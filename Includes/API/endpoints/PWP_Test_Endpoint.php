@@ -16,7 +16,7 @@ use WCML\MultiCurrency\ExchangeRateServices\Service;
 
 defined('ABSPATH') || die;
 
-class PWP_Test_Endpoint extends PWP_EndpointController
+class PWP_Test_Endpoint extends PWP_Endpoint_Controller
 {
     public function __construct(PWP_I_Api_Authenticator $authenticator)
     {

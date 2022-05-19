@@ -9,7 +9,7 @@ use PWP\includes\authentication\PWP_I_Api_Authenticator;
 /**
  * abstract endpoint class for POST requests
  */
-abstract class PWP_Abstract_CREATE_Endpoint extends PWP_EndpointController
+abstract class PWP_Abstract_CREATE_Endpoint extends PWP_Endpoint_Controller
 {
 
     public function __construct(string $path, string $title, PWP_I_Api_Authenticator $authenticator)
