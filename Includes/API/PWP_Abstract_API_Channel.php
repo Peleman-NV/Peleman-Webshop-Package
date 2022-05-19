@@ -15,15 +15,13 @@ use PWP\includes\authentication\PWP_I_Api_Authenticator;
  */
 class PWP_Abstract_API_Channel implements PWP_I_Hookable_Component
 {
+    protected PWP_Channel_Definition $definition;
     protected array $endpoints;
-    protected string $namespace;
-    protected string $rest_base;
     protected PWP_I_Api_Authenticator $authenticator;
 
-    public function __construct(string $namespace, string $rest_base, PWP_I_Api_Authenticator $authenticator)
+    public function __construct(string $namespace, string $title, string $rest_base, PWP_I_Api_Authenticator $authenticator)
     {
-        $this->namespace = $namespace;
-        $this->rest_base = $rest_base;
+        $this->definition = new PWP_Channel_Definition($namespace, $title, $rest_base);
         $this->authenticator = $authenticator;
     }
 

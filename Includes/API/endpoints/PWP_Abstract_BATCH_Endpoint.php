@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace PWP\includes\API\endpoints;
 
-use PWP\includes\authentication\PWP_I_Api_Authenticator;
 use WP_REST_Request;
 
 /**

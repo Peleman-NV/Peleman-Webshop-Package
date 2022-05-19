@@ -5,8 +5,6 @@ declare(strict_types=1);
 namespace PWP\includes\API\endpoints;
 
 use PWP\includes\API\endpoints\PWP_Endpoint_Controller;
-use PWP\includes\authentication\PWP_I_Api_Authenticator;
-
 /**
  * abstract endpoint class for GET requests WITHOUT a required parameter
  * will try to retrieve a singular result

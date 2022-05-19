@@ -4,23 +4,25 @@ declare(strict_types=1);
 
 namespace PWP\includes\API\endpoints\categories;
 
-use PWP\includes\API\endpoints\PWP_Abstract_FIND_Endpoint;
-use PWP\includes\authentication\PWP_I_Api_Authenticator;
-use PWP\includes\handlers\commands\PWP_Category_Command_Factory;
 use WP_REST_Response;
+use PWP\includes\API\PWP_Channel_Definition;
+use PWP\includes\authentication\PWP_I_Api_Authenticator;
+use PWP\includes\API\endpoints\PWP_Abstract_FIND_Endpoint;
+use PWP\includes\handlers\commands\PWP_Category_Command_Factory;
 
 class PWP_Categories_FIND_Endpoint extends PWP_Abstract_FIND_Endpoint
 {
 
-    public function __construct(string $namespace, string $path, PWP_I_API_Authenticator $authenticator)
+    public function __construct(PWP_Channel_Definition $channel, PWP_I_Api_Authenticator $authenticator)
     {
         parent::__construct(
-            $namespace,
-            $path .  "/(?P<slug>\w+)",
-            'product category',
-            $authenticator
+            $channel->get_namespace(),
+            $channel->get_route() .  "/(?P<slug>\w+)",
+            $channel->get_title(),
+            $this->authenticator = $authenticator
         );
     }
+    
 
     final public function do_action(\WP_REST_Request $request): \WP_REST_Response
     {

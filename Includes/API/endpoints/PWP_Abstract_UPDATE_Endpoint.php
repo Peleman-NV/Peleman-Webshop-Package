@@ -4,9 +4,6 @@ declare(strict_types=1);
 
 namespace PWP\includes\API\endpoints;
 
-use PWP\includes\authentication\PWP_I_Api_Authenticator;
-use PWP\includes\exceptions\PWP_Not_Implemented_Exception;
-
 /**
  * abstract endpoint class for PUT/PATCH requests
  * 

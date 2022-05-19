@@ -6,18 +6,19 @@ namespace PWP\includes\API\endpoints\categories;
 
 use WP_REST_Request;
 use WP_REST_Response;
+use PWP\includes\API\PWP_Channel_Definition;
 use PWP\includes\authentication\PWP_I_Api_Authenticator;
 use PWP\includes\API\endpoints\PWP_Abstract_READ_Endpoint;
 use PWP\includes\handlers\commands\PWP_Category_Command_Factory;
 
 class PWP_Categories_READ_Endpoint extends PWP_Abstract_READ_Endpoint
 {
-    public function __construct(string $namespace, string $path, PWP_I_API_Authenticator $authenticator)
+    public function __construct(PWP_Channel_Definition $channel, PWP_I_Api_Authenticator $authenticator)
     {
         parent::__construct(
-            $namespace,
-            $path,
-            'product category',
+            $channel->get_namespace(),
+            $channel->get_route(),
+            $channel->get_title(),
             $this->authenticator = $authenticator
         );
     }

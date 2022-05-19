@@ -10,6 +10,7 @@ use PWP\includes\utilities\response\PWP_Response;
 use PWP\includes\utilities\schemas\PWP_Schema_Factory;
 use PWP\includes\utilities\schemas\PWP_Argument_Schema;
 use PWP\includes\API\endpoints\PWP_Abstract_BATCH_Endpoint;
+use PWP\includes\API\PWP_Channel_Definition;
 use PWP\includes\authentication\PWP_I_Api_Authenticator;
 use PWP\includes\handlers\commands\PWP_Category_Command_Factory;
 
@@ -22,12 +23,12 @@ class PWP_Categories_BATCH_Endpoint extends PWP_Abstract_BATCH_Endpoint
      */
     private array $commands;
 
-    public function __construct(string $namespace, string $path, PWP_I_Api_Authenticator $authenticator)
+    public function __construct(PWP_Channel_Definition $channel, PWP_I_Api_Authenticator $authenticator)
     {
         parent::__construct(
-            $namespace,
-            $path . "/batch",
-            'product category',
+            $channel->get_namespace(),
+            $channel->get_route() . "/batch",
+            $channel->get_title(),
             $this->authenticator = $authenticator
         );
 
