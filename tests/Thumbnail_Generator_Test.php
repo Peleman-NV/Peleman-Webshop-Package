@@ -71,9 +71,8 @@ class Thumbnail_Generator_Test extends TestCase
         ?int $quality
     ): void {
         $generator = new PWP_Thumbnail_Generator_PNG(0);
-        $generator->generate($src, $dest, $fiairplaneme, $width, $height, $quality);
+        $filePath = $generator->generate($src, $dest, $fiairplaneme, $width, $height, $quality);
 
-        $filePath = $dest . '/' . $fiairplaneme . $generator->get_suffix();
         $this->assertFileExists($filePath);
 
         $img = imagecreatefrompng($filePath);
@@ -101,14 +100,22 @@ class Thumbnail_Generator_Test extends TestCase
         ?int $quality
     ): void {
         $generator = new PWP_Thumbnail_Generator_JPG();
-        $generator->generate($src, $dest, $fiairplaneme, $width, $height, $quality);
-
-        $filePath = $dest . '/' . $fiairplaneme . $generator->get_suffix();
-        $this->assertFileExists($filePath);
+        $filePath = $generator->generate($src, $dest, $fiairplaneme, $width, $height, $quality);
 
         $img = imagecreatefromjpeg($filePath);
         $this->assertEquals(imagesx($img), $width);
         // wp_delete_file($dest);
+    }
+    
+    public function faulty_data_provider(): array
+    {
+        $resourceFolder = WP_PLUGIN_DIR . '/Peleman-Webshop-Package/resources/';
+        return array(
+            array(
+                $resourceFolder . 'Frank.png',
+                $resourceFolder, 'Frank2', new PWP_Not_Found_Exception()
+            ),
+        );
     }
 
     /**
@@ -137,16 +144,5 @@ class Thumbnail_Generator_Test extends TestCase
         $this->expectException(get_class($expected));
         $generator = new PWP_Thumbnail_Generator_JPG(0);
         $image = $generator->generate($src, $dest, $name, 0, 50);
-    }
-
-    public function faulty_data_provider(): array
-    {
-        $resourceFolder = WP_PLUGIN_DIR . '/Peleman-Webshop-Package/resources/';
-        return array(
-            array(
-                $resourceFolder . 'Frank.png',
-                $resourceFolder, 'Frank2', new PWP_Not_Found_Exception()
-            ),
-        );
     }
 }

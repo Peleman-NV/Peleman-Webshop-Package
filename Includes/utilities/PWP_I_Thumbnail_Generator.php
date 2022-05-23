@@ -15,7 +15,7 @@ interface PWP_I_Thumbnail_Generator
      * @param integer $tgtWidth target width of the final thumbnail.
      * @param integer|null $tgtHeight target height of the final thumbnail. if left `null`, will retain the aspect ratio of the original.
      * @param integer|null $quality see constructor for details. if left `null`, will use the class's quality parameter.
-     *  @return void
+     *  @return string path to the final image
      */
-    public function generate(string $src, string $dest, string $name, int $tgtWidth, int $tgtHeight = null, int $quality = null): void;
+    public function generate(string $src, string $dest, string $name, int $tgtWidth, int $tgtHeight = null, int $quality = null): string;
 }

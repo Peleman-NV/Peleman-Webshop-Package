@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace PWP\publicPage;
 
-use Imagick;
 use setasign\Fpdi\Fpdi;
 use PWP\includes\wrappers\PWP_File_Data;
 use PWP\includes\hookables\PWP_Abstract_Ajax_Component;
+use PWP\includes\utilities\PWP_Thumbnail_Generator_JPG;
 
 class pwp_upload_content extends PWP_Abstract_Ajax_Component
 {
@@ -91,15 +91,9 @@ class pwp_upload_content extends PWP_Abstract_Ajax_Component
         return realpath($newFilenameWithPath);
     }
 
-    private function generate_thumbnail(string $filePath, string $filename): void
+    private function generate_thumbnail(string $filePath, string $filename): string
     {
-        $imagick = new Imagick();
-        $imagick->readImage($filePath . '[0]');
-        $imagick->setImageFormat('jpg');
-        $thumbnailWithPath = realpath(PPI_THUMBNAIL_DIR) . '/' . $filename . '.jpg';
-        $imagick->setImageAlphaChannel(Imagick::ALPHACHANNEL_DEACTIVATE);
-        $imagick->setCompressionQuality(25);
-        $imagick->scaleImage(150, 0);
-        $imagick->writeImage($thumbnailWithPath);
+        $generator = new PWP_Thumbnail_Generator_JPG(-1);
+        return $generator->generate($filePath, PWP_THUMBNAIL_DIR, $filename, 160);
     }
 }

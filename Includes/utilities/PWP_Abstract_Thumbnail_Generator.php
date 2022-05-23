@@ -20,7 +20,8 @@ abstract class PWP_Abstract_Thumbnail_Generator implements PWP_I_Thumbnail_Gener
     {
         $this->quality = min(100, max($quality, -1));
     }
-    public abstract function generate(string $src, string $dest, string $name, int $tgtWidth, int $tgtHeight = null, int $quality = null): void;
+    
+    public abstract function generate(string $src, string $dest, string $name, int $tgtWidth, int $tgtHeight = null, int $quality = null): string;
 
 
     /**

@@ -20,7 +20,7 @@ class PWP_Thumbnail_Generator_PNG extends PWP_Abstract_Thumbnail_Generator
         parent::__construct($quality);
     }
 
-    public function generate(string $src, string $dest, string $name, int $tgtWidth, ?int $tgtHeight = null, ?int $quality = null): void
+    public function generate(string $src, string $dest, string $name, int $tgtWidth, ?int $tgtHeight = null, ?int $quality = null): string
     {
         try {
             $thumbnail = $this->generate_thumbnail(
@@ -30,11 +30,14 @@ class PWP_Thumbnail_Generator_PNG extends PWP_Abstract_Thumbnail_Generator
             );
 
             imagesavealpha($thumbnail, false);
-
+            $path = $dest . '/' . $name . $this->suffix;
             $quality = !is_null($quality) ? $this->map_quality($quality) : $this->quality;
-            if (!imagepng($thumbnail, $dest . '/' . $name . $this->suffix, $quality)) {
+
+            if (!imagepng($thumbnail, $path, $quality)) {
                 throw new PWP_Invalid_Input_Exception('Image could not be made for unknown reasons');
             }
+
+            return $path;
         } catch (Throwable $e) {
             throw $e;
         }
