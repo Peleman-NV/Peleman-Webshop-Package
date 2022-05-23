@@ -10,9 +10,17 @@ use Throwable;
 
 class PWP_Thumbnail_Generator_PNG extends PWP_Abstract_Thumbnail_Generator
 {
-    public const SUFFIX = '.png';
+    protected string $suffix = '.png';
 
-    public function generate(string $src, string $dest, string $name, int $tgtWidth, int $tgtHeight = null, int $quality = null): void
+    public function __construct(int $quality = -1)
+    {
+        if ($quality >= 0) {
+            $quality = $this->map_quality($quality);
+        }
+        parent::__construct($quality);
+    }
+
+    public function generate(string $src, string $dest, string $name, int $tgtWidth, ?int $tgtHeight = null, ?int $quality = null): void
     {
         try {
             $thumbnail = $this->generate_thumbnail(
@@ -23,11 +31,17 @@ class PWP_Thumbnail_Generator_PNG extends PWP_Abstract_Thumbnail_Generator
 
             imagesavealpha($thumbnail, false);
 
-            if (!imagepng($thumbnail, $dest . '/' . $name . self::SUFFIX, $quality ?: $this->quality)) {
+            $quality = !is_null($quality) ? $this->map_quality($quality) : $this->quality;
+            if (!imagepng($thumbnail, $dest . '/' . $name . $this->suffix, $quality)) {
                 throw new PWP_Invalid_Input_Exception('Image could not be made for unknown reasons');
             }
         } catch (Throwable $e) {
             throw $e;
         }
+    }
+
+    private function map_quality(int $quality): int
+    {
+        return (int)round(self::map($quality, 0, 100, 0, 9), 0);
     }
 }

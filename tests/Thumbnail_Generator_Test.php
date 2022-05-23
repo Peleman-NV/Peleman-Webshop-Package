@@ -13,29 +13,49 @@ class Thumbnail_Generator_Test extends TestCase
 {
     public function test_class_construction(): void
     {
-        $generator = new PWP_Thumbnail_Generator_PNG(0);
+        $generator = new PWP_Thumbnail_Generator_PNG();
 
         $this->assertIsObject($generator, "outcome is not an object!");
     }
 
-    public function image_data_provider(): array
+    public function img_data_provider(): array
     {
         $resourceFolder = WP_PLUGIN_DIR . '/Peleman-Webshop-Package/resources/';
         return array(
             array(
-                $resourceFolder . 'lena.png',
-                $resourceFolder, 'bar_001', 64, null, null,
+                $resourceFolder . 'airplane.png',
+                $resourceFolder, 'bar_1', 64, null, null,
             ),
             array(
-                $resourceFolder . 'lena.jpg',
-                $resourceFolder, 'baz_001.png', 128, null, null,
+                $resourceFolder . 'airplane.jpg',
+                $resourceFolder, 'bar_2', 64, null, null,
+            ),
+            array(
+                $resourceFolder . 'airplane.png',
+                $resourceFolder, 'baz_Q00', 64, null, 0,
+            ),
+            array(
+                $resourceFolder . 'airplane.png',
+                $resourceFolder, 'baz_Q25', 64, null, 25,
+            ),
+            array(
+                $resourceFolder . 'airplane.png',
+                $resourceFolder, 'baz_Q50', 64, null, 50,
+            ),
+            array(
+                $resourceFolder . 'airplane.png',
+                $resourceFolder, 'baz_Q75', 64, null, 75,
+            ),
+            array(
+                $resourceFolder . 'airplane.png',
+                $resourceFolder, 'baz_Q100', 64, null, 100,
             ),
         );
     }
 
     /**
      * Undocumented function
-     * @dataProvider image_data_provider
+     * @dataProvider img_data_provider
      * @param string $sourceImg
      * 
      * @param string $destination
@@ -45,15 +65,15 @@ class Thumbnail_Generator_Test extends TestCase
     public function test_generate_png_thumbnail(
         string $src,
         string $dest,
-        string $filename,
+        string $fiairplaneme,
         int $width,
         ?int $height,
         ?int $quality
     ): void {
         $generator = new PWP_Thumbnail_Generator_PNG(0);
-        $generator->generate($src, $dest, $filename, $width, $height, $quality);
+        $generator->generate($src, $dest, $fiairplaneme, $width, $height, $quality);
 
-        $filePath = $dest . '/' . $filename . $generator::SUFFIX;
+        $filePath = $dest . '/' . $fiairplaneme . $generator->get_suffix();
         $this->assertFileExists($filePath);
 
         $img = imagecreatefrompng($filePath);
@@ -62,11 +82,11 @@ class Thumbnail_Generator_Test extends TestCase
     }
 
     /**
-     * @dataProvider image_data_provider
+     * @dataProvider img_data_provider
      *
      * @param string $src
      * @param string $dest
-     * @param string $filename
+     * @param string $fiairplaneme
      * @param integer $width
      * @param integer|null $height
      * @param integer|null $quality
@@ -75,15 +95,15 @@ class Thumbnail_Generator_Test extends TestCase
     public function test_generate_jpeg_thumbnail(
         string $src,
         string $dest,
-        string $filename,
+        string $fiairplaneme,
         int $width,
         ?int $height,
         ?int $quality
     ): void {
-        $generator = new PWP_Thumbnail_Generator_JPG(0);
-        $generator->generate($src, $dest, $filename, $width, $height, $quality);
+        $generator = new PWP_Thumbnail_Generator_JPG();
+        $generator->generate($src, $dest, $fiairplaneme, $width, $height, $quality);
 
-        $filePath = $dest . '/' . $filename . $generator::SUFFIX;
+        $filePath = $dest . '/' . $fiairplaneme . $generator->get_suffix();
         $this->assertFileExists($filePath);
 
         $img = imagecreatefromjpeg($filePath);

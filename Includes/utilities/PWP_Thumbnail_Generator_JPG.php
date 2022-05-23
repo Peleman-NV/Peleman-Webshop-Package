@@ -10,8 +10,12 @@ use Throwable;
 
 class PWP_Thumbnail_Generator_JPG extends PWP_Abstract_Thumbnail_Generator
 {
-    public const SUFFIX = '.jpg';
+    protected string $suffix = '.jpg';
 
+    public function __construct(int $quality = -1)
+    {
+        parent::__construct($quality);
+    }
     public function generate(string $src, string $dest, string $name, int $tgtWidth, int $tgtHeight = null, int $quality = null): void
     {
         try {
@@ -23,7 +27,7 @@ class PWP_Thumbnail_Generator_JPG extends PWP_Abstract_Thumbnail_Generator
 
             imagesavealpha($thumbnail, false);
 
-            if (!imagejpeg($thumbnail, $dest . '/' . $name . self::SUFFIX, $quality ?: $this->quality)) {
+            if (!imagejpeg($thumbnail, $dest . '/' . $name . $this->suffix, !is_null($quality) ? $quality : $this->quality)) {
                 throw new PWP_Invalid_Input_Exception('Image could not be made for unknown reasons');
             }
         } catch (Throwable $e) {

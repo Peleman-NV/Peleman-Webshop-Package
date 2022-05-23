@@ -10,15 +10,15 @@ use PWP\includes\exceptions\PWP_Invalid_Input_Exception;
 abstract class PWP_Abstract_Thumbnail_Generator implements PWP_I_Thumbnail_Generator
 {
     protected int $quality;
-    public const SUFFIX = "";
+    protected string $suffix = "";
     /**
      * class to generate thumbnails from existing files.
      *
-     * @param integer $quality should be an integer value from 0 (no compression), 1 (fastest compression) to 9 (best compression). Default value is -1 (default compression)
+     * @param integer $quality should be an integer value from 0 (no compression), 1 (fastest compression) to 100 (best compression). Default value is -1 (default compression)
      */
     public function __construct(int $quality = -1)
     {
-        $this->quality = $quality;
+        $this->quality = min(100, max($quality, -1));
     }
     public abstract function generate(string $src, string $dest, string $name, int $tgtWidth, int $tgtHeight = null, int $quality = null): void;
 
@@ -89,5 +89,23 @@ abstract class PWP_Abstract_Thumbnail_Generator implements PWP_I_Thumbnail_Gener
         );
 
         return $thumbnail;
+    }
+
+    public function get_suffix(): string
+    {
+        return $this->suffix;
+    }
+
+    protected static function map(int $value, int $fromLow, int $fromHigh, int $toLow, int $toHigh): float
+    {
+        $fromRange = $fromHigh - $fromLow;
+        $toRange = $toHigh - $toLow;
+        $scale = $toRange / $fromRange;
+
+        $value -= $fromLow;
+        $value *= $scale;
+        $value += $toLow;
+
+        return $value;
     }
 }
