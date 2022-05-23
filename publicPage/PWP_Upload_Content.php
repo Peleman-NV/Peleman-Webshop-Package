@@ -91,12 +91,12 @@ class pwp_upload_content extends PWP_Abstract_Ajax_Component
         return realpath($newFilenameWithPath);
     }
 
-    private function generate_thumbnail(string $filePath, string $contentFileId): void
+    private function generate_thumbnail(string $filePath, string $filename): void
     {
         $imagick = new Imagick();
         $imagick->readImage($filePath . '[0]');
         $imagick->setImageFormat('jpg');
-        $thumbnailWithPath = realpath(PPI_THUMBNAIL_DIR) . '/' . $contentFileId . '.jpg';
+        $thumbnailWithPath = realpath(PPI_THUMBNAIL_DIR) . '/' . $filename . '.jpg';
         $imagick->setImageAlphaChannel(Imagick::ALPHACHANNEL_DEACTIVATE);
         $imagick->setCompressionQuality(25);
         $imagick->scaleImage(150, 0);
