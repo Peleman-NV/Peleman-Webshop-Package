@@ -43,8 +43,8 @@ class PWP_Activator
             $charset_collate = $wpdb->get_charset_collate();
 
             //create table to store API keys
-            \dbDelta($wpdb->prepare(
-                "CREATE TABLE %s (
+            \maybe_create_table($table_name, $wpdb->prepare(
+                "CREATE TABLE  {$table_name} (
             id              mediumint(9) NOT NULL AUTO_INCREMENT,
             name            tinytext DEFAULT NULL,
             key             tinytext NOT NULL,
@@ -57,7 +57,6 @@ class PWP_Activator
 
             PRIMARY KEY (id)) %s",
                 array(
-                    $table_name,
                     $charset_collate
                 )
             ));

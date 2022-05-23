@@ -19,9 +19,9 @@ class PWP_Notification implements PWP_I_Notification, PWP_I_Response_Component
         $this->isSuccess = true;
     }
 
-    public function add_error(string $error, string $description, \Exception $cause = null): self
+    public function add_error(string $error, string $description, array $data = [], \Exception $cause = null): self
     {
-        $this->errors[] = new PWP_Error_Notice($error, $description, $cause);
+        $this->errors[] = new PWP_Error_Notice($error, $description, $data, $cause);
         $this->set_failed();
         return $this;
     }

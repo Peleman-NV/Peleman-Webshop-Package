@@ -10,12 +10,14 @@ class PWP_Error_Notice implements PWP_I_Notification_Message, PWP_I_Response_Com
 {
     private string $message;
     private string $description;
+    private array $data;
     private ?\Exception $cause;
 
-    public function __construct(string $message, string $description, ?\Exception $cause = null)
+    public function __construct(string $message, string $description, array $data = [], ?\Exception $cause = null)
     {
         $this->message = $message;
         $this->description = $description;
+        $this->data = $data;
         $this->cause = $cause;
     }
 
@@ -34,19 +36,28 @@ class PWP_Error_Notice implements PWP_I_Notification_Message, PWP_I_Response_Com
         return $this->cause;
     }
 
+    public function get_data(): array
+    {
+        return $this->data;
+    }
+
     public function to_array(): array
     {
-        $data = array(
+        $response = array(
             "error" => $this->message,
             "description" => $this->description,
         );
 
+        if (!empty($this->data)) {
+            $response += $this->data;
+        }
+
         if (!is_null($this->cause)) {
-            $data['cause'] = array(
+            $response['cause'] = array(
                 'message' => $this->cause->getMessage(),
                 'code' => $this->cause->getCode(),
             );
         }
-        return $data;
+        return $response;
     }
 }

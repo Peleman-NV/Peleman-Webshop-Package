@@ -129,6 +129,8 @@ batch together up to 100 create, update, and delete calls.
 
 * __update_can_create__
     > __`bool`__ - wether update calls can, if the original entry is not found, create a new entry in the database. default value is `false`.
+* __can_change_parent__
+    > __`bool`__ - wether update call can change a category's parent if it is not `0` or `null`. default value is `false`.
 * __create__
     > __`array`__ - explicit create calls.
     * SEE: CREATE PARAMETERS

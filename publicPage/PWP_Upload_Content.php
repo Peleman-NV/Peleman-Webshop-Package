@@ -7,7 +7,13 @@ namespace PWP\publicPage;
 use setasign\Fpdi\Fpdi;
 use PWP\includes\wrappers\PWP_File_Data;
 use PWP\includes\hookables\PWP_Abstract_Ajax_Component;
+use PWP\includes\utilities\notification\PWP_Error_Notice;
+use PWP\includes\utilities\notification\PWP_I_Notification;
+use PWP\includes\utilities\notification\PWP_Notification;
 use PWP\includes\utilities\PWP_Thumbnail_Generator_JPG;
+use PWP\includes\validation\PWP_Abstract_File_Handler;
+use PWP\includes\validation\PWP_Validate_File_Errors;
+use PWP\includes\validation\PWP_Validate_File_Type;
 
 class pwp_upload_content extends PWP_Abstract_Ajax_Component
 {
@@ -34,10 +40,22 @@ class pwp_upload_content extends PWP_Abstract_Ajax_Component
          */
 
         if (!check_ajax_referer('pwp_upload_content_nonce', '_ajax_nonce', false)) {
+            $error = new PWP_Error_Notice(
+                __('nonce mismatch', PWP_TEXT_DOMAIN),
+                __('Could not verify the origin of this request.', PWP_TEXT_DOMAIN)
+            );
+            wp_send_json($error->to_array());
             return;
         }
+
         $file = new PWP_File_Data($_FILES['file']);
+        $notification = new PWP_Notification();
         var_dump($file);
+
+        if (!$this->validation_chain()->handle($file, $notification)) {
+            wp_send_json($notification->to_array());
+            return;
+        }
 
         try {
             $pdf = new Fpdi();
@@ -53,19 +71,27 @@ class pwp_upload_content extends PWP_Abstract_Ajax_Component
         // page & dimension validation
         $variant = $this->getVariantContentParameters($variantId);
         if ($variant['min_pages'] != "" && $pages < $variant['min_pages']) {
-            $response['status'] = 'error';
-            $response['file']['pages'] = $pages;
-            $response['message'] = __("Your file has too few pages.", PPI_TEXT_DOMAIN);
+            $error = new PWP_Error_Notice(
+                __("too few pages", PWP_TEXT_DOMAIN),
+                __("Your file has too few pages", PWP_TEXT_DOMAIN),
+                array('file' => array('pages' => $pages))
+            );
+            wp_send_json($error->to_array());
+            return;
         }
         if ($variant['max_pages'] != "" && $pages > $variant['max_pages']) {
-            $response['status'] = 'error';
-            $response['file']['pages'] = $pages;
-            $response['message'] = __("Your file has too many pages.", PPI_TEXT_DOMAIN);
+            $error = new PWP_Error_Notice(
+                __("too many pages", PWP_TEXT_DOMAIN),
+                __("Your file has too many pages", PWP_TEXT_DOMAIN),
+                array('file' => array('pages' => $pages))
+            );
+            wp_send_json($error->to_array());
+            return;
         }
 
 
         $id = $this->generate_content_file_id($variantId);
-        $path = $this->save_file($id);
+        $path = $this->save_file($id, 'content');
         $this->generate_thumbnail($path, $id);
     }
 
@@ -83,17 +109,39 @@ class pwp_upload_content extends PWP_Abstract_Ajax_Component
         );
     }
 
-    private function save_file(string $contentFileId): string
+    private function save_file(string $folderName, string $fileName): string
     {
-        mkdir(realpath(PPI_UPLOAD_DIR) . '/' . $contentFileId);
-        $newFilenameWithPath = realpath(PPI_UPLOAD_DIR) . '/' . $contentFileId . '/content.pdf';
-        move_uploaded_file($_FILES['file']['tmp_name'], $newFilenameWithPath);
-        return realpath($newFilenameWithPath);
+        //chmod 660
+        mkdir(realpath(PWP_UPLOAD_DIR) . '/' . $folderName, 0660);
+        $newFileDestination = realpath(PWP_UPLOAD_DIR) . "/{$folderName}/{$fileName}.pdf";
+        move_uploaded_file($_FILES['file']['tmp_name'], $newFileDestination);
+        return $newFileDestination;
     }
 
     private function generate_thumbnail(string $filePath, string $filename): string
     {
         $generator = new PWP_Thumbnail_Generator_JPG(-1);
         return $generator->generate($filePath, PWP_THUMBNAIL_DIR, $filename, 160);
+    }
+
+    private function validation_chain(): PWP_Abstract_File_Handler
+    {
+        $validator = new PWP_Validate_File_Type();
+        $validator->set_next(new PWP_Validate_File_Errors());
+
+        return $validator;
+    }
+
+    //TODO: handle this with a wrapper class, instead of an array. this is goofy.
+    private function getVariantContentParameters($variant_id)
+    {
+        return array(
+            'variant' => $variant_id,
+            'width' => get_post_meta($variant_id, 'pdf_width_mm', true),
+            'height' => get_post_meta($variant_id, 'pdf_height_mm', true),
+            'min_pages' => get_post_meta($variant_id, 'pdf_min_pages', true),
+            'max_pages' => get_post_meta($variant_id, 'pdf_max_pages', true),
+            'price_per_page' => get_post_meta($variant_id, 'price_per_page', true)
+        );
     }
 }
