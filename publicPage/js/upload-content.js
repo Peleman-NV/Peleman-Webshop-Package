@@ -2,7 +2,7 @@
  * This script is only responsible to the content file upload.
  * If a product requires a content file, 'variable-product.js' will load an upload form.
  * This script fires on the change event of that form, and performs an AJAX call to
- * the PHP function "upload_content_file" in PublicPage/PpiProductPage.php,
+ * the PHP function "upload_content_file" in PublicPage/pwpProductPage.php,
  * where the file is validated and uploaded to the server on success.
  * A response is then return (success or error) after which the "add to cart" button is
  * enabled, or an error message is displayed.
@@ -18,28 +18,23 @@
         $('#file-upload').on('change', e => {
             const variationId = $("[name='variation_id']").val();
             //re-enable this line to automatically disable the upload button
-            // $('.single_add_to_cart_button').addClass('ppi-disabled');
-            $('#upload-info').html('');
+            // $('.single_add_to_cart_button').addClass('pwp-disabled');
+            $('#upload-info').html(''); // clear html content in upload-info
             $('#upload-info').removeClass(); // removes all classes from upload info
-            $('#ppi-loading').removeClass('ppi-hidden'); // display loading animation
+            $('#pwp-loading').removeClass('pwp-hidden'); // display loading animation
             $('.thumbnail-container').css('background-image', ''); // remove thumbnail
-            $('.thumbnail-container').removeClass('ppi-min-height');
+            $('.thumbnail-container').removeClass('pwp-min-height');
             $('.thumbnail-container').prop('alt', '');
 
-            const fileInput = document.getElementById('file-upload');
-            const file = fileInput.files[0];
-            const formData = new FormData();
-            formData.append('action', 'upload_content_file');
-            formData.append('file', file);
-            formData.append('variant_id', variationId);
-            // formData.append('_ajax_nonce', ppi_upload_content_object.nonce);
+            const formData = readFileDataToForm();
 
-            // autmatically submit form on change event
+            // automatically submit form on change event
             $('#file-upload').submit();
             e.preventDefault();
 
             $.ajax({
-                url: ppi_upload_content_object.ajax_url,
+                //ajax setup
+                url: pwp_upload_content_object.ajax_url,
                 method: 'POST',
                 data: formData,
                 processData: false,
@@ -48,54 +43,10 @@
                 cache: false,
                 dataType: 'json',
                 success: function (response) {
-                    console.log(response);
-                    $('#upload-info').html(response.message);
-                    if (response.status === 'success') {
-                        updatePrice(response.file.price_vat_incl);
-                        // enable add to cart button
-                        $('.single_add_to_cart_button').removeClass(
-                            'ppi-disabled'
-                        );
-                        $('.thumbnail-container').addClass('ppi-min-height');
-                        $('.thumbnail-container').css(
-                            'background-image',
-                            'url("' + response.file.thumbnail + '")'
-                        );
-                        $('.thumbnail-container').prop(
-                            'alt',
-                            response.file.name
-                        );
-
-                        // add content file id to hidden input
-                        $("[name='variation_id']").after(
-                            '<input type="hidden" name="content_file_id" class="content_file_id" value="' +
-                                response.file.content_file_id +
-                                '"></input>'
-                        );
-                        $('#ppi-loading').addClass('ppi-hidden');
-                    } else {
-                        $('#upload-info').html(response.message);
-                        $('#upload-info').addClass('ppi-response-error');
-                        $('#ppi-loading').addClass('ppi-hidden');
-                    }
+                    onUploadSuccess(response);
                 },
                 error: function (jqXHR, textStatus, errorThrown) {
-                    console.log(jqXHR);
-                    $('#upload-info').html(
-                        'Something went wrong.  Please try again with a different file.'
-                    );
-                    $('#upload-info').addClass('response-error');
-                    $('#ppi-loading').addClass('ppi-hidden');
-                    console.error(
-                        'Something went wrong:\n' +
-                            jqXHR.status +
-                            ': ' +
-                            jqXHR.statusText +
-                            '\nTextstatus: ' +
-                            textStatus +
-                            '\nError thrown: ' +
-                            errorThrown
-                    );
+                    onUploadError(jqXHR, textStatus, errorThrown);
                 },
             });
             $('#file-upload').val('');
@@ -125,6 +76,60 @@
             $(
                 'div.woocommerce-variation-price span.woocommerce-Price-amount'
             ).text(newPriceText);
+        }
+
+        function onUploadSuccess(response) {
+            console.log(response);
+            $('#upload-info').html(response.message);
+            if (response.status === 'success') {
+                updatePrice(response.file.price_vat_incl);
+                // enable add to cart button
+                $('.single_add_to_cart_button').removeClass('pwp-disabled');
+                // update thumbnail container   
+                $('.thumbnail-container').addClass('pwp-min-height');
+                $('.thumbnail-container').css('background-image', 'url("' + response.file.thumbnail + '")');
+                $('.thumbnail-container').prop('alt', response.file.name);
+
+                // add content file id to hidden input
+                $("[name='variation_id']").after(
+                    '<input type="hidden" name="content_file_id" class="content_file_id" value="' + response.file.content_file_id + '"></input>'
+                );
+                $('#pwp-loading').addClass('pwp-hidden');
+            } else {
+                $('#upload-info').html(response.message);
+                $('#upload-info').addClass('pwp-response-error');
+                $('#pwp-loading').addClass('pwp-hidden');
+            }
+        }
+
+        function onUploadError(jqXHR, textStatus, errorThrown) {
+            console.log(jqXHR);
+            $('#upload-info').html('Something went wrong.  Please try again with a different file.');
+            $('#upload-info').addClass('response-error');
+            $('#pwp-loading').addClass('pwp-hidden');
+            console.error(
+                'Something went wrong:\n' +
+                jqXHR.status +
+                ': ' +
+                jqXHR.statusText +
+                '\nTextstatus: ' +
+                textStatus +
+                '\nError thrown: ' +
+                errorThrown
+            );
+
+        }
+
+        function readFileDataToForm() {
+            const fileInput = document.getElementById('file-upload');
+            const file = fileInput.files[0];
+            const formData = new FormData();
+
+            formData.append('action', 'upload_content_file');
+            formData.append('file', file);
+            formData.append('variant_id', variationId);
+            // formData.append('_ajax_nonce', pwp_upload_content_object.nonce); 
+            return formData;
         }
     });
 })(jQuery);

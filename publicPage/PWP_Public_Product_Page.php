@@ -55,7 +55,7 @@ class PWP_Public_Product_Page implements PWP_I_Hookable_Component
     public function display_file_output_form(): void
     {
         echo "<p>test0254</p>";
-        include plugin_dir_path(__FILE__) . "/templates/PWP_File_Upload_Form_Template.php";
+        include PWP_TEMPLATES_DIR . '/' . 'PWP_File_Upload_Form_Template.php';
     }
 
     public function override_wc_templates(string $template): string

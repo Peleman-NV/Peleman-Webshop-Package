@@ -39,6 +39,7 @@ define('PWP_VERSION', '0.3.4');
 !defined('PWP_TEXT_DOMAIN') ? define('PWP_TEXT_DOMAIN', 'PelemanWebshopPackage') : null;
 !defined('PWP_THUMBNAIL_DIR') ? define('PWP_THUMBNAIL_DIR', WP_CONTENT_DIR . '/uploads/pwp/thumbnails') : null;
 !defined('PWP_UPLOAD_DIR') ? define('PWP_UPLOAD_DIR', WP_CONTENT_DIR . '/uploads/pwp/contents') : null;
+!defined('PWP_TEMPLATES_DIR') ? define('PWP_TEMPLATES_DIR',  plugin_dir_path(__FILE__) . 'templates') : null;
 
 //register activation hook. Is called when the plugin is activated in the Wordpress Admin panel
 register_activation_hook(__FILE__, function () {
