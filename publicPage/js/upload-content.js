@@ -13,12 +13,12 @@
 (function ($) {
     'use strict';
     $(function () {
-        setUploadBtnColour();
 
         // Event: when the file input changes, ie: when a new file is selected
         $('#file-upload').on('change', e => {
             const variationId = $("[name='variation_id']").val();
-            $('.single_add_to_cart_button').addClass('ppi-disabled');
+            //re-enable this line to automatically disable the upload button
+            // $('.single_add_to_cart_button').addClass('ppi-disabled');
             $('#upload-info').html('');
             $('#upload-info').removeClass(); // removes all classes from upload info
             $('#ppi-loading').removeClass('ppi-hidden'); // display loading animation
@@ -100,39 +100,6 @@
             });
             $('#file-upload').val('');
         });
-
-        function setUploadBtnColour() {
-            let btnColour = '';
-            const domain = getDomain();
-            switch (domain) {
-                case 'devwebshop.peleman.com':
-                    btnColour = '#ffd721';
-                    break;
-                case 'store.peleman.com':
-                    btnColour = '#ffd721';
-                    break;
-                case 'devhumancolours.peleman.com':
-                    btnColour = '#ff661f';
-                    $('.ppi-upload-form .upload-label').css('color', 'white');
-                    break;
-                case 'humancolours.peleman.com':
-                    btnColour = '#ff661f';
-                    $('.ppi-upload-form .upload-label').css('color', 'white');
-                    break;
-                case 'devshop.peleman.com':
-                    btnColour = '#006ad0';
-                    $('.ppi-upload-form .upload-label').css('color', 'white');
-                    break;
-                default:
-                    $('.ppi-upload-form .upload-label').css(
-                        'border',
-                        '1px solid grey'
-                    );
-                    break;
-            }
-
-            $('.ppi-upload-form').css('background', btnColour);
-        }
 
         function getDomain() {
             const url = window.location.href;

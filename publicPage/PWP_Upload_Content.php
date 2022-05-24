@@ -8,12 +8,12 @@ use setasign\Fpdi\Fpdi;
 use PWP\includes\wrappers\PWP_File_Data;
 use PWP\includes\hookables\PWP_Abstract_Ajax_Component;
 use PWP\includes\utilities\notification\PWP_Error_Notice;
-use PWP\includes\utilities\notification\PWP_I_Notification;
 use PWP\includes\utilities\notification\PWP_Notification;
 use PWP\includes\utilities\PWP_Thumbnail_Generator_JPG;
 use PWP\includes\validation\PWP_Abstract_File_Handler;
 use PWP\includes\validation\PWP_Validate_File_Errors;
 use PWP\includes\validation\PWP_Validate_File_Type;
+use PWP\includes\wrappers\PWP_Product_Meta_Data;
 
 class pwp_upload_content extends PWP_Abstract_Ajax_Component
 {
@@ -39,14 +39,9 @@ class pwp_upload_content extends PWP_Abstract_Ajax_Component
          * 5) Generate success response with PDF details
          */
 
-        if (!check_ajax_referer('pwp_upload_content_nonce', '_ajax_nonce', false)) {
-            $error = new PWP_Error_Notice(
-                __('nonce mismatch', PWP_TEXT_DOMAIN),
-                __('Could not verify the origin of this request.', PWP_TEXT_DOMAIN)
-            );
-            wp_send_json($error->to_array());
-            return;
-        }
+        echo ('bingo');
+        return;
+        $this->verify_ajax_referer();
 
         $file = new PWP_File_Data($_FILES['file']);
         $notification = new PWP_Notification();
@@ -67,10 +62,24 @@ class pwp_upload_content extends PWP_Abstract_Ajax_Component
         }
 
         $variantId = sanitize_text_field($_POST['variant_id']);
+        //check if variant Id leads to a valid product
+        $product = wc_get_product((int)$variantId);
+
+        if (!$product || $product == null) {
+            $error = new PWP_Error_Notice(
+                __("invalid id", PWP_TEXT_DOMAIN),
+                __("invalid variant Id passed, no valid product found", PWP_TEXT_DOMAIN)
+            );
+            wp_send_json($error->to_array());
+            return;
+        }
+
+        $variant = new PWP_Product_Meta_Data($product->get_id(), $product->get_meta_data());
+        $min_pages = $variant->get_pdf_min_pages();
+        $max_pages = $variant->get_pdf_max_pages();
 
         // page & dimension validation
-        $variant = $this->getVariantContentParameters($variantId);
-        if ($variant['min_pages'] != "" && $pages < $variant['min_pages']) {
+        if (!empty($min_pages) && $pages < $min_pages) {
             $error = new PWP_Error_Notice(
                 __("too few pages", PWP_TEXT_DOMAIN),
                 __("Your file has too few pages", PWP_TEXT_DOMAIN),
@@ -79,7 +88,7 @@ class pwp_upload_content extends PWP_Abstract_Ajax_Component
             wp_send_json($error->to_array());
             return;
         }
-        if ($variant['max_pages'] != "" && $pages > $variant['max_pages']) {
+        if (!empty($max_pages) && $pages > $max_pages) {
             $error = new PWP_Error_Notice(
                 __("too many pages", PWP_TEXT_DOMAIN),
                 __("Your file has too many pages", PWP_TEXT_DOMAIN),
@@ -88,7 +97,6 @@ class pwp_upload_content extends PWP_Abstract_Ajax_Component
             wp_send_json($error->to_array());
             return;
         }
-
 
         $id = $this->generate_content_file_id($variantId);
         $path = $this->save_file($id, 'content');
@@ -132,16 +140,15 @@ class pwp_upload_content extends PWP_Abstract_Ajax_Component
         return $validator;
     }
 
-    //TODO: handle this with a wrapper class, instead of an array. this is goofy.
-    private function getVariantContentParameters($variant_id)
+    private function verify_ajax_referer(): void
     {
-        return array(
-            'variant' => $variant_id,
-            'width' => get_post_meta($variant_id, 'pdf_width_mm', true),
-            'height' => get_post_meta($variant_id, 'pdf_height_mm', true),
-            'min_pages' => get_post_meta($variant_id, 'pdf_min_pages', true),
-            'max_pages' => get_post_meta($variant_id, 'pdf_max_pages', true),
-            'price_per_page' => get_post_meta($variant_id, 'price_per_page', true)
-        );
+        if (!check_ajax_referer('pwp_upload_content_nonce', '_ajax_nonce', false)) {
+            $error = new PWP_Error_Notice(
+                __('nonce mismatch', PWP_TEXT_DOMAIN),
+                __('Could not verify the origin of this request.', PWP_TEXT_DOMAIN)
+            );
+            wp_send_json($error->to_array());
+            return;
+        }
     }
 }

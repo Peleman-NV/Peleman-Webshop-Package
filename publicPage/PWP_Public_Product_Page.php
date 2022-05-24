@@ -15,8 +15,11 @@ class PWP_Public_Product_Page implements PWP_I_Hookable_Component
 
     public function register_hooks(PWP_Plugin_Loader $loader): void
     {
+        $loader->add_action('woocommerce_before_add_to_cart_form', $this, 'display_file_output_form', 7, 1);
+        // $loader->add_action('woocommerce_locate_template', $this, 'override_wc_templates', 10, 3);
         $loader->add_filter('woocommerce_product_add_to_cart_text', $this, 'change_add_to_cart_text_for_archive');
         $loader->add_filter('woocommerce_product_single_add_to_cart_text', $this, 'change_add_to_cart_text_for_product');
+
 
         $this->add_hookable(new pwp_upload_content());
         $this->add_hookable(new pwp_add_to_cart());
@@ -47,5 +50,22 @@ class PWP_Public_Product_Page implements PWP_I_Hookable_Component
         }
 
         return $defaultText;
+    }
+
+    public function display_file_output_form(): void
+    {
+        echo "<p>test0254</p>";
+        include plugin_dir_path(__FILE__) . "/templates/PWP_File_Upload_Form_Template.php";
+    }
+
+    public function override_wc_templates(string $template): string
+    {
+        if ('variation.php' === basename($template)) {
+            return trailingslashit(plugin_dir_path(__FILE__)) . '../templates/wc/PWP-Variation.php';
+        }
+        if ('variation-add-to-cart-button.php' === basename($template)) {
+            return trailingslashit(plugin_dir_path(__FILE__)) . '../templates/wc/PWP-Variation-Add-To-Cart-Button.php';
+        }
+        return $template;
     }
 }
