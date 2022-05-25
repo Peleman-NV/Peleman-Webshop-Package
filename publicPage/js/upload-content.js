@@ -26,7 +26,7 @@
             $('.thumbnail-container').removeClass('pwp-min-height');
             $('.thumbnail-container').prop('alt', '');
 
-            const formData = readFileDataToForm();
+            const formData = constructFormData();
 
             // automatically submit form on change event
             $('#file-upload').submit();
@@ -120,7 +120,7 @@
 
         }
 
-        function readFileDataToForm() {
+        function constructFormData() {
             const fileInput = document.getElementById('file-upload');
             const file = fileInput.files[0];
             const formData = new FormData();

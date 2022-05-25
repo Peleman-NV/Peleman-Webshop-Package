@@ -17,9 +17,10 @@ class PWP_Response implements PWP_I_Response, PWP_I_Response_Component
     private array $components;
 
 
-    public function __construct(string $message, bool $success = true, array $additionalData = [])
+    public function __construct(string $message, bool $success = true, array $additionalData = [], int $httpCode = 200)
     {
         $this->success = $success;
+        $this->httpCode = $httpCode;
         $this->message = $message;
         $this->data = $additionalData;
         $this->components = array();
@@ -59,13 +60,13 @@ class PWP_Response implements PWP_I_Response, PWP_I_Response_Component
         return $response;
     }
 
-    public static function success(string $message, array $additionalData = []): self
+    public static function success(string $message, array $additionalData = [], int $httpCode = 200): self
     {
-        return new self($message, true, $additionalData);
+        return new self($message, true, $additionalData, $httpCode);
     }
 
-    public static function failure(string $message, array $additionalData = []): self
+    public static function failure(string $message, array $additionalData = [], int $httpCode = 400): self
     {
-        return new self($message, false, $additionalData);
+        return new self($message, false, $additionalData, $httpCode);
     }
 }

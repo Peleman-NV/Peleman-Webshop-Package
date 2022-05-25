@@ -19,24 +19,24 @@ class PWP_Notification implements PWP_I_Notification, PWP_I_Response_Component
         $this->isSuccess = true;
     }
 
-    public function add_error(string $error, string $description, array $data = [], \Exception $cause = null): self
+    final public function add_error(string $error, string $description, array $data = [], \Exception $cause = null): self
     {
         $this->errors[] = new PWP_Error_Notice($error, $description, $data, $cause);
         $this->set_failed();
         return $this;
     }
 
-    public function get_errors(): array
+    final public function get_errors(): array
     {
         return $this->errors;
     }
 
-    protected function set_failed(): void
+    final protected function set_failed(): void
     {
         $this->isSuccess = false;
     }
 
-    public function is_success(): bool
+    final public function is_success(): bool
     {
         return $this->isSuccess;
     }
