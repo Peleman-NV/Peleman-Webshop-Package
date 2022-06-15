@@ -4,7 +4,10 @@ declare(strict_types=1);
 
 namespace PWP\publicPage;
 
+use IWPML_Current_Language;
+use PWP\includes\utilities\PWP_Editor_Client;
 use PWP\includes\hookables\PWP_Abstract_Ajax_Component;
+use PWP\includes\utilities\clients\PWP_New_Project_Request;
 
 class pwp_add_to_cart extends PWP_Abstract_Ajax_Component
 {
@@ -20,11 +23,16 @@ class pwp_add_to_cart extends PWP_Abstract_Ajax_Component
 
     public function callback(): void
     {
-        // $client = new PWP_editor_client('deveditor.peleman.com');
+        $client = new PWP_Editor_Client('deveditor.peleman.com');
 
         $variant = wc_get_product((int)sanitize_text_field($_GET['variant']));
         $template_id = $variant->get_meta('template_id', true, 'view');
         $variant_id = $variant->get_meta('variant_code', true, 'view');
+
+        $request = new PWP_New_Project_Request((string)get_current_user_id(), $template_id, wc_get_cart_url());
+        if (defined(ICL_LANGUAGE_CODE)) {
+            $request->set_language(ICL_LANGUAGE_CODE);
+        }
 
         //TODO: better validation. check if these actually exist in the database
         $templateIsValid = str_contains($template_id, 'tpl');
