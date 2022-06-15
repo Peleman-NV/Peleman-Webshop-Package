@@ -16,7 +16,7 @@ class PWP_Public_Product_Page implements PWP_I_Hookable_Component
     public function register_hooks(PWP_Plugin_Loader $loader): void
     {
         $loader->add_action('woocommerce_before_add_to_cart_form', $this, 'display_file_output_form', 7, 1);
-        // $loader->add_action('woocommerce_locate_template', $this, 'override_wc_templates', 10, 3);
+        $loader->add_action('woocommerce_locate_template', $this, 'override_wc_templates', 10, 3);
         $loader->add_filter('woocommerce_product_add_to_cart_text', $this, 'change_add_to_cart_text_for_archive');
         $loader->add_filter('woocommerce_product_single_add_to_cart_text', $this, 'change_add_to_cart_text_for_product');
 

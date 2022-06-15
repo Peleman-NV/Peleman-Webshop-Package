@@ -30,7 +30,7 @@ class pwp_add_to_cart extends PWP_Abstract_Ajax_Component
         $variant_id = $variant->get_meta('variant_code', true, 'view');
 
         $request = new PWP_New_Project_Request((string)get_current_user_id(), $template_id, wc_get_cart_url());
-        if (defined(ICL_LANGUAGE_CODE)) {
+        if (defined('ICL_LANGUAGE_CODE')) {
             $request->set_language(ICL_LANGUAGE_CODE);
         }
 
@@ -49,12 +49,15 @@ class pwp_add_to_cart extends PWP_Abstract_Ajax_Component
         }
         $language = 'en';
 
+        $projectId = $client->create_new_project($request);
+
         // $destination = $client->get_new_project_url($template_id, $variant_id, $language);
         $destination = 'https://deveditor.peleman.com/?projecturl=pie/projects/625e933128f37/var133714.json';
         wp_send_json(array(
             'status' => 'success',
             'message' => 'all is well',
             'isCustomizable' => true,
+            'project_data' => $projectId,
             'destinationUrl' => $destination,
         ), 200);
         return;

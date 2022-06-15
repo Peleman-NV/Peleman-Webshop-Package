@@ -4,12 +4,14 @@ declare(strict_types=1);
 
 namespace PWP\includes;
 
-use PWP\adminPage\hookables\PWP_Admin_Notice_Poster;
 use PWP\includes\API\PWP_API_Plugin;
-use PWP\includes\hookables\PWP_I_Hookable_Component;
+use PWP\adminPage\PWP_Parent_Custom_Fields;
 use PWP\includes\loaders\PWP_Plugin_Loader;
-use PWP\includes\traits\PWP_Hookable_Parent_Trait;
 use PWP\publicPage\PWP_Public_Product_Page;
+use PWP\adminPage\PWP_Variable_Custom_Fields;
+use PWP\includes\traits\PWP_Hookable_Parent_Trait;
+use PWP\adminPage\hookables\PWP_Admin_Notice_Poster;
+use PWP\includes\hookables\PWP_I_Hookable_Component;
 
 if (!function_exists('is_plugin_active')) {
     include_once(ABSPATH . '/wp-admin/includes/plugin.php');
@@ -43,6 +45,8 @@ class PWP_Plugin implements PWP_I_Hookable_Component
             /*  ADD ADMIN MENU HOOKABLES HERE */
 
             $this->add_hookable($this->noticePoster);
+            $this->add_hookable(new PWP_Variable_Custom_Fields());
+            $this->add_hookable(new PWP_Parent_Custom_Fields());
         }
 
         /*  ADD PUBLIC HOOKABLES HERE */

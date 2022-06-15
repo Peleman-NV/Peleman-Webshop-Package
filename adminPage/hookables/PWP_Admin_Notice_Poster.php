@@ -17,10 +17,10 @@ class PWP_Admin_Notice_Poster extends PWP_Abstract_Action_Component
     public function __construct()
     {
         $this->notices = array();
-        parent::__construct('admin_notices');
+        parent::__construct('admin_notices', 'display_notices');
     }
 
-    public function action_callback(...$args): void
+    public function display_notices(...$args): void
     {
         foreach ($this->notices as $notice) {
             printf($notice->get_content());
