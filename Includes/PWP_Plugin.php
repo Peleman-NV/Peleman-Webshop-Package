@@ -30,7 +30,6 @@ class PWP_Plugin implements PWP_I_Hookable_Component
 
     private function __construct()
     {
-
         $this->version = defined('PWP_VERSION') ? PWP_VERSION : '1.0.0';
         $this->plugin_name = 'Peleman Webshop Package';
         $this->loader = new PWP_Plugin_Loader();
@@ -46,7 +45,7 @@ class PWP_Plugin implements PWP_I_Hookable_Component
 
             $this->add_hookable($this->noticePoster);
             $this->add_hookable(new PWP_Variable_Custom_Fields());
-            $this->add_hookable(new PWP_Parent_Custom_Fields());
+            // $this->add_hookable(new PWP_Parent_Custom_Fields());
         }
 
         /*  ADD PUBLIC HOOKABLES HERE */

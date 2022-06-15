@@ -4,8 +4,9 @@ declare(strict_types=1);
 
 namespace PWP\adminPage;
 
-use PWP\includes\hookables\PWP_Abstract_Action_Component;
 use WP_Post;
+use PWP\includes\utilities\PWP_Input_Fields;
+use PWP\includes\hookables\PWP_Abstract_Action_Component;
 
 class PWP_Parent_Custom_Fields extends PWP_Abstract_Action_Component
 {
@@ -30,7 +31,6 @@ class PWP_Parent_Custom_Fields extends PWP_Abstract_Action_Component
             <?php
 
             //DO STUFF HERE
-
 
             //END STUFF
             ?>

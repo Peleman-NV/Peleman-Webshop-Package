@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PWP\Includes\F2D;
+namespace PWP\includes\F2D;
 
 use WC_Product;
 
@@ -32,11 +32,36 @@ const META_PDF_MAX_PAGES = 'pdf_max_pages';
 class PWP_F2D_Product
 {
     private \WC_Product $product;
+    private array $metaProperties;
 
 
     public function __construct(int $productId)
     {
         $this->product = wc_get_product($productId);
+        $this->metaProperties = array();
+
+        $this->add_meta_property(META_F2D_SKU_COMPONENT);
+        $this->add_meta_property(META_F2D_SKU_ARTICLE_CODE);
+
+        $this->add_meta_property(META_PIE_CUSTOMIZEABLE);
+        $this->add_meta_property(META_PIE_TEMPLATE_ID);
+        $this->add_meta_property(META_PIE_VARIANT_CODE);
+        $this->add_meta_property(META_PIE_COLOR_CODE);
+        $this->add_meta_property(META_PIE_BACKGROUND_ID);
+
+        $this->add_meta_property(META_ADD_TO_CART_LABEL);
+        $this->add_meta_property(META_PRICE_PER_PAGE);
+        $this->add_meta_property(META_BASE_PAGE_COUNT);
+        $this->add_meta_property(META_CART_PRICE);
+        $this->add_meta_property(META_CART_UNITS);
+        $this->add_meta_property(META_UNIT_CODE);
+        $this->add_meta_property(META_CALL_TO_ORDER);
+
+        $this->add_meta_property(META_PDF_REQUIRED);
+        $this->add_meta_property(META_PDF_WIDTH_MM);
+        $this->add_meta_property(META_PDF_HEIGHT_MM);
+        $this->add_meta_property(META_PDF_MIN_PAGES);
+        $this->add_meta_property(META_PDF_MAX_PAGES);
     }
 
     public function get_product(): \WC_Product
@@ -51,5 +76,10 @@ class PWP_F2D_Product
 
     public function to_array()
     {
+    }
+
+    private function add_meta_property(string $key)
+    {
+        $this->metaProperties[$key] = PWP_Product_Meta_Property::new_text($this->product, $key);
     }
 }
