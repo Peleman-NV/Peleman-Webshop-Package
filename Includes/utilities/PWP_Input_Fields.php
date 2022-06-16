@@ -22,22 +22,50 @@ class PWP_Input_Fields
     }
     public static function text_input(string $id, string $label, string $value, array $classes = [], string $description = ''): void
     {
-        \woocommerce_wp_text_input(self::generate_field($id, $label, 'text', $value, $classes, $description));
+        \woocommerce_wp_text_input(self::generate_field(
+            $id,
+            $label,
+            'text',
+            $value,
+            $classes,
+            $description
+        ));
     }
 
     public static function number_input(string $id, string $label, string $value, array $classes = [], string $description = ''): void
     {
-        \woocommerce_wp_text_input(self::generate_field($id, $label, 'number', $value, $classes, $description));
+        \woocommerce_wp_text_input(array(
+            'id'            => $id,
+            'label'         => $label,
+            'value'         => $value,
+            'desc_tip'      => $description ?: '',
+            'description'   => $description ?: '',
+            'wrapper_class' => implode(' ', $classes),
+        ));
     }
 
     public static function color_input(string $id, string $label, string $value, array $classes = [], string $description = ''): void
     {
-        \woocommerce_wp_text_input(self::generate_field($id, $label, 'color', $value, $classes, $description));
+        \woocommerce_wp_text_input(self::generate_field(
+            $id,
+            $label,
+            'color',
+            $value,
+            $classes,
+            $description
+        ));
     }
 
     public static function checkbox_input(string $id, string $label, bool $value, array $classes = [], string $description = ''): void
     {
-        \woocommerce_wp_checkbox(self::generate_field($id, $label, 'checkbox', $value, $classes, $description));
+        \woocommerce_wp_checkbox(array(
+            'id'            => $id,
+            'label'         => $label,
+            'value'         => $value ? 'yes' : 'no',
+            'desc_tip'      => !empty($description),
+            'description'   => $description ?: '',
+            'wrapper_class' => implode(' ', $classes),
+        ));
     }
 
     private static function generate_field(string $id, string $label, string $type, $value, array $classes, string $description): array

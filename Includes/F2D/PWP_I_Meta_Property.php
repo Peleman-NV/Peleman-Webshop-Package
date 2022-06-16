@@ -4,27 +4,21 @@ declare(strict_types=1);
 
 namespace PWP\includes\F2D;
 
+use WP_Post;
+
 interface PWP_I_Meta_Property
 {
     /**
-     * Undocumented function
+     * get type string of parent object
      *
-     * @return mixed
+     * @return object
      */
-
-    public function get_value(): mixed;
+    public function get_parent(): object;
+    
     /**
-     * Undocumented function
+     * persist all contained meta data to the database.
      *
-     * @param string $value
-     * @return mixed
+     * @return void
      */
-    public function set_value(string $value);
-
-    /**
-     * Undocumented function
-     *
-     * @return string
-     */
-    public function get_key(): string;
+    public function update_meta_data(): void;
 }
