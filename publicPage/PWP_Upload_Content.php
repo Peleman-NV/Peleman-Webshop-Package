@@ -20,10 +20,8 @@ class pwp_upload_content extends PWP_Abstract_Ajax_Component
     public function __construct()
     {
         parent::__construct(
-            'pwp-ajax-upload',
-            'ajax_upload_content',
+            'upload_content',
             plugins_url('js/upload-content.js', __FILE__),
-            'pwp_upload_content_nonce',
         );
     }
 

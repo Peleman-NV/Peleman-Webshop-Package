@@ -25,18 +25,16 @@ abstract class PWP_Abstract_Ajax_Component implements PWP_I_Hookable_Component
      * Undocumented function
      *
      * @param string $handle script handle to which data will be attached.
-     * @param string $objectName name for the Javascript object that is to be passed directly.
      * @param string $jsFilePath path of the Javascript file relative to the component file location.
-     * @param string $nonceName name of the nonce for the Ajax call. Used for verifying a source and preventing replay attacks.
      * @param integer $priority when executing, the priority of this hook. default `10`
      * @param integer $accepted_args amount of arguments this hook accepts. default `1`
      */
-    public function __construct(string $handle, string $objectName, string $jsFilePath, string $nonceName,   int $priority = 10, int $accepted_args = 1)
+    public function __construct(string $handle,  string $jsFilePath, int $priority = 10, int $accepted_args = 1)
     {
         $this->scriptHandle = $handle;
-        $this->objectName = $objectName;
+        $this->objectName = $handle . '_obj';
+        $this->nonceName = $handle . '_nonce';
         $this->jsFilePath = $jsFilePath;
-        $this->nonceName = $nonceName;
 
         $this->priority = $priority;
         $this->accepted_args = $accepted_args;
@@ -44,10 +42,10 @@ abstract class PWP_Abstract_Ajax_Component implements PWP_I_Hookable_Component
 
     final public function register_hooks(PWP_Plugin_Loader $loader): void
     {
-        $loader->add_action('wp_enqueue_scripts', $this, 'enqueue_ajax', 8);
+        $loader->add_action('wp_enqueue_scripts', $this, 'enqueue_ajax', 5);
 
         $loader->add_action(
-            "wp_ajax_{$this->objectName}",
+            "wp_ajax_{$this->scriptHandle}",
             $this,
             self::CALLBACK,
             $this->priority,
@@ -55,7 +53,7 @@ abstract class PWP_Abstract_Ajax_Component implements PWP_I_Hookable_Component
         );
 
         $loader->add_action(
-            "wp_ajax_nopriv_{$this->objectName}",
+            "wp_ajax_nopriv_{$this->scriptHandle}",
             $this,
             self::CALLBACK_NOPRIV,
             $this->priority,

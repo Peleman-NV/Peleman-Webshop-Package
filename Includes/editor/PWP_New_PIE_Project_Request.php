@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PWP\includes\utilities\clients;
+namespace PWP\includes\editor;
 
 use JsonSerializable;
 use PWP\includes\editor\PWP_PIE_Data;

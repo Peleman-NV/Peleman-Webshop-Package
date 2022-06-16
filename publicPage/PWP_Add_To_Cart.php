@@ -6,19 +6,17 @@ namespace PWP\publicPage;
 
 use IWPML_Current_Language;
 use PWP\includes\editor\PWP_PIE_Data;
-use PWP\includes\utilities\PWP_Editor_Client;
+use PWP\includes\editor\PWP_Editor_Client;
+use PWP\includes\editor\PWP_New_PIE_Project_Request;
 use PWP\includes\hookables\PWP_Abstract_Ajax_Component;
-use PWP\includes\utilities\clients\PWP_New_PIE_Project_Request;
 
 class pwp_add_to_cart extends PWP_Abstract_Ajax_Component
 {
     public function __construct()
     {
         parent::__construct(
-            'pwp-ajax-add-to-cart',
-            'ajax_add_to_cart_object',
+            'add_to_cart',
             plugins_url('js/add-to-cart.js', __FILE__),
-            'pwp_add_to_cart_nonce',
         );
     }
 

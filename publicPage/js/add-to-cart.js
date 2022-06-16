@@ -35,18 +35,18 @@
             const data = {
                 variant: variationId,
                 content: contentFileId,
-                action: 'pwp-ajax-add-to-cart',
-                // _ajax_nonce: ajax_redirect_to_editor_object.nonce,
+                action: 'add_to_cart',
+                // _ajax_nonce: pwp_add_to_cart_nonce.nonce,
             };
 
             $.ajax({
-                url: ajax_add_to_cart_object.ajax_url,
+                url: add_to_cart_obj.ajax_url,
                 method: 'GET',
                 data: data,
                 cache: false,
                 dataType: 'json',
                 success: function (response) {
-                    window.location.href = 'https://google.com';
+                    // window.location.href = 'https://google.com';
                     console.log(response);
                     if (response.status !== 'success') {
                         $('#redirection-info').html(response.message);

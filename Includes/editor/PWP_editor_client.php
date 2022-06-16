@@ -2,41 +2,57 @@
 
 declare(strict_types=1);
 
-namespace PWP\includes\editor;
+namespace PWP\includes\Editor;
 
-class PWP_editor_client
+use PWP\includes\editor\PWP_New_PIE_Project_Request;
+
+class PWP_Editor_Client
 {
-    private string $url;
-    public function __construct(string $url)
-    {
-        if ($url === '') {
-            $this->url = site_url();
-        }
-        $this->url = $url;
-    }
-    public function get_new_project_url(string $templateId, string $variantId, string $languageCode): string
-    {
-        if ($languageCode == '') {
-            $languageCode = 'en';
-        }
+    private string $clientDomain;
+    private string $newProjectEndpoint;
 
-        return sanitize_url(
-            "https://{$this->url}}/demo/index.php?id=new&templateFile={$templateId}.json&variantId={$variantId}&language={$languageCode}}"
-
-        );
+    private int $timeout = 10;
+    public function __construct(string $domainUrl)
+    {
+        $this->clientDomain = $domainUrl;
+        $this->newProjectEndpoint = '/editor/api/createprojectAPI.php';
     }
 
-    public function get_existing_project_url(string $projectId, string $variantId, string $languageCode): string
+    public function create_new_project(PWP_New_PIE_Project_Request $request): array
     {
-        if ($languageCode == '') {
-            $languageCode = 'en';
-        }
+        $endpoint = $this->clientDomain . $this->newProjectEndpoint;
+        $response = $this->do_get($endpoint, $request->to_array());
+        //TODO: parse response data
 
-        return sanitize_url(sprintf(
-            'https://%s/index.php?projectId=%s&variantId=%s',
-            $this->url,
-            $projectId,
-            $variantId
+        var_dump($response);
+        return array();
+    }
+
+    public function do_get(string $endpoint, array $request, bool $followRedirect = false, bool $secure = true): array
+    {
+        $endpoint .= '?' . http_build_query($request);
+
+        $curl = curl_init();
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => $endpoint,
+            CURLOPT_FOLLOWLOCATION => $followRedirect,
+            CURLOPT_MAXREDIRS => 1,
+            CURLOPT_HEADER => false,
+            CURLOPT_TIMEOUT => $this->timeout,
+            CURLOPT_CONNECTTIMEOUT => $this->timeout,
+            CURLOPT_ENCODING => "",
+            CURLOPT_SSL_VERIFYPEER => $secure ? 1 : 0,
+            CURLOPT_SSL_VERIFYHOST => $secure ? 2 : 0,
+            CURLOPT_RETURNTRANSFER => 1,
+
         ));
+
+        $response = curl_exec($curl);
+        curl_close($curl);
+        if (empty($response) || is_bool($response)) {
+            //TODO: handle invalid response
+        }
+
+        return json_decode($response, true, 512, 0);
     }
 }
