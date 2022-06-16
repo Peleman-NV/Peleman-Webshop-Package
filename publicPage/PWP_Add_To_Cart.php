@@ -29,7 +29,12 @@ class pwp_add_to_cart extends PWP_Abstract_Ajax_Component
 
         if ($pie_data->get_is_customizable()) {
 
-            $request = new PWP_New_PIE_Project_Request((string)get_current_user_id(), $pie_data, wc_get_cart_url());
+            //TODO: handle data properly.
+            $request = new PWP_New_PIE_Project_Request(
+                (string)get_current_user_id(),
+                $pie_data,
+                wc_get_cart_url()
+            );
             if (defined('ICL_LANGUAGE_CODE')) {
                 $request->set_language(ICL_LANGUAGE_CODE);
                 $request->set_project_name("Kai's testing box. Please let the API respond.");
@@ -56,7 +61,6 @@ class pwp_add_to_cart extends PWP_Abstract_Ajax_Component
                 ));
                 return;
             }
-
 
             $projectId = $client->create_new_project($request);
             wp_send_json(array(
