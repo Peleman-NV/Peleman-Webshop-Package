@@ -7,6 +7,21 @@ namespace PWP\includes\editor;
 use JsonSerializable;
 use PWP\includes\editor\PWP_PIE_Data;
 
+#region EDITOR CONSTANTS
+define('USE_DESIGN_MODE', 'usedesignmode');
+define('USE_IMAGE_UPLOAD', 'useimageupload');
+define('USE_BACKGROUNDS', 'usebackgrounds');
+define('USE_DESIGNS', 'usedesigns');
+define('USE_ELEMENTS', 'useelements');
+define('USE_DOWNLOAD_PREVIEW', 'usedownloadpreview');
+define('USE_OPEN_FILE', 'useopenfile');
+define('USE_EXPORT', 'useexport');
+define('SHOW_CROP_ZONE', 'useshowcropzone');
+define('SHOW_SAFE_ZONE', 'useshowsafezone');
+define('SHOW_STOCK_PHOTOS', 'useshowstockphotos');
+define('USE_TEXT', 'usetext');
+#endregion
+
 class PWP_New_PIE_Project_Request implements JsonSerializable
 {
 
@@ -22,21 +37,6 @@ class PWP_New_PIE_Project_Request implements JsonSerializable
     private array $editorInstructions;
     private string $projectName;
     private string $returnUrl;
-
-    #region EDITOR CONSTANTS
-    public const USE_DESIGN_MODE = 'usedesignmode';
-    public const USE_IMAGE_UPLOAD = 'useimageupload';
-    public const USE_BACKGROUNDS = 'usebackgrounds';
-    public const USE_DESIGNS = 'usedesigns';
-    public const USE_ELEMENTS = 'useelements';
-    public const USE_DOWNLOAD_PREVIEW = 'usedownloadpreview';
-    public const USE_OPEN_FILE = 'useopenfile';
-    public const USE_EXPORT = 'useexport';
-    public const SHOW_CROP_ZONE = 'useshowcropzone';
-    public const SHOW_SAFE_ZONE = 'useshowsafezone';
-    public const USE_STOCK_PHOTOS = 'useshowstockphotos';
-    public const USE_TEXT = 'usetext';
-    #endregion
 
     public function __construct(string $userId, PWP_PIE_Data $data, string $returnUrl)
     {

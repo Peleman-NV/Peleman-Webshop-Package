@@ -32,6 +32,18 @@ class pwp_add_to_cart extends PWP_Abstract_Ajax_Component
             $request = new PWP_New_PIE_Project_Request((string)get_current_user_id(), $pie_data, wc_get_cart_url());
             if (defined('ICL_LANGUAGE_CODE')) {
                 $request->set_language(ICL_LANGUAGE_CODE);
+                $request->set_project_name("Kai's testing box. Please let the API respond.");
+                $request->set_editor_instructions(
+                    USE_DESIGN_MODE,
+                    USE_BACKGROUNDS,
+                    USE_DESIGNS,
+                    SHOW_CROP_ZONE,
+                    SHOW_SAFE_ZONE,
+                    USE_TEXT,
+                    USE_ELEMENTS,
+                    USE_DESIGNS,
+                    USE_OPEN_FILE
+                );
             }
 
             //TODO: handle PDF file uploads
@@ -45,12 +57,12 @@ class pwp_add_to_cart extends PWP_Abstract_Ajax_Component
                 return;
             }
 
-            wp_send_json(array(
-                'status' => 'error',
-                'message' => $request->to_array()
-            ));
 
             $projectId = $client->create_new_project($request);
+            wp_send_json(array(
+                'status' => 'error',
+                'message' => $projectId,
+            ));
 
             // $destination = $client->get_new_project_url($template_id, $variant_id, $language);
             $destination = 'https://deveditor.peleman.com/?projecturl=pie/projects/625e933128f37/var133714.json';
