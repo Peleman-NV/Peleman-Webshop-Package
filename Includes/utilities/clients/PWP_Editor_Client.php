@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PWP\includes\utilities;
 
-use PWP\includes\utilities\clients\PWP_New_Project_Request;
+use PWP\includes\utilities\clients\PWP_New_PIE_Project_Request;
 
 class PWP_Editor_Client
 {
@@ -18,7 +18,7 @@ class PWP_Editor_Client
         $this->newProjectEndpoint = '/editor/api/createprojectAPI.php';
     }
 
-    public function create_new_project(PWP_New_Project_Request $request): array
+    public function create_new_project(PWP_New_PIE_Project_Request $request): array
     {
         $endpoint = $this->clientDomain . $this->newProjectEndpoint;
         $response = $this->do_get($endpoint, $request->to_array());

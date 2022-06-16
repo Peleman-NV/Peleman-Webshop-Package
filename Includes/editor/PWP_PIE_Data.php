@@ -41,7 +41,7 @@ class PWP_PIE_Data implements PWP_I_Meta_Property
         $this->backgroundId =  get_post_meta($parentId, self::BACKGROUND_ID, true) ?? '';
     }
 
-    public function get_parent(): object
+    public function get_parent(): WC_Product
     {
         return $this->parent;
     }

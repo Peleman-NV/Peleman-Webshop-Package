@@ -24,19 +24,19 @@ abstract class PWP_Abstract_Ajax_Component implements PWP_I_Hookable_Component
     /**
      * Undocumented function
      *
-     * @param string $nonceName name of the nonce for the Ajax call. Used for verifying a source and preventing replay attacks.
      * @param string $handle script handle to which data will be attached.
      * @param string $objectName name for the Javascript object that is to be passed directly.
      * @param string $jsFilePath path of the Javascript file relative to the component file location.
+     * @param string $nonceName name of the nonce for the Ajax call. Used for verifying a source and preventing replay attacks.
      * @param integer $priority when executing, the priority of this hook. default `10`
      * @param integer $accepted_args amount of arguments this hook accepts. default `1`
      */
-    public function __construct(string $nonceName, string $handle, string $objectName, string $jsFilePath, int $priority = 10, int $accepted_args = 1)
+    public function __construct(string $handle, string $objectName, string $jsFilePath, string $nonceName,   int $priority = 10, int $accepted_args = 1)
     {
-        $this->nonceName = $nonceName;
         $this->scriptHandle = $handle;
         $this->objectName = $objectName;
         $this->jsFilePath = $jsFilePath;
+        $this->nonceName = $nonceName;
 
         $this->priority = $priority;
         $this->accepted_args = $accepted_args;

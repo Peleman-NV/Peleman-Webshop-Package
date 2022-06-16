@@ -26,30 +26,30 @@ class PWP_Save_Variable_Custom_Fields extends PWP_Abstract_Action_Component
         $pie_data = new PWP_PIE_Data($variation_id);
         $pie_data->set_customizable(isset($_POST["pie_custom"][$loop]));
 
-        var_dump($_POST);
-            $pie_data->set_template_id(
-                esc_attr(sanitize_text_field(
-                    $_POST["pie_template"][$loop]
-                ))
-            );
+        $pie_data->set_template_id(
+            esc_attr(sanitize_text_field(
+                $_POST["pie_template"][$loop]
+            ))
+        );
 
-            $pie_data->set_variant_code(
-                esc_attr(sanitize_text_field(
-                    $_POST["pie_variant"][$loop]
-                ))
-            );
+        $pie_data->set_variant_code(
+            esc_attr(sanitize_text_field(
+                $_POST["pie_variant"][$loop]
+            ))
+        );
 
-            $pie_data->set_color_code(
-                esc_attr(sanitize_text_field(
-                    $_POST["pie_color"][$loop]
-                ))
-            );
+        $pie_data->set_color_code(
+            esc_attr(sanitize_text_field(
+                $_POST["pie_color"][$loop]
+            ))
+        );
 
-            $pie_data->set_background_id(
-                esc_attr(sanitize_text_field(
-                    $_POST["pie_background"][$loop]
-                ))
-            );
+        $pie_data->set_background_id(
+            esc_attr(sanitize_text_field(
+                $_POST["pie_background"][$loop]
+            ))
+        );
+        
         $pie_data->update_meta_data();
     }
 }

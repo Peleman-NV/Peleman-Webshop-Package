@@ -35,21 +35,22 @@
             const data = {
                 variant: variationId,
                 content: contentFileId,
-                action: 'ajax_redirect_to_editor',
+                action: 'pwp-ajax-add-to-cart',
                 // _ajax_nonce: ajax_redirect_to_editor_object.nonce,
             };
 
             $.ajax({
-                url: ajax_redirect_to_editor_object.ajax_url,
+                url: ajax_add_to_cart_object.ajax_url,
                 method: 'GET',
                 data: data,
                 cache: false,
                 dataType: 'json',
                 success: function (response) {
+                    window.location.href = 'https://google.com';
                     console.log(response);
                     if (response.status !== 'success') {
-                        // $('#redirection-info').html(response.message);
-                        // $('#redirection-info').addClass('ppi-response-error');
+                        $('#redirection-info').html(response.message);
+                        $('#redirection-info').addClass('ppi-response-error');
                         return;
                     }
                     if (response.isCustomizable === true) {

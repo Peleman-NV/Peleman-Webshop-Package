@@ -20,13 +20,10 @@ class PWP_editor_client
             $languageCode = 'en';
         }
 
-        return sanitize_url(sprintf(
-            'https://%s/demo/index.php?id=new&templateFile=%s.json&variantId=%s&language=%s',
-            $this->url,
-            $templateId,
-            $variantId,
-            $languageCode
-        ));
+        return sanitize_url(
+            "https://{$this->url}}/demo/index.php?id=new&templateFile={$templateId}.json&variantId={$variantId}&language={$languageCode}}"
+
+        );
     }
 
     public function get_existing_project_url(string $projectId, string $variantId, string $languageCode): string

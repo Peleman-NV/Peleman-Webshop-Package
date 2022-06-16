@@ -5,8 +5,9 @@ declare(strict_types=1);
 namespace PWP\includes\utilities\clients;
 
 use JsonSerializable;
+use PWP\includes\editor\PWP_PIE_Data;
 
-class PWP_New_Project_Request implements JsonSerializable
+class PWP_New_PIE_Project_Request implements JsonSerializable
 {
 
     private string $userId;
@@ -37,10 +38,10 @@ class PWP_New_Project_Request implements JsonSerializable
     public const USE_TEXT = 'usetext';
     #endregion
 
-    public function __construct(string $userId, string $templateId, string $returnUrl)
+    public function __construct(string $userId, PWP_PIE_Data $data, string $returnUrl)
     {
         $this->userId = $userId;
-        $this->templateId = $templateId;
+        $this->templateId = $data->get_template_id();
         $this->colorCode = '';
         $this->backgroundId = '';
         $this->language = 'en';

@@ -14,6 +14,7 @@ use PWP\includes\hookables\PWP_I_Hookable_Component;
 use PWP\adminPage\hookables\PWP_Admin_Notice_Poster;
 use PWP\adminPage\hookables\PWP_Variable_Custom_Fields;
 use PWP\adminPage\hookables\PWP_Save_Variable_Custom_Fields;
+use PWP\publicPage\pwp_add_to_cart;
 
 if (!function_exists('is_plugin_active')) {
     include_once(ABSPATH . '/wp-admin/includes/plugin.php');
@@ -54,6 +55,7 @@ class PWP_Plugin implements PWP_I_Hookable_Component
         /*  ADD PUBLIC HOOKABLES HERE */
 
         $this->add_hookable(new PWP_Public_Product_Page());
+        $this->add_hookable((new pwp_add_to_cart()));
         $this->add_hookable(new PWP_API_Plugin('pwp/v1'));
 
         /* REGISTER CHILD HOOKS WITH LOADER */
