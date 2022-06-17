@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PWP\includes\Editor;
 
-use PWP\includes\editor\PWP_New_PIE_Project_Request;
+use PWP\includes\editor\PWP_PIE_Create_Project_Request;
 
 class PWP_Editor_Client
 {
@@ -18,17 +18,15 @@ class PWP_Editor_Client
         $this->newProjectEndpoint = '/editor/api/createprojectAPI.php';
     }
 
-    public function create_new_project(PWP_New_PIE_Project_Request $request): array
+    public function create_new_project(PWP_PIE_Create_Project_Request $request): array
     {
         $endpoint = $this->clientDomain . $this->newProjectEndpoint;
-        $response = $this->do_get($endpoint, $request->to_array());
+        return $this->do_get($endpoint, $request->to_array());
         //TODO: parse response data
-
-        var_dump($response);
-        return array();
+        //FIXME: currently not receiving response data?
     }
 
-    public function do_get(string $endpoint, array $request, bool $followRedirect = false, bool $secure = true): array
+    private function do_get(string $endpoint, array $request, bool $followRedirect = false, bool $secure = true): array
     {
         $endpoint .= '?' . http_build_query($request);
 

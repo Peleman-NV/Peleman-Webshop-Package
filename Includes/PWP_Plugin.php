@@ -4,17 +4,19 @@ declare(strict_types=1);
 
 namespace PWP\includes;
 
+use PWP\includes\traits\PWP_Hookable_Parent_Trait;
+use PWP\includes\hookables\PWP_I_Hookable_Component;
+
 use PWP\includes\API\PWP_API_Plugin;
 use PWP\includes\loaders\PWP_Plugin_Loader;
-use PWP\publicPage\PWP_Public_Product_Page;
-use PWP\includes\traits\PWP_Hookable_Parent_Trait;
 
-use PWP\includes\hookables\PWP_I_Hookable_Component;
+use PWP\publicPage\PWP_Add_Customizable_To_Cart;
+use PWP\publicPage\PWP_Public_Product_Page;
+
 
 use PWP\adminPage\hookables\PWP_Admin_Notice_Poster;
 use PWP\adminPage\hookables\PWP_Variable_Custom_Fields;
 use PWP\adminPage\hookables\PWP_Save_Variable_Custom_Fields;
-use PWP\publicPage\pwp_add_to_cart;
 
 if (!function_exists('is_plugin_active')) {
     include_once(ABSPATH . '/wp-admin/includes/plugin.php');
@@ -45,17 +47,17 @@ class PWP_Plugin implements PWP_I_Hookable_Component
         if (is_admin()) {
 
             /*  ADD ADMIN MENU HOOKABLES HERE */
-
             $this->add_hookable($this->noticePoster);
             $this->add_hookable(new PWP_Variable_Custom_Fields());
             $this->add_hookable(new PWP_Save_Variable_Custom_Fields());
+            //TODO: component in progress
             // $this->add_hookable(new PWP_Parent_Custom_Fields());
         }
 
-        /*  ADD PUBLIC HOOKABLES HERE */
-
+        /*  ADD PUBLIC PAGE HOOKABLES HERE */
         $this->add_hookable(new PWP_Public_Product_Page());
-        $this->add_hookable((new pwp_add_to_cart()));
+        $this->add_hookable(new PWP_Add_Customizable_To_Cart());
+        
         $this->add_hookable(new PWP_API_Plugin('pwp/v1'));
 
         /* REGISTER CHILD HOOKS WITH LOADER */
