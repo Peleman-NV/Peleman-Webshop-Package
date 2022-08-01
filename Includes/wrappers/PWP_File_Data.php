@@ -25,4 +25,14 @@ class PWP_File_Data extends PWP_Component
     {
         return (int)$this->data->error;
     }
+
+    /**
+     * return file size in bytes
+     *
+     * @return integer
+     */
+    public function get_size(): int
+    {
+        return (int)$this->data->size;
+    }
 }

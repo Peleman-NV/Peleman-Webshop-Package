@@ -22,7 +22,7 @@ define('SHOW_STOCK_PHOTOS', 'useshowstockphotos');
 define('USE_TEXT', 'usetext');
 #endregion
 
-class PWP_PIE_Create_Project_Request implements JsonSerializable
+class PWP_PIE_Create_Project_Request_Data implements JsonSerializable
 {
 
     private string $userId;

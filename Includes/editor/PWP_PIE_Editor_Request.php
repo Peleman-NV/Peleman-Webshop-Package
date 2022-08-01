@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace PWP\includes\Editor;
 
-use PWP\includes\editor\PWP_PIE_Create_Project_Request;
+use PWP\includes\editor\PWP_PIE_Create_Project_Request_Data;
 
-class PWP_Editor_Client
+class PWP_Pie_Editor_Request
 {
     private string $clientDomain;
     private string $newProjectEndpoint;
@@ -18,17 +18,26 @@ class PWP_Editor_Client
         $this->newProjectEndpoint = '/editor/api/createprojectAPI.php';
     }
 
-    public function create_new_project(PWP_PIE_Create_Project_Request $request): array
+    public function create_new_project(PWP_PIE_Create_Project_Request_Data $requestData): array
     {
         $endpoint = $this->clientDomain . $this->newProjectEndpoint;
-        return $this->do_get($endpoint, $request->to_array());
+        return $this->do_GET_request($endpoint, $requestData->to_array());
         //TODO: parse response data
         //FIXME: currently not receiving response data?
     }
 
-    private function do_get(string $endpoint, array $request, bool $followRedirect = false, bool $secure = true): array
+    /**
+     * Undocumented function
+     *
+     * @param string $endpoint target URL to make a request of. Generally an API endpoint.
+     * @param array $requestData data of the request. method will convert array into a GET request string.
+     * @param boolean $followRedirect wether the request has to follow redirects from the target URL. default true.
+     * @param boolean $secure wether the request has to be done over HTTPS or not. Default `true`, only set to false in dev environments.
+     * @return array response of the GET request.
+     */
+    private function do_GET_request(string $endpoint, array $requestData, bool $followRedirect = true, bool $secure = true): array
     {
-        $endpoint .= '?' . http_build_query($request);
+        $endpoint .= '?' . http_build_query($requestData);
 
         $curl = curl_init();
         curl_setopt_array($curl, array(

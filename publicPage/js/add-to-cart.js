@@ -21,16 +21,16 @@
             overrideDefaultAddToCartBehaviour
         );
 
+        
         function overrideDefaultAddToCartBehaviour(e) {
             $('#ppi-loading').removeClass('ppi-hidden');
             e.preventDefault();
             const variationId = $("[name='variation_id']").val();
-            // const templateVariationId = $("[name='").val();
             const contentFileId = $("[name='content_file_id']").val();
-            getRedirect(variationId, contentFileId);
+            attemptAddProductToCart(variationId, contentFileId);
         }
 
-        function getRedirect(variationId, contentFileId = null) {
+        function attemptAddProductToCart(variationId, contentFileId = null) {
             $('#redirection-info').html('');
             const data = {
                 variant: variationId,
@@ -40,13 +40,13 @@
             };
 
             $.ajax({
-                url: add_to_cart_obj.ajax_url,
+                url: pwp_add_to_cart_object.ajax_url,
                 method: 'GET',
                 data: data,
                 cache: false,
                 dataType: 'json',
+                nonce: pwp_add_to_cart_object.nonce,
                 success: function (response) {
-                    // window.location.href = 'https://google.com';
                     console.log(response);
                     if (response.status !== 'success') {
                         $('#redirection-info').html(response.message);
@@ -59,10 +59,7 @@
                         window.location.href = response.destinationUrl;
                         return;
                     }
-                    $('.single_add_to_cart_button').off(
-                        'click',
-                        overrideDefaultAddToCartBehaviour
-                    );
+                    $('.single_add_to_cart_button').off('click', overrideDefaultAddToCartBehaviour);
                     $('.single_add_to_cart_button').trigger('click');
                     return;
                 },

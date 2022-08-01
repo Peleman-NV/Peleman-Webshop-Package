@@ -32,7 +32,7 @@ abstract class PWP_Abstract_Ajax_Component implements PWP_I_Hookable_Component
     public function __construct(string $handle,  string $jsFilePath, int $priority = 10, int $accepted_args = 1)
     {
         $this->scriptHandle = $handle;
-        $this->objectName = $handle . '_obj';
+        $this->objectName = $handle . '_object';
         $this->nonceName = $handle . '_nonce';
         $this->jsFilePath = $jsFilePath;
 
@@ -93,4 +93,15 @@ abstract class PWP_Abstract_Ajax_Component implements PWP_I_Hookable_Component
      * @return void
      */
     public abstract function callback_nopriv(): void;
+
+    /**
+     * wrapper method to handle nonce validation. returns 0 if nonce is invalid, 1 or 2 if valid.
+     * @param string $nonce
+     * @return int 1 if the nonce is valid and generated between 0-12 hours ago, 2 if the nonce is valid and generated between 12-24 hours ago. 0 if the nonce is not valid
+     */
+    protected function verify_nonce(string $nonce): int
+    {
+        $value = wp_verify_nonce($nonce, $this->nonceName);
+        return $value ?: 0;
+    }
 }

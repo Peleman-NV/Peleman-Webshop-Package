@@ -30,7 +30,7 @@ class pwp_upload_content extends PWP_Abstract_Ajax_Component
         /**
          * //TODO: implement full functionality of PPI content uploader
          * STEPS:
-         * 1) check ajax nonce
+         * 1) check ajax nonce - using check ajax_referer method
          * 2) check if file upload is successful (should work with the error code from the $FILES global)
          * 3) check if PDF is valid
          * 4) Save PDF
@@ -130,6 +130,11 @@ class pwp_upload_content extends PWP_Abstract_Ajax_Component
         return $generator->generate($filePath, PWP_THUMBNAIL_DIR, $filename, 160);
     }
 
+    /**
+     * generate and return an iterator chain that validates a file
+     *
+     * @return PWP_Abstract_File_Handler
+     */
     private function validation_chain(): PWP_Abstract_File_Handler
     {
         $validator = new PWP_Validate_File_Type();
@@ -140,7 +145,7 @@ class pwp_upload_content extends PWP_Abstract_Ajax_Component
 
     private function verify_ajax_referer(): void
     {
-        if (!check_ajax_referer('pwp_upload_content_nonce', '_ajax_nonce', false)) {
+        if (!check_ajax_referer($this->nonceName, '_ajax_nonce', false)) {
             $error = new PWP_Error_Notice(
                 __('nonce mismatch', PWP_TEXT_DOMAIN),
                 __('Could not verify the origin of this request.', PWP_TEXT_DOMAIN)

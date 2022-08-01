@@ -17,6 +17,8 @@ use PWP\publicPage\PWP_Public_Product_Page;
 use PWP\adminPage\hookables\PWP_Admin_Notice_Poster;
 use PWP\adminPage\hookables\PWP_Variable_Custom_Fields;
 use PWP\adminPage\hookables\PWP_Save_Variable_Custom_Fields;
+use PWP\includes\API\endpoints\PWP_TEST_OAuth2_Client_Endpoint;
+use PWP\includes\API\PWP_Channel_Definition;
 
 if (!function_exists('is_plugin_active')) {
     include_once(ABSPATH . '/wp-admin/includes/plugin.php');
@@ -57,8 +59,9 @@ class PWP_Plugin implements PWP_I_Hookable_Component
         /*  ADD PUBLIC PAGE HOOKABLES HERE */
         $this->add_hookable(new PWP_Public_Product_Page());
         $this->add_hookable(new PWP_Add_Customizable_To_Cart());
-        
+
         $this->add_hookable(new PWP_API_Plugin('pwp/v1'));
+        $this->add_hookable(new PWP_TEST_OAuth2_Client_Endpoint());
 
         /* REGISTER CHILD HOOKS WITH LOADER */
         $this->register_hooks($this->loader);
