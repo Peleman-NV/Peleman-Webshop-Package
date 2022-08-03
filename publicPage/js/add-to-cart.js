@@ -48,7 +48,7 @@
                 nonce: pwp_add_to_cart_object.nonce,
                 success: function (response) {
                     console.log(response);
-                    if (response.status !== 'success') {
+                    if (response.success !== 'true') {
                         $('#redirection-info').html(response.message);
                         $('#redirection-info').addClass('ppi-response-error');
                         return;

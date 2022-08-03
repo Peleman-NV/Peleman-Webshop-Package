@@ -9,7 +9,7 @@ use PWP\includes\wrappers\PWP_File_Data;
 
 abstract class PWP_Abstract_File_Handler
 {
-    private ?self $next;
+    private ?self $next = null;
 
     public function __construct()
     {

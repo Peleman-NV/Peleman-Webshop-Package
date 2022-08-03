@@ -32,6 +32,6 @@ final class PWP_Validate_File_Size extends PWP_Abstract_File_Handler
 
     public function handle(PWP_File_Data $file, PWP_I_Notification $notification): bool
     {
-        return ($file->get_size > $this->maxFileSize) ? $this->handle_next($file, $notification) : false;
+        return ($file->get_size() <= $this->maxFileSize) ? $this->handle_next($file, $notification) : false;
     }
 }

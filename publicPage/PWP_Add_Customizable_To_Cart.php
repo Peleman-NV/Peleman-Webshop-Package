@@ -22,10 +22,16 @@ class pwp_add_Customizable_to_cart extends PWP_Abstract_Ajax_Component
 
     public function callback(): void
     {
+        $variantID = (int)sanitize_text_field($_REQUEST['variant']);
+        $templateID = wc_get_product($variantID)->get_meta('template_id');
+
+        if (empty($templateID)) {
+            wp_send_json_error("Error finding a template ID for the product", 500);
+        }
         //TODO: switch here. if PIE template, redirect to PIE editor. if not, try IMAXEL editor.
         $request = new PWP_Pie_Editor_Request('deveditor.peleman.com');
 
-        $pie_data = new PWP_PIE_Data((int)sanitize_text_field($_GET['variant']));
+        $pie_data = new PWP_PIE_Data($variantID);
 
         if ($pie_data->get_is_customizable()) {
 
@@ -60,26 +66,19 @@ class pwp_add_Customizable_to_cart extends PWP_Abstract_Ajax_Component
             // $content_file_id = sanitize_text_field($_GET['content']);
 
             $projectId = $request->create_new_project($requestData);
-            wp_send_json(array(
-                'status' => 'error',
-                'message' => $projectId,
-            ));
+            // wp_send_json_error(array(
+            //     'message' => $projectId,
+            // ));
 
             // $destination = $request->get_new_project_url($template_id, $variant_id, $language);
             $destination = 'https://deveditor.peleman.com/?projecturl=pie/projects/625e933128f37/var133714.json';
-            wp_send_json(array(
-                'status' => 'success',
+            wp_send_json_success(array(
                 'message' => 'all is well',
                 'isCustomizable' => true,
                 'project_data' => $projectId,
                 'destinationUrl' => $destination,
             ), 200);
         }
-
-        wp_send_json(array(
-            'status' => 'error',
-            'message' => "foo"
-        ));
     }
 
     public function callback_nopriv(): void
