@@ -10,7 +10,7 @@ use PWP\includes\editor\PWP_PIE_Create_Project_Request_Data;
 use PWP\includes\Editor\PWP_Pie_Editor_Request;
 use PWP\includes\hookables\PWP_Abstract_Ajax_Component;
 
-class pwp_add_Customizable_to_cart extends PWP_Abstract_Ajax_Component
+class PWP_Add_To_Cart extends PWP_Abstract_Ajax_Component
 {
     public function __construct()
     {
@@ -24,14 +24,43 @@ class pwp_add_Customizable_to_cart extends PWP_Abstract_Ajax_Component
     {
         $variantID = (int)sanitize_text_field($_REQUEST['variant']);
         $templateID = wc_get_product($variantID)->get_meta('template_id');
+        $customizable = wc_get_product($variantID)->get_meta('customizable');
 
         if (empty($templateID)) {
-            wp_send_json_error("Error finding a template ID for the product", 500);
+            error_log("no template ID found on WC product {$variantID}");
+            wp_send_json_error("No template ID found!", 500);
         }
         //TODO: switch here. if PIE template, redirect to PIE editor. if not, try IMAXEL editor.
+
+        if (preg_match('/^(tpl)([0-9A-Z]{3,})$/m', $templateID)) {
+            $projectID = $this->new_PIE_Project($variantID, $templateID);
+            $destination = "https://deveditor.peleman.com/?projectid={$projectID}";
+        }
+
+
+        // wp_send_json_error(array(
+        //     'message' => $projectId,
+        // ));
+
+        wp_send_json_success(array(
+            'message' => 'all is well',
+            'isCustomizable' => true,
+            'project_data' => $projectID,
+            'destinationUrl' => $destination,
+        ), 200);
+    }
+
+
+    public function callback_nopriv(): void
+    {
+        $this->callback();
+    }
+
+    private function new_PIE_Project(int $variant_id, string $template_id): int
+    {
         $request = new PWP_Pie_Editor_Request('deveditor.peleman.com');
 
-        $pie_data = new PWP_PIE_Data($variantID);
+        $pie_data = new PWP_PIE_Data($variant_id);
 
         if ($pie_data->get_is_customizable()) {
 
@@ -56,6 +85,8 @@ class pwp_add_Customizable_to_cart extends PWP_Abstract_Ajax_Component
                 USE_OPEN_FILE
             );
 
+            error_log(print_r($requestData->to_array(), true));
+
             //TODO: how to handle project names? let users define them on the editor side? use random UUID?
             //      right now generate a random default name.
             //      need to do the requestData in an authenticated manner: use an API key?
@@ -65,24 +96,8 @@ class pwp_add_Customizable_to_cart extends PWP_Abstract_Ajax_Component
             //TODO: handle PDF file uploads
             // $content_file_id = sanitize_text_field($_GET['content']);
 
-            $projectId = $request->create_new_project($requestData);
-            // wp_send_json_error(array(
-            //     'message' => $projectId,
-            // ));
-
-            // $destination = $request->get_new_project_url($template_id, $variant_id, $language);
-            $destination = 'https://deveditor.peleman.com/?projecturl=pie/projects/625e933128f37/var133714.json';
-            wp_send_json_success(array(
-                'message' => 'all is well',
-                'isCustomizable' => true,
-                'project_data' => $projectId,
-                'destinationUrl' => $destination,
-            ), 200);
+            // $projectId = $request->create_new_project($requestData);
+            return 75;
         }
-    }
-
-    public function callback_nopriv(): void
-    {
-        $this->callback();
     }
 }

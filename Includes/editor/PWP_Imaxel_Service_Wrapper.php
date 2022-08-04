@@ -6,7 +6,7 @@ namespace PWP\includes\editor;
 
 use PWP\includes\services\ImaxelService;
 
-class PWP_Imaxel_Service_Wrapper implements PWP_IEditor_Service
+class PWP_Imaxel_Service_Wrapper
 {
     public function add_to_cart()
     {
@@ -58,12 +58,6 @@ class PWP_Imaxel_Service_Wrapper implements PWP_IEditor_Service
 		$response['variant'] = $variant_id;
 
 		wp_send_json_success($response);
-    }
-    public function create_new_project()
-    {
-    }
-    public function retrieve_project()
-    {
     }
 
     private function insertOrUpdateProject($paramArray)

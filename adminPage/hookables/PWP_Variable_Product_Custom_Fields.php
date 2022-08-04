@@ -9,7 +9,7 @@ use PWP\includes\hookables\PWP_Abstract_Action_Component;
 use PWP\includes\utilities\PWP_Input_Fields;
 use WP_Post;
 
-class PWP_Variable_Custom_Fields extends PWP_Abstract_Action_Component
+class PWP_Variable_Product_Custom_Fields extends PWP_Abstract_Action_Component
 {
     public function __construct()
     {
@@ -42,6 +42,16 @@ class PWP_Variable_Custom_Fields extends PWP_Abstract_Action_Component
             PWP_INPUT_FIELDS::create_field(
                 "pie_custom[{$loop}]",
                 'customizable',
+                'bool',
+                $pie_data->get_is_customizable(),
+                ['form-row', 'form-row-full', 'checkbox', 'pie-customizable'],
+                'whether the product is customizable by clients'
+            );
+
+            
+            PWP_INPUT_FIELDS::create_field(
+                "pie_custom[{$loop}]",
+                'use pdf content upload',
                 'bool',
                 $pie_data->get_is_customizable(),
                 ['form-row', 'form-row-full', 'checkbox', 'pie-customizable'],

@@ -35,7 +35,7 @@ class PWP_Pie_Editor_Request
      * @param boolean $secure wether the request has to be done over HTTPS or not. Default `true`, only set to false in dev environments.
      * @return array response of the GET request.
      */
-    private function do_GET_request(string $endpoint, array $requestData, bool $followRedirect = true, bool $secure = true): array
+    protected function do_GET_request(string $endpoint, array $requestData, bool $followRedirect = true, bool $secure = true): array
     {
         $endpoint .= '?' . http_build_query($requestData);
 
