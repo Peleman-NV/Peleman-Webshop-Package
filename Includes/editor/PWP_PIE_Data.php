@@ -14,7 +14,7 @@ class PWP_PIE_Data implements PWP_I_Meta_Property
     private WC_Product $parent;
 
     public bool $customizable;
-    public bool $useContent;
+    public bool $usePDFContent;
     public string $templateId;
     public string $variantCode;
     public string $colorCode;
@@ -37,7 +37,7 @@ class PWP_PIE_Data implements PWP_I_Meta_Property
         $this->parent = wc_get_product($parentId);
 
         $this->customizable = boolval(get_post_meta($parentId, self::CUSTOMIZABLE, true) ?? false);
-        $this->useContent = boolval(get_post_meta($parentId, self::USE_PDF_CONTENT, true) ?? false);
+        $this->usePDFContent = boolval(get_post_meta($parentId, self::USE_PDF_CONTENT, true) ?? false);
         $this->templateId = get_post_meta($parentId, self::TEMPLATE_ID, true) ?? '';
         $this->variantCode = get_post_meta($parentId, self::VARIANT_CODE, true) ?? '';
         $this->colorCode =  get_post_meta($parentId, self::COLOR_CODE, true) ?? '';
@@ -64,9 +64,9 @@ class PWP_PIE_Data implements PWP_I_Meta_Property
         return $this->usePDFContent;
     }
 
-    public function set_uses_pdf_content(bool $useContent): void
+    public function set_uses_pdf_content(bool $usePDFContent): void
     {
-        $this->usePDFContent = $useContent;
+        $this->usePDFContent = $usePDFContent;
     }
 
     public function get_template_id(): string
@@ -111,8 +111,8 @@ class PWP_PIE_Data implements PWP_I_Meta_Property
 
     public function update_meta_data(): void
     {
-        $this->parent->add_meta_data(self::CUSTOMIZABLE, $this->customizable ? 1 : 0, true);
-        $this->parent->add_meta_data(self::USE_PDF_CONTENT, $this->useContent ? 1 : 0, true);
+        $this->parent->update_meta_data(self::CUSTOMIZABLE, $this->customizable ? 1 : 0, true);
+        $this->parent->update_meta_data(self::USE_PDF_CONTENT, $this->useContent ? 1 : 0, true);
         $this->parent->update_meta_data(self::BACKGROUND_ID, $this->backgroundId, true);
         $this->parent->update_meta_data(self::COLOR_CODE, $this->colorCode, true);
         $this->parent->update_meta_data(self::TEMPLATE_ID, $this->templateId, true);

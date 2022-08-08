@@ -30,7 +30,7 @@ class PWP_Add_PDF_Contents_To_Cart extends PWP_Abstract_Filter_Hookable
     public function add_PDF_Contents_to_cart(array $cart_item_data, int $product_id, int $variant_id, int $quantity): array
     {
         $content = $_POST['pdf_content'];
-        if (!empty($project_id)) {
+        if (!empty($product_id)) {
             // $cart_item_data['pdf_content'] = content;
         }
         return $cart_item_data;

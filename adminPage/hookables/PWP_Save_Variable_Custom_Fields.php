@@ -49,7 +49,15 @@ class PWP_Save_Variable_Custom_Fields extends PWP_Abstract_Action_hookable
                 $_POST["pie_background"][$loop]
             ))
         );
-        
+
+        $pie_data->set_customizable(
+            (bool)esc_attr($_POST["pie_custom"][$loop])
+        );
+
+        $pie_data->set_uses_pdf_content(
+            (bool)esc_attr($_POST['pie_pdf_content'][$loop])
+        );
+
         $pie_data->update_meta_data();
     }
 }

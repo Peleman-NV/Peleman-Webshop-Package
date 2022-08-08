@@ -22,7 +22,7 @@ use PWP\includes\hookables\PWP_Add_PDF_Contents_To_Cart;
 use PWP\includes\hookables\PWP_Add_Product_Fields;
 use PWP\includes\hookables\PWP_Add_Project_Data_To_Cart;
 use PWP\includes\hookables\PWP_Display_Project_Data_In_Cart;
-use PWP\publicPage\PWP_Add_To_Cart;
+use PWP\publicPage\PWP_Ajax_Add_To_Cart;
 
 if (!function_exists('is_plugin_active')) {
     include_once(ABSPATH . '/wp-admin/includes/plugin.php');
@@ -62,7 +62,7 @@ class PWP_Plugin implements PWP_I_Hookable_Component
 
         /*  ADD PUBLIC PAGE HOOKABLES HERE */
         $this->add_hookable(new PWP_Public_Product_Page());
-        $this->add_hookable(new PWP_Add_To_Cart());
+        $this->add_hookable(new PWP_Ajax_Add_To_Cart());
 
         $this->add_hookable(new PWP_API_Plugin('pwp/v1'));
         $this->add_hookable(new PWP_TEST_OAuth2_Client_Endpoint());
@@ -70,7 +70,7 @@ class PWP_Plugin implements PWP_I_Hookable_Component
         /* PIE product hookables */
         $this->add_hookable(new PWP_Add_Product_Fields());
         // $this->add_hookable(new PWP_Add_PDF_Contents_To_Cart());
-        $this->add_hookable(new PWP_Add_Project_Data_To_Cart());
+        // $this->add_hookable(new PWP_Add_Project_Data_To_Cart());
         $this->add_hookable(new PWP_Display_Project_Data_In_Cart());
 
         /* REGISTER CHILD HOOKS WITH LOADER */

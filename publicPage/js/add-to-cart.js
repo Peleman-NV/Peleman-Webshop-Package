@@ -2,7 +2,7 @@
  * This script is responsible for redirecting customers to the Imaxel editor,
  * if the product has a template attached, in the admin backend.
  * It fires on the click event, and passes the variantId and,
- * if present, the content file Id.  It call the PHP function
+ * if present, the content file Id.  It call   the PHP function
  * "ppi_add_to_cart" in PublicPage/PpiProductPage.php,
  * which makes a request to Imaxel to create a project.
  * It then persists this as a customer project and redirects the user to the editor.
@@ -21,49 +21,71 @@
             overrideDefaultAddToCartBehaviour
         );
 
-        
+
         function overrideDefaultAddToCartBehaviour(e) {
-            console.log("clicked button");
             $('#ppi-loading').removeClass('ppi-hidden');
             e.preventDefault();
+            var $thisButton = $(this),
+                $form = $thisButton.closest('form.cart'),
+                id = $thisButton.val(),
+                product_qty = $form.find('input[name="quantity"]').val() || 1,
+                product_id = $form.find('input[name="product_id"]').val() || id,
+                variation_id = $form.find('input[name="variation_id"]').val() || 0;
+
             const variationId = $("[name='variation_id']").val();
+            const productId = $("[name='product_id']").val();
             const contentFileId = $("[name='content_file_id']").val();
-            attemptAddProductToCart(variationId, contentFileId);
+            const quantity = $("[name='quantity']").val();
+            attemptAddProductToCart($thisButton, productId, variationId, quantity, contentFileId);
         }
 
-        function attemptAddProductToCart(variationId, contentFileId = null) {
+        function attemptAddProductToCart(Button, productId, variationId, quantity, contentFileId = null) {
             $('#redirection-info').html('');
             const data = {
+                action: 'PWP_Ajax_Add_To_Cart',
+                product: productId,
                 variant: variationId,
+                quantity: quantity,
                 content: contentFileId,
-                action: 'pwp_add_to_cart',
-                // ajax_nonce: pwp_add_to_cart_object.nonce,
+                // ajax_nonce: PWP_Ajax_Add_To_Cart_object.nonce,
             };
 
+            $(document.body).trigger('adding_to_cart', [Button, data])
             $.ajax({
-                url: pwp_add_to_cart_object.ajax_url,
-                method: 'GET',
+                url: PWP_Ajax_Add_To_Cart_object.ajax_url,
+                method: 'POST',
                 data: data,
                 cache: false,
                 dataType: 'json',
-                nonce: pwp_add_to_cart_object.nonce,
+                nonce: PWP_Ajax_Add_To_Cart_object.nonce,
+                beforeSend: function (response) {
+                    console.log("clicked button");
+                    Button.removeClass('added').addClass('loading');
+                },
+                complete: function (response) {
+                    console.log("response received");
+                    Button.addClass('added').removeClass('loading');
+                },
                 success: function (response) {
                     console.log(response);
                     if (response.success !== true) {
+                        //in case something went wrong generating a new project and we cannot redirect the user
                         $('#redirection-info').html(response.data.message);
                         $('#redirection-info').addClass('ppi-response-error');
                         return;
                     }
-                    if (response.data.customizable === true) {
+                    $(document.body).trigger('added_to_cart',
+                        [
+                            response.fragments,
+                            response.cart_hash,
+                            Button
+                        ]);
+
+                    if (response.data.destination_url !== '') {
                         console.log(response.data.destination_url);
-                        
-                        // window.location.href = response.data.destination_url;
-                        // return;
+                        window.location.href = response.data.destination_url;
                     }
-                    console.log('oops');
-                    // return;
-                    $('.single_add_to_cart_button').off('click', overrideDefaultAddToCartBehaviour);
-                    $('.single_add_to_cart_button').trigger('click');
+                    return;
                 },
                 error: function (jqXHR, textStatus, errorThrown) {
                     console.log({ jqXHR });

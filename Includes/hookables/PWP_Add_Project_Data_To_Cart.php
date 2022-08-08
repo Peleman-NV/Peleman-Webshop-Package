@@ -29,7 +29,7 @@ class PWP_Add_Project_Data_To_Cart extends PWP_Abstract_Filter_Hookable
      */
     public function add_PIE_Project_data_to_cart(array $cart_item_data, int $product_id, int $variant_id, int $quantity): array
     {
-        $project_id = $_POST['project_id'];
+        $project_id = $_POST['project'];
         if (!empty($project_id)) {
             $cart_item_data['pie_project_id'] = uniqid("id");
         }

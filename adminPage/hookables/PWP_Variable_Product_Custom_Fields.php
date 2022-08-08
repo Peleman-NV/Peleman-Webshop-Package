@@ -47,15 +47,14 @@ class PWP_Variable_Product_Custom_Fields extends PWP_Abstract_Action_hookable
                 ['form-row', 'form-row-full', 'checkbox', 'pie-customizable'],
                 'whether the product is customizable by clients'
             );
-
             
             PWP_INPUT_FIELDS::create_field(
-                "pie_custom[{$loop}]",
+                "pie_pdf_content[{$loop}]",
                 'use pdf content upload',
                 'bool',
-                $pie_data->get_is_customizable(),
-                ['form-row', 'form-row-full', 'checkbox', 'pie-customizable'],
-                'whether the product is customizable by clients'
+                $pie_data->get_uses_pdf_content(),
+                ['form-row', 'form-row-full', 'checkbox', 'pie-pdf_content'],
+                'whether the product requires a PDF file for its contents'
             );
 
             PWP_INPUT_FIELDS::create_field(

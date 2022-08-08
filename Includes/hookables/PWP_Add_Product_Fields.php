@@ -20,10 +20,10 @@ class PWP_Add_Product_Fields extends PWP_Abstract_Action_hookable
 
     public function display_field(): void
     {
+        global $product;
         //add hidden fields to the add_to_cart form and button
+        //TODO: add hidden fields to the add_to_cart form and button if we need them.
 ?>
-        <input type="hidden" name="project_id" value="12">
-        <input type="hidden" name="editor" value="PIE">
 <?php
     }
 }

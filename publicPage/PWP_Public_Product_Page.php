@@ -21,7 +21,7 @@ class PWP_Public_Product_Page implements PWP_I_Hookable_Component
         // $loader->add_filter('woocommerce_product_single_add_to_cart_text', $this, 'change_add_to_cart_text_for_product');
 
         // $this->add_hookable(new pwp_upload_content());
-        // $this->add_hookable(new pwp_add_to_cart());
+        // $this->add_hookable(new PWP_Ajax_Add_To_Cart());
     }
 
     public function change_add_to_cart_text_for_product(string $defaultText): string
