@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace PWP\includes\hookables;
+namespace PWP\includes\hookables\abstracts;
 
 use PWP\includes\loaders\PWP_Plugin_Loader;
-use PWP\includes\hookables\PWP_I_Hookable_Component;
+use PWP\includes\hookables\abstracts\PWP_I_Hookable_Component;
 
-abstract class PWP_Abstract_Ajax_Component implements PWP_I_Hookable_Component
+abstract class PWP_Abstract_Ajax_Hookable implements PWP_I_Hookable_Component
 {
 
     private string $nonceName;

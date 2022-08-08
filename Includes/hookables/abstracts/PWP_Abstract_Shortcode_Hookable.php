@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace PWP\includes\hookables;
+namespace PWP\includes\hookables\abstracts;
 
-use PWP\includes\hookables\PWP_I_Hookable_Component;
+use PWP\includes\hookables\abstracts\PWP_I_Hookable_Component;
 use PWP\includes\loaders\PWP_Plugin_Loader;
 
-abstract class PWP_Abstract_Shortcode_Component implements PWP_I_Hookable_Component
+abstract class PWP_Abstract_Shortcode_Hookable implements PWP_I_Hookable_Component
 {
     protected string $tag;
 

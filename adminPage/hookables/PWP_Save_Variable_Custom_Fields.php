@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace PWP\adminPage\hookables;
 
 use PWP\includes\editor\PWP_PIE_Data;
-use PWP\includes\hookables\PWP_Abstract_Action_Component;
+use PWP\includes\hookables\abstracts\PWP_Abstract_Action_hookable;
 
-class PWP_Save_Variable_Custom_Fields extends PWP_Abstract_Action_Component
+class PWP_Save_Variable_Custom_Fields extends PWP_Abstract_Action_hookable
 {
     public function __construct()
     {

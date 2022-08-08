@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PWP\includes\hookables;
+namespace PWP\includes\hookables\abstracts;
 
 use PWP\includes\loaders\PWP_Plugin_Loader;
 

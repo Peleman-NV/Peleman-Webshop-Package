@@ -6,7 +6,7 @@ namespace PWP\includes\API;
 
 use PWP\includes\authentication\PWP_Authenticator;
 use PWP\includes\traits\PWP_Hookable_Parent_Trait;
-use PWP\includes\hookables\PWP_I_Hookable_Component;
+use PWP\includes\hookables\abstracts\PWP_I_Hookable_Component;
 
 use PWP\includes\API\endpoints\categories\PWP_API_Categories_Channel;
 

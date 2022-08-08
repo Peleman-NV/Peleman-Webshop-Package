@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace PWP\includes;
 
 use PWP\includes\traits\PWP_Hookable_Parent_Trait;
-use PWP\includes\hookables\PWP_I_Hookable_Component;
+use PWP\includes\hookables\abstracts\PWP_I_Hookable_Component;
 
 use PWP\includes\API\PWP_API_Plugin;
 use PWP\includes\loaders\PWP_Plugin_Loader;
@@ -13,12 +13,15 @@ use PWP\includes\loaders\PWP_Plugin_Loader;
 use PWP\publicPage\PWP_Add_Customizable_To_Cart;
 use PWP\publicPage\PWP_Public_Product_Page;
 
-
 use PWP\adminPage\hookables\PWP_Admin_Notice_Poster;
 use PWP\adminPage\hookables\PWP_Variable_Product_Custom_Fields;
 use PWP\adminPage\hookables\PWP_Save_Variable_Custom_Fields;
 use PWP\includes\API\endpoints\PWP_TEST_OAuth2_Client_Endpoint;
 use PWP\includes\API\PWP_Channel_Definition;
+use PWP\includes\hookables\PWP_Add_PDF_Contents_To_Cart;
+use PWP\includes\hookables\PWP_Add_Product_Fields;
+use PWP\includes\hookables\PWP_Add_Project_Data_To_Cart;
+use PWP\includes\hookables\PWP_Display_Project_Data_In_Cart;
 use PWP\publicPage\PWP_Add_To_Cart;
 
 if (!function_exists('is_plugin_active')) {
@@ -63,6 +66,12 @@ class PWP_Plugin implements PWP_I_Hookable_Component
 
         $this->add_hookable(new PWP_API_Plugin('pwp/v1'));
         $this->add_hookable(new PWP_TEST_OAuth2_Client_Endpoint());
+
+        /* PIE product hookables */
+        $this->add_hookable(new PWP_Add_Product_Fields());
+        // $this->add_hookable(new PWP_Add_PDF_Contents_To_Cart());
+        $this->add_hookable(new PWP_Add_Project_Data_To_Cart());
+        $this->add_hookable(new PWP_Display_Project_Data_In_Cart());
 
         /* REGISTER CHILD HOOKS WITH LOADER */
         $this->register_hooks($this->loader);

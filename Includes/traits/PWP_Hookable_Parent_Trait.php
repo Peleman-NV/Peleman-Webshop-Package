@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PWP\includes\traits;
 
-use PWP\includes\hookables\PWP_I_Hookable_Component;
+use PWP\includes\hookables\abstracts\PWP_I_Hookable_Component;
 use PWP\includes\loaders\PWP_Plugin_Loader;
 
 trait PWP_Hookable_Parent_Trait

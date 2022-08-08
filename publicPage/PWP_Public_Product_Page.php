@@ -6,7 +6,7 @@ namespace PWP\publicPage;
 
 use WC_Product;
 use PWP\includes\loaders\PWP_Plugin_Loader;
-use PWP\includes\hookables\PWP_I_Hookable_Component;
+use PWP\includes\hookables\abstracts\PWP_I_Hookable_Component;
 use PWP\includes\traits\PWP_Hookable_Parent_Trait;
 
 class PWP_Public_Product_Page implements PWP_I_Hookable_Component

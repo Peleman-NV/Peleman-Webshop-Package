@@ -6,7 +6,7 @@ namespace PWP\publicPage;
 
 use setasign\Fpdi\Fpdi;
 use PWP\includes\wrappers\PWP_File_Data;
-use PWP\includes\hookables\PWP_Abstract_Ajax_Component;
+use PWP\includes\hookables\abstracts\PWP_Abstract_Ajax_Hookable;
 use PWP\includes\utilities\notification\PWP_Error_Notice;
 use PWP\includes\utilities\notification\PWP_Notification;
 use PWP\includes\utilities\PWP_Thumbnail_Generator_JPG;
@@ -15,7 +15,7 @@ use PWP\includes\validation\PWP_Validate_File_Errors;
 use PWP\includes\validation\PWP_Validate_File_Type;
 use PWP\includes\wrappers\PWP_Product_Meta_Data;
 
-class pwp_upload_content extends PWP_Abstract_Ajax_Component
+class pwp_upload_content extends PWP_Abstract_Ajax_Hookable
 {
     public function __construct()
     {

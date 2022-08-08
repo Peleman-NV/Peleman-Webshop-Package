@@ -23,6 +23,7 @@
 
         
         function overrideDefaultAddToCartBehaviour(e) {
+            console.log("clicked button");
             $('#ppi-loading').removeClass('ppi-hidden');
             e.preventDefault();
             const variationId = $("[name='variation_id']").val();
@@ -35,8 +36,8 @@
             const data = {
                 variant: variationId,
                 content: contentFileId,
-                action: 'add_to_cart',
-                // _ajax_nonce: pwp_add_to_cart_nonce.nonce,
+                action: 'pwp_add_to_cart',
+                // ajax_nonce: pwp_add_to_cart_object.nonce,
             };
 
             $.ajax({
@@ -48,20 +49,21 @@
                 nonce: pwp_add_to_cart_object.nonce,
                 success: function (response) {
                     console.log(response);
-                    if (response.success !== 'true') {
-                        $('#redirection-info').html(response.message);
+                    if (response.success !== true) {
+                        $('#redirection-info').html(response.data.message);
                         $('#redirection-info').addClass('ppi-response-error');
                         return;
                     }
-                    if (response.isCustomizable === true) {
-                        console.log(response.destinationUrl);
-
-                        window.location.href = response.destinationUrl;
-                        return;
+                    if (response.data.customizable === true) {
+                        console.log(response.data.destination_url);
+                        
+                        // window.location.href = response.data.destination_url;
+                        // return;
                     }
+                    console.log('oops');
+                    // return;
                     $('.single_add_to_cart_button').off('click', overrideDefaultAddToCartBehaviour);
                     $('.single_add_to_cart_button').trigger('click');
-                    return;
                 },
                 error: function (jqXHR, textStatus, errorThrown) {
                     console.log({ jqXHR });

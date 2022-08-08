@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace PWP\includes\API\endpoints;
 
 use PWP\includes\authentication\PWP_I_Api_Authenticator;
-use PWP\includes\hookables\PWP_I_Hookable_Component;
+use PWP\includes\hookables\abstracts\PWP_I_Hookable_Component;
 use PWP\includes\loaders\PWP_Plugin_Loader;
 
 abstract class PWP_Endpoint_Controller implements PWP_I_Endpoint, PWP_I_Hookable_Component

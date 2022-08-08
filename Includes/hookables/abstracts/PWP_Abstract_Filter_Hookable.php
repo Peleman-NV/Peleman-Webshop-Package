@@ -2,23 +2,24 @@
 
 declare(strict_types=1);
 
-namespace PWP\includes\hookables;
+namespace PWP\includes\hookables\abstracts;
 
-use PWP\includes\hookables\PWP_I_Hookable_Component;
+use PWP\includes\hookables\abstracts\PWP_I_Hookable_Component;
 use PWP\includes\loaders\PWP_Plugin_Loader;
 
-abstract class PWP_Abstract_Filter_Component implements PWP_I_Hookable_Component
+abstract class PWP_Abstract_Filter_Hookable implements PWP_I_Hookable_Component
 {
     protected string $hook;
+    protected string $callback;
     protected int $priority;
     protected int $accepted_args;
-    protected const CALLBACK = 'filter_callback';
 
-    public function __construct(string $hook, int $priority = 10, $accepted_args = 1)
+    public function __construct(string $hook, string $callback, int $priority = 10, $accepted_args = 1)
     {
         $this->hook = $hook;
         $this->priority = $priority;
         $this->accepted_args = $accepted_args;
+        $this->callback = $callback;
     }
 
     final public function register_hooks(PWP_Plugin_Loader $loader): void
@@ -26,11 +27,9 @@ abstract class PWP_Abstract_Filter_Component implements PWP_I_Hookable_Component
         $loader->add_filter(
             $this->hook,
             $this,
-            SELF::CALLBACK,
+            $this->callback,
             $this->priority,
             $this->accepted_args
         );
     }
-
-    public abstract function filter_callback(...$args);
 }

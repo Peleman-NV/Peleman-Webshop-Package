@@ -8,9 +8,9 @@ use IWPML_Current_Language;
 use PWP\includes\editor\PWP_PIE_Data;
 use PWP\includes\editor\PWP_PIE_Create_Project_Request_Data;
 use PWP\includes\Editor\PWP_Pie_Editor_Request;
-use PWP\includes\hookables\PWP_Abstract_Ajax_Component;
+use PWP\includes\hookables\abstracts\PWP_Abstract_Ajax_Hookable;
 
-class PWP_Add_To_Cart extends PWP_Abstract_Ajax_Component
+class PWP_Add_To_Cart extends PWP_Abstract_Ajax_Hookable
 {
     public function __construct()
     {
@@ -22,13 +22,14 @@ class PWP_Add_To_Cart extends PWP_Abstract_Ajax_Component
 
     public function callback(): void
     {
+        error_log("called!");
         $variantID = (int)sanitize_text_field($_REQUEST['variant']);
         $templateID = wc_get_product($variantID)->get_meta('template_id');
         $customizable = wc_get_product($variantID)->get_meta('customizable');
 
         if (empty($templateID)) {
             error_log("no template ID found on WC product {$variantID}");
-            wp_send_json_error("No template ID found!", 500);
+            // wp_send_json_error('Error: No template ID found!', 200);
         }
         //TODO: switch here. if PIE template, redirect to PIE editor. if not, try IMAXEL editor.
 
@@ -37,6 +38,8 @@ class PWP_Add_To_Cart extends PWP_Abstract_Ajax_Component
             $destination = "https://deveditor.peleman.com/?projectid={$projectID}";
         }
 
+        // $destination = get_permalink();
+        $destination = 'https://www.google.com';
 
         // wp_send_json_error(array(
         //     'message' => $projectId,
@@ -44,12 +47,11 @@ class PWP_Add_To_Cart extends PWP_Abstract_Ajax_Component
 
         wp_send_json_success(array(
             'message' => 'all is well',
-            'isCustomizable' => true,
+            'customizable' => true,
             'project_data' => $projectID,
-            'destinationUrl' => $destination,
+            'destination_url' => $destination,
         ), 200);
     }
-
 
     public function callback_nopriv(): void
     {

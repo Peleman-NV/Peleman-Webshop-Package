@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace PWP\adminPage\hookables;
 
 use PWP\includes\editor\PWP_PIE_Data;
-use PWP\includes\hookables\PWP_Abstract_Action_Component;
+use PWP\includes\hookables\abstracts\PWP_Abstract_Action_hookable;
 use PWP\includes\utilities\PWP_Input_Fields;
 use WP_Post;
 
-class PWP_Variable_Product_Custom_Fields extends PWP_Abstract_Action_Component
+class PWP_Variable_Product_Custom_Fields extends PWP_Abstract_Action_hookable
 {
     public function __construct()
     {
