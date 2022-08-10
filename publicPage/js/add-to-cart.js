@@ -74,17 +74,25 @@
                         $('#redirection-info').addClass('ppi-response-error');
                         return;
                     }
+                    if (response.data.destination_url !== '') {
+                        //if the response has a destination url, redirect.
+                        console.log(response.data.destination_url);
+                        window.location.href = response.data.destination_url;
+                        return;
+                    }
+
+                    //if we're at this point in the script, we can safely assume that we should use the default functionality of the button.
                     $(document.body).trigger('added_to_cart',
                         [
                             response.fragments,
                             response.cart_hash,
                             Button
                         ]);
-
-                    if (response.data.destination_url !== '') {
-                        console.log(response.data.destination_url);
-                        window.location.href = response.data.destination_url;
-                    }
+                    $('.single_add_to_cart_button').off(
+                        'click',
+                        overrideDefaultAddToCartBehaviour
+                    );
+                    $('.single_add_to_cart_button').trigger('click');
                     return;
                 },
                 error: function (jqXHR, textStatus, errorThrown) {

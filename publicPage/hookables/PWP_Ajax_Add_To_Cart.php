@@ -91,24 +91,12 @@ class PWP_Ajax_Add_To_Cart extends PWP_Abstract_Ajax_Hookable
                     );
                 }
 
-                if (WC()->cart->add_to_cart(
-                    $productID,
-                    $quantity,
-                    $variationID,
-                    $variation,
-                    $itemMeta
-                )) {
-                    // WC_AJAX::get_refreshed_fragments();.
-
-                    wp_send_json_success(array(
-                        'message' => 'all is well, product added to cart',
-                        'destination_url' => $redirectUrl,
-                    ), 200);
-                }
-                wp_send_json_error(array('message' => 'something screwed up'), 420);
+                wp_send_json_success(array(
+                    'message' => 'standard product, using default functionality',
+                    'destination_url' => $redirectUrl,
+                ), 200);
             }
-
-            wp_send_json_error(array('message' => 'oopsie doopsie'), 420);
+            wp_send_json_error(array('message' => 'something screwed up'), 420);
         } catch (Error $err) {
             error_log(sprintf("PHP Error: %s in %s on line %s", $err->getMessage(), $err->getFile(), $err->getLine()));
 
