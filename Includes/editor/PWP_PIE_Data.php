@@ -31,17 +31,17 @@ class PWP_PIE_Data implements PWP_I_Meta_Property
     {
         $product = wc_get_product($parentId);
         if (is_null($product)) {
-            //TODO: write custom exception
+            //TODO: write custom exception class
             throw new Exception("Product with ID {$parentId} not found. Id not valid or object is not a product.");
         }
         $this->parent = wc_get_product($parentId);
 
-        $this->customizable = boolval(get_post_meta($parentId, self::CUSTOMIZABLE, true) ?? false);
-        $this->usePDFContent = boolval(get_post_meta($parentId, self::USE_PDF_CONTENT, true) ?? false);
-        $this->templateId = get_post_meta($parentId, self::TEMPLATE_ID, true) ?? '';
-        $this->variantCode = get_post_meta($parentId, self::VARIANT_CODE, true) ?? '';
-        $this->colorCode =  get_post_meta($parentId, self::COLOR_CODE, true) ?? '';
-        $this->backgroundId =  get_post_meta($parentId, self::BACKGROUND_ID, true) ?? '';
+        $this->customizable = boolval($product->get_meta(self::CUSTOMIZABLE, true) ?? false);
+        $this->usePDFContent = boolval($product->get_meta(self::USE_PDF_CONTENT, true) ?? false);
+        $this->templateId = $product->get_meta(self::TEMPLATE_ID, true) ?? '';
+        $this->variantCode = $product->get_meta(self::VARIANT_CODE, true) ?? '';
+        $this->colorCode = $product->get_meta(self::COLOR_CODE, true) ?? '';
+        $this->backgroundId =  $product->get_meta(self::BACKGROUND_ID, true) ?? '';
     }
 
     public function get_parent(): WC_Product

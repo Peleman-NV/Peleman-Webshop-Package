@@ -38,6 +38,8 @@ class PWP_PIE_Create_Project_Request_Data implements JsonSerializable
     private string $projectName;
     private string $returnUrl;
 
+    private string $apiKey;
+
     public function __construct(string $userId, PWP_PIE_Data $data, string $returnUrl)
     {
         $this->userId = $userId;
@@ -49,6 +51,7 @@ class PWP_PIE_Create_Project_Request_Data implements JsonSerializable
         $this->editorInstructions = array();
         $this->projectName = '';
         $this->returnUrl = $returnUrl;
+        $this->apiKey = "X88CPxzXAzunHw2LQ5k6Zat6fCZXCEQqy7Rr6kBnbwj6zM_DOZ6Q-shtgWMM4kI7Iq-r5L2XF7EdjLHHoO4351";
     }
 
     #region Builder Methods
@@ -98,10 +101,12 @@ class PWP_PIE_Create_Project_Request_Data implements JsonSerializable
     {
         $data = array(
             'userid' => $this->userId,
+            'customerid' => 'webshop',
             'templateid' => $this->templateId,
             'designid' => $this->designId,
             'language' => $this->language,
             'returnurl' => $this->returnUrl,
+            'customerapikey' => $this->apiKey,
         );
 
         if (!empty($this->editorInstructions)) $data['editorinstructions'] = $this->editorInstructions;
