@@ -5,16 +5,10 @@ declare(strict_types=1);
 namespace PWP\publicPage\hookables;
 
 use Error;
-use IWPML_Current_Language;
 use pwp\includes\editor\PWP_Editor_Project;
 use PWP\includes\editor\PWP_New_PIE_Project_Request;
-use PWP\includes\editor\PWP_PIE_Data;
-use PWP\includes\editor\PWP_PIE_Create_Project_Request_Data;
-use PWP\includes\Editor\PWP_Pie_Editor_Request;
 use PWP\includes\editor\PWP_PIE_Editor_Project;
 use PWP\includes\hookables\abstracts\PWP_Abstract_Ajax_Hookable;
-use WC_AJAX;
-use WC_Product_Variation;
 
 class PWP_Ajax_Add_To_Cart extends PWP_Abstract_Ajax_Hookable
 {
@@ -29,46 +23,40 @@ class PWP_Ajax_Add_To_Cart extends PWP_Abstract_Ajax_Hookable
     public function callback(): void
     {
         try {
-            if (!isset($_POST['product'])) {
+            if (!isset($_REQUEST['product'])) {
                 wp_send_json_error(array('message' => 'missing necessary data!'), 400);
             }
             error_log("incoming add to cart request: " . print_r($_REQUEST, true));
 
             //find and store all relevant variables
-            $productID      = apply_filters('woocommerce_add_to_cart_product_id', absint($_REQUEST['product']));
-            $variationID    = absint($_REQUEST['variant']) ?: 0;
-            $product        = wc_get_product($variationID ?: $productID);
+            //first, read and interpret data from request
+            $productId      = apply_filters('woocommerce_add_to_cart_product_id', absint($_REQUEST['product']));
+            $variationId    = absint($_REQUEST['variant']) ?: 0;
+            $product        = wc_get_product($variationId ?: $productId);
             $quantity       = wc_stock_amount($_REQUEST['quantity'] ?: 1);
+
+            //next, get local data
             $customizable   = ((int)$product->get_meta('pie_customizable') === 1);
-            $templateID     = $product->get_meta('template_id');
-            //TODO: use validation
-            $validated      = apply_filters('woocommerce_add_to_cart_validation', true, $productID, $quantity, $variationID);
+            $templateId     = $product->get_meta('template_id');
+            $validated      = apply_filters('woocommerce_add_to_cart_validation', true, $productId, $quantity, $variationId);
             $variation      = [];
             $itemMeta       = [];
             $redirectUrl    = '';
 
-            // //adjust data if product is a variation
-            // if ($product && $product instanceof WC_Product_Variation) {
-            //     // $variationID    = $productID;
-            //     $productID      = $product->get_parent_id();
-            //     $variation      = $product->get_variation_attributes();
-            // }
-
-            error_log("customizable: " . ($customizable ? 'true' : 'false'));
-
             if ($validated) {
-                if ($customizable && $templateID) {
+                if ($customizable && $templateId) {
+                    //BEGIN CUSTOM PROJECT REDIRECT FLOW
                     session_start();
 
                     //create custom id for a session variable to store the order data
                     //TODO: should any given user only be able to edit a single order/product at a time? look into it.
-                    $sessionID = uniqid('ord');
+                    $sessionId = uniqid('ord');
 
                     //generate return url which, when called, will add the cached order to the cart.
-                    $returnUrl = wc_get_cart_url() . "?CustProj={$sessionID}";
+                    $returnUrl = wc_get_cart_url() . "?CustProj={$sessionId}";
 
                     //generate new project data
-                    $projectData = $this->generate_new_project($variationID, $templateID, $returnUrl);
+                    $projectData = $this->generate_new_project($variationId, $templateId, $returnUrl);
 
                     $itemMeta = array(
                         'editor'            => $projectData->get_editor_id(),
@@ -77,10 +65,10 @@ class PWP_Ajax_Add_To_Cart extends PWP_Abstract_Ajax_Hookable
                     );
 
                     //store relevant data in session
-                    $_SESSION[$sessionID] = array(
-                        'product_id'    => $productID,
+                    $_SESSION[$sessionId] = array(
+                        'product_id'    => $productId,
                         'quantity'      => $quantity,
-                        'variation_id'  => $variationID,
+                        'variation_id'  => $variationId,
                         'variation'     => $variation,
                         'item_meta'     => $itemMeta,
                     );
@@ -124,17 +112,17 @@ class PWP_Ajax_Add_To_Cart extends PWP_Abstract_Ajax_Hookable
     }
 
     /**
-     * Undocumented function
+     * attempt creation of a new project. Method will try to use the template Id to determine what editor is to be used.
      *
-     * @param integer $productID
-     * @param string $templateID
-     * @param string $returnURL
-     * @return PWP_Editor_Project|null
+     * @param integer $productId id of the product we are trying to edit
+     * @param string $templateId template Id of the product. Needed to deterime the appropriate Editor
+     * @param string $returnURL url to which the editor will return the user after saving their project, if blank, refer to editor.
+     * @return PWP_Editor_Project|null wil return a PWP_Editor_Project object if successful. if the method can not determine a valid editor, will return null.
      */
-    public function generate_new_project(int $productID, string $templateID, string $returnURL = ''): PWP_Editor_Project
+    public function generate_new_project(int $productId, string $templateId, string $returnURL = ''): PWP_Editor_Project
     {
-        if (preg_match('/^(tpl)([0-9A-Z]{3,})$/m', $templateID)) {
-            return $this->new_PIE_Project($productID, $returnURL ?: site_url());
+        if (preg_match('/^(tpl)([0-9A-Z]{3,})$/m', $templateId)) {
+            return $this->new_PIE_Project($productId, $returnURL ?: site_url());
         }
 
         return null;
@@ -149,36 +137,28 @@ class PWP_Ajax_Add_To_Cart extends PWP_Abstract_Ajax_Hookable
     private function new_PIE_Project(int $variant_id, string $returnUrl): PWP_PIE_Editor_Project
     {
         //TODO: clean up hardcoded variables and get from options instead.
-        $request = PWP_New_PIE_Project_Request::new(
-            'https://deveditor.peleman.com/',
-            'webshop',
-            'X88CPxzXAzunHw2LQ5k6Zat6fCZXCEQqy7Rr6kBnbwj6zM_DOZ6Q-shtgWMM4kI7Iq-r5L2XF7EdjLHHoO4351',
-        )->initialize_from_product(wc_get_product($variant_id))
+
+        return
+            PWP_New_PIE_Project_Request::new(
+                'https://deveditor.peleman.com/',
+                'webshop',
+                'X88CPxzXAzunHw2LQ5k6Zat6fCZXCEQqy7Rr6kBnbwj6zM_DOZ6Q-shtgWMM4kI7Iq-r5L2XF7EdjLHHoO4351',
+            )->initialize_from_product(wc_get_product($variant_id))
+            ->set_timeout(10)
             ->set_return_url($returnUrl)
             ->set_user_id(get_current_user_id())
             ->set_language(defined('ICL_LANGUAGE_CODE') ? ICL_LANGUAGE_CODE : 'en')
             ->set_project_name("k" . uniqid())
             ->set_editor_instructions(
-                USE_DESIGN_MODE,
-                USE_BACKGROUNDS,
-                USE_DESIGNS,
-                SHOW_CROP_ZONE,
-                SHOW_SAFE_ZONE,
-                USE_TEXT,
-                USE_ELEMENTS,
-                USE_DESIGNS,
-                USE_OPEN_FILE
-            );
-
-        //TODO: how to handle project names? let users define them on the editor side? use random UUID?
-        //      right now generate a random default name.
-        //      need to do the requestData in an authenticated manner: use an API key?
-        //      requires a response: response should allow me to redirect the user to their editor page.
-
-
-        //TODO: handle PDF file uploads
-        // $content_file_id = sanitize_text_field($_GET['content']);
-
-        return $request->make_request();
+                PIE_USE_DESIGN_MODE,
+                PIE_USE_BACKGROUNDS,
+                PIE_USE_DESIGNS,
+                PIE_SHOW_CROP_ZONE,
+                PIE_SHOW_SAFE_ZONE,
+                PIE_USE_TEXT,
+                PIE_USE_ELEMENTS,
+                PIE_USE_DESIGNS,
+                PIE_USE_OPEN_FILE
+            )->make_request();
     }
 }

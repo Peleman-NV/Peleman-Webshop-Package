@@ -5,24 +5,30 @@ declare(strict_types=1);
 namespace PWP\includes\editor;
 
 use PWP\includes\editor\PWP_Editor_Project;
+use PWP\includes\utilities\response\PWP_I_Response;
+use PWP\includes\utilities\response\PWP_I_Response_Component;
 
-class PWP_PIE_Editor_Project extends PWP_Editor_Project
+class PWP_PIE_Editor_Project extends PWP_Editor_Project implements PWP_I_Response, PWP_I_Response_Component
 {
-    private string $projectID;
+    //TODO: fix PIE hardcoding with options.
     public function __construct(string $projectId)
     {
-        $this->projectID = $projectId;
-        parent::__construct('PIE');
-    }
-
-    public function get_project_id(): string
-    {
-        return $this->projectID;
+        parent::__construct('PIE', $projectId);
     }
 
     public function get_project_editor_url(): string
     {
-        $id = $this->projectID;
+        $id = $this->get_project_id();
         return "https://deveditor.peleman.com/?projectid={$id}";
+    }
+
+    public function to_array(): array
+    {
+        return array(
+            'editorId' => $this->get_editor_id(),
+            'projectId' => $this->get_project_id(),
+            'projectUrl' => $this->get_project_editor_url(),
+
+        );
     }
 }
