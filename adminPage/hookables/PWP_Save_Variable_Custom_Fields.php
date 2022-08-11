@@ -28,34 +28,34 @@ class PWP_Save_Variable_Custom_Fields extends PWP_Abstract_Action_hookable
 
         $pie_data->set_template_id(
             esc_attr(sanitize_text_field(
-                $_POST["pie_template"][$loop]
+                $_POST[PWP_PIE_DATA::TEMPLATE_ID][$loop]
             ))
         );
 
-        $pie_data->set_variant_code(
+        $pie_data->set_design_id(
             esc_attr(sanitize_text_field(
-                $_POST["pie_variant"][$loop]
+                $_POST[PWP_PIE_DATA::DESIGN_ID][$loop]
             ))
         );
 
         $pie_data->set_color_code(
             esc_attr(sanitize_text_field(
-                $_POST["pie_color"][$loop]
+                $_POST[PWP_PIE_DATA::COLOR_CODE][$loop]
             ))
         );
 
         $pie_data->set_background_id(
             esc_attr(sanitize_text_field(
-                $_POST["pie_background"][$loop]
+                $_POST[PWP_PIE_DATA::BACKGROUND_ID][$loop]
             ))
         );
 
         $pie_data->set_customizable(
-            (bool)esc_attr($_POST["pie_custom"][$loop])
+            (bool)esc_attr($_POST[PWP_PIE_DATA::CUSTOMIZABLE][$loop])
         );
 
         $pie_data->set_uses_pdf_content(
-            (bool)esc_attr($_POST['pie_pdf_content'][$loop])
+            (bool)esc_attr($_POST[PWP_PIE_DATA::USE_PDF_CONTENT][$loop])
         );
 
         $pie_data->update_meta_data();

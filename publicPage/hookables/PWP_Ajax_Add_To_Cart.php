@@ -40,17 +40,18 @@ class PWP_Ajax_Add_To_Cart extends PWP_Abstract_Ajax_Hookable
             $quantity       = wc_stock_amount($_REQUEST['quantity'] ?: 1);
             $customizable   = ((int)$product->get_meta('pie_customizable') === 1);
             $templateID     = $product->get_meta('template_id');
+            //TODO: use validation
             $validated      = apply_filters('woocommerce_add_to_cart_validation', true, $productID, $quantity, $variationID);
             $variation      = [];
             $itemMeta       = [];
             $redirectUrl    = '';
 
-            //adjust data if product is a variation
-            if ($product && $product instanceof WC_Product_Variation) {
-                // $variationID    = $productID;
-                $productID      = $product->get_parent_id();
-                $variation      = $product->get_variation_attributes();
-            }
+            // //adjust data if product is a variation
+            // if ($product && $product instanceof WC_Product_Variation) {
+            //     // $variationID    = $productID;
+            //     $productID      = $product->get_parent_id();
+            //     $variation      = $product->get_variation_attributes();
+            // }
 
             error_log("customizable: " . ($customizable ? 'true' : 'false'));
 
@@ -59,6 +60,7 @@ class PWP_Ajax_Add_To_Cart extends PWP_Abstract_Ajax_Hookable
                     session_start();
 
                     //create custom id for a session variable to store the order data
+                    //TODO: should any given user only be able to edit a single order/product at a time? look into it.
                     $sessionID = uniqid('ord');
 
                     //generate return url which, when called, will add the cached order to the cart.
@@ -68,18 +70,18 @@ class PWP_Ajax_Add_To_Cart extends PWP_Abstract_Ajax_Hookable
                     $projectData = $this->generate_new_project($variationID, $templateID, $returnUrl);
 
                     $itemMeta = array(
-                        'editor' => $projectData->get_editor_id(),
-                        'pie_project_id' => $projectData->get_project_id(),
-                        'pie_project_url' => $projectData->get_project_editor_url(),
+                        'editor'            => $projectData->get_editor_id(),
+                        'pie_project_id'    => $projectData->get_project_id(),
+                        'pie_project_url'   => $projectData->get_project_editor_url(),
                     );
 
                     //store relevant data in session
                     $_SESSION[$sessionID] = array(
-                        'product_id' => $productID,
-                        'quantity' => $quantity,
-                        'variation_id' => $variationID,
-                        'variation' => $variation,
-                        'item_meta' => $itemMeta,
+                        'product_id'    => $productID,
+                        'quantity'      => $quantity,
+                        'variation_id'  => $variationID,
+                        'variation'     => $variation,
+                        'item_meta'     => $itemMeta,
                     );
 
                     wp_send_json_success(
@@ -99,6 +101,7 @@ class PWP_Ajax_Add_To_Cart extends PWP_Abstract_Ajax_Hookable
             wp_send_json_error(array('message' => 'something screwed up'), 420);
         } catch (Error $err) {
             error_log(sprintf("PHP Error: %s in %s on line %s", $err->getMessage(), $err->getFile(), $err->getLine()));
+            error_log($err->getTraceAsString());
 
             wp_send_json_error(
                 array(
@@ -123,8 +126,6 @@ class PWP_Ajax_Add_To_Cart extends PWP_Abstract_Ajax_Hookable
     {
         if (preg_match('/^(tpl)([0-9A-Z]{3,})$/m', $templateID)) {
             $projectID = $this->new_PIE_Project($productID, $templateID, $returnURL ?: site_url());
-            // $redirectUrl = "https://deveditor.peleman.com/?projectid={$projectID}";
-            // $itemMeta = ['pie_project_id' => $projectID];
         }
         return new PWP_PIE_Editor_Project($projectID);
     }

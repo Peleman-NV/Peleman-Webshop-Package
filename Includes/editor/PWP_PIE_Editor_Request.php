@@ -44,15 +44,14 @@ class PWP_Pie_Editor_Request
         $curl = curl_init($endpoint);
         curl_setopt_array($curl, array(
             CURLOPT_URL => $endpoint,
-            // CURLOPT_FAILONERROR => true,
-            // CURLOPT_FOLLOWLOCATION => $followRedirect,
-            // CURLOPT_MAXREDIRS => 2,
+            CURLOPT_FOLLOWLOCATION => $followRedirect,
+            CURLOPT_MAXREDIRS => 2,
             // CURLOPT_HEADER => true,
-            // CURLOPT_TIMEOUT => $this->timeout,
-            // CURLOPT_CONNECTTIMEOUT => $this->timeout,
-            // CURLOPT_ENCODING => "",
-            // CURLOPT_SSL_VERIFYPEER => $secure ? 1 : 0,
-            // CURLOPT_SSL_VERIFYHOST => $secure ? 2 : 0,
+            CURLOPT_TIMEOUT => $this->timeout,
+            CURLOPT_CONNECTTIMEOUT => $this->timeout,
+            CURLOPT_ENCODING => "",
+            CURLOPT_SSL_VERIFYPEER => $secure ? 1 : 0,
+            CURLOPT_SSL_VERIFYHOST => $secure ? 2 : 0,
             CURLOPT_RETURNTRANSFER => 1,
         ));
 

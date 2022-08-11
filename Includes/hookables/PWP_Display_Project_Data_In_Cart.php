@@ -22,11 +22,9 @@ class PWP_Display_Project_Data_In_Cart extends PWP_Abstract_Filter_Hookable
     {
         if (!empty($cart_item['pie_project_id'])) {
             $item_data[] = array(
-                // 'key' => __('project ID', PWP_TEXT_DOMAIN),
+                'name' => '',
                 'value' => wc_clean($cart_item['pie_project_id']),
-                //TODO: look into what this does and how we can use it in the future
-                //TODO: look into an URL so that the customer can still edit this project from the cart.
-                'display' => '<a href="https://deveditor.peleman.com/?projectid=' . wc_clean($cart_item['pie_project_id']) . '" class="button">edit/review project</a>',
+                'display' => '<a href="' . wc_clean($cart_item['pie_project_url']) . '" class="button">edit/review project</a>',
             );
         }
         return $item_data;

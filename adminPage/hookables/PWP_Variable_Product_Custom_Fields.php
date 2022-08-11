@@ -40,16 +40,16 @@ class PWP_Variable_Product_Custom_Fields extends PWP_Abstract_Action_hookable
             <?php
 
             PWP_INPUT_FIELDS::create_field(
-                "pie_custom[{$loop}]",
+                PWP_PIE_DATA::CUSTOMIZABLE . "[{$loop}]",
                 'customizable',
                 'bool',
                 $pie_data->get_is_customizable(),
                 ['form-row', 'form-row-full', 'checkbox', 'pie-customizable'],
                 'whether the product is customizable by clients'
             );
-            
+
             PWP_INPUT_FIELDS::create_field(
-                "pie_pdf_content[{$loop}]",
+                PWP_PIE_DATA::USE_PDF_CONTENT . "[{$loop}]",
                 'use pdf content upload',
                 'bool',
                 $pie_data->get_uses_pdf_content(),
@@ -58,7 +58,7 @@ class PWP_Variable_Product_Custom_Fields extends PWP_Abstract_Action_hookable
             );
 
             PWP_INPUT_FIELDS::create_field(
-                "pie_template[{$loop}]",
+                PWP_PIE_DATA::TEMPLATE_ID . "[{$loop}]",
                 'PIE Template ID',
                 'text',
                 $pie_data->get_template_id(),
@@ -66,15 +66,15 @@ class PWP_Variable_Product_Custom_Fields extends PWP_Abstract_Action_hookable
             );
 
             PWP_INPUT_FIELDS::create_field(
-                "pie_variant[{$loop}]",
-                'Variant ID',
+                PWP_PIE_DATA::DESIGN_ID . "[{$loop}]",
+                'Design ID',
                 'text',
-                $pie_data->get_variant_code(),
+                $pie_data->get_design_id(),
                 ['form-row', 'form-row-last'],
             );
 
             PWP_INPUT_FIELDS::create_field(
-                "pie_color[{$loop}]",
+                PWP_PIE_DATA::COLOR_CODE . "[{$loop}]",
                 'Color Code',
                 'text',
                 $pie_data->get_color_code(),
@@ -82,7 +82,7 @@ class PWP_Variable_Product_Custom_Fields extends PWP_Abstract_Action_hookable
             );
 
             PWP_INPUT_FIELDS::create_field(
-                "pie_background[{$loop}]",
+                PWP_PIE_DATA::BACKGROUND_ID . "[{$loop}]",
                 'PIE background ID',
                 'text',
                 $pie_data->get_background_id(),

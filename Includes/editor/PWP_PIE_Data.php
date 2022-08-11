@@ -16,30 +16,31 @@ class PWP_PIE_Data implements PWP_I_Meta_Property
     public bool $customizable;
     public bool $usePDFContent;
     public string $templateId;
-    public string $variantCode;
+    public string $designId;
     public string $colorCode;
     public string $backgroundId;
 
     public const CUSTOMIZABLE = 'pie_customizable';
     public const USE_PDF_CONTENT = 'pie_use_pdf_content';
-    public const TEMPLATE_ID = 'template_id';
-    public const VARIANT_CODE = 'variant_code';
+    public const TEMPLATE_ID = 'pie_template_id';
+    public const DESIGN_ID = 'pie_design_id';
     public const COLOR_CODE = 'pie_color_code';
     public const BACKGROUND_ID = 'pie_background_id';
 
-    public function __construct(int $parentId)
+    public function __construct(int $productID)
     {
-        $product = wc_get_product($parentId);
+        $product = wc_get_product($productID);
         if (is_null($product)) {
             //TODO: write custom exception class
-            throw new Exception("Product with ID {$parentId} not found. Id not valid or object is not a product.");
+            throw new Exception("Product with ID {$productID} not found. Id not valid or object is not a product.");
         }
-        $this->parent = wc_get_product($parentId);
+
+        $this->parent = wc_get_product($productID);
 
         $this->customizable = boolval($product->get_meta(self::CUSTOMIZABLE, true) ?? false);
         $this->usePDFContent = boolval($product->get_meta(self::USE_PDF_CONTENT, true) ?? false);
         $this->templateId = $product->get_meta(self::TEMPLATE_ID, true) ?? '';
-        $this->variantCode = $product->get_meta(self::VARIANT_CODE, true) ?? '';
+        $this->designId = $product->get_meta(self::DESIGN_ID, true) ?? '';
         $this->colorCode = $product->get_meta(self::COLOR_CODE, true) ?? '';
         $this->backgroundId =  $product->get_meta(self::BACKGROUND_ID, true) ?? '';
     }
@@ -79,14 +80,14 @@ class PWP_PIE_Data implements PWP_I_Meta_Property
         $this->templateId = $id;
     }
 
-    public function get_variant_code(): string
+    public function get_design_id(): string
     {
-        return $this->variantCode;
+        return $this->designId;
     }
 
-    public function set_variant_code(string $code): void
+    public function set_design_id(string $code): void
     {
-        $this->variantCode = $code;
+        $this->designId = $code;
     }
 
     public function get_color_code(): string
@@ -116,7 +117,7 @@ class PWP_PIE_Data implements PWP_I_Meta_Property
         $this->parent->update_meta_data(self::BACKGROUND_ID, $this->backgroundId, true);
         $this->parent->update_meta_data(self::COLOR_CODE, $this->colorCode, true);
         $this->parent->update_meta_data(self::TEMPLATE_ID, $this->templateId, true);
-        $this->parent->update_meta_data(self::VARIANT_CODE, $this->variantCode, true);
+        $this->parent->update_meta_data(self::DESIGN_ID, $this->designId, true);
 
         $this->parent->save_meta_data();
     }
