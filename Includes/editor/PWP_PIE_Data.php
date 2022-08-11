@@ -50,7 +50,7 @@ class PWP_PIE_Data implements PWP_I_Meta_Property
         return $this->parent;
     }
 
-    public function get_is_customizable(): bool
+    public function is_customizable(): bool
     {
         return $this->customizable;
     }
@@ -60,7 +60,7 @@ class PWP_PIE_Data implements PWP_I_Meta_Property
         $this->customizable = $customizable;
     }
 
-    public function get_uses_pdf_content(): bool
+    public function uses_pdf_content(): bool
     {
         return $this->usePDFContent;
     }

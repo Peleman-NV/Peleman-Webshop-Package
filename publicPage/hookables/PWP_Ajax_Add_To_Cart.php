@@ -5,8 +5,10 @@ declare(strict_types=1);
 namespace PWP\publicPage\hookables;
 
 use Error;
+use Exception;
 use pwp\includes\editor\PWP_Editor_Project;
 use PWP\includes\editor\PWP_New_PIE_Project_Request;
+use PWP\includes\editor\PWP_PIE_Data;
 use PWP\includes\editor\PWP_PIE_Editor_Project;
 use PWP\includes\hookables\abstracts\PWP_Abstract_Ajax_Hookable;
 
@@ -32,19 +34,11 @@ class PWP_Ajax_Add_To_Cart extends PWP_Abstract_Ajax_Hookable
             //first, read and interpret data from request
             $productId      = apply_filters('woocommerce_add_to_cart_product_id', absint($_REQUEST['product']));
             $variationId    = absint($_REQUEST['variant']) ?: 0;
-            $product        = wc_get_product($variationId ?: $productId);
+            $editorData     = new PWP_PIE_Data($variationId ?: $productId);
             $quantity       = wc_stock_amount($_REQUEST['quantity'] ?: 1);
 
-            //next, get local data
-            $customizable   = ((int)$product->get_meta('pie_customizable') === 1);
-            $templateId     = $product->get_meta('template_id');
-            $validated      = apply_filters('woocommerce_add_to_cart_validation', true, $productId, $quantity, $variationId);
-            $variation      = [];
-            $itemMeta       = [];
-            $redirectUrl    = '';
-
-            if ($validated) {
-                if ($customizable && $templateId) {
+            if (apply_filters('woocommerce_add_to_cart_validation', true, $productId, $quantity, $variationId)) {
+                if ($editorData->is_customizable() && $editorData->get_template_id()) {
                     //BEGIN CUSTOM PROJECT REDIRECT FLOW
                     session_start();
 
@@ -54,22 +48,15 @@ class PWP_Ajax_Add_To_Cart extends PWP_Abstract_Ajax_Hookable
 
                     //generate return url which, when called, will add the cached order to the cart.
                     $returnUrl = wc_get_cart_url() . "?CustProj={$sessionId}";
-
-                    //generate new project data
-                    $projectData = $this->generate_new_project($variationId, $templateId, $returnUrl);
-
-                    $itemMeta = array(
-                        'editor'            => $projectData->get_editor_id(),
-                        'pie_project_id'    => $projectData->get_project_id(),
-                        'pie_project_url'   => $projectData->get_project_editor_url(),
-                    );
+                    $projectData = $this->generate_new_project($editorData, $returnUrl);
+                    $itemMeta = $projectData->to_array();
 
                     //store relevant data in session
                     $_SESSION[$sessionId] = array(
                         'product_id'    => $productId,
                         'quantity'      => $quantity,
                         'variation_id'  => $variationId,
-                        'variation'     => $variation,
+                        'variation'     => [],
                         'item_meta'     => $itemMeta,
                     );
 
@@ -78,16 +65,15 @@ class PWP_Ajax_Add_To_Cart extends PWP_Abstract_Ajax_Hookable
                             'message' => 'external project created, redirecting user to editor for customization...',
                             'destination_url' => $projectData->get_project_editor_url(),
                         ),
-                        200
+                        201
                     );
                 }
 
                 wp_send_json_success(array(
                     'message' => 'standard product, using default functionality',
-                    'destination_url' => $redirectUrl,
                 ), 200);
             }
-            wp_send_json_error(array('message' => 'something screwed up'), 420);
+            throw new Exception("something unexpected went wrong", 500);
         } catch (Error $err) {
             error_log(sprintf("PHP Error: %s in %s on line %s", $err->getMessage(), $err->getFile(), $err->getLine()));
             error_log($err->getTraceAsString());
@@ -119,10 +105,10 @@ class PWP_Ajax_Add_To_Cart extends PWP_Abstract_Ajax_Hookable
      * @param string $returnURL url to which the editor will return the user after saving their project, if blank, refer to editor.
      * @return PWP_Editor_Project|null wil return a PWP_Editor_Project object if successful. if the method can not determine a valid editor, will return null.
      */
-    public function generate_new_project(int $productId, string $templateId, string $returnURL = ''): PWP_Editor_Project
+    public function generate_new_project(PWP_PIE_Data $data, string $returnURL = ''): PWP_Editor_Project
     {
-        if (preg_match('/^(tpl)([0-9A-Z]{3,})$/m', $templateId)) {
-            return $this->new_PIE_Project($productId, $returnURL ?: site_url());
+        if (preg_match('/^(tpl)([0-9A-Z]{3,})$/m', $data->get_template_id())) {
+            return $this->new_PIE_Project($data, $returnURL ?: site_url());
         }
 
         return null;
@@ -134,7 +120,7 @@ class PWP_Ajax_Add_To_Cart extends PWP_Abstract_Ajax_Hookable
      * @param string $returnUrl when the user has completed their project, they will be redirected to this URL
      * @return PWP_PIE_Editor_Project project object
      */
-    private function new_PIE_Project(int $variant_id, string $returnUrl): PWP_PIE_Editor_Project
+    private function new_PIE_Project(PWP_PIE_DATA $data, string $returnUrl): PWP_PIE_Editor_Project
     {
         //TODO: clean up hardcoded variables and get from options instead.
 
@@ -143,7 +129,7 @@ class PWP_Ajax_Add_To_Cart extends PWP_Abstract_Ajax_Hookable
                 'https://deveditor.peleman.com/',
                 'webshop',
                 'X88CPxzXAzunHw2LQ5k6Zat6fCZXCEQqy7Rr6kBnbwj6zM_DOZ6Q-shtgWMM4kI7Iq-r5L2XF7EdjLHHoO4351',
-            )->initialize_from_product(wc_get_product($variant_id))
+            )->initialize_from_pie_data($data)
             ->set_timeout(10)
             ->set_return_url($returnUrl)
             ->set_user_id(get_current_user_id())

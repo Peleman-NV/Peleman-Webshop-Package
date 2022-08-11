@@ -25,9 +25,9 @@ class PWP_PIE_Editor_Project extends PWP_Editor_Project implements PWP_I_Respons
     public function to_array(): array
     {
         return array(
-            'editorId' => $this->get_editor_id(),
-            'projectId' => $this->get_project_id(),
-            'projectUrl' => $this->get_project_editor_url(),
+            'editor' => $this->get_editor_id(),
+            'pie_project_id' => $this->get_project_id(),
+            'pie_project_url' => $this->get_project_editor_url(),
 
         );
     }
