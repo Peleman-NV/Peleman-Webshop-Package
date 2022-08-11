@@ -7,6 +7,7 @@ namespace PWP\publicPage\hookables;
 use Error;
 use IWPML_Current_Language;
 use pwp\includes\editor\PWP_Editor_Project;
+use PWP\includes\editor\PWP_New_PIE_Project_Request;
 use PWP\includes\editor\PWP_PIE_Data;
 use PWP\includes\editor\PWP_PIE_Create_Project_Request_Data;
 use PWP\includes\Editor\PWP_Pie_Editor_Request;
@@ -122,45 +123,52 @@ class PWP_Ajax_Add_To_Cart extends PWP_Abstract_Ajax_Hookable
         $this->callback();
     }
 
+    /**
+     * Undocumented function
+     *
+     * @param integer $productID
+     * @param string $templateID
+     * @param string $returnURL
+     * @return PWP_Editor_Project|null
+     */
     public function generate_new_project(int $productID, string $templateID, string $returnURL = ''): PWP_Editor_Project
     {
         if (preg_match('/^(tpl)([0-9A-Z]{3,})$/m', $templateID)) {
-            $projectID = $this->new_PIE_Project($productID, $templateID, $returnURL ?: site_url());
+            return $this->new_PIE_Project($productID, $returnURL ?: site_url());
         }
-        return new PWP_PIE_Editor_Project($projectID);
+
+        return null;
     }
     /**
      * generate a new project for the Peleman Image Editor
      *
      * @param integer $variant_id product or variant id of the product
-     * @param string $template_id template id of the project to be created
      * @param string $returnUrl when the user has completed their project, they will be redirected to this URL
-     * @return integer project ID
+     * @return PWP_PIE_Editor_Project project object
      */
-    private function new_PIE_Project(int $variant_id, string $template_id, string $returnUrl): string
+    private function new_PIE_Project(int $variant_id, string $returnUrl): PWP_PIE_Editor_Project
     {
-        $request = new PWP_Pie_Editor_Request('https://deveditor.peleman.com');
-
-        //TODO: handle data properly.
-        $requestData = new PWP_PIE_Create_Project_Request_Data(
-            (string)get_current_user_id(),
-            new PWP_PIE_Data($variant_id),
-            $returnUrl
-        );
-
-        $requestData->set_language(defined('ICL_LANGUAGE_CODE') ? ICL_LANGUAGE_CODE : 'en');
-        $requestData->set_project_name("k" . uniqid());
-        $requestData->set_editor_instructions(
-            USE_DESIGN_MODE,
-            USE_BACKGROUNDS,
-            USE_DESIGNS,
-            SHOW_CROP_ZONE,
-            SHOW_SAFE_ZONE,
-            USE_TEXT,
-            USE_ELEMENTS,
-            USE_DESIGNS,
-            USE_OPEN_FILE
-        );
+        //TODO: clean up hardcoded variables and get from options instead.
+        $request = PWP_New_PIE_Project_Request::new(
+            'https://deveditor.peleman.com/',
+            'webshop',
+            'X88CPxzXAzunHw2LQ5k6Zat6fCZXCEQqy7Rr6kBnbwj6zM_DOZ6Q-shtgWMM4kI7Iq-r5L2XF7EdjLHHoO4351',
+        )->initialize_from_product(wc_get_product($variant_id))
+            ->set_return_url($returnUrl)
+            ->set_user_id(get_current_user_id())
+            ->set_language(defined('ICL_LANGUAGE_CODE') ? ICL_LANGUAGE_CODE : 'en')
+            ->set_project_name("k" . uniqid())
+            ->set_editor_instructions(
+                USE_DESIGN_MODE,
+                USE_BACKGROUNDS,
+                USE_DESIGNS,
+                SHOW_CROP_ZONE,
+                SHOW_SAFE_ZONE,
+                USE_TEXT,
+                USE_ELEMENTS,
+                USE_DESIGNS,
+                USE_OPEN_FILE
+            );
 
         //TODO: how to handle project names? let users define them on the editor side? use random UUID?
         //      right now generate a random default name.
@@ -171,8 +179,6 @@ class PWP_Ajax_Add_To_Cart extends PWP_Abstract_Ajax_Hookable
         //TODO: handle PDF file uploads
         // $content_file_id = sanitize_text_field($_GET['content']);
 
-        return (string)$request->create_new_project($requestData);
-
-        // return (string)(random_int(0, PHP_INT_MAX));
+        return $request->make_request();
     }
 }

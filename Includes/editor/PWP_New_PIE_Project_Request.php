@@ -27,16 +27,10 @@ class PWP_New_PIE_Project_Request
     private string $customerId;
     private string $apiKey;
 
-    private bool $customizable;
-    private string $userId;
-    private string $templateId;
-    private string $colorCode;
-    private string $backgroundId;
+    private ?PWP_PIE_Data $pie_data;
+
+    private int $userId;
     private string $language;
-    private string $designId;
-
-    private PWP_PIE_Data $pie_data;
-
     private array $editorInstructions;
     private string $projectName;
     private string $returnUrl;
@@ -46,13 +40,13 @@ class PWP_New_PIE_Project_Request
      * Generate class to format and make a new project request to a Peleman Image Editor API
      *
      * @param string $endpoint 
-     * @param string $customerID
+     * @param string $customerId
      * @param string $apiKey
      */
-    public function __construct(string $clientDomain,  string $customerID, string $apiKey)
+    public function __construct(string $clientDomain,  string $customerId, string $apiKey)
     {
         $this->endpoint = $clientDomain . '/editor/api/createprojectAPI.php';
-        $this->customerID = $customerID;
+        $this->customerId = $customerId;
         $this->apiKey = $apiKey;
 
         $this->pie_data = null;
@@ -61,6 +55,11 @@ class PWP_New_PIE_Project_Request
         $this->editorInstructions = [];
         $this->projectName = '';
         $this->returnUrl = '';
+    }
+
+    public static function new(string $clientDomain, string $customerId, string $apiKey): self
+    {
+        return new PWP_New_PIE_Project_Request($clientDomain, $customerId, $apiKey);
     }
 
     public function initialize_from_product(\WC_Product $product): self
@@ -100,11 +99,12 @@ class PWP_New_PIE_Project_Request
         return $this;
     }
 
-    /**
-     * Undocumented function
-     *
-     * @return PWP_PIE_Data|null 
-     */
+    public function set_project_name(string $name): self
+    {
+        $this->projectName = $name;
+        return $this;
+    }
+
     public function data(): PWP_PIE_Data
     {
         return $this->pie_data;
@@ -112,7 +112,7 @@ class PWP_New_PIE_Project_Request
 
     public function is_customizable(): bool
     {
-        //project is only customizable if it is set to customizable AND it has a template ID.
+        //project is only customizable if it is set to customizable AND it has a template Id.
         return $this->customizable && $this->templateId;
     }
 
@@ -127,49 +127,66 @@ class PWP_New_PIE_Project_Request
      */
     public function make_request(int $timeout = 30, bool $secure = true): PWP_PIE_Editor_Project
     {
-        $url = $this->endpoint .= '?' . http_build_query($this->request_to_array());
+        $url = $this->endpoint .= '?' . http_build_query($this->generate_request_array());
 
         $curl = curl_init();
         curl_setopt_array($curl, array(
-            CURLOPT_URL => $url,
-            CURLOPT_FOLLOWLOCATION => true,
-            CURLOPT_MAXREDIRS => 1,
-            // CURLOPT_HEADER => false,
-            CURLOPT_TIMEOUT => $timeout,
-            CURLOPT_CONNECTTIMEOUT => $timeout,
-            CURLOPT_ENCODING => "",
-            CURLOPT_SSL_VERIFYPEER => $secure ? 1 : 0,
-            CURLOPT_SSL_VERIFYHOST => $secure ? 2 : 0,
-            CURLOPT_RETURNTRANSFER => 1,
+            CURLOPT_URL             => $url,
+            CURLOPT_FOLLOWLOCATION  => true,
+            CURLOPT_MAXREDIRS       => 1,
+            CURLOPT_HTTPHEADER      => $this->generate_request_header(),
+            CURLOPT_TIMEOUT         => $timeout,
+            CURLOPT_CONNECTTIMEOUT  => $timeout,
+            CURLOPT_SSL_VERIFYPEER  => $secure ? 1 : 0,
+            CURLOPT_SSL_VERIFYHOST  => $secure ? 2 : 0,
+            CURLOPT_RETURNTRANSFER  => 1,
         ));
 
         $response = curl_exec($curl);
         curl_close($curl);
+
         if (empty($response) || is_bool($response)) {
-            throw new PWP_Invalid_Response_Exception('No valid response received. Try again later.');
-            //TODO: handle invalid response
+            throw new PWP_Invalid_Response_Exception('No valid response received. Likely an authentication issue. Try again later.');
         }
 
         $response = json_decode($response, true, 512, 0);
 
-        return new PWP_PIE_Editor_Project($response);
+        return new PWP_PIE_Editor_Project($response['project_id']);
     }
-
-    public function request_to_array(): array
+    /**
+     * convert parameters into associative array for making a request
+     *
+     * @return array
+     */
+    protected function generate_request_array(): array
     {
-        $data = array(
-            'userid' => $this->userId,
-            'templateid' => $this->templateId,
-            'designid' => $this->designId,
-            'language' => $this->language,
-            'returnurl' => $this->returnUrl,
+        $request = array(
+            'customerid'            => $this->customerId,
+            'customerapikey'        => $this->apiKey,
+            'userid'                => $this->userId,
+            'language'              => $this->language,
+            'templateid'            => $this->pie_data->get_template_id(),
+            'designid'              => $this->pie_data->get_template_id(),
+            'backgroundId'          => $this->pie_data->get_background_id(),
+            'colorcode'             => $this->pie_data->get_color_code(),
+            'editorinstructions'    => $this->editorInstructions,
+            'projectname'           => $this->projectName,
+            'returnurl'             => $this->returnUrl,
+
         );
 
-        if (!empty($this->editorInstructions)) $data['editorinstructions'] = $this->editorInstructions;
-        if (!empty($this->backgroundId)) $data['backgroundId'] = $this->backgroundId;
-        if (!empty($this->colorCode)) $data['colorcode'] = $this->colorCode;
-        if (!empty($this->projectName)) $data['projectname'] = $this->projectName;
+        $request = array_filter($request);
+        return $request;
+    }
 
-        return $data;
+    protected function generate_request_header(): array
+    {
+        $referer = get_site_url();
+        $header = array();
+
+        // $header[] = "PieAPIKey : {$this->apiKey}";
+        $header[] = "referer : {$referer}";
+
+        return $header;
     }
 }
