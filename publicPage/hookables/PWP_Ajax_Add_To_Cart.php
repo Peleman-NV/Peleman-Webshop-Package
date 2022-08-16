@@ -11,6 +11,7 @@ use PWP\includes\editor\PWP_New_PIE_Project_Request;
 use PWP\includes\editor\PWP_PIE_Data;
 use PWP\includes\editor\PWP_PIE_Editor_Project;
 use PWP\includes\hookables\abstracts\PWP_Abstract_Ajax_Hookable;
+use WC_Product_Variation;
 
 class PWP_Ajax_Add_To_Cart extends PWP_Abstract_Ajax_Hookable
 {
@@ -33,11 +34,12 @@ class PWP_Ajax_Add_To_Cart extends PWP_Abstract_Ajax_Hookable
             //find and store all relevant variables
             //first, read and interpret data from request
             $productId      = apply_filters('woocommerce_add_to_cart_product_id', absint($_REQUEST['product']));
-            $variationId    = absint($_REQUEST['variant']) ?: 0;
+            $variationId    = apply_filters('woocommerce_add_to_cart_product_id', absint($_REQUEST['variant']));
             $editorData     = new PWP_PIE_Data($variationId ?: $productId);
             $quantity       = wc_stock_amount($_REQUEST['quantity'] ?: 1);
 
             if (apply_filters('woocommerce_add_to_cart_validation', true, $productId, $quantity, $variationId)) {
+
                 if ($editorData->is_customizable() && $editorData->get_template_id()) {
                     //BEGIN CUSTOM PROJECT REDIRECT FLOW
                     session_start();
@@ -56,7 +58,6 @@ class PWP_Ajax_Add_To_Cart extends PWP_Abstract_Ajax_Hookable
                         'product_id'    => $productId,
                         'quantity'      => $quantity,
                         'variation_id'  => $variationId,
-                        'variation'     => [],
                         'item_meta'     => $itemMeta,
                     );
 
@@ -71,6 +72,7 @@ class PWP_Ajax_Add_To_Cart extends PWP_Abstract_Ajax_Hookable
 
                 wp_send_json_success(array(
                     'message' => 'standard product, using default functionality',
+                    'destination_url' => '',
                 ), 200);
             }
             throw new Exception("something unexpected went wrong", 500);
@@ -136,7 +138,7 @@ class PWP_Ajax_Add_To_Cart extends PWP_Abstract_Ajax_Hookable
             ->set_language(defined('ICL_LANGUAGE_CODE') ? ICL_LANGUAGE_CODE : 'en')
             ->set_project_name("k" . uniqid())
             ->set_editor_instructions(
-                PIE_USE_DESIGN_MODE,
+                // PIE_USE_DESIGN_MODE,
                 PIE_USE_BACKGROUNDS,
                 PIE_USE_DESIGNS,
                 PIE_SHOW_CROP_ZONE,

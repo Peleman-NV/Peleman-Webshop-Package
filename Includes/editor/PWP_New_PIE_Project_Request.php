@@ -132,8 +132,6 @@ class PWP_New_PIE_Project_Request extends PWP_Abstract_Request
         $curl = curl_init();
         curl_setopt_array($curl, array(
             CURLOPT_URL             => $url,
-            CURLOPT_FOLLOWLOCATION  => true,
-            CURLOPT_MAXREDIRS       => 1,
             CURLOPT_HTTPHEADER      => $this->generate_request_header(),
             CURLOPT_TIMEOUT         => $this->timeout,
             CURLOPT_CONNECTTIMEOUT  => $this->timeout,

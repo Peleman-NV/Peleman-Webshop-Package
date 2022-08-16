@@ -28,7 +28,7 @@ abstract class PWP_Abstract_Action_Hookable implements PWP_I_Hookable_Component
         $this->accepted_args = $accepted_args;
     }
 
-    final public function register_hooks(PWP_Plugin_Loader $loader): void
+    public function register_hooks(PWP_Plugin_Loader $loader): void
     {
         $loader->add_action(
             $this->hook,
