@@ -71,13 +71,31 @@ class PWP_Input_Fields
     private static function generate_field(string $id, string $label, string $type, $value, array $classes, string $description): array
     {
         return array(
-            'id' => $id,
+            'id'            => $id,
             'wrapper_class' => implode(' ', $classes),
-            'label' => $label,
-            'type' => $type,
-            'desc_tip' => !empty($description),
-            'description' => $description ?: '',
-            'value' => $value,
+            'label'         => $label,
+            'type'          => $type,
+            'desc_tip'      => !empty($description),
+            'description'   => $description ?: '',
+            'value'         => $value,
         );
+    }
+
+    public static function dropdown_input(string $id, string $label, array $options, string $selectedOption, array $classes = [], string $description = ''): void
+    {
+?>
+        <p class="form-field form-row form-row-full <?= $id ?>_field form-row form-row-full <?= implode(' ', $classes); ?>" ?>
+            <label for="<?= $id; ?>"><?= $label; ?></label>
+            <select style id="<?= $id; ?>" name="<?= $id; ?>" class="">
+                <?php foreach ($options as $key => $option) : ?>
+                    <option value="<?= $key; ?>" <?= $key === $selectedOption ? "selected" : ''; ?>><?= $option; ?></option>
+                <?php endforeach; ?>
+            </select>
+            <?php if (!empty($description)) : ?>
+                <span><?= $description; ?></span>
+            <?php endif; ?>
+        </p>
+<?php
+
     }
 }

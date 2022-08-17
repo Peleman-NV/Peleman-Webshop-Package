@@ -8,9 +8,22 @@ use PWP\includes\exceptions\PWP_Invalid_Response_Exception;
 use PWP\includes\PWP_Abstract_Request;
 
 #region PIE EDITOR CONSTANTS
+/**
+ * open editor in design mode for editors
+ */
 define('PIE_USE_DESIGN_MODE', 'usedesignmode');
+/**
+ * allow user to upload images
+ */
 define('PIE_USE_IMAGE_UPLOAD', 'useimageupload');
+/**
+ * use 
+ */
 define('PIE_USE_BACKGROUNDS', 'usebackgrounds');
+/**
+ * allow users to use custom designs
+ * set to false
+ */
 define('PIE_USE_DESIGNS', 'usedesigns');
 define('PIE_USE_ELEMENTS', 'useelements');
 define('PIE_USE_DOWNLOAD_PREVIEW', 'usedownloadpreview');
@@ -29,7 +42,7 @@ class PWP_New_PIE_Project_Request extends PWP_Abstract_Request
     private string $customerId;
     private string $apiKey;
 
-    private ?PWP_PIE_Data $editorData;
+    private ?PWP_Editor_Data $editorData;
 
     private int $userId;
     private string $language;
@@ -73,11 +86,11 @@ class PWP_New_PIE_Project_Request extends PWP_Abstract_Request
 
     public function initialize_from_product(\WC_Product $product): self
     {
-        $this->editorData = new PWP_PIE_Data($product->get_id());
+        $this->editorData = new PWP_Editor_Data($product->get_id());
         return $this;
     }
 
-    public function initialize_from_pie_data(PWP_PIE_Data $data): self
+    public function initialize_from_editor_data(PWP_Editor_Data $data): self
     {
         $this->editorData = $data;
         return $this;
@@ -114,7 +127,7 @@ class PWP_New_PIE_Project_Request extends PWP_Abstract_Request
     }
     #endregion
 
-    public function data(): PWP_PIE_Data
+    public function data(): PWP_Editor_Data
     {
         return $this->editorData;
     }
@@ -162,14 +175,13 @@ class PWP_New_PIE_Project_Request extends PWP_Abstract_Request
             'customerapikey'        => $this->apiKey,
             'userid'                => $this->userId,
             'language'              => $this->language,
-            'templateid'            => $this->editorData->get_template_id(),
-            'designid'              => $this->editorData->get_template_id(),
-            'backgroundId'          => $this->editorData->get_background_id(),
-            'colorcode'             => $this->editorData->get_color_code(),
+            'templateid'            => $this->editorData->pie_data()->get_template_id(),
+            // 'designid'              => $this->editorData->get_template_id(),
+            'backgroundId'          => $this->editorData->pie_data()->get_background_id(),
+            'colorcode'             => $this->editorData->pie_data()->get_color_code(),
             'editorinstructions'    => $this->editorInstructions,
-            'projectname'           => $this->projectName,
+            // 'projectname'           => $this->projectName,
             'returnurl'             => $this->returnUrl,
-
         );
 
         $request = array_filter($request);

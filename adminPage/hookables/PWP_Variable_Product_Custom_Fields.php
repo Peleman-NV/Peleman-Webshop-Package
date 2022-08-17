@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace PWP\adminPage\hookables;
 
+use PWP\includes\editor\PWP_Editor_Data;
+use PWP\includes\editor\PWP_IMAXEL_Data;
 use PWP\includes\editor\PWP_PIE_Data;
 use PWP\includes\hookables\abstracts\PWP_Abstract_Action_hookable;
 use PWP\includes\utilities\PWP_Input_Fields;
@@ -28,7 +30,7 @@ class PWP_Variable_Product_Custom_Fields extends PWP_Abstract_Action_hookable
     {
         $variationId = $variation->ID;
         $wc_variation = wc_get_product($variationId);
-        $pie_data = new PWP_PIE_Data($variationId);
+        $editor_data = new PWP_Editor_Data($variationId);
         $parentId = $wc_variation->get_parent_id();
 
         $properties = json_decode(file_get_contents(PWP_TEMPLATES_DIR . '/PWP_Metadata.json'), true);
@@ -36,58 +38,92 @@ class PWP_Variable_Product_Custom_Fields extends PWP_Abstract_Action_hookable
 ?>
         <div class="pwp-options-group">
             <h2 class="pwp-options-group-title">Fly2Data Properties - V2</h2>
-            <h3 class="pwp_options_group_title">Peleman Image Editor Settings</h3>
+
             <?php
 
             PWP_INPUT_FIELDS::create_field(
-                PWP_PIE_DATA::CUSTOMIZABLE . "[{$loop}]",
+                PWP_Editor_Data::CUSTOMIZABLE . "[{$loop}]",
                 'customizable',
                 'bool',
-                $pie_data->is_customizable(),
+                $editor_data->is_customizable(),
                 ['form-row', 'form-row-full', 'checkbox', 'pie-customizable'],
                 'whether the product is customizable by clients'
             );
 
             PWP_INPUT_FIELDS::create_field(
-                PWP_PIE_DATA::USE_PDF_CONTENT . "[{$loop}]",
+                PWP_Editor_Data::USE_PDF_CONTENT . "[{$loop}]",
                 'use pdf content upload',
                 'bool',
-                $pie_data->uses_pdf_content(),
+                $editor_data->uses_pdf_content(),
                 ['form-row', 'form-row-full', 'checkbox', 'pie-pdf_content'],
                 'whether the product requires a PDF file for its contents'
             );
 
+            PWP_Input_Fields::dropdown_input(
+                PWP_Editor_Data::EDITOR_ID . "[{$loop}]",
+                "editor",
+                array(
+                    PWP_PIE_Data::MY_EDITOR => 'Peleman Image Editor',
+                    PWP_IMAXEL_Data::MY_EDITOR => 'Imaxel Editor'
+                ),
+                PWP_Editor_Data::EDITOR_ID,
+                ['form-row', 'form-row-full', 'editor_select'],
+                'which editor to use for this product. Ensure the template and variant IDs are valid for the editor.'
+            );
+
+            ?>
+            <h3 class="pwp_options_group_title">Peleman Image Editor Settings</h3>
+            <?php
             PWP_INPUT_FIELDS::create_field(
-                PWP_PIE_DATA::TEMPLATE_ID . "[{$loop}]",
+                PWP_PIE_DATA::TEMPLATE_ID_KEY . "[{$loop}]",
                 'PIE Template ID',
                 'text',
-                $pie_data->get_template_id(),
+                $editor_data->pie_data()->get_template_id(),
                 ['form-row', 'form-row-first'],
             );
 
             PWP_INPUT_FIELDS::create_field(
-                PWP_PIE_DATA::DESIGN_ID . "[{$loop}]",
+                PWP_PIE_DATA::DESIGN_ID_KEY . "[{$loop}]",
                 'Design ID',
                 'text',
-                $pie_data->get_design_id(),
+                $editor_data->pie_data()->get_design_id(),
                 ['form-row', 'form-row-last'],
             );
 
             PWP_INPUT_FIELDS::create_field(
-                PWP_PIE_DATA::COLOR_CODE . "[{$loop}]",
+                PWP_PIE_DATA::COLOR_CODE_KEY . "[{$loop}]",
                 'Color Code',
                 'text',
-                $pie_data->get_color_code(),
+                $editor_data->pie_data()->get_color_code(),
                 ['form-row', 'form-row-first'],
             );
 
             PWP_INPUT_FIELDS::create_field(
-                PWP_PIE_DATA::BACKGROUND_ID . "[{$loop}]",
+                PWP_PIE_DATA::BACKGROUND_ID_KEY . "[{$loop}]",
                 'PIE background ID',
                 'text',
-                $pie_data->get_background_id(),
+                $editor_data->pie_data()->get_background_id(),
                 ['form-row', 'form-row-last'],
             );
+
+            ?>
+            <h3 class="pwp_options_group_title">Imaxel Editor Settings</h3>
+            <?php
+            PWP_INPUT_FIELDS::text_input(
+                PWP_IMAXEL_DATA::TEMPLATE_ID_KEY . "[{$loop}]",
+                'IMAXEL template ID',
+                $editor_data->imaxel_data()->get_template_id(),
+                ['form-row', 'form-row-first'],
+                'IMAXEL specific template ID'
+            );
+
+            PWP_INPUT_FIELDS::text_input(
+                PWP_IMAXEL_DATA::VARIANT_ID_KEY . "[{$loop}]",
+                'IMAXEL Variant ID',
+                $editor_data->imaxel_data()->get_variant_id(),
+                ['form-row', 'form-row-last'],
+                'IMAXEL specific variant ID'
+            )
 
             //DO STUFF HERE
 

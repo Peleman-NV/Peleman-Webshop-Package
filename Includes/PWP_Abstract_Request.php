@@ -22,7 +22,4 @@ abstract class PWP_Abstract_Request
         return $this;
     }
     public abstract function make_request(): PWP_I_Response;
-
-    protected abstract function generate_request_array(): array;
-    protected abstract function generate_request_header(): array;
 }

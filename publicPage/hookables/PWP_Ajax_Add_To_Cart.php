@@ -6,7 +6,11 @@ namespace PWP\publicPage\hookables;
 
 use Error;
 use Exception;
+use PWP\includes\editor\PWP_Editor_Data;
 use pwp\includes\editor\PWP_Editor_Project;
+use PWP\includes\editor\PWP_IMAXEL_Data;
+use PWP\includes\editor\PWP_IMAXEL_Editor_Project;
+use PWP\includes\editor\PWP_New_IMAXEL_Project_Request;
 use PWP\includes\editor\PWP_New_PIE_Project_Request;
 use PWP\includes\editor\PWP_PIE_Data;
 use PWP\includes\editor\PWP_PIE_Editor_Project;
@@ -35,12 +39,12 @@ class PWP_Ajax_Add_To_Cart extends PWP_Abstract_Ajax_Hookable
             //first, read and interpret data from request
             $productId      = apply_filters('woocommerce_add_to_cart_product_id', absint($_REQUEST['product']));
             $variationId    = apply_filters('woocommerce_add_to_cart_product_id', absint($_REQUEST['variant']));
-            $editorData     = new PWP_PIE_Data($variationId ?: $productId);
+            $editorData     = new PWP_Editor_Data($variationId ?: $productId);
             $quantity       = wc_stock_amount($_REQUEST['quantity'] ?: 1);
 
             if (apply_filters('woocommerce_add_to_cart_validation', true, $productId, $quantity, $variationId)) {
 
-                if ($editorData->is_customizable() && $editorData->get_template_id()) {
+                if ($editorData->is_customizable()) {
                     //BEGIN CUSTOM PROJECT REDIRECT FLOW
                     session_start();
 
@@ -107,13 +111,16 @@ class PWP_Ajax_Add_To_Cart extends PWP_Abstract_Ajax_Hookable
      * @param string $returnURL url to which the editor will return the user after saving their project, if blank, refer to editor.
      * @return PWP_Editor_Project|null wil return a PWP_Editor_Project object if successful. if the method can not determine a valid editor, will return null.
      */
-    public function generate_new_project(PWP_PIE_Data $data, string $returnURL = ''): PWP_Editor_Project
+    public function generate_new_project(PWP_Editor_Data $data, string $returnURL = ''): PWP_Editor_Project
     {
-        if (preg_match('/^(tpl)([0-9A-Z]{3,})$/m', $data->get_template_id())) {
-            return $this->new_PIE_Project($data, $returnURL ?: site_url());
+        switch ($data->get_editor_id()) {
+            case PWP_PIE_DATA::MY_EDITOR:
+                return $this->new_PIE_Project($data->pie_data, $returnURL ?: site_url());
+            case PWP_IMAXEL_Data::MY_EDITOR:
+                return $this->new_IMAXEL_Project($data->imaxel_data, $returnURL ?: site_url());
+            default:
+                return null;
         }
-
-        return null;
     }
     /**
      * generate a new project for the Peleman Image Editor
@@ -122,7 +129,7 @@ class PWP_Ajax_Add_To_Cart extends PWP_Abstract_Ajax_Hookable
      * @param string $returnUrl when the user has completed their project, they will be redirected to this URL
      * @return PWP_PIE_Editor_Project project object
      */
-    private function new_PIE_Project(PWP_PIE_DATA $data, string $returnUrl): PWP_PIE_Editor_Project
+    private function new_PIE_Project(PWP_Editor_Data $data, string $returnUrl): PWP_PIE_Editor_Project
     {
         //TODO: clean up hardcoded variables and get from options instead.
 
@@ -131,7 +138,7 @@ class PWP_Ajax_Add_To_Cart extends PWP_Abstract_Ajax_Hookable
                 'https://deveditor.peleman.com/',
                 'webshop',
                 'X88CPxzXAzunHw2LQ5k6Zat6fCZXCEQqy7Rr6kBnbwj6zM_DOZ6Q-shtgWMM4kI7Iq-r5L2XF7EdjLHHoO4351',
-            )->initialize_from_pie_data($data)
+            )->initialize_from_editor_data($data)
             ->set_timeout(10)
             ->set_return_url($returnUrl)
             ->set_user_id(get_current_user_id())
@@ -148,5 +155,15 @@ class PWP_Ajax_Add_To_Cart extends PWP_Abstract_Ajax_Hookable
                 PIE_USE_DESIGNS,
                 PIE_USE_OPEN_FILE
             )->make_request();
+    }
+
+    private function new_IMAXEL_Project(PWP_Editor_Data $data, string $returnUrl): PWP_IMAXEL_Editor_Project
+    {
+        return
+            $request = PWP_New_IMAXEL_Project_Request::new()
+            ->initialize_from_editor_data($data)
+            ->set_back_url(wc_get_cart_url())
+            ->set_add_to_cart_url($returnUrl)
+            ->make_request();
     }
 }

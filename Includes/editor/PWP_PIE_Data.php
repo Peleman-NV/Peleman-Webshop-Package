@@ -4,70 +4,32 @@ declare(strict_types=1);
 
 namespace PWP\includes\editor;
 
-use Exception;
 use PWP\includes\F2D\PWP_I_Meta_Property;
 use WC_Product;
-use WP_Post;
 
-class PWP_PIE_Data implements PWP_I_Meta_Property
+class PWP_PIE_Data extends PWP_Product_Meta_Data
 {
-    private WC_Product $parent;
 
-    public bool $customizable;
-    public bool $usePDFContent;
     public string $templateId;
     public string $designId;
     public string $colorCode;
     public string $backgroundId;
 
-    public const CUSTOMIZABLE = 'pie_customizable';
-    public const USE_PDF_CONTENT = 'pie_use_pdf_content';
-    public const TEMPLATE_ID = 'pie_template_id';
-    public const DESIGN_ID = 'pie_design_id';
-    public const COLOR_CODE = 'pie_color_code';
-    public const BACKGROUND_ID = 'pie_background_id';
+    public const TEMPLATE_ID_KEY = 'pie_template_id';
+    public const DESIGN_ID_KEY = 'pie_design_id';
+    public const COLOR_CODE_KEY = 'pie_color_code';
+    public const BACKGROUND_ID_KEY = 'pie_background_id';
 
-    public function __construct(int $productID)
+    public const MY_EDITOR = 'PIE';
+
+    public function __construct(WC_Product $parent)
     {
-        $product = wc_get_product($productID);
-        if (is_null($product)) {
-            //TODO: write custom exception class
-            throw new Exception("Product with ID {$productID} not found. Id not valid or object is not a product.");
-        }
+        $this->parent = $parent;
 
-        $this->parent = wc_get_product($productID);
-
-        $this->customizable = boolval($product->get_meta(self::CUSTOMIZABLE, true) ?? false);
-        $this->usePDFContent = boolval($product->get_meta(self::USE_PDF_CONTENT, true) ?? false);
-        $this->templateId = $product->get_meta(self::TEMPLATE_ID, true) ?? '';
-        $this->designId = $product->get_meta(self::DESIGN_ID, true) ?? '';
-        $this->colorCode = $product->get_meta(self::COLOR_CODE, true) ?? '';
-        $this->backgroundId =  $product->get_meta(self::BACKGROUND_ID, true) ?? '';
-    }
-
-    public function get_parent(): WC_Product
-    {
-        return $this->parent;
-    }
-
-    public function is_customizable(): bool
-    {
-        return $this->customizable;
-    }
-
-    public function set_customizable(bool $customizable): void
-    {
-        $this->customizable = $customizable;
-    }
-
-    public function uses_pdf_content(): bool
-    {
-        return $this->usePDFContent;
-    }
-
-    public function set_uses_pdf_content(bool $usePDFContent): void
-    {
-        $this->usePDFContent = $usePDFContent;
+        $this->templateId = $this->parent->get_meta(self::TEMPLATE_ID_KEY, true) ?? '';
+        $this->designId = $this->parent->get_meta(self::DESIGN_ID_KEY, true) ?? '';
+        $this->colorCode = $this->parent->get_meta(self::COLOR_CODE_KEY, true) ?? '';
+        $this->backgroundId =  $this->parent->get_meta(self::BACKGROUND_ID_KEY, true) ?? '';
     }
 
     public function get_template_id(): string
@@ -110,15 +72,27 @@ class PWP_PIE_Data implements PWP_I_Meta_Property
         $this->backgroundId = $id;
     }
 
+    public function get_variant_id(): string
+    {
+        return $this->variantId;
+    }
+
+    public function set_variant_id(string $variantId): void
+    {
+        $this->variantId = $variantId;
+    }
+
+    public function set_as_editor(): void
+    {
+        $this->editorId = "PIE";
+    }
+
     public function update_meta_data(): void
     {
-        $this->parent->update_meta_data(self::CUSTOMIZABLE, $this->customizable ? 1 : 0, true);
-        $this->parent->update_meta_data(self::USE_PDF_CONTENT, $this->useContent ? 1 : 0, true);
-        $this->parent->update_meta_data(self::BACKGROUND_ID, $this->backgroundId, true);
-        $this->parent->update_meta_data(self::COLOR_CODE, $this->colorCode, true);
-        $this->parent->update_meta_data(self::TEMPLATE_ID, $this->templateId, true);
-        $this->parent->update_meta_data(self::DESIGN_ID, $this->designId, true);
-
-        $this->parent->save_meta_data();
+        $this->parent->update_meta_data(self::TEMPLATE_ID_KEY, $this->templateId);
+        $this->parent->update_meta_data(self::BACKGROUND_ID_KEY, $this->backgroundId,);
+        $this->parent->update_meta_data(self::COLOR_CODE_KEY, $this->colorCode);
+        $this->parent->update_meta_data(self::TEMPLATE_ID_KEY, $this->templateId);
+        $this->parent->update_meta_data(self::DESIGN_ID_KEY, $this->designId);
     }
 }
