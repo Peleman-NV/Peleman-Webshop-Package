@@ -9,7 +9,7 @@ use WC_Product;
 
 abstract class PWP_Product_Meta_Data implements PWP_I_Meta_Property
 {
-    private WC_Product $parent;
+    protected WC_Product $parent;
 
     public function __construct(\WC_Product $parent)
     {

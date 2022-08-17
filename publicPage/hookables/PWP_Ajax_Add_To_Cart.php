@@ -138,7 +138,7 @@ class PWP_Ajax_Add_To_Cart extends PWP_Abstract_Ajax_Hookable
                 'https://deveditor.peleman.com/',
                 'webshop',
                 'X88CPxzXAzunHw2LQ5k6Zat6fCZXCEQqy7Rr6kBnbwj6zM_DOZ6Q-shtgWMM4kI7Iq-r5L2XF7EdjLHHoO4351',
-            )->initialize_from_editor_data($data)
+            )->initialize_from_pie_data($data->pie_data())
             ->set_timeout(10)
             ->set_return_url($returnUrl)
             ->set_user_id(get_current_user_id())
@@ -161,7 +161,7 @@ class PWP_Ajax_Add_To_Cart extends PWP_Abstract_Ajax_Hookable
     {
         return
             $request = PWP_New_IMAXEL_Project_Request::new()
-            ->initialize_from_editor_data($data)
+            ->initialize_from_imaxel_data($data->imaxel_data())
             ->set_back_url(wc_get_cart_url())
             ->set_add_to_cart_url($returnUrl)
             ->make_request();

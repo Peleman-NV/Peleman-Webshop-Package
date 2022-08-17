@@ -32,102 +32,99 @@ class PWP_Variable_Product_Custom_Fields extends PWP_Abstract_Action_hookable
         $wc_variation = wc_get_product($variationId);
         $editor_data = new PWP_Editor_Data($variationId);
         $parentId = $wc_variation->get_parent_id();
-
-        $properties = json_decode(file_get_contents(PWP_TEMPLATES_DIR . '/PWP_Metadata.json'), true);
-
 ?>
         <div class="pwp-options-group">
             <h2 class="pwp-options-group-title">Fly2Data Properties - V2</h2>
+            <div>
+                <?php
 
-            <?php
+                PWP_INPUT_FIELDS::create_field(
+                    PWP_Editor_Data::CUSTOMIZABLE . "[{$loop}]",
+                    'customizable',
+                    'bool',
+                    $editor_data->is_customizable(),
+                    ['form-row', 'form-row-full', 'checkbox', 'pie-customizable'],
+                    'whether the product is customizable by clients'
+                );
 
-            PWP_INPUT_FIELDS::create_field(
-                PWP_Editor_Data::CUSTOMIZABLE . "[{$loop}]",
-                'customizable',
-                'bool',
-                $editor_data->is_customizable(),
-                ['form-row', 'form-row-full', 'checkbox', 'pie-customizable'],
-                'whether the product is customizable by clients'
-            );
+                PWP_INPUT_FIELDS::create_field(
+                    PWP_Editor_Data::USE_PDF_CONTENT . "[{$loop}]",
+                    'use pdf content upload',
+                    'bool',
+                    $editor_data->uses_pdf_content(),
+                    ['form-row', 'form-row-full', 'checkbox', 'pie-pdf_content'],
+                    'whether the product requires a PDF file for its contents'
+                );
 
-            PWP_INPUT_FIELDS::create_field(
-                PWP_Editor_Data::USE_PDF_CONTENT . "[{$loop}]",
-                'use pdf content upload',
-                'bool',
-                $editor_data->uses_pdf_content(),
-                ['form-row', 'form-row-full', 'checkbox', 'pie-pdf_content'],
-                'whether the product requires a PDF file for its contents'
-            );
+                PWP_Input_Fields::dropdown_input(
+                    PWP_Editor_Data::EDITOR_ID . "[{$loop}]",
+                    "editor",
+                    array(
+                        PWP_PIE_Data::MY_EDITOR => 'Peleman Image Editor',
+                        PWP_IMAXEL_Data::MY_EDITOR => 'Imaxel Editor'
+                    ),
+                    PWP_Editor_Data::EDITOR_ID,
+                    ['form-row', 'form-row-full', 'editor_select'],
+                    'which editor to use for this product. Ensure the template and variant IDs are valid for the editor.'
+                );
 
-            PWP_Input_Fields::dropdown_input(
-                PWP_Editor_Data::EDITOR_ID . "[{$loop}]",
-                "editor",
-                array(
-                    PWP_PIE_Data::MY_EDITOR => 'Peleman Image Editor',
-                    PWP_IMAXEL_Data::MY_EDITOR => 'Imaxel Editor'
-                ),
-                PWP_Editor_Data::EDITOR_ID,
-                ['form-row', 'form-row-full', 'editor_select'],
-                'which editor to use for this product. Ensure the template and variant IDs are valid for the editor.'
-            );
-
-            ?>
+                ?>
+            </div>
             <h3 class="pwp_options_group_title">Peleman Image Editor Settings</h3>
-            <?php
-            PWP_INPUT_FIELDS::create_field(
-                PWP_PIE_DATA::TEMPLATE_ID_KEY . "[{$loop}]",
-                'PIE Template ID',
-                'text',
-                $editor_data->pie_data()->get_template_id(),
-                ['form-row', 'form-row-first'],
-            );
+            <div>
+                <?php
+                PWP_INPUT_FIELDS::create_field(
+                    PWP_PIE_DATA::TEMPLATE_ID_KEY . "[{$loop}]",
+                    'PIE Template ID',
+                    'text',
+                    $editor_data->pie_data()->get_template_id(),
+                    ['form-row', 'form-row-first'],
+                );
 
-            PWP_INPUT_FIELDS::create_field(
-                PWP_PIE_DATA::DESIGN_ID_KEY . "[{$loop}]",
-                'Design ID',
-                'text',
-                $editor_data->pie_data()->get_design_id(),
-                ['form-row', 'form-row-last'],
-            );
+                PWP_INPUT_FIELDS::create_field(
+                    PWP_PIE_DATA::DESIGN_ID_KEY . "[{$loop}]",
+                    'Design ID',
+                    'text',
+                    $editor_data->pie_data()->get_design_id(),
+                    ['form-row', 'form-row-last'],
+                );
 
-            PWP_INPUT_FIELDS::create_field(
-                PWP_PIE_DATA::COLOR_CODE_KEY . "[{$loop}]",
-                'Color Code',
-                'text',
-                $editor_data->pie_data()->get_color_code(),
-                ['form-row', 'form-row-first'],
-            );
+                PWP_INPUT_FIELDS::create_field(
+                    PWP_PIE_DATA::COLOR_CODE_KEY . "[{$loop}]",
+                    'Color Code',
+                    'text',
+                    $editor_data->pie_data()->get_color_code(),
+                    ['form-row', 'form-row-first'],
+                );
 
-            PWP_INPUT_FIELDS::create_field(
-                PWP_PIE_DATA::BACKGROUND_ID_KEY . "[{$loop}]",
-                'PIE background ID',
-                'text',
-                $editor_data->pie_data()->get_background_id(),
-                ['form-row', 'form-row-last'],
-            );
+                PWP_INPUT_FIELDS::create_field(
+                    PWP_PIE_DATA::BACKGROUND_ID_KEY . "[{$loop}]",
+                    'PIE background ID',
+                    'text',
+                    $editor_data->pie_data()->get_background_id(),
+                    ['form-row', 'form-row-last'],
+                );
 
-            ?>
-            <h3 class="pwp_options_group_title">Imaxel Editor Settings</h3>
-            <?php
-            PWP_INPUT_FIELDS::text_input(
-                PWP_IMAXEL_DATA::TEMPLATE_ID_KEY . "[{$loop}]",
-                'IMAXEL template ID',
-                $editor_data->imaxel_data()->get_template_id(),
-                ['form-row', 'form-row-first'],
-                'IMAXEL specific template ID'
-            );
+                PWP_INPUT_FIELDS::text_input(
+                    PWP_IMAXEL_DATA::TEMPLATE_ID_KEY . "[{$loop}]",
+                    'IMAXEL template ID',
+                    $editor_data->imaxel_data()->get_template_id(),
+                    ['form-row', 'form-row-first'],
+                    'IMAXEL specific template ID'
+                );
 
-            PWP_INPUT_FIELDS::text_input(
-                PWP_IMAXEL_DATA::VARIANT_ID_KEY . "[{$loop}]",
-                'IMAXEL Variant ID',
-                $editor_data->imaxel_data()->get_variant_id(),
-                ['form-row', 'form-row-last'],
-                'IMAXEL specific variant ID'
-            )
+                PWP_INPUT_FIELDS::text_input(
+                    PWP_IMAXEL_DATA::VARIANT_ID_KEY . "[{$loop}]",
+                    'IMAXEL Variant ID',
+                    $editor_data->imaxel_data()->get_variant_id(),
+                    ['form-row', 'form-row-last'],
+                    'IMAXEL specific variant ID'
+                )
 
-            //DO STUFF HERE
+                //DO STUFF HERE
 
-            ?>
+                ?>
+            </div>
         </div>
 <?php
     }

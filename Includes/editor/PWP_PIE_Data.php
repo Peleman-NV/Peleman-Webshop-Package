@@ -24,7 +24,7 @@ class PWP_PIE_Data extends PWP_Product_Meta_Data
 
     public function __construct(WC_Product $parent)
     {
-        $this->parent = $parent;
+        parent::__construct($parent);
 
         $this->templateId = $this->parent->get_meta(self::TEMPLATE_ID_KEY, true) ?? '';
         $this->designId = $this->parent->get_meta(self::DESIGN_ID_KEY, true) ?? '';

@@ -8,8 +8,6 @@ use PWP\includes\F2D\PWP_I_Meta_Property;
 
 class PWP_Editor_Data extends PWP_Product_Meta_Data
 {
-    protected \WC_Product $parent;
-
     public const CUSTOMIZABLE = 'pwp_customizable';
     public const USE_PDF_CONTENT = 'pwp_use_pdf_content';
     public const EDITOR_ID = 'pwp_editor_id';
@@ -34,7 +32,7 @@ class PWP_Editor_Data extends PWP_Product_Meta_Data
             throw new \Exception("Product with ID {$productId} not found. Id not valid or object is not a product.");
         }
 
-        $this->parent = $product;
+        parent::__construct($product);
         $this->customizable = boolval($this->parent->get_meta(self::CUSTOMIZABLE, true) ?? false);
         $this->usePDFContent = boolval($this->parent->get_meta(self::USE_PDF_CONTENT, true) ?? false);
         $this->editorId = $this->parent->get_meta(self::EDITOR_ID, true);
@@ -94,18 +92,15 @@ class PWP_Editor_Data extends PWP_Product_Meta_Data
         $this->parent->update_meta_data(self::CUSTOMIZABLE, $this->customizable ? 1 : 0);
         $this->parent->update_meta_data(self::USE_PDF_CONTENT, $this->usePDFContent ? 1 : 0);
 
-        if ($this->imaxel_data)
-            $this->imaxelData->update_meta_data();
-        if ($this->pie_data)
-            $this->pieData->update_meta_data();
+
+        $this->imaxel_data()->update_meta_data();
+        $this->pie_data()->update_meta_data();
     }
 
     public function save_meta_data(): void
     {
         parent::save_meta_data();
-        if ($this->imaxel_data)
-            $this->imaxelData->update_meta_data();
-        if ($this->pie_data)
-            $this->pieData->update_meta_data();
+        $this->imaxel_data()->update_meta_data();
+        $this->pie_data()->update_meta_data();
     }
 }

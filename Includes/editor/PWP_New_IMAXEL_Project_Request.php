@@ -11,7 +11,7 @@ use PWP\includes\utilities\response\PWP_I_Response;
 class PWP_New_IMAXEL_Project_Request extends PWP_Abstract_Request
 {
     private ImaxelService $service;
-    private PWP_PIE_Data $editorData;
+    private PWP_IMAXEL_Data $editorData;
     private string $backUrl;
     private string $addToCartUrl;
 
@@ -38,7 +38,7 @@ class PWP_New_IMAXEL_Project_Request extends PWP_Abstract_Request
         return $this;
     }
 
-    public function initialize_from_editor_data(PWP_Editor_Data $data): self
+    public function initialize_from_imaxel_data(PWP_IMAXEL_Data $data): self
     {
         $this->editorData = $data;
         return $this;

@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace PWP\adminPage\hookables;
 
+use PWP\includes\editor\PWP_Editor_Data;
+use PWP\includes\editor\PWP_IMAXEL_Data;
 use PWP\includes\editor\PWP_PIE_Data;
 use PWP\includes\hookables\abstracts\PWP_Abstract_Action_hookable;
 
@@ -23,41 +25,62 @@ class PWP_Save_Variable_Custom_Fields extends PWP_Abstract_Action_hookable
 
     public function save_variables(int $variation_id, int $loop)
     {
-        $pie_data = new PWP_PIE_Data($variation_id);
-        $pie_data->set_customizable(isset($_POST["pie_custom"][$loop]));
+        $editor_data = new PWP_Editor_Data($variation_id);
+        $pie_data = $editor_data->pie_data();
+        $imaxel_data = $editor_data->imaxel_data();
+
+        //editor specific data
+        $editor_data->set_customizable(
+            isset($_POST[PWP_EDITOR_DATA::CUSTOMIZABLE][$loop])
+        );
+
+        $editor_data->set_uses_pdf_content(
+            isset($_POST[PWP_Editor_Data::USE_PDF_CONTENT][$loop])
+        );
+
+        $editor_data->set_editor(
+            esc_attr(sanitize_text_field($_POST[PWP_Editor_Data::EDITOR_ID][$loop]))
+        );
 
         $pie_data->set_template_id(
             esc_attr(sanitize_text_field(
-                $_POST[PWP_PIE_DATA::TEMPLATE_ID][$loop]
+                $_POST[PWP_PIE_DATA::TEMPLATE_ID_KEY][$loop]
             ))
         );
 
+        //PIE specific data
         $pie_data->set_design_id(
             esc_attr(sanitize_text_field(
-                $_POST[PWP_PIE_DATA::DESIGN_ID][$loop]
+                $_POST[PWP_PIE_DATA::DESIGN_ID_KEY][$loop]
             ))
         );
 
         $pie_data->set_color_code(
             esc_attr(sanitize_text_field(
-                $_POST[PWP_PIE_DATA::COLOR_CODE][$loop]
+                $_POST[PWP_PIE_DATA::COLOR_CODE_KEY][$loop]
             ))
         );
 
         $pie_data->set_background_id(
             esc_attr(sanitize_text_field(
-                $_POST[PWP_PIE_DATA::BACKGROUND_ID][$loop]
+                $_POST[PWP_PIE_DATA::BACKGROUND_ID_KEY][$loop]
             ))
         );
 
-        $pie_data->set_customizable(
-            (bool)esc_attr($_POST[PWP_PIE_DATA::CUSTOMIZABLE][$loop])
+        //IMAXEL specific data
+        $imaxel_data->set_template_id(
+            esc_attr(sanitize_text_field(
+                $_POST[PWP_IMAXEL_Data::TEMPLATE_ID_KEY][$loop]
+            ))
         );
 
-        $pie_data->set_uses_pdf_content(
-            (bool)esc_attr($_POST[PWP_PIE_DATA::USE_PDF_CONTENT][$loop])
+        $imaxel_data->set_variant_id(
+            esc_attr(sanitize_text_field(
+                $_POST[PWP_IMAXEL_Data::VARIANT_ID_KEY][$loop]
+            ))
         );
 
-        $pie_data->update_meta_data();
+        $editor_data->update_meta_data();
+        $editor_data->save_meta_data();
     }
 }
