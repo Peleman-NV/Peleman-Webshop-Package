@@ -53,39 +53,67 @@ class PWP_PIE_Editor_Control_Panel extends PWP_Abstract_Action_Hookable
                 </p>
             </div>
             <form method="POST" action="options.php">
+                <?php
+                settings_fields('editorOptions-group');
+                do_settings_sections('editorOptions-group');
+                ?>
                 <table class="form-table">
                     <tr valign="top">
-                    <tr valign="top">
                         <th scope="row">
-                            <label for="pwp_pie_url">PIE Domain (URL)</label>
+                            <label for="pie_domain">PIE Domain (URL)</label>
                         </th>
                         <td>
-                            <input id="pwp_pie_url" name="pwp_pie_url" type="text" value="" placeholder="https://deveditor.peleman.com" class="regular-text code" />
+                            <input id="pie_domain" name="pie_domain" type="text" value="<?= get_option('pie_domain') ?>" placeholder="https://deveditor.peleman.com" class="regular-text code" />
                             <p class="description" id="tagline-description">base Site Address of the PIE editor</p>
                         </td>
                     </tr>
-                    <th scope="row">
-                        <label for="pwp_pie_customer_id">PIE Customer ID</label>
-                    </th>
-                    <td>
-                        <input id="pwp_pie_customer_id" name="pwp_pie_customer_id" type="text" value="" lass="regular-text" />
-                    </td>
+                    <tr valign="top">
+                        <th scope="row">
+                            <label for="pie_customer_id">PIE Customer ID</label>
+                        </th>
+                        <td>
+                            <input id=" pie_customer_id" name="pie_customer_id" type="text" value="<?= get_option('pie_customer_id'); ?>" class="regular-text" />
+                        </td>
                     </tr>
 
                     <tr valign="top">
                         <th scope="row">
-                            <label for="pwp_pie_api_key">PIE api key</label>
+                            <label for="pie_api_key">PIE api key</label>
                         </th>
                         <td>
-                            <input id="pwp_pie_api_key" name="pwp_pie_api_key" type="text" value="" class="regular-text" />
+                            <input id="pie_api_key" name="pie_api_key" type="text" value="<?= get_option('pie_api_key'); ?>" class="regular-text" />
                         </td>
                     </tr>
+
                     <tr valign="top">
+                        <th scope="row">
+                            <label for="pwp_imaxel_private_key">IMAXEL Private Key</label>
+                        </th>
                         <td>
-                            <button type="submit" class="button button-primary"> Save Changes</button>
+                            <input id=" pwp_imaxel_private_key" name="pwp_imaxel_private_key" type="text" value="<?= get_option('pwp_imaxel_private_key'); ?>" class="regular-text" />
                         </td>
                     </tr>
+
+                    <tr valign="top">
+                        <th scope="row">
+                            <label for="pwp_imaxel_public_key">IMAXEL Public Key</label>
+                        </th>
+                        <td>
+                            <input id="pwp_imaxel_public_key" name="pwp_imaxel_public_key" type="text" value="<?= get_option('pwp_imaxel_public_key'); ?>" class="regular-text" />
+                        </td>
+                    </tr>
+
+                    <tr valign="top">
+                        <th scope="row">
+                            <label for="pwp_imaxel_shop_code">IMAXEL Shop Code</label>
+                        </th>
+                        <td>
+                            <input id="pwp_imaxel_shop_code" name="pwp_imaxel_shop_code" type="text" value="<?= get_option('pwp_imaxel_shop_code'); ?>" class="regular-text" />
+                        </td>
+                    </tr>
+
                 </table>
+                <?php submit_button(); ?>
             </form>
         </div>
 <?php

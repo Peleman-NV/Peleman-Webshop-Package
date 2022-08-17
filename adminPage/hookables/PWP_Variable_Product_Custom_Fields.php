@@ -60,10 +60,11 @@ class PWP_Variable_Product_Custom_Fields extends PWP_Abstract_Action_hookable
                     PWP_Editor_Data::EDITOR_ID . "[{$loop}]",
                     "editor",
                     array(
-                        PWP_PIE_Data::MY_EDITOR => 'Peleman Image Editor',
-                        PWP_IMAXEL_Data::MY_EDITOR => 'Imaxel Editor'
+                        '' => 'none',
+                        PWP_PIE_Data::MY_EDITOR => "Peleman Image Editor",
+                        PWP_IMAXEL_Data::MY_EDITOR => "Imaxel"
                     ),
-                    PWP_Editor_Data::EDITOR_ID,
+                    $editor_data->get_editor_id(),
                     ['form-row', 'form-row-full', 'editor_select'],
                     'which editor to use for this product. Ensure the template and variant IDs are valid for the editor.'
                 );

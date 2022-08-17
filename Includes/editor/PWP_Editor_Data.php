@@ -35,7 +35,7 @@ class PWP_Editor_Data extends PWP_Product_Meta_Data
         parent::__construct($product);
         $this->customizable = boolval($this->parent->get_meta(self::CUSTOMIZABLE, true) ?? false);
         $this->usePDFContent = boolval($this->parent->get_meta(self::USE_PDF_CONTENT, true) ?? false);
-        $this->editorId = $this->parent->get_meta(self::EDITOR_ID, true);
+        $this->editorId = $this->parent->get_meta(self::EDITOR_ID, true) ?: '';
 
         $this->pieData = null;
         $this->imaxelData = null;
@@ -53,7 +53,7 @@ class PWP_Editor_Data extends PWP_Product_Meta_Data
 
     public function get_editor_id(): string
     {
-        return $this->get_editor_id;
+        return $this->editorId;
     }
 
     public function is_customizable(): bool
@@ -91,7 +91,7 @@ class PWP_Editor_Data extends PWP_Product_Meta_Data
     {
         $this->parent->update_meta_data(self::CUSTOMIZABLE, $this->customizable ? 1 : 0);
         $this->parent->update_meta_data(self::USE_PDF_CONTENT, $this->usePDFContent ? 1 : 0);
-
+        $this->parent->update_meta_data(self::EDITOR_ID, $this->editorId);
 
         $this->imaxel_data()->update_meta_data();
         $this->pie_data()->update_meta_data();

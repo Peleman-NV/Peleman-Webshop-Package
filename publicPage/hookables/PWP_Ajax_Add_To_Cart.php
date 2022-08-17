@@ -113,11 +113,12 @@ class PWP_Ajax_Add_To_Cart extends PWP_Abstract_Ajax_Hookable
      */
     public function generate_new_project(PWP_Editor_Data $data, string $returnURL = ''): PWP_Editor_Project
     {
+        error_log($data->get_editor_id());
         switch ($data->get_editor_id()) {
             case PWP_PIE_DATA::MY_EDITOR:
-                return $this->new_PIE_Project($data->pie_data, $returnURL ?: site_url());
+                return $this->new_PIE_Project($data->pie_data(), $returnURL ?: site_url());
             case PWP_IMAXEL_Data::MY_EDITOR:
-                return $this->new_IMAXEL_Project($data->imaxel_data, $returnURL ?: site_url());
+                return $this->new_IMAXEL_Project($data->imaxel_data(), $returnURL ?: site_url());
             default:
                 return null;
         }
@@ -129,7 +130,7 @@ class PWP_Ajax_Add_To_Cart extends PWP_Abstract_Ajax_Hookable
      * @param string $returnUrl when the user has completed their project, they will be redirected to this URL
      * @return PWP_PIE_Editor_Project project object
      */
-    private function new_PIE_Project(PWP_Editor_Data $data, string $returnUrl): PWP_PIE_Editor_Project
+    private function new_PIE_Project(PWP_PIE_Data $data, string $returnUrl): PWP_PIE_Editor_Project
     {
         //TODO: clean up hardcoded variables and get from options instead.
 
@@ -138,7 +139,7 @@ class PWP_Ajax_Add_To_Cart extends PWP_Abstract_Ajax_Hookable
                 'https://deveditor.peleman.com/',
                 'webshop',
                 'X88CPxzXAzunHw2LQ5k6Zat6fCZXCEQqy7Rr6kBnbwj6zM_DOZ6Q-shtgWMM4kI7Iq-r5L2XF7EdjLHHoO4351',
-            )->initialize_from_pie_data($data->pie_data())
+            )->initialize_from_pie_data($data)
             ->set_timeout(10)
             ->set_return_url($returnUrl)
             ->set_user_id(get_current_user_id())
@@ -157,11 +158,11 @@ class PWP_Ajax_Add_To_Cart extends PWP_Abstract_Ajax_Hookable
             )->make_request();
     }
 
-    private function new_IMAXEL_Project(PWP_Editor_Data $data, string $returnUrl): PWP_IMAXEL_Editor_Project
+    private function new_IMAXEL_Project(PWP_IMAXEL_Data $data, string $returnUrl): PWP_IMAXEL_Editor_Project
     {
         return
             $request = PWP_New_IMAXEL_Project_Request::new()
-            ->initialize_from_imaxel_data($data->imaxel_data())
+            ->initialize_from_imaxel_data($data)
             ->set_back_url(wc_get_cart_url())
             ->set_add_to_cart_url($returnUrl)
             ->make_request();

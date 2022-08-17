@@ -18,6 +18,7 @@ use PWP\includes\API\endpoints\PWP_TEST_OAuth2_Client_Endpoint;
 
 use PWP\adminPage\hookables\PWP_Admin_Notice_Poster;
 use PWP\adminPage\hookables\PWP_PIE_Editor_Control_Panel;
+use PWP\adminPage\hookables\PWP_Register_Editor_Options;
 use PWP\adminPage\hookables\PWP_Save_Variable_Custom_Fields;
 use PWP\adminPage\hookables\PWP_Variable_Product_Custom_Fields;
 use PWP\adminPage\PWP_Parent_Custom_Fields;
@@ -55,6 +56,7 @@ class PWP_Plugin implements PWP_I_Hookable_Component
 
             /*  ADD ADMIN MENU HOOKABLES HERE */
             $this->add_hookable($this->noticePoster);
+            $this->add_hookable(new PWP_Register_Editor_Options());
             $this->add_hookable(new PWP_Variable_Product_Custom_Fields());
             $this->add_hookable(new PWP_Parent_Custom_Fields());
             $this->add_hookable(new PWP_Save_Variable_Custom_Fields());
