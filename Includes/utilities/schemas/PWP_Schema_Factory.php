@@ -59,11 +59,11 @@ class PWP_Schema_Factory implements PWP_I_Schema_Factory
      *
      * @param string $description
      * @param array $enumValues
-     * @return PWP_Json_Array_property
+     * @return PWP_Json_Array_Property
      */
-    public function multi_enum_property(string $description, array $enumValues, array $args = []): PWP_Json_Array_property
+    public function multi_enum_property(string $description, array $enumValues, array $args = []): PWP_Json_Array_Property
     {
-        return new PWP_Json_Array_property(
+        return new PWP_Json_Array_Property(
             __($description, $this->domain),
             $this,
             array('enum' => $enumValues),
@@ -71,9 +71,9 @@ class PWP_Schema_Factory implements PWP_I_Schema_Factory
         );
     }
 
-    public function array_property(string $description, array $args = []): PWP_Json_Array_property
+    public function array_property(string $description, array $args = []): PWP_Json_Array_Property
     {
-        return new PWP_Json_Array_property(
+        return new PWP_Json_Array_Property(
             __($description, $this->domain),
             $this,
             $args
