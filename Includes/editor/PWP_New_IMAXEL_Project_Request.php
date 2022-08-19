@@ -64,13 +64,15 @@ class PWP_New_IMAXEL_Project_Request extends PWP_Abstract_Request
 
     public function make_request(): PWP_IMAXEL_Editor_Project
     {
-        $jsonResponse = $this->service->create_project(
-            $this->data->get_template_id(),
-            $this->data->get_variation()
+        $response = $this->service->create_project(
+            $this->editorData->get_template_id(),
+            $this->editorData->get_variant_id()
         );
-        $response = json_decode($jsonResponse, true);
+        $response_body = json_decode($response['body'], true);
+        $response_code = $response['response']['code'];
+        error_log(print_r($response_body, true));
 
-        $projectId = '';
+        $projectId = $response_body['id'];
 
         //TODO: parse response and create project
 
@@ -78,6 +80,7 @@ class PWP_New_IMAXEL_Project_Request extends PWP_Abstract_Request
             $projectId,
             $this->backUrl,
             $this->addToCartUrl,
+            //TODO: fix hard coded lang parameter
             'en'
         );
     }

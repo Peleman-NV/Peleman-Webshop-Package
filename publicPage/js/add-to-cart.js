@@ -42,22 +42,22 @@
         function attemptAddProductToCart(Button, productId, variationId, quantity, contentFileId = null) {
             $('#redirection-info').html('');
             const data = {
-                action: 'PWP_Ajax_Add_To_Cart',
+                action: 'PWP_Ajax_Redirect_To_Editor',
                 product: productId,
                 variant: variationId,
                 quantity: quantity,
                 content: contentFileId,
-                // ajax_nonce: PWP_Ajax_Add_To_Cart_object.nonce,
+                // ajax_nonce: PWP_Ajax_Redirect_To_Editor_object.nonce,
             };
 
             $(document.body).trigger('adding_to_cart', [Button, data])
             $.ajax({
-                url: PWP_Ajax_Add_To_Cart_object.ajax_url,
+                url: PWP_Ajax_Redirect_To_Editor_object.ajax_url,
                 method: 'POST',
                 data: data,
                 cache: false,
                 dataType: 'json',
-                nonce: PWP_Ajax_Add_To_Cart_object.nonce,
+                nonce: PWP_Ajax_Redirect_To_Editor_object.nonce,
                 beforeSend: function (response) {
                     console.log("clicked button");
                     Button.removeClass('added').addClass('loading');

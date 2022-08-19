@@ -12,9 +12,9 @@ class PWP_Schema_Factory implements PWP_I_Schema_Factory
         $this->domain = $domain;
     }
 
-    public function int_property(string $description): PWP_Json_int_Property
+    public function int_property(string $description): PWP_Json_Int_Property
     {
-        return new PWP_Json_int_Property(
+        return new PWP_Json_Int_Property(
             __($description, $this->domain),
         );
     }

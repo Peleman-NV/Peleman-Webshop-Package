@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace PWP\adminPage\hookables;
 
-use PWP\includes\hookables\abstracts\PWP_Abstract_Action_hookable;
+use PWP\includes\hookables\abstracts\PWP_Abstract_Action_Hookable;
 use PWP\includes\utilities\PWP_Admin_Notice;
 
-class PWP_Admin_Notice_Poster extends PWP_Abstract_Action_hookable
+class PWP_Admin_Notice_Poster extends PWP_Abstract_Action_Hookable
 {
     /**
      * @var PWP_Admin_notice[]

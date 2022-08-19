@@ -1,0 +1,112 @@
+.pwp-options-group {
+    padding: 10px;
+    background: #f8f8f8;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.pwp-options-group-title {
+    padding: 0 !important;
+    font-weight: 600 !important;
+    font-size: 1.3em !important;
+}
+
+.pwp-options-group input[type='checkbox'] {
+    margin: 4px !important;
+}
+
+.pwp-settings {
+    background-color: #e9e9e9;
+    border-radius: 0.25rem;
+    padding: 10px;
+    margin: 10px 10px 10px -10px;
+}
+
+.pwp-settings ul {
+    list-style-type: disc !important;
+    padding-left: 2.5em;
+}
+
+.pwp-settings h1 {
+    margin-bottom: 2px !important;
+}
+
+.pwp-settings h2 {
+    font-weight: 400 !important;
+}
+
+.pwp-settings .form-row {
+    margin-bottom: 0.5rem;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.pwp-settings .form-row label {
+    font-weight: 600;
+}
+
+.pwp-settings .form-row input[type='text'] {
+    width: 100%;
+}
+
+.grid-medium-column {
+    flex: 0 0 auto;
+    width: 12%;
+}
+
+.grid-large-column {
+    flex: 0 0 auto;
+    width: 25%;
+}
+
+.grid-extra-large-column {
+    flex: 0 0 auto;
+    width: 33%;
+}
+
+#f2d-custnr-saved {
+    margin: 0 -3px 0 3px;
+    position: relative;
+    top: 4px;
+}
+#pwp-admin-loading {
+    margin: 0 -3px 0 3px;
+    position: relative;
+    top: 4px;
+    opacity: 1;
+    color: white;
+    animation: rotate-with-color 1.5s linear infinite;
+}
+
+.pwp-hidden {
+    display: none !important;
+}
+
+@keyframes rotate-with-color {
+    25% {
+        color: rgb(24, 53, 94);
+        transform: rotate(90deg);
+    }
+    50% {
+        color: rgb(24, 53, 94);
+        transform: rotate(180deg);
+    }
+    75% {
+        color: rgb(24, 53, 94);
+        transform: rotate(270deg);
+    }
+    100% {
+        color: white;
+        transform: rotate(360deg);
+    }
+}
+@keyframes rotate {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+#f2d_error {
+    color: red;
+    font-size: small;
+}

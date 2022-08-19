@@ -17,12 +17,12 @@ use PWP\includes\editor\PWP_PIE_Editor_Project;
 use PWP\includes\hookables\abstracts\PWP_Abstract_Ajax_Hookable;
 use WC_Product_Variation;
 
-class PWP_Ajax_Add_To_Cart extends PWP_Abstract_Ajax_Hookable
+class PWP_Ajax_Redirect_To_Editor extends PWP_Abstract_Ajax_Hookable
 {
     public function __construct()
     {
         parent::__construct(
-            'PWP_Ajax_Add_To_Cart',
+            'PWP_Ajax_Redirect_To_Editor',
             plugins_url('Peleman-Webshop-Package/publicPage/js/add-to-cart.js'),
         );
     }
@@ -55,14 +55,13 @@ class PWP_Ajax_Add_To_Cart extends PWP_Abstract_Ajax_Hookable
                     //generate return url which, when called, will add the cached order to the cart.
                     $returnUrl = wc_get_cart_url() . "?CustProj={$sessionId}";
                     $projectData = $this->generate_new_project($editorData, $returnUrl);
-                    $itemMeta = $projectData->to_array();
 
                     //store relevant data in session
                     $_SESSION[$sessionId] = array(
                         'product_id'    => $productId,
                         'quantity'      => $quantity,
                         'variation_id'  => $variationId,
-                        'item_meta'     => $itemMeta,
+                        'item_meta'     => $projectData->to_array(),
                     );
 
                     wp_send_json_success(
@@ -161,7 +160,7 @@ class PWP_Ajax_Add_To_Cart extends PWP_Abstract_Ajax_Hookable
     private function new_IMAXEL_Project(PWP_IMAXEL_Data $data, string $returnUrl): PWP_IMAXEL_Editor_Project
     {
         return
-            $request = PWP_New_IMAXEL_Project_Request::new()
+            PWP_New_IMAXEL_Project_Request::new()
             ->initialize_from_imaxel_data($data)
             ->set_back_url(wc_get_cart_url())
             ->set_add_to_cart_url($returnUrl)

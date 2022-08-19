@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PWP\includes\utilities\schemas;
 
-final class PWP_Json_int_Property extends PWP_Abstract_Schema_Property
+final class PWP_Json_Int_Property extends PWP_Abstract_Schema_Property
 {
     public function __construct(string $description, array $args = [])
     {

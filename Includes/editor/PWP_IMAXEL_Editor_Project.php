@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace PWP\includes\editor;
 
-use pwp\includes\editor\PWP_Editor_Project;
 use PWP\includes\services\ImaxelService;
 use PWP\includes\utilities\response\PWP_I_Response;
 
@@ -43,17 +42,11 @@ class PWP_IMAXEL_Editor_Project extends PWP_Editor_Project implements PWP_I_Resp
 
     public function get_project_editor_url(): string
     {
-        $this->get_project_id;
         return $this->service->get_editor_url(
             $this->get_project_id(),
             $this->back_url,
             $this->lang,
             $this->add_to_cart_url
         );
-    }
-
-    public function to_array(): array
-    {
-        return array();
     }
 }

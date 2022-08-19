@@ -12,14 +12,14 @@ class ImaxelService
     private $private_key;
     private $public_key;
     private $shop_code;
-    private $base_imaxel_api_url = "https://services.imaxel.com:443/api/v3/";
-    private $logFile = PPI_LOG_DIR . '/imaxelServiceLog.txt';
+    private const IMAXEL_API_URL = "https://services.imaxel.com:443/api/v3/";
+    private $logFile = PWP_LOG_DIR . '/imaxelServiceLog.txt';
 
     public function __construct()
     {
-        $this->private_key = get_option('ppi-imaxel-private-key');
-        $this->public_key = get_option('ppi-imaxel-public-key');
-        $this->shop_code =  get_option('ppi-imaxel-shop-code');
+        $this->private_key  = get_option('pwp_imaxel_private_key');
+        $this->public_key   = get_option('pwp_imaxel_public_key');
+        $this->shop_code    = get_option('pwp_imaxel_shop_code');
     }
 
     /**
@@ -96,16 +96,21 @@ class ImaxelService
      */
     public function create_project($template_id, $variant_code)
     {
-        $url = $this->base_imaxel_api_url . 'projects';
-        $context_array = array('productCode' => $template_id, 'variantsCodes' => array($variant_code), 'defaultVariantCode' => $variant_code);
+        $url = self::IMAXEL_API_URL . 'projects';
+
+        $context_array = array(
+            'productCode'   => $template_id,
+            'variantsCodes' => array($variant_code), 'defaultVariantCode' => $variant_code
+        );
         $base_64_encoded_policy_json = $this->generate_base64_encoded_policy($context_array);
         $signed_policy = $this->generate_signed_policy($base_64_encoded_policy_json);
+
         $create_project_json = json_encode(array(
-            "productCode" => $template_id,
-            "variantsCodes" => array($variant_code),
-            "defaultVariantCode" => $variant_code,
-            "policy" => $base_64_encoded_policy_json,
-            "signedPolicy" => $signed_policy
+            "productCode"           => $template_id,
+            "variantsCodes"         => array($variant_code),
+            "defaultVariantCode"    => $variant_code,
+            "policy"                => $base_64_encoded_policy_json,
+            "signedPolicy"          => $signed_policy
         ), JSON_UNESCAPED_SLASHES);
 
         return $this->get_response($url, 'POST', $create_project_json);
@@ -119,7 +124,7 @@ class ImaxelService
      */
     public function create_order($project_id, $order_id)
     {
-        $url = $this->base_imaxel_api_url . 'orders';
+        $url = self::IMAXEL_API_URL . 'orders';
 
         $context_array = array(
             'jobs' => array(
@@ -138,9 +143,10 @@ class ImaxelService
         );
         $base_64_encoded_policy_json = $this->generate_base64_encoded_policy($context_array);
         $signed_policy = $this->generate_signed_policy($base_64_encoded_policy_json);
+
         $create_project_json = json_encode(array_merge($context_array, array(
-            "policy" => $base_64_encoded_policy_json,
-            "signedPolicy" => $signed_policy
+            "policy"        => $base_64_encoded_policy_json,
+            "signedPolicy"  => $signed_policy
         )), JSON_UNESCAPED_SLASHES);
 
         $now =  new DateTime('NOW');
@@ -156,7 +162,7 @@ class ImaxelService
      */
     public function get_pending_orders()
     {
-        $url = $this->base_imaxel_api_url . 'receivedorders/pending';
+        $url = self::IMAXEL_API_URL . 'receivedorders/pending';
 
         $base_64_encoded_policy_json = $this->generate_base64_encoded_policy();
         $signed_policy = $this->generate_signed_policy($base_64_encoded_policy_json);
@@ -170,7 +176,7 @@ class ImaxelService
      */
     public function mark_order_as_downloaded($orderId)
     {
-        $url = $this->base_imaxel_api_url . 'receivedorders/downloaded';
+        $url = self::IMAXEL_API_URL . 'receivedorders/downloaded';
 
         $context_array = array(
             'orderId' => $orderId
@@ -204,7 +210,7 @@ class ImaxelService
         $base_64_encoded_policy_json = $this->generate_base64_encoded_policy($context_array);
         $signed_policy = $this->generate_signed_policy($base_64_encoded_policy_json);
 
-        return $this->base_imaxel_api_url . 'projects/'
+        return self::IMAXEL_API_URL . 'projects/'
             . $project_id
             . '/editUrl?'
             . 'backURL=' . rawurlencode($context_array['backURL'])
@@ -228,7 +234,7 @@ class ImaxelService
         );
         $base_64_encoded_policy_json = $this->generate_base64_encoded_policy($context_array);
         $signed_policy = $this->generate_signed_policy($base_64_encoded_policy_json);
-        $url = $this->base_imaxel_api_url . 'projects/' . strval($project_id)
+        $url = self::IMAXEL_API_URL . 'projects/' . strval($project_id)
             . '?policy=' . rawurlencode($base_64_encoded_policy_json)
             . '&signedPolicy=' . rawurlencode($signed_policy);
 

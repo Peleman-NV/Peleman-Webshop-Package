@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PWP\Tests;
+namespace PWP\tests;
 
 use PHPUnit\Framework\TestCase;
 use PWP\includes\exceptions\PWP_Not_Found_Exception;

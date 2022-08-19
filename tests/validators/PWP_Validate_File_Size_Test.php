@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PWP\Tests\validators;
+namespace PWP\tests\validators;
 
 use PHPUnit\Framework\TestCase;
 use PWP\includes\utilities\notification\PWP_I_Notification;

@@ -29,4 +29,13 @@ abstract class PWP_Editor_Project implements PWP_I_Response, PWP_I_Response_Comp
     }
 
     public abstract function get_project_editor_url(): string;
+
+    public function to_array(): array
+    {
+        return array(
+            '_editor_id'    => $this->get_editor_id(),
+            '_project_id'   => $this->get_project_id(),
+            '_project_url'  => $this->get_project_editor_url(),
+        );
+    }
 }

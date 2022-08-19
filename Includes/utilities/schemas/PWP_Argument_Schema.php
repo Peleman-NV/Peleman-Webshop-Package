@@ -41,7 +41,7 @@ class PWP_Argument_Schema implements PWP_I_Schema
 
     #region factory helper methods
 
-    final public function add_int_property(string $name, string $description): PWP_Json_int_Property
+    final public function add_int_property(string $name, string $description): PWP_Json_Int_Property
     {
         $property = $this->factory->int_property($description);
         $this->add_property($name, $property);

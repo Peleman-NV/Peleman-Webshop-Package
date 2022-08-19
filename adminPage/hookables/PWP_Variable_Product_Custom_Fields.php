@@ -35,8 +35,26 @@ class PWP_Variable_Product_Custom_Fields extends PWP_Abstract_Action_hookable
 ?>
         <div class="pwp-options-group">
             <h2 class="pwp-options-group-title">Fly2Data Properties - V2</h2>
-            <div>
+            <div class="option_group">
                 <?php
+
+                PWP_INPUT_FIELDS::text_input(
+                    "f2d_sku_components[{$loop}]",
+                    'Fly2Data SKU',
+                    $wc_variation->get_meta('f2d_sku_components'),
+                    '',
+                    ['form-row', 'form-row-first'],
+                    'F2D components that make up a variation'
+                );
+
+                PWP_INPUT_FIELDS::text_input(
+                    "f2d_artcd[{$loop}]",
+                    'Fly2Data article code',
+                    $wc_variation->get_meta('f2d_artcd'),
+                    '',
+                    ['form-row', 'form-row-last'],
+                    'F2D article code'
+                );
 
                 PWP_INPUT_FIELDS::create_field(
                     PWP_Editor_Data::CUSTOMIZABLE . "[{$loop}]",
@@ -68,11 +86,10 @@ class PWP_Variable_Product_Custom_Fields extends PWP_Abstract_Action_hookable
                     ['form-row', 'form-row-full', 'editor_select'],
                     'which editor to use for this product. Ensure the template and variant IDs are valid for the editor.'
                 );
-
                 ?>
             </div>
-            <h3 class="pwp_options_group_title">Peleman Image Editor Settings</h3>
-            <div>
+            <h3 class="ppi_options_group_title"> Image Editor Settings</h3>
+            <div class="option_group">
                 <?php
                 PWP_INPUT_FIELDS::create_field(
                     PWP_PIE_DATA::TEMPLATE_ID_KEY . "[{$loop}]",
@@ -110,6 +127,7 @@ class PWP_Variable_Product_Custom_Fields extends PWP_Abstract_Action_hookable
                     PWP_IMAXEL_DATA::TEMPLATE_ID_KEY . "[{$loop}]",
                     'IMAXEL template ID',
                     $editor_data->imaxel_data()->get_template_id(),
+                    '',
                     ['form-row', 'form-row-first'],
                     'IMAXEL specific template ID'
                 );
@@ -118,12 +136,10 @@ class PWP_Variable_Product_Custom_Fields extends PWP_Abstract_Action_hookable
                     PWP_IMAXEL_DATA::VARIANT_ID_KEY . "[{$loop}]",
                     'IMAXEL Variant ID',
                     $editor_data->imaxel_data()->get_variant_id(),
+                    '',
                     ['form-row', 'form-row-last'],
                     'IMAXEL specific variant ID'
                 )
-
-                //DO STUFF HERE
-
                 ?>
             </div>
         </div>

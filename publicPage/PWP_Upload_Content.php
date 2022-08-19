@@ -15,7 +15,7 @@ use PWP\includes\validation\PWP_Validate_File_Errors;
 use PWP\includes\validation\PWP_Validate_File_Type;
 use PWP\includes\wrappers\PWP_Product_Meta_Data;
 
-class pwp_upload_content extends PWP_Abstract_Ajax_Hookable
+class PWP_Upload_Content extends PWP_Abstract_Ajax_Hookable
 {
     public function __construct()
     {

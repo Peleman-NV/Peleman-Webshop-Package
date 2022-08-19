@@ -34,7 +34,7 @@
 
             $.ajax({
                 //ajax setup
-                url: pwp_upload_content_object.ajax_url,
+                url: PWP_Upload_Content_object.ajax_url,
                 method: 'POST',
                 data: formData,
                 processData: false,
@@ -128,7 +128,7 @@
             formData.append('action', 'upload_content_file');
             formData.append('file', file);
             formData.append('variant_id', variationId);
-            // formData.append('_ajax_nonce', pwp_upload_content_object.nonce); 
+            // formData.append('_ajax_nonce', PWP_Upload_Content_object.nonce); 
             return formData;
         }
     });

@@ -6,7 +6,7 @@ namespace PWP\includes\utilities\schemas;
 
 interface PWP_I_Schema_Builder
 {
-    public function add_int_property(string $name, string $description): PWP_Json_int_Property;
+    public function add_int_property(string $name, string $description): PWP_Json_Int_Property;
     public function add_string_property(string $name, string $description): PWP_Json_String_Property;
     public function add_uri_property(string $name, string $description): PWP_Json_String_Property;
     public function add_bool_property(string $name, string $description): PWP_Json_Bool_Property;

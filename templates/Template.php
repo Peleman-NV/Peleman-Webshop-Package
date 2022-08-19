@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PWP\includes\templating;
+namespace PWP\templates;
 
 abstract class Template
 {

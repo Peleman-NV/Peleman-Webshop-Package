@@ -22,29 +22,27 @@ class PWP_Add_Custom_Project_On_Return extends PWP_Abstract_Action_Hookable
             error_log("adding project to cart...");
             $sessionId = $_REQUEST['CustProj'];
 
-            error_log($sessionId);
             if (isset($_SESSION[$sessionId])) {
 
                 $data = $_SESSION[$sessionId];
 
                 error_log(print_r($data, true));
 
-                $productId      = (int) apply_filters('woocommerce_add_to_cart_product_id', $data['product_id']);
-                $variationId    = (int) apply_filters('woocommerce_add_to_cart_product_id', $data['variation_id']);
-                $quantity       = $data['quantity'];
+                $productId      = (int)$data['product_id'];
+                $variationId    = (int)$data['variation_id'];
+                $quantity       = $data['quantity'] ?: 1;
                 $product        = wc_get_product($variationId ?: $productId);
                 $variationArr   = [];
                 $meta           = $data['item_meta'];
 
                 //correction for variatons.
-                if ($product && $product instanceof WC_Product_Variation) {
-                    error_log("variation!");
+                if ($product instanceof WC_Product_Variation) {
                     $variationArr = wc_get_product_variation_attributes($variationId);
-                    error_log(print_r($variationArr, true));
                 }
 
-                if (WC()->cart === null)
-                    WC()->initialize_cart();
+                //we do both of these because it works
+                //don't ask me why. it just does. that should suffice.
+                do_action('woocommerce_add_to_cart', $productId, $quantity, $variationId, $variationArr, $meta);
                 $key =  WC()->cart->add_to_cart(
                     $productId,
                     $quantity,
@@ -55,10 +53,10 @@ class PWP_Add_Custom_Project_On_Return extends PWP_Abstract_Action_Hookable
                 error_log("key: " . $key);
                 wc_add_to_cart_message(array($productId => $quantity), true);
             }
-
             unset($_SESSION[$sessionId]);
+
             wp_redirect(wc_get_cart_url());
-            // exit;
+            exit;
         }
     }
 }
