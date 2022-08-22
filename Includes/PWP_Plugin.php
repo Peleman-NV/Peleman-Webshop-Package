@@ -31,8 +31,8 @@ use PWP\publicPage\hookables\PWP_Add_PDF_Upload_Form;
 use PWP\publicPage\hookables\PWP_Add_Project_Button_To_Cart_Item;
 use PWP\publicPage\hookables\PWP_Ajax_Redirect_To_Editor;
 use PWP\publicPage\hookables\PWP_Change_Add_To_Cart_Button_Label;
+use PWP\publicPage\hookables\PWP_Change_Add_To_Cart_Label_For_Archive;
 use PWP\publicPage\hookables\PWP_Display_Project_Data_In_Cart;
-use PWP\publicPage\hookables\PWP_Public_Product_Page;
 use PWP\publicPage\hookables\PWP_Upload_PDF_Content;
 
 if (!function_exists('is_plugin_active')) {
@@ -87,7 +87,7 @@ class PWP_Plugin implements PWP_I_Hookable_Component
 
     private function public_hooks(): void
     {
-        $this->add_hookable(new PWP_Public_Product_Page());
+        $this->add_hookable(new PWP_Change_Add_To_Cart_Label_For_Archive());
         $this->add_hookable(new PWP_Change_Add_To_Cart_Button_Label());
 
         $this->add_hookable(new PWP_API_Plugin('pwp/v1'));
