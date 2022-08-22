@@ -42,15 +42,15 @@ class PWP_Add_Custom_Project_On_Return extends PWP_Abstract_Action_Hookable
 
                 //we do both of these because it works
                 //don't ask me why. it just does. that should suffice.
-                do_action('woocommerce_add_to_cart', $productId, $quantity, $variationId, $variationArr, $meta);
-                $key =  WC()->cart->add_to_cart(
+                $itemKey =  WC()->cart->add_to_cart(
                     $productId,
                     $quantity,
                     $variationId,
                     $variationArr,
                     $meta
                 );
-                error_log("key: " . $key);
+                do_action('woocommerce_add_to_cart', $itemKey, $productId, $quantity, $variationId, $variationArr, $meta);
+                error_log("itemKey: " . $itemKey);
                 wc_add_to_cart_message(array($productId => $quantity), true);
             }
             unset($_SESSION[$sessionId]);

@@ -12,6 +12,10 @@ abstract class PWP_Editor_Project implements PWP_I_Response, PWP_I_Response_Comp
     private string $editorId;
     private string $projectId;
 
+    public const EDITOR_ID_KEY = '_editor_id';
+    public const PROJECT_ID_KEY = '_project_id';
+    public const PROJECT_URL_KEY = '_project_url';
+
     public function __construct(string $editorId, string $projectId)
     {
         $this->editorId = $editorId;
