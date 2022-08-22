@@ -20,7 +20,7 @@ class PWP_Public_Product_Page implements PWP_I_Hookable_Component
         $loader->add_filter('woocommerce_product_add_to_cart_text', $this, 'change_add_to_cart_text_for_archive');
         // $loader->add_filter('woocommerce_product_single_add_to_cart_text', $this, 'change_add_to_cart_text_for_product');
 
-        // $this->add_hookable(new PWP_Upload_Content());
+        // $this->add_hookable(new PWP_Upload_PDF_Content());
         // $this->add_hookable(new PWP_Ajax_Redirect_To_Editor());
     }
 

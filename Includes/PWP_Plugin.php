@@ -27,10 +27,13 @@ use PWP\adminPage\PWP_Parent_Custom_Fields;
 use PWP\includes\hookables\PWP_Add_PDF_Contents_To_Cart;
 use PWP\publicPage\hookables\PWP_Add_Custom_Project_On_Return;
 use PWP\publicPage\hookables\PWP_Add_Custom_Project_To_Order;
+use PWP\publicPage\hookables\PWP_Add_PDF_Upload_Form;
 use PWP\publicPage\hookables\PWP_Add_Project_Button_To_Cart_Item;
 use PWP\publicPage\hookables\PWP_Ajax_Redirect_To_Editor;
+use PWP\publicPage\hookables\PWP_Change_Add_To_Cart_Button_Label;
 use PWP\publicPage\hookables\PWP_Display_Project_Data_In_Cart;
 use PWP\publicPage\hookables\PWP_Public_Product_Page;
+use PWP\publicPage\hookables\PWP_Upload_PDF_Content;
 
 if (!function_exists('is_plugin_active')) {
     include_once(ABSPATH . '/wp-admin/includes/plugin.php');
@@ -85,10 +88,14 @@ class PWP_Plugin implements PWP_I_Hookable_Component
     private function public_hooks(): void
     {
         $this->add_hookable(new PWP_Public_Product_Page());
+        $this->add_hookable(new PWP_Change_Add_To_Cart_Button_Label());
 
         $this->add_hookable(new PWP_API_Plugin('pwp/v1'));
         $this->add_hookable(new PWP_TEST_OAuth2_Client_Endpoint());
 
+        /* PDF upload hookables */
+        $this->add_hookable(new PWP_Add_PDF_Upload_Form());
+        $this->add_hookable(new PWP_Upload_PDF_Content());
         /* EDITOR product hookables */
         $this->add_hookable(new PWP_Add_Product_Fields());
         // $this->add_hookable(new PWP_Add_PDF_Contents_To_Cart());

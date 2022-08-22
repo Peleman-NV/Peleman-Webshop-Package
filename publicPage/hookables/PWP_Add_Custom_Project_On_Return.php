@@ -12,6 +12,7 @@ class PWP_Add_Custom_Project_On_Return extends PWP_Abstract_Action_Hookable
 {
     //this is a rather obscure hook, which is called even after wp_loaded.
     //for some reason, wp_loaded is still too early for this method to be called, but wp is the right timing.
+    //TODO: perhaps in the future it might be a better idea to make this an API call, that redirects to the cart.
     public function __construct(string $hook = 'wp')
     {
         parent::__construct($hook, 'add_customized_product_to_cart');
@@ -24,11 +25,11 @@ class PWP_Add_Custom_Project_On_Return extends PWP_Abstract_Action_Hookable
             $sessionId = $_REQUEST['CustProj'];
 
             if (isset($_SESSION[$sessionId])) {
-                error_log("adding project to cart...");
 
                 $data = $_SESSION[$sessionId];
+                unset($_SESSION[$sessionId]);
 
-                error_log(print_r($data, true));
+                error_log("adding project to cart: " . print_r($data, true));
 
                 $productId      = (int)$data['product_id'];
                 $variationId    = (int)$data['variation_id'] ?: null;
@@ -37,28 +38,21 @@ class PWP_Add_Custom_Project_On_Return extends PWP_Abstract_Action_Hookable
                 $variationArr   = [];
                 $meta           = $data['item_meta'];
 
-                //correction for variatons.
                 if ($product instanceof WC_Product_Variation) {
-                    // $productId = $variationId;
                     $variationArr = wc_get_product_variation_attributes($variationId);
                 }
 
-                $itemKey =  WC()->cart->add_to_cart(
+                if (!WC()->cart->add_to_cart(
                     $productId,
                     $quantity,
                     $variationId,
                     $variationArr,
                     $meta
-                    // [],
-                );
-                // do_action('woocommerce_add_to_cart', $itemKey, $productId, $quantity, $variationId, $variationArr, $meta);
-                error_log("item key: " . $itemKey);
+                )) {
+                    wp_die("something went catastrophically wrong adding the item and project to the cart.");
+                }
                 wc_add_to_cart_message(array($productId => $quantity), true);
-
-                error_log(' ');
-                error_log(print_r(WC()->cart->get_cart_item($itemKey),true));
             }
-            unset($_SESSION[$sessionId]);
 
             wp_redirect(wc_get_cart_url());
             exit;

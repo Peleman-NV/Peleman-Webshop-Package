@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PWP\publicPage;
+namespace PWP\publicPage\hookables;
 
 use setasign\Fpdi\Fpdi;
 use PWP\includes\wrappers\PWP_File_Data;
@@ -15,7 +15,7 @@ use PWP\includes\validation\PWP_Validate_File_Errors;
 use PWP\includes\validation\PWP_Validate_File_Type;
 use PWP\includes\wrappers\PWP_Product_Meta_Data;
 
-class PWP_Upload_Content extends PWP_Abstract_Ajax_Hookable
+class PWP_Upload_PDF_Content extends PWP_Abstract_Ajax_Hookable
 {
     public function __construct()
     {
@@ -42,6 +42,9 @@ class PWP_Upload_Content extends PWP_Abstract_Ajax_Hookable
         $this->verify_ajax_referer();
 
         $file = new PWP_File_Data($_FILES['file']);
+        $productId = $_REQUEST['product_id'];
+        $variantId = $_REQUEST['variant_id'] ?: null;
+        
         $notification = new PWP_Notification();
         var_dump($file);
 
