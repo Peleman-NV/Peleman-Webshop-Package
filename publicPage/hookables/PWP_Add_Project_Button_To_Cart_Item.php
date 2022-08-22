@@ -9,7 +9,7 @@ use PWP\includes\editor\PWP_PIE_Data;
 use PWP\includes\hookables\abstracts\PWP_Abstract_Action_Hookable;
 use PWP\includes\services\ImaxelService;
 
-class PWP_Add_Project_Button_To_Cart extends PWP_Abstract_Action_Hookable
+class PWP_Add_Project_Button_To_Cart_Item extends PWP_Abstract_Action_Hookable
 {
     public function __construct()
     {
@@ -22,27 +22,41 @@ class PWP_Add_Project_Button_To_Cart extends PWP_Abstract_Action_Hookable
         if (!$cart_item['_project_id'] || !$cart_item['_editor_id'])
             return;
 
-
-        $project_id = $cart_item['_project_id'];
         $editor_id = $cart_item['_editor_id'];
+        $project_id = $cart_item['_project_id'];
         $project_url = '';
 
         switch ($editor_id) {
             case (PWP_PIE_Data::MY_EDITOR):
-                $project_url = $cart_item['_editor_url'];
+                $project_url = $this->get_PIE_Project_Url($cart_item, $project_id);
                 break;
-            case PWP_IMAXEL_Data::MY_EDITOR:
-                $service = new ImaxelService();
-                $project_url = $service->get_editor_url($project_id, wc_get_cart_url(), 'en', wc_get_cart_url());
+            case (PWP_IMAXEL_Data::MY_EDITOR):
+                $project_url = $this->get_IMAXEL_project_url($cart_item, $project_id);
                 break;
             default:
                 return;
         }
 ?>
-        <a href="<?= wc_clean($cart_item['_project_url']) ?>" class="button">edit project</a>
+        <p>
+            <a href="<?= $project_url ?>" class="button">edit project</a>
+        </p>
 <?php
+    }
 
+    private function get_PIE_Project_Url(array $cart_item, string $project_id): string
+    {
+        return wc_clean($cart_item['_project_url']);
+    }
+
+    private function get_IMAXEL_project_url(array $cart_item, string $project_id): string
+    {
+        $service = new ImaxelService();
+        return $service->get_editor_url(
+            $project_id,
+            wc_get_cart_url(),
+            //get site language
+            explode('-', get_locale())[0],
+            wc_get_cart_url()
+        );
     }
 }
-
-// ( 'woocommerce_after_cart_item_name', $cart_item, $cart_item_key )
