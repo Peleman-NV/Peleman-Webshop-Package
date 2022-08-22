@@ -24,6 +24,7 @@ use PWP\adminPage\hookables\PWP_Save_Parent_Custom_Fields;
 use PWP\adminPage\hookables\PWP_Save_Variable_Custom_Fields;
 use PWP\adminPage\hookables\PWP_Variable_Product_Custom_Fields;
 use PWP\adminPage\PWP_Parent_Custom_Fields;
+use PWP\includes\hookables\PWP_Add_PDF_Contents_To_Cart;
 use PWP\publicPage\hookables\PWP_Add_Custom_Project_On_Return;
 use PWP\publicPage\hookables\PWP_Add_Custom_Project_To_Order;
 use PWP\publicPage\hookables\PWP_Add_Project_Button_To_Cart_Item;
@@ -91,7 +92,6 @@ class PWP_Plugin implements PWP_I_Hookable_Component
         /* EDITOR product hookables */
         $this->add_hookable(new PWP_Add_Product_Fields());
         // $this->add_hookable(new PWP_Add_PDF_Contents_To_Cart());
-        // $this->add_hookable(new PWP_Display_Project_Data_In_Cart());
         $this->add_hookable(new PWP_Add_Project_Button_To_Cart_Item());
         $this->add_hookable(new PWP_Ajax_Redirect_To_Editor());
         $this->add_hookable(new PWP_Add_Custom_Project_On_Return());

@@ -10,7 +10,7 @@ use WC_Product_Variation;
 
 class PWP_Add_Custom_Project_On_Return extends PWP_Abstract_Action_Hookable
 {
-    public function __construct(string $hook = 'wp_loaded')
+    public function __construct(string $hook = 'wp')
     {
         parent::__construct($hook, 'add_customized_product_to_cart');
     }
@@ -19,17 +19,17 @@ class PWP_Add_Custom_Project_On_Return extends PWP_Abstract_Action_Hookable
     {
         if (isset($_REQUEST['CustProj'])) {
             session_start();
-            error_log("adding project to cart...");
             $sessionId = $_REQUEST['CustProj'];
 
             if (isset($_SESSION[$sessionId])) {
+                error_log("adding project to cart...");
 
                 $data = $_SESSION[$sessionId];
 
                 error_log(print_r($data, true));
 
                 $productId      = (int)$data['product_id'];
-                $variationId    = (int)$data['variation_id'];
+                $variationId    = (int)$data['variation_id'] ?: null;
                 $quantity       = $data['quantity'] ?: 1;
                 $product        = wc_get_product($variationId ?: $productId);
                 $variationArr   = [];
@@ -37,21 +37,24 @@ class PWP_Add_Custom_Project_On_Return extends PWP_Abstract_Action_Hookable
 
                 //correction for variatons.
                 if ($product instanceof WC_Product_Variation) {
+                    // $productId = $variationId;
                     $variationArr = wc_get_product_variation_attributes($variationId);
                 }
 
-                //we do both of these because it works
-                //don't ask me why. it just does. that should suffice.
                 $itemKey =  WC()->cart->add_to_cart(
                     $productId,
                     $quantity,
                     $variationId,
                     $variationArr,
                     $meta
+                    // [],
                 );
-                do_action('woocommerce_add_to_cart', $itemKey, $productId, $quantity, $variationId, $variationArr, $meta);
-                error_log("itemKey: " . $itemKey);
+                // do_action('woocommerce_add_to_cart', $itemKey, $productId, $quantity, $variationId, $variationArr, $meta);
+                error_log("item key: " . $itemKey);
                 wc_add_to_cart_message(array($productId => $quantity), true);
+
+                error_log(' ');
+                error_log(print_r(WC()->cart->get_cart_item($itemKey),true));
             }
             unset($_SESSION[$sessionId]);
 

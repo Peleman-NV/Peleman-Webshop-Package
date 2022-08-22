@@ -19,7 +19,7 @@ class PWP_Add_Project_Button_To_Cart_Item extends PWP_Abstract_Action_Hookable
     public function render_project_button(array $cart_item, string $cart_item_key)
     {
         //get project data from cart item
-        if (!$cart_item['_project_id'] || !$cart_item['_editor_id'])
+        if (!isset($cart_item['_project_id']) || !isset($cart_item['_editor_id']))
             return;
 
         $editor_id = $cart_item['_editor_id'];
