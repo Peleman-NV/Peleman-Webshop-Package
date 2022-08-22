@@ -30,7 +30,7 @@ class PWP_Variable_Product_Custom_Fields extends PWP_Abstract_Action_hookable
     {
         $variationId = $variation->ID;
         $wc_variation = wc_get_product($variationId);
-        $editor_data = new PWP_Editor_Data($variationId);
+        $editor_data = new PWP_Editor_Data(wc_get_product($variationId));
         $parentId = $wc_variation->get_parent_id();
 ?>
         <div class="pwp-options-group">

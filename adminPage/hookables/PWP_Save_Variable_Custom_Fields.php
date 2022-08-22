@@ -25,7 +25,7 @@ class PWP_Save_Variable_Custom_Fields extends PWP_Abstract_Action_hookable
 
     public function save_variables(int $variation_id, int $loop)
     {
-        $editor_data = new PWP_Editor_Data($variation_id);
+        $editor_data = new PWP_Editor_Data(wc_get_product($variation_id));
         $pie_data = $editor_data->pie_data();
         $imaxel_data = $editor_data->imaxel_data();
 
@@ -81,6 +81,6 @@ class PWP_Save_Variable_Custom_Fields extends PWP_Abstract_Action_hookable
         );
 
         $editor_data->update_meta_data();
-        $editor_data->save_meta_data();
+        $editor_data->save();
     }
 }

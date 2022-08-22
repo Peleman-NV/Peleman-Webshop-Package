@@ -94,5 +94,7 @@ class PWP_PIE_Data extends PWP_Product_Meta_Data
         $this->parent->update_meta_data(self::COLOR_CODE_KEY, $this->colorCode);
         $this->parent->update_meta_data(self::TEMPLATE_ID_KEY, $this->templateId);
         $this->parent->update_meta_data(self::DESIGN_ID_KEY, $this->designId);
+
+        $this->parent->save_meta_data();
     }
 }

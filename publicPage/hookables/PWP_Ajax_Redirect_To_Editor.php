@@ -39,7 +39,8 @@ class PWP_Ajax_Redirect_To_Editor extends PWP_Abstract_Ajax_Hookable
             //first, read and interpret data from request
             $productId      = apply_filters('woocommerce_add_to_cart_product_id', absint($_REQUEST['product']));
             $variationId    = apply_filters('woocommerce_add_to_cart_product_id', absint($_REQUEST['variant']));
-            $editorData     = new PWP_Editor_Data($variationId ?: $productId);
+            $product = wc_get_product($variationId ?: $productId);
+            $editorData     = new PWP_Editor_Data($product);
             $quantity       = wc_stock_amount($_REQUEST['quantity'] ?: 1);
 
             if (apply_filters('woocommerce_add_to_cart_validation', true, $productId, $quantity, $variationId)) {

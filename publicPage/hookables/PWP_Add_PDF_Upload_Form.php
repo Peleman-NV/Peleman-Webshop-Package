@@ -57,6 +57,7 @@ class PWP_Add_PDF_Upload_Form extends PWP_Abstract_Action_Hookable
                 <input id='file-upload' type='file' accept='application/pdf' name='pdf_upload' style='display: none;'>
             </div>
             <div id='upload-info'></div>
-    <?php
+        </div>
+<?php
     }
 }

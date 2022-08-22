@@ -10,10 +10,12 @@ use WC_Product;
 abstract class PWP_Product_Meta_Data implements PWP_I_Meta_Property
 {
     protected WC_Product $parent;
+    protected array $data;
 
     public function __construct(\WC_Product $parent)
     {
         $this->parent = $parent;
+        $this->data = $parent->get_meta_data();
     }
 
     final public function get_parent(): \WC_Product
@@ -23,8 +25,8 @@ abstract class PWP_Product_Meta_Data implements PWP_I_Meta_Property
 
     abstract function update_meta_data(): void;
 
-    public function save_meta_data(): void
+    public function save(): void
     {
-        $this->parent->save_meta_data();
+        $this->parent->save();
     }
 }

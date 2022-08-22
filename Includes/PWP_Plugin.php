@@ -94,7 +94,7 @@ class PWP_Plugin implements PWP_I_Hookable_Component
         $this->add_hookable(new PWP_TEST_OAuth2_Client_Endpoint());
 
         /* PDF upload hookables */
-        $this->add_hookable(new PWP_Add_PDF_Upload_Form());
+        $this->add_hookable(new PWP_Add_PDF_Upload_Form()); // <= breaks shop button on devwebshop.
         $this->add_hookable(new PWP_Upload_PDF_Content());
         /* EDITOR product hookables */
         $this->add_hookable(new PWP_Add_Product_Fields());
