@@ -10,6 +10,8 @@ use WC_Product_Variation;
 
 class PWP_Add_Custom_Project_On_Return extends PWP_Abstract_Action_Hookable
 {
+    //this is a rather obscure hook, which is called even after wp_loaded.
+    //for some reason, wp_loaded is still too early for this method to be called, but wp is the right timing.
     public function __construct(string $hook = 'wp')
     {
         parent::__construct($hook, 'add_customized_product_to_cart');
