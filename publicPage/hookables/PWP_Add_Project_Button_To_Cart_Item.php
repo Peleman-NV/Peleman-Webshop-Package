@@ -6,6 +6,7 @@ namespace PWP\publicPage\hookables;
 
 use PWP\includes\editor\PWP_IMAXEL_Data;
 use PWP\includes\editor\PWP_PIE_Data;
+use PWP\includes\editor\PWP_PIE_Editor_Project;
 use PWP\includes\hookables\abstracts\PWP_Abstract_Action_Hookable;
 use PWP\includes\services\ImaxelService;
 

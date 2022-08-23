@@ -59,6 +59,7 @@ class PWP_New_PIE_Project_Request extends PWP_Abstract_Request
 
         $this->editorData = null;
 
+        $this->userId = 0;
         $this->language = 'en';
         $this->editorInstructions = [];
         $this->projectName = '';
@@ -86,7 +87,7 @@ class PWP_New_PIE_Project_Request extends PWP_Abstract_Request
 
     public function initialize_from_product(\WC_Product $product): self
     {
-        $this->editorData = new PWP_Product_Meta_Data($product->get_id());
+        $this->editorData = new PWP_Product_Meta_Data($product);
         return $this;
     }
 

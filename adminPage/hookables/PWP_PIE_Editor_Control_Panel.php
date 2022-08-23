@@ -42,14 +42,6 @@ class PWP_PIE_Editor_Control_Panel extends PWP_Abstract_Action_Hookable
                     in this panel, you can enter this webshop's credentials for accessing the PIE API.
                 </p>
                 <p>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                    Proin lacinia erat eget risus congue, tincidunt rutrum ligula pharetra.
-                    Proin malesuada velit ipsum, sit amet tempor risus molestie et.
-                    Aenean euismod libero vitae turpis interdum bibendum.
-                    Donec ac convallis ante. Sed ut scelerisque lacus.
-                    Maecenas non faucibus leo.
-                    Vestibulum tempus, ex vel venenatis semper, nisi mauris vestibulum lacus, et varius quam purus sit amet nunc.
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas eget ligula vel nulla malesuada rhoncus id et risus.
                 </p>
             </div>
             <form method="POST" action="options.php">
