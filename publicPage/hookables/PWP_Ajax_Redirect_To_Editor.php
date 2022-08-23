@@ -133,11 +133,9 @@ class PWP_Ajax_Redirect_To_Editor extends PWP_Abstract_Ajax_Hookable
      */
     private function new_PIE_Project(PWP_PIE_Data $data, string $returnUrl): PWP_PIE_Editor_Project
     {
-        //TODO: clean up hardcoded variables and get from options instead.
-
         return
             PWP_New_PIE_Project_Request::new(
-                get_option('pie_domain', ''),
+                get_option('pie_domain', 'https://deveditor.peleman.com'),
                 get_option('pie_customer_id', ''),
                 get_option('pie_api_key', ''),
             )->initialize_from_pie_data($data)

@@ -21,7 +21,7 @@ class PWP_Register_Editor_Options extends PWP_Abstract_Action_Hookable
             'description' => 'base Site Address of the PIE editor',
             'sanitize_callback' => 'esc_url_raw',
             'show_in_rest' => false,
-            'default' => 'https://deveditor.peleman.com'
+            'default' => ''
         ));
 
         register_setting('editorOptions-group', 'pie_customer_id', array(

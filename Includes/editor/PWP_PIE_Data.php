@@ -4,10 +4,9 @@ declare(strict_types=1);
 
 namespace PWP\includes\editor;
 
-use PWP\includes\F2D\PWP_I_Meta_Property;
 use WC_Product;
 
-class PWP_PIE_Data extends PWP_Product_Meta_Data
+class PWP_PIE_Data extends PWP_Product_Meta
 {
 
     public string $templateId;

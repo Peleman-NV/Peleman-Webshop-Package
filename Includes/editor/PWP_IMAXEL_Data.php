@@ -4,10 +4,9 @@ declare(strict_types=1);
 
 namespace PWP\includes\editor;
 
-use PWP\includes\F2D\PWP_I_Meta_Property;
 use WC_Product;
 
-class PWP_IMAXEL_Data extends PWP_Product_Meta_Data
+class PWP_IMAXEL_Data extends PWP_Product_Meta
 {
     public const TEMPLATE_ID_KEY = 'imaxel_template_id';
     public const VARIANT_ID_KEY = 'imaxel_variant_id';
