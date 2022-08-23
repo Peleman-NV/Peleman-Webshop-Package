@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PWP\adminPage\hookables;
 
-use PWP\includes\editor\PWP_Editor_Data;
+use PWP\includes\editor\PWP_Product_Meta_Data;
 use PWP\includes\editor\PWP_IMAXEL_Data;
 use PWP\includes\editor\PWP_PIE_Data;
 use PWP\includes\hookables\abstracts\PWP_Abstract_Action_hookable;
@@ -30,7 +30,7 @@ class PWP_Variable_Product_Custom_Fields extends PWP_Abstract_Action_hookable
     {
         $variationId = $variation->ID;
         $wc_variation = wc_get_product($variationId);
-        $editor_data = new PWP_Editor_Data(wc_get_product($variationId));
+        $editor_data = new PWP_Product_Meta_Data(wc_get_product($variationId));
         $parentId = $wc_variation->get_parent_id();
 ?>
         <div class="pwp-options-group">
@@ -57,7 +57,7 @@ class PWP_Variable_Product_Custom_Fields extends PWP_Abstract_Action_hookable
                 );
 
                 PWP_INPUT_FIELDS::create_field(
-                    PWP_Editor_Data::CUSTOMIZABLE . "[{$loop}]",
+                    PWP_Product_Meta_Data::CUSTOMIZABLE . "[{$loop}]",
                     'customizable',
                     'bool',
                     $editor_data->is_customizable(),
@@ -66,7 +66,7 @@ class PWP_Variable_Product_Custom_Fields extends PWP_Abstract_Action_hookable
                 );
 
                 PWP_INPUT_FIELDS::create_field(
-                    PWP_Editor_Data::USE_PDF_CONTENT . "[{$loop}]",
+                    PWP_Product_Meta_Data::USE_PDF_CONTENT . "[{$loop}]",
                     'use pdf content upload',
                     'bool',
                     $editor_data->uses_pdf_content(),
@@ -74,8 +74,17 @@ class PWP_Variable_Product_Custom_Fields extends PWP_Abstract_Action_hookable
                     'whether the product requires a PDF file for its contents'
                 );
 
+                PWP_Input_Fields::text_input(
+                    PWP_Product_Meta_Data::CUSTOM_LABEL . "[{$loop}]",
+                    'Custom add to cart label',
+                    $editor_data->get_custom_add_to_cart_label() ?: '',
+                    'add to cart',
+                    ['form-row', 'form-row-full'],
+                    'custom add to cart button label for this variation'
+                );
+
                 PWP_Input_Fields::dropdown_input(
-                    PWP_Editor_Data::EDITOR_ID . "[{$loop}]",
+                    PWP_Product_Meta_Data::EDITOR_ID . "[{$loop}]",
                     "editor",
                     array(
                         '' => 'none',
@@ -139,7 +148,7 @@ class PWP_Variable_Product_Custom_Fields extends PWP_Abstract_Action_hookable
                     '',
                     ['form-row', 'form-row-last'],
                     'IMAXEL specific variant ID'
-                )
+                );
                 ?>
             </div>
         </div>

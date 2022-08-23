@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PWP\publicPage\hookables;
 
-use PWP\includes\editor\PWP_Editor_Data;
+use PWP\includes\editor\PWP_Product_Meta_Data;
 use setasign\Fpdi\Fpdi;
 use PWP\includes\wrappers\PWP_File_Data;
 use PWP\includes\hookables\abstracts\PWP_Abstract_Ajax_Hookable;
@@ -14,7 +14,6 @@ use PWP\includes\utilities\PWP_Thumbnail_Generator_JPG;
 use PWP\includes\validation\PWP_Abstract_File_Handler;
 use PWP\includes\validation\PWP_Validate_File_Errors;
 use PWP\includes\validation\PWP_Validate_File_Type;
-use PWP\includes\wrappers\PWP_Product_Meta_Data;
 
 class PWP_Upload_PDF_Content extends PWP_Abstract_Ajax_Hookable
 {
@@ -76,7 +75,7 @@ class PWP_Upload_PDF_Content extends PWP_Abstract_Ajax_Hookable
             return;
         }
 
-        $variant = new PWP_Editor_Data($product);
+        $variant = new PWP_Product_Meta_Data($product);
         $min_pages = $variant->get_pdf_min_pages();
         $max_pages = $variant->get_pdf_max_pages();
 

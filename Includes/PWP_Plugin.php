@@ -4,36 +4,40 @@ declare(strict_types=1);
 
 namespace PWP\includes;
 
-use PWP\adminPage\hookables\PWP_Admin_Control_Panel;
-use PWP\adminPage\hookables\PWP_Admin_Enqueue_Styles;
 use PWP\includes\API\PWP_API_Plugin;
-
+use PWP\adminPage\PWP_Parent_Custom_Fields;
 use PWP\includes\loaders\PWP_Plugin_Loader;
+
+use Automattic\WooCommerce\Admin\Overrides\Order;
 
 use PWP\includes\hookables\PWP_Add_Product_Fields;
 use PWP\includes\traits\PWP_Hookable_Parent_Trait;
 
-use PWP\includes\hookables\abstracts\PWP_I_Hookable_Component;
-use PWP\includes\API\endpoints\PWP_TEST_OAuth2_Client_Endpoint;
-
+use PWP\adminPage\hookables\PWP_Admin_Control_Panel;
 use PWP\adminPage\hookables\PWP_Admin_Notice_Poster;
-use PWP\adminPage\hookables\PWP_Parent_Product_Custom_Fields;
-use PWP\adminPage\hookables\PWP_PIE_Editor_Control_Panel;
-use PWP\adminPage\hookables\PWP_Register_Editor_Options;
-use PWP\adminPage\hookables\PWP_Save_Parent_Custom_Fields;
-use PWP\adminPage\hookables\PWP_Save_Variable_Custom_Fields;
-use PWP\adminPage\hookables\PWP_Variable_Product_Custom_Fields;
-use PWP\adminPage\PWP_Parent_Custom_Fields;
-use PWP\includes\hookables\PWP_Add_PDF_Contents_To_Cart;
-use PWP\publicPage\hookables\PWP_Add_Custom_Project_On_Return;
-use PWP\publicPage\hookables\PWP_Add_Custom_Project_To_Order;
+
+use PWP\publicPage\hookables\PWP_Upload_PDF_Content;
+use PWP\adminPage\hookables\PWP_Admin_Enqueue_Styles;
 use PWP\publicPage\hookables\PWP_Add_PDF_Upload_Form;
-use PWP\publicPage\hookables\PWP_Add_Project_Button_To_Cart_Item;
+use PWP\adminPage\hookables\PWP_Register_Editor_Options;
+use PWP\includes\hookables\PWP_Add_PDF_Contents_To_Cart;
+use PWP\adminPage\hookables\PWP_PIE_Editor_Control_Panel;
 use PWP\publicPage\hookables\PWP_Ajax_Redirect_To_Editor;
+use PWP\adminPage\hookables\PWP_Save_Parent_Custom_Fields;
+use PWP\publicPage\hookables\PWP_Add_Fields_To_Variations;
+use PWP\adminPage\hookables\PWP_Save_Variable_Custom_Fields;
+use PWP\adminPage\hookables\PWP_Parent_Product_Custom_Fields;
+use PWP\includes\hookables\abstracts\PWP_I_Hookable_Component;
+use PWP\publicPage\hookables\PWP_Add_Custom_Project_On_Return;
+use PWP\publicPage\hookables\PWP_Display_Project_Data_In_Cart;
+use PWP\adminPage\hookables\PWP_Variable_Product_Custom_Fields;
+use PWP\includes\API\endpoints\PWP_TEST_OAuth2_Client_Endpoint;
+use PWP\publicPage\hookables\PWP_Add_Project_Button_To_Cart_Item;
+use PWP\publicPage\hookables\PWP_Ajax_Show_Variation;
 use PWP\publicPage\hookables\PWP_Change_Add_To_Cart_Button_Label;
 use PWP\publicPage\hookables\PWP_Change_Add_To_Cart_Label_For_Archive;
-use PWP\publicPage\hookables\PWP_Display_Project_Data_In_Cart;
-use PWP\publicPage\hookables\PWP_Upload_PDF_Content;
+use PWP\publicPage\hookables\PWP_Enqueue_Public_Styles;
+use PWP\publicPage\hookables\PWP_Save_Cart_Item_Meta_To_Order_Item_Meta;
 
 if (!function_exists('is_plugin_active')) {
     include_once(ABSPATH . '/wp-admin/includes/plugin.php');
@@ -87,6 +91,7 @@ class PWP_Plugin implements PWP_I_Hookable_Component
 
     private function public_hooks(): void
     {
+        $this->add_hookable(new PWP_Enqueue_Public_Styles());
         $this->add_hookable(new PWP_Change_Add_To_Cart_Label_For_Archive());
         $this->add_hookable(new PWP_Change_Add_To_Cart_Button_Label());
 
@@ -95,14 +100,16 @@ class PWP_Plugin implements PWP_I_Hookable_Component
 
         /* PDF upload hookables */
         $this->add_hookable(new PWP_Add_PDF_Upload_Form()); // <= breaks shop button on devwebshop.
-        $this->add_hookable(new PWP_Upload_PDF_Content());
+        // $this->add_hookable(new PWP_Upload_PDF_Content());
+        $this->add_hookable(new PWP_Add_Fields_To_Variations());
         /* EDITOR product hookables */
-        $this->add_hookable(new PWP_Add_Product_Fields());
+        $this->add_hookable(new PWP_Ajax_Show_Variation());
+        $this->add_hookable(new PWP_Ajax_Redirect_To_Editor());
+        // $this->add_hookable(new PWP_Add_Product_Fields());
         // $this->add_hookable(new PWP_Add_PDF_Contents_To_Cart());
         $this->add_hookable(new PWP_Add_Project_Button_To_Cart_Item());
-        $this->add_hookable(new PWP_Ajax_Redirect_To_Editor());
         $this->add_hookable(new PWP_Add_Custom_Project_On_Return());
-        $this->add_hookable(new PWP_Add_Custom_Project_To_Order());
+        $this->add_hookable(new PWP_Save_Cart_Item_Meta_To_Order_Item_Meta());
     }
 
     final public static function run()

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PWP\publicPage\hookables;
 
-use PWP\includes\editor\PWP_Editor_Data;
+use PWP\includes\editor\PWP_Product_Meta_Data;
 use PWP\includes\hookables\abstracts\PWP_Abstract_Filter_Hookable;
 use WC_Product;
 

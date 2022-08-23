@@ -49,6 +49,8 @@ class PWP_Parent_Product_Custom_Fields extends PWP_Abstract_Action_Hookable
             ['short'],
             'Define a custom Add to Cart label'
         );
+
+        
     }
 
     private function render_simple_product_settings(WC_Product_Simple $product): void

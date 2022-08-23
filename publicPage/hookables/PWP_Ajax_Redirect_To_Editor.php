@@ -6,7 +6,7 @@ namespace PWP\publicPage\hookables;
 
 use Error;
 use Exception;
-use PWP\includes\editor\PWP_Editor_Data;
+use PWP\includes\editor\PWP_Product_Meta_Data;
 use pwp\includes\editor\PWP_Editor_Project;
 use PWP\includes\editor\PWP_IMAXEL_Data;
 use PWP\includes\editor\PWP_IMAXEL_Editor_Project;
@@ -24,6 +24,7 @@ class PWP_Ajax_Redirect_To_Editor extends PWP_Abstract_Ajax_Hookable
         parent::__construct(
             'PWP_Ajax_Redirect_To_Editor',
             plugins_url('Peleman-Webshop-Package/publicPage/js/add-to-cart.js'),
+            5
         );
     }
 
@@ -40,7 +41,7 @@ class PWP_Ajax_Redirect_To_Editor extends PWP_Abstract_Ajax_Hookable
             $productId      = apply_filters('woocommerce_add_to_cart_product_id', absint($_REQUEST['product']));
             $variationId    = apply_filters('woocommerce_add_to_cart_product_id', absint($_REQUEST['variant']));
             $product = wc_get_product($variationId ?: $productId);
-            $editorData     = new PWP_Editor_Data($product);
+            $editorData     = new PWP_Product_Meta_Data($product);
             $quantity       = wc_stock_amount($_REQUEST['quantity'] ?: 1);
 
             if (apply_filters('woocommerce_add_to_cart_validation', true, $productId, $quantity, $variationId)) {
@@ -111,7 +112,7 @@ class PWP_Ajax_Redirect_To_Editor extends PWP_Abstract_Ajax_Hookable
      * @param string $returnURL url to which the editor will return the user after saving their project, if blank, refer to editor.
      * @return PWP_Editor_Project|null wil return a PWP_Editor_Project object if successful. if the method can not determine a valid editor, will return null.
      */
-    public function generate_new_project(PWP_Editor_Data $data, string $returnURL = ''): PWP_Editor_Project
+    public function generate_new_project(PWP_Product_Meta_Data $data, string $returnURL = ''): PWP_Editor_Project
     {
         error_log($data->get_editor_id());
         switch ($data->get_editor_id()) {

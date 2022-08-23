@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PWP\adminPage\hookables;
 
-use PWP\includes\editor\PWP_Editor_Data;
+use PWP\includes\editor\PWP_Product_Meta_Data;
 use PWP\includes\editor\PWP_IMAXEL_Data;
 use PWP\includes\editor\PWP_PIE_Data;
 use PWP\includes\hookables\abstracts\PWP_Abstract_Action_hookable;
@@ -25,21 +25,25 @@ class PWP_Save_Variable_Custom_Fields extends PWP_Abstract_Action_hookable
 
     public function save_variables(int $variation_id, int $loop)
     {
-        $editor_data = new PWP_Editor_Data(wc_get_product($variation_id));
+        $editor_data = new PWP_Product_Meta_Data(wc_get_product($variation_id));
         $pie_data = $editor_data->pie_data();
         $imaxel_data = $editor_data->imaxel_data();
 
         //editor specific data
         $editor_data->set_customizable(
-            isset($_POST[PWP_EDITOR_DATA::CUSTOMIZABLE][$loop])
+            isset($_POST[PWP_Product_Meta_Data::CUSTOMIZABLE][$loop])
         );
 
         $editor_data->set_uses_pdf_content(
-            isset($_POST[PWP_Editor_Data::USE_PDF_CONTENT][$loop])
+            isset($_POST[PWP_Product_Meta_Data::USE_PDF_CONTENT][$loop])
         );
 
         $editor_data->set_editor(
-            esc_attr(sanitize_text_field($_POST[PWP_Editor_Data::EDITOR_ID][$loop]))
+            esc_attr(sanitize_text_field($_POST[PWP_Product_Meta_Data::EDITOR_ID][$loop]))
+        );
+
+        $editor_data->set_custom_add_to_cart_label(
+            esc_attr(sanitize_text_field($_POST[PWP_Product_Meta_Data::CUSTOM_LABEL][$loop]))
         );
 
         $pie_data->set_template_id(

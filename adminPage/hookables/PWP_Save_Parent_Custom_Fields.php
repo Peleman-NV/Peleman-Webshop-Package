@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PWP\adminPage\hookables;
 
-use PWP\includes\editor\PWP_Editor_Data;
+use PWP\includes\editor\PWP_Product_Meta_Data;
 use PWP\includes\editor\PWP_IMAXEL_Data;
 use PWP\includes\editor\PWP_PIE_Data;
 use PWP\includes\hookables\abstracts\PWP_Abstract_Action_hookable;
