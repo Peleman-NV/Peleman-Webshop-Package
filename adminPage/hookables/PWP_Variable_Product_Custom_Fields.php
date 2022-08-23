@@ -57,15 +57,6 @@ class PWP_Variable_Product_Custom_Fields extends PWP_Abstract_Action_hookable
                 );
 
                 PWP_INPUT_FIELDS::create_field(
-                    PWP_Product_Meta_Data::CUSTOMIZABLE . "[{$loop}]",
-                    'customizable',
-                    'bool',
-                    $editor_data->is_customizable(),
-                    ['form-row', 'form-row-full', 'checkbox', 'pie-customizable'],
-                    'whether the product is customizable by clients'
-                );
-
-                PWP_INPUT_FIELDS::create_field(
                     PWP_Product_Meta_Data::USE_PDF_CONTENT . "[{$loop}]",
                     'use pdf content upload',
                     'bool',
@@ -87,7 +78,7 @@ class PWP_Variable_Product_Custom_Fields extends PWP_Abstract_Action_hookable
                     PWP_Product_Meta_Data::EDITOR_ID . "[{$loop}]",
                     "editor",
                     array(
-                        '' => 'none',
+                        '' => 'no customization',
                         PWP_PIE_Data::MY_EDITOR => "Peleman Image Editor",
                         PWP_IMAXEL_Data::MY_EDITOR => "Imaxel"
                     ),

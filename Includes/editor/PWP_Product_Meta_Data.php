@@ -8,7 +8,6 @@ use WC_Product;
 
 class PWP_Product_Meta_Data extends PWP_Product_Meta
 {
-    public const CUSTOMIZABLE = 'pwp_customizable';
     public const USE_PDF_CONTENT = 'pwp_use_pdf_content';
     public const EDITOR_ID = 'pwp_editor_id';
     public const CUSTOM_LABEL = 'custom_variation_add_to_cart_label';
@@ -31,8 +30,8 @@ class PWP_Product_Meta_Data extends PWP_Product_Meta
     {
         parent::__construct($product);
 
-        $this->customizable         = boolval($this->parent->get_meta(self::CUSTOMIZABLE)) ?: false;
         $this->editorId             = $this->parent->get_meta(self::EDITOR_ID) ?: '';
+        $this->customizable         = !empty($this->editorId);
         $this->usePDFContent        = boolval($this->parent->get_meta(self::USE_PDF_CONTENT)) ?: false;
         $this->customAddToCartLabel = $this->parent->get_meta(self::CUSTOM_LABEL) ?: '';
 
@@ -154,7 +153,6 @@ class PWP_Product_Meta_Data extends PWP_Product_Meta
 
     public function update_meta_data(): void
     {
-        $this->parent->update_meta_data(self::CUSTOMIZABLE, $this->customizable ? 1 : 0);
         $this->parent->update_meta_data(self::USE_PDF_CONTENT, $this->usePDFContent ? 1 : 0);
         $this->parent->update_meta_data(self::EDITOR_ID, $this->editorId);
         $this->parent->update_meta_data(self::CUSTOM_LABEL, $this->customAddToCartLabel);

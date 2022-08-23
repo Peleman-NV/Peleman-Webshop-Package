@@ -29,10 +29,6 @@ class PWP_Save_Variable_Custom_Fields extends PWP_Abstract_Action_hookable
         $pie_data = $editor_data->pie_data();
         $imaxel_data = $editor_data->imaxel_data();
 
-        //editor specific data
-        $editor_data->set_customizable(
-            isset($_POST[PWP_Product_Meta_Data::CUSTOMIZABLE][$loop])
-        );
 
         $editor_data->set_uses_pdf_content(
             isset($_POST[PWP_Product_Meta_Data::USE_PDF_CONTENT][$loop])
