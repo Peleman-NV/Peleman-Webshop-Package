@@ -146,12 +146,12 @@ class PWP_New_PIE_Project_Request extends PWP_Abstract_Request
         $curl = curl_init();
         curl_setopt_array($curl, array(
             CURLOPT_URL             => $url,
-            CURLOPT_HTTPHEADER      => $this->generate_request_header(),
             CURLOPT_TIMEOUT         => $this->timeout,
             CURLOPT_CONNECTTIMEOUT  => $this->timeout,
             CURLOPT_SSL_VERIFYPEER  => $this->secure ? 1 : 0,
             CURLOPT_SSL_VERIFYHOST  => $this->secure ? 2 : 0,
             CURLOPT_RETURNTRANSFER  => 1,
+            CURLOPT_HTTPHEADER      => $this->generate_request_header(),
         ));
 
         $response = curl_exec($curl);
@@ -192,11 +192,11 @@ class PWP_New_PIE_Project_Request extends PWP_Abstract_Request
     protected function generate_request_header(): array
     {
         $referer = get_site_url();
-        $header = array();
+        $header = array(
+            // "PIEAPIKEY : {$this->apiKey}",
+        );
 
-        // $header[] = "PIEAPIKEY : {$this->apiKey}";
-        $header[] = "referer : {$referer}";
-
+        error_log("header: " . print_r($header, true));
         return $header;
     }
 }

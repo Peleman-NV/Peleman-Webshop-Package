@@ -22,6 +22,7 @@ class PWP_PIE_Editor_Project extends PWP_Editor_Project implements PWP_I_Respons
     {
         $id = $this->get_project_id();
         $params = $this->editorData->get_editor_params();
+        $params['customerapikey'] = get_option('pie_api_key');
 
         $url = get_option('pie_domain') . "/editor";
         $url .= ($upload && $this->editorData->get_uses_image_upload() ? '/upload' : '');
