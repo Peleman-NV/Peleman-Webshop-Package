@@ -18,16 +18,16 @@ class PWP_PIE_Editor_Project extends PWP_Editor_Project implements PWP_I_Respons
         parent::__construct(PWP_PIE_Data::MY_EDITOR, $projectId);
     }
 
-    public function get_project_editor_url(): string
+    public function get_project_editor_url(bool $upload = true): string
     {
         $id = $this->get_project_id();
         $params = $this->editorData->get_editor_params();
 
         $url = get_option('pie_domain') . "/editor";
-        $url .= $this->editorData->get_uses_image_upload() ? '/upload' : '';
+        $url .= ($upload && $this->editorData->get_uses_image_upload() ? '/upload' : '');
         $url .= "?projectid={$id}";
 
-        if ($params) {
+        if ($upload && $params) {
             $url .= '&' . http_build_query($params);
         }
 
