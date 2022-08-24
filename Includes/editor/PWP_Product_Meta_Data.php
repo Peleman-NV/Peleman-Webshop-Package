@@ -157,6 +157,8 @@ class PWP_Product_Meta_Data extends PWP_Product_Meta
         $this->parent->update_meta_data(self::EDITOR_ID, $this->editorId);
         $this->parent->update_meta_data(self::CUSTOM_LABEL, $this->customAddToCartLabel);
 
+        //TODO: make PDF editor data its own object
+        //but this will do for now
         $this->parent->update_meta_data('pdf_height_mm', $this->pdfHeight);
         $this->parent->update_meta_data('pdf_width_mm', $this->pdfWidth);
         $this->parent->update_meta_data('pdf_min_pages', $this->minPages);

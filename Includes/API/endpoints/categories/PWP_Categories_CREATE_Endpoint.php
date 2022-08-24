@@ -38,7 +38,9 @@ class PWP_Categories_CREATE_Endpoint extends PWP_Abstract_CREATE_Endpoint
     function get_arguments(): array
     {
         $sitepress = new PWP_SitePress_Wrapper();
-        $activeLanguages = $sitepress->get_active_languages();
+        $activeLanguages = $sitepress
+            ? $sitepress->get_active_languages()
+            : get_available_languages();
 
         $schema = new PWP_Argument_Schema(new PWP_Schema_Factory(PWP_TEXT_DOMAIN));
         $schema->add_string_property(
