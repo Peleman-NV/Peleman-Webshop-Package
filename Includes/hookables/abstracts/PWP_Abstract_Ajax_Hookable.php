@@ -10,9 +10,9 @@ use PWP\includes\hookables\abstracts\PWP_I_Hookable_Component;
 abstract class PWP_Abstract_Ajax_Hookable implements PWP_I_Hookable_Component
 {
 
-    private string $nonceName;
+    protected string $nonceName;
     private string $scriptHandle;
-    private string $objectName;
+    protected string $objectName;
     private string $jsFilePath;
 
     private int $priority;
@@ -75,7 +75,7 @@ abstract class PWP_Abstract_Ajax_Hookable implements PWP_I_Hookable_Component
             $this->objectName,
             array(
                 'ajax_url' => admin_url('admin-ajax.php'),
-                'nonceName' => wp_create_nonce($this->nonceName)
+                'nonce' => wp_create_nonce($this->nonceName)
             )
         );
     }

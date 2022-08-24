@@ -30,6 +30,9 @@ class PWP_Ajax_Redirect_To_Editor extends PWP_Abstract_Ajax_Hookable
 
     public function callback(): void
     {
+        if (!$this->verify_nonce($_REQUEST['nonce'])) {
+            wp_die('nope!');
+        }
         try {
             if (!isset($_REQUEST['product'])) {
                 wp_send_json_error(array('message' => 'missing necessary data!'), 400);
