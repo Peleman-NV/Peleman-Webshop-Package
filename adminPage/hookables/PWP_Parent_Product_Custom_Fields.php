@@ -50,6 +50,32 @@ class PWP_Parent_Product_Custom_Fields extends PWP_Abstract_Action_Hookable
             'Define a custom Add to Cart label'
         );
 
+        // /* PIE data */
+        // PWP_INPUT_FIELDS::checkbox_input(
+        //     'pie_image_upload',
+        //     'Use Image Uploads',
+        //     $product->get_meta('pie_image_upload'),
+        //     ['short'],
+        // );
+
+        // PWP_INPUT_FIELDS::number_input(
+        //     'pie_min_images',
+        //     'Min Images for upload',
+        //     $product->get_meta('pie_min_images'),
+        //     ['short'],
+        //     '',
+        //     array('min' => 0)
+        // );
+
+        // PWP_INPUT_FIELDS::number_input(
+        //     'pie_max_images',
+        //     'Max Images for upload',
+        //     $product->get_meta('pie_max_images'),
+        //     ['short'],
+        //     '',
+        //     array('min' => 0)
+        // );
+
         
     }
 

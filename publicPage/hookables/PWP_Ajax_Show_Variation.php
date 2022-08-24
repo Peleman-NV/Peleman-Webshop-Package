@@ -59,6 +59,6 @@ class PWP_Ajax_Show_Variation extends PWP_Abstract_Ajax_Hookable
             return $parent->get_meta('custom_add_to_cart_label');
         if (get_option('pwp-custom-add-to-cart-label'))
             return get_option('pwp-custom-add-to-cart-label');
-        return '';
+        return 'Add To Cart';
     }
 }

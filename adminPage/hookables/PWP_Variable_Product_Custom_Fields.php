@@ -148,7 +148,6 @@ class PWP_Variable_Product_Custom_Fields extends PWP_Abstract_Action_hookable
                     array('min' => 0)
                 );
 
-
                 PWP_INPUT_FIELDS::text_input(
                     PWP_IMAXEL_DATA::TEMPLATE_ID_KEY . "[{$loop}]",
                     'IMAXEL template ID',

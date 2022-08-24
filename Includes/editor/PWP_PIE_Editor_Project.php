@@ -20,24 +20,17 @@ class PWP_PIE_Editor_Project extends PWP_Editor_Project implements PWP_I_Respons
 
     public function get_project_editor_url(): string
     {
-        $url = get_option('pie_domain') . "/editor";
         $id = $this->get_project_id();
-        $params = array();
-        if ($this->editorData->get_max_images() > 0)
-            $params['maximages'] = $this->editorData->get_max_images();
+        $params = $this->editorData->get_editor_params();
 
-        if ($this->editorData->get_min_images() > 0)
-            $params['minimages'] = $this->editorData->get_min_images();
-
-        if ($this->editorData->get_uses_image_upload())
-            $url .= '/upload';
-
+        $url = get_option('pie_domain') . "/editor";
+        $url .= $this->editorData->get_uses_image_upload() ? '/upload' : '';
         $url .= "?projectid={$id}";
+
         if ($params) {
             $url .= '&' . http_build_query($params);
         }
 
         return $url;
-        // return "https://deveditor.peleman.com/?projectid={$id}";
     }
 }

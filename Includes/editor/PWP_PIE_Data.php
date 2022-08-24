@@ -144,4 +144,16 @@ class PWP_PIE_Data extends PWP_Product_Meta
 
         $this->parent->save_meta_data();
     }
+
+    public function get_editor_params(): array
+    {
+        $params = array();
+        if ($this->get_max_images() > 0)
+            $params['maximages'] = $this->get_max_images();
+
+        if ($this->get_min_images() > 0)
+            $params['minimages'] = $this->get_min_images();
+
+        return $params;
+    }
 }
