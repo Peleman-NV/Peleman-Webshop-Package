@@ -25,7 +25,7 @@ class PWP_PIE_Data extends PWP_Product_Meta
 
     public const USE_IMAGE_UPLOAD = 'pie_image_upload';
     public const MAX_IMAGES = 'pie_max_images';
-    public const MIN_IMAGES = 'pie_min_imaegs';
+    public const MIN_IMAGES = 'pie_min_images';
 
     public const MY_EDITOR = 'PIE';
 

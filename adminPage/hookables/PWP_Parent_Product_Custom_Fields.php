@@ -32,7 +32,7 @@ class PWP_Parent_Product_Custom_Fields extends PWP_Abstract_Action_Hookable
                 $this->render_simple_product_settings($product);
             ?>
         </div>
-<?php
+    <?php
     }
 
     private function render_standard_product_settings(WC_Product $product): void
@@ -126,7 +126,7 @@ class PWP_Parent_Product_Custom_Fields extends PWP_Abstract_Action_Hookable
             'PIE Template ID',
             $meta_data->pie_data()->get_template_id(),
             '',
-            ['form-row', 'form-row-first'],
+            [],
         );
 
         PWP_INPUT_FIELDS::text_input(
@@ -134,7 +134,7 @@ class PWP_Parent_Product_Custom_Fields extends PWP_Abstract_Action_Hookable
             'Design ID',
             $meta_data->pie_data()->get_design_id(),
             '',
-            ['form-row', 'form-row-last'],
+            [],
         );
 
         PWP_INPUT_FIELDS::text_input(
@@ -142,7 +142,7 @@ class PWP_Parent_Product_Custom_Fields extends PWP_Abstract_Action_Hookable
             'Color Code',
             $meta_data->pie_data()->get_color_code(),
             '',
-            ['form-row', 'form-row-first'],
+            [],
         );
 
         PWP_INPUT_FIELDS::text_input(
@@ -150,21 +150,22 @@ class PWP_Parent_Product_Custom_Fields extends PWP_Abstract_Action_Hookable
             'PIE background ID',
             $meta_data->pie_data()->get_background_id(),
             '',
-            ['form-row', 'form-row-last'],
+            [],
         );
 
         PWP_INPUT_FIELDS::checkbox_input(
             PWP_PIE_DATA::USE_IMAGE_UPLOAD,
             'Use Image Uploads',
             $meta_data->pie_data()->get_uses_image_upload(),
-            ['form-row', 'form-row-full'],
+            [],
         );
 
+        $this->open_form_field('minmax', ' ');
         PWP_INPUT_FIELDS::number_input(
             PWP_PIE_DATA::MIN_IMAGES,
             'Min Images for upload',
             $meta_data->pie_data()->get_min_images(),
-            ['form-row', 'form-row-first'],
+            ['input-text'],
             '',
             array('min' => 0)
         );
@@ -173,20 +174,22 @@ class PWP_Parent_Product_Custom_Fields extends PWP_Abstract_Action_Hookable
             PWP_PIE_DATA::MAX_IMAGES,
             'Max Images for upload',
             $meta_data->pie_data()->get_max_images(),
-            ['form-row', 'form-row-last'],
+            ['input-text'],
             '',
             array('min' => 0)
         );
+        $this->close_form_field();
     }
 
     private function render_IMAXEL_product_settings(PWP_Product_Meta_Data $meta_data): void
     {
+        $this->open_form_field('imaxel', 'imaxel template ids');
         PWP_INPUT_FIELDS::text_input(
             PWP_IMAXEL_DATA::TEMPLATE_ID_KEY,
             'IMAXEL template ID',
             $meta_data->imaxel_data()->get_template_id(),
             '',
-            ['form-row', 'form-row-first'],
+            ['input-text'],
             'IMAXEL specific template ID'
         );
 
@@ -195,8 +198,27 @@ class PWP_Parent_Product_Custom_Fields extends PWP_Abstract_Action_Hookable
             'IMAXEL Variant ID',
             $meta_data->imaxel_data()->get_variant_id(),
             '',
-            ['form-row', 'form-row-last'],
+            ['input-text'],
             'IMAXEL specific variant ID'
         );
+        $this->close_form_field();
     }
-}
+
+    private function open_form_field(string $id, string $label_text): void
+    {
+    ?>
+        <p class="form-field">
+            <span class="wrap">
+                <label for=<?= $id ?>><?= $label_text ?></label>
+            <?php
+        }
+
+        private function close_form_field(): void
+        {
+            ?>
+
+        </p>
+        </span>
+<?php
+        }
+    }
