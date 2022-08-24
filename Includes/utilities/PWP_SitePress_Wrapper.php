@@ -13,15 +13,16 @@ class PWP_SitePress_Wrapper
     private bool $sitepressOverrideActive;
     public function __construct()
     {
-        global $sitepress;
-        $this->sitepress = $sitepress;
+        if (class_exists('SitePress')) {
+            global $sitepress;
+            $this->sitepress = $sitepress;
+        } else {
+            $this->sitepress = null;
+        }
         $this->sitepressOverrideActive = false;
     }
     final public function get_sitepress(): ?SitePress
     {
-        if (!class_exists('SitePress')) {
-            return null;
-        }
         return $this->sitepress;
     }
 
@@ -63,7 +64,10 @@ class PWP_SitePress_Wrapper
 
     final public function get_active_languages(bool $refresh = false, bool $majorFirst = false): array
     {
-        $langs = $this->sitepress->get_active_languages($refresh, $majorFirst);
-        return array_keys($langs);
+        if ($this->sitepress) {
+            $langs = $this->sitepress->get_active_languages($refresh, $majorFirst);
+            return array_keys($langs);
+        }
+        return get_available_languages();
     }
 }

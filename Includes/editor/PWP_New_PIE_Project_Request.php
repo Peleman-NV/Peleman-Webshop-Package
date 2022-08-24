@@ -166,7 +166,7 @@ class PWP_New_PIE_Project_Request extends PWP_Abstract_Request
         // $response = json_decode($response, true, 512, 0);
         // return new PWP_PIE_Editor_Project($response['project_id']);
 
-        return new PWP_PIE_Editor_Project($response);
+        return new PWP_PIE_Editor_Project($this->editorData, $response);
     }
 
     protected function generate_request_array(): array

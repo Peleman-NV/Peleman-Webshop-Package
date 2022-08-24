@@ -67,6 +67,24 @@ class PWP_Save_Variable_Custom_Fields extends PWP_Abstract_Action_hookable
             ))
         );
 
+        $pie_data->set_uses_image_upload(
+            isset(
+                $_POST[PWP_PIE_DATA::USE_IMAGE_UPLOAD][$loop]
+            )
+        );
+
+        $pie_data->set_max_images(
+            (int)esc_attr(sanitize_text_field(
+                $_POST[PWP_PIE_DATA::MAX_IMAGES][$loop]
+            ))
+        );
+
+        $pie_data->set_min_images(
+            (int)esc_attr(sanitize_text_field(
+                $_POST[PWP_PIE_DATA::MIN_IMAGES][$loop]
+            ))
+        );
+
         //IMAXEL specific data
         $imaxel_data->set_template_id(
             esc_attr(sanitize_text_field(

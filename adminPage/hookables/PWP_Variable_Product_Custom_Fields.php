@@ -123,6 +123,32 @@ class PWP_Variable_Product_Custom_Fields extends PWP_Abstract_Action_hookable
                     ['form-row', 'form-row-last'],
                 );
 
+                PWP_INPUT_FIELDS::checkbox_input(
+                    PWP_PIE_DATA::USE_IMAGE_UPLOAD . "[{$loop}]",
+                    'Use Image Uploads',
+                    $editor_data->pie_data()->get_uses_image_upload(),
+                    ['form-row', 'form-row-full'],
+                );
+
+                PWP_INPUT_FIELDS::number_input(
+                    PWP_PIE_DATA::MIN_IMAGES . "[{$loop}]",
+                    'Min Images for upload',
+                    $editor_data->pie_data()->get_min_images(),
+                    ['form-row', 'form-row-first'],
+                    '',
+                    array('min' => 0)
+                );
+
+                PWP_INPUT_FIELDS::number_input(
+                    PWP_PIE_DATA::MAX_IMAGES . "[{$loop}]",
+                    'Max Images for upload',
+                    $editor_data->pie_data()->get_max_images(),
+                    ['form-row', 'form-row-last'],
+                    '',
+                    array('min' => 0)
+                );
+
+
                 PWP_INPUT_FIELDS::text_input(
                     PWP_IMAXEL_DATA::TEMPLATE_ID_KEY . "[{$loop}]",
                     'IMAXEL template ID',

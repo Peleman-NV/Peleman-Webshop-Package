@@ -34,16 +34,28 @@ class PWP_Input_Fields
         \woocommerce_wp_text_input($array);
     }
 
-    public static function number_input(string $id, string $label, string $value, array $classes = [], string $description = ''): void
+    /**
+     * Undocumented function
+     *
+     * @param string $id
+     * @param string $label
+     * @param int|float $value
+     * @param array $classes
+     * @param string $description
+     * @param array $attributes
+     * @return void
+     */
+    public static function number_input(string $id, string $label, $value, array $classes = [], string $description = '', array $attributes = []): void
     {
         \woocommerce_wp_text_input(array(
-            'id'            => $id,
-            'label'         => $label,
-            'value'         => $value,
-            'type'          => 'number',
-            'desc_tip'      => !empty($description),
-            'description'   => __($description, PWP_TEXT_DOMAIN),
-            'wrapper_class' => implode(' ', $classes),
+            'id'                => $id,
+            'label'             => $label,
+            'value'             => $value,
+            'type'              => 'number',
+            'desc_tip'          => !empty($description),
+            'description'       => __($description, PWP_TEXT_DOMAIN),
+            'wrapper_class'     => implode(' ', $classes),
+            'custom_attributes' => $attributes,
         ));
     }
 
