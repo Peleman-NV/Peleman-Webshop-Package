@@ -31,7 +31,8 @@ class PWP_Ajax_Redirect_To_Editor extends PWP_Abstract_Ajax_Hookable
     public function callback(): void
     {
         if (!$this->verify_nonce($_REQUEST['nonce'])) {
-            wp_die('nope!');
+            error_log("add to cart request received with incorrect nonce value: aborting");
+            wp_send_json_error('incorrect nonce', 401);
         }
         try {
             if (!isset($_REQUEST['product'])) {

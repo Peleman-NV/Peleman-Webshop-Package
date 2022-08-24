@@ -47,7 +47,7 @@
                 variant: variationId,
                 quantity: quantity,
                 content: contentFileId,
-                // ajax_nonce: PWP_Ajax_Redirect_To_Editor_object.nonce,
+                nonce: PWP_Ajax_Redirect_To_Editor_object.nonce,
             };
 
             $(document.body).trigger('adding_to_cart', [Button, data])
@@ -57,7 +57,6 @@
                 data: data,
                 cache: false,
                 dataType: 'json',
-                nonce: PWP_Ajax_Redirect_To_Editor_object.nonce,
                 beforeSend: function (response) {
                     console.log("clicked button");
                     Button.removeClass('added').addClass('loading');

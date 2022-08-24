@@ -83,7 +83,7 @@ class PWP_Plugin implements PWP_I_Hookable_Component
         $this->add_hookable(new PWP_Admin_Control_Panel());
 
         /* product page hookables */
-        $this->add_hookable(new PWP_Parent_Product_Custom_Fields());
+        // $this->add_hookable(new PWP_Parent_Product_Custom_Fields());
         $this->add_hookable(new PWP_Variable_Product_Custom_Fields());
         $this->add_hookable(new PWP_Save_Parent_Custom_Fields());
         $this->add_hookable(new PWP_Save_Variable_Custom_Fields());

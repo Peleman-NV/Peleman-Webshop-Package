@@ -97,11 +97,11 @@ abstract class PWP_Abstract_Ajax_Hookable implements PWP_I_Hookable_Component
     /**
      * wrapper method to handle nonce validation. returns 0 if nonce is invalid, 1 or 2 if valid.
      * @param string $nonce
-     * @return int 1 if the nonce is valid and generated between 0-12 hours ago, 2 if the nonce is valid and generated between 12-24 hours ago. 0 if the nonce is not valid
+     * @return bool
      */
-    protected function verify_nonce(string $nonce): int
+    protected function verify_nonce(string $nonce): bool
     {
         $value = wp_verify_nonce($nonce, $this->nonceName);
-        return $value ?: 0;
+        return $value !== 0;
     }
 }
