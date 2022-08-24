@@ -157,7 +157,8 @@ class PWP_Ajax_Redirect_To_Editor extends PWP_Abstract_Ajax_Hookable
                 PIE_USE_TEXT,
                 PIE_USE_ELEMENTS,
                 PIE_USE_DESIGNS,
-                PIE_USE_OPEN_FILE
+                // PIE_USE_OPEN_FILE,
+                PIE_USE_IMAGE_UPLOAD,
             )->make_request();
     }
 
