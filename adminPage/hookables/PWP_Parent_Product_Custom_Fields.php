@@ -206,17 +206,16 @@ class PWP_Parent_Product_Custom_Fields extends PWP_Abstract_Action_Hookable
 
     private function open_form_field(string $id, string $label_text): void
     {
-    ?>
-        <p class="form-field">
+
+        echo("<p class="form-field">
             <span class="wrap">
-                <label for=<?= $id ?>><?= $label_text ?></label>
-            <?php
+                <label for=<?= $id ?>><?= $label_text ?></label>"
+        )
         }
 
         private function close_form_field(): void
         {
             ?>
-
         </p>
         </span>
 <?php

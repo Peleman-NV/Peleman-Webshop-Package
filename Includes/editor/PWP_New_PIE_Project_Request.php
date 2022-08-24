@@ -194,7 +194,7 @@ class PWP_New_PIE_Project_Request extends PWP_Abstract_Request
         $referer = get_site_url();
         $header = array();
 
-        // $header[] = "PIEAPIKEY : {$this->apiKey}";
+        $header[] = "PIEAPIKEY : {$this->apiKey}";
         $header[] = "referer : {$referer}";
 
         return $header;
