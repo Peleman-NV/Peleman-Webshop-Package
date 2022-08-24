@@ -32,7 +32,7 @@ class PWP_Parent_Product_Custom_Fields extends PWP_Abstract_Action_Hookable
                 $this->render_simple_product_settings($product);
             ?>
         </div>
-    <?php
+<?php
     }
 
     private function render_standard_product_settings(WC_Product $product): void
@@ -207,17 +207,16 @@ class PWP_Parent_Product_Custom_Fields extends PWP_Abstract_Action_Hookable
     private function open_form_field(string $id, string $label_text): void
     {
 
-        echo("<p class="form-field">
-            <span class="wrap">
-                <label for=<?= $id ?>><?= $label_text ?></label>"
-        )
-        }
-
-        private function close_form_field(): void
-        {
-            ?>
-        </p>
-        </span>
-<?php
-        }
+        echo ("<p class='form-field'>
+            <span class='wrap'>
+                <label for={$id}>{$label_text}</label>"
+        );
     }
+
+    private function close_form_field(): void
+    {
+        echo ("
+        </p>
+        </span>");
+    }
+}
