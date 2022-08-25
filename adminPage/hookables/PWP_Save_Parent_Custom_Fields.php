@@ -40,11 +40,9 @@ class PWP_Save_Parent_Custom_Fields extends PWP_Abstract_Action_hookable
             sanitize_text_field($_POST['custom_add_to_cart_label']),
         );
 
-        if($product instanceof WC_Product_Simple)
-        {
-            $product->update_meta_data(
-                
-            )
+        if ($product instanceof WC_Product_Simple) {
+            // $product->update_meta_data(                
+            // )
         }
 
         $product->save_meta_data();
