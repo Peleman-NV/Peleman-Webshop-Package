@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace PWP\adminPage\hookables;
 
 use PWP\includes\editor\PWP_Product_Meta_Data;
-use PWP\includes\editor\PWP_IMAXEL_Data;
-use PWP\includes\editor\PWP_PIE_Data;
+use PWP\includes\editor\PWP_Product_IMAXEL_Data;
+use PWP\includes\editor\PWP_Product_PIE_Data;
 use PWP\includes\hookables\abstracts\PWP_Abstract_Action_hookable;
 use PWP\includes\utilities\PWP_Input_Fields;
 use WP_Post;
@@ -79,8 +79,8 @@ class PWP_Variable_Product_Custom_Fields extends PWP_Abstract_Action_hookable
                     "editor",
                     array(
                         '' => 'no customization',
-                        PWP_PIE_Data::MY_EDITOR => "Peleman Image Editor",
-                        PWP_IMAXEL_Data::MY_EDITOR => "Imaxel"
+                        PWP_Product_PIE_Data::MY_EDITOR => "Peleman Image Editor",
+                        PWP_Product_IMAXEL_Data::MY_EDITOR => "Imaxel"
                     ),
                     $editor_data->get_editor_id(),
                     ['form-row', 'form-row-full', 'editor_select'],
@@ -92,7 +92,7 @@ class PWP_Variable_Product_Custom_Fields extends PWP_Abstract_Action_hookable
             <div class="option_group">
                 <?php
                 PWP_INPUT_FIELDS::create_field(
-                    PWP_PIE_DATA::TEMPLATE_ID_KEY . "[{$loop}]",
+                    PWP_Product_PIE_Data::TEMPLATE_ID_KEY . "[{$loop}]",
                     'PIE Template ID',
                     'text',
                     $editor_data->pie_data()->get_template_id(),
@@ -100,7 +100,7 @@ class PWP_Variable_Product_Custom_Fields extends PWP_Abstract_Action_hookable
                 );
 
                 PWP_INPUT_FIELDS::create_field(
-                    PWP_PIE_DATA::DESIGN_ID_KEY . "[{$loop}]",
+                    PWP_Product_PIE_Data::DESIGN_ID_KEY . "[{$loop}]",
                     'Design ID',
                     'text',
                     $editor_data->pie_data()->get_design_id(),
@@ -108,7 +108,7 @@ class PWP_Variable_Product_Custom_Fields extends PWP_Abstract_Action_hookable
                 );
 
                 PWP_INPUT_FIELDS::create_field(
-                    PWP_PIE_DATA::COLOR_CODE_KEY . "[{$loop}]",
+                    PWP_Product_PIE_Data::COLOR_CODE_KEY . "[{$loop}]",
                     'Color Code',
                     'text',
                     $editor_data->pie_data()->get_color_code(),
@@ -116,7 +116,7 @@ class PWP_Variable_Product_Custom_Fields extends PWP_Abstract_Action_hookable
                 );
 
                 PWP_INPUT_FIELDS::create_field(
-                    PWP_PIE_DATA::BACKGROUND_ID_KEY . "[{$loop}]",
+                    PWP_Product_PIE_Data::BACKGROUND_ID_KEY . "[{$loop}]",
                     'PIE background ID',
                     'text',
                     $editor_data->pie_data()->get_background_id(),
@@ -124,14 +124,14 @@ class PWP_Variable_Product_Custom_Fields extends PWP_Abstract_Action_hookable
                 );
 
                 PWP_INPUT_FIELDS::checkbox_input(
-                    PWP_PIE_DATA::USE_IMAGE_UPLOAD . "[{$loop}]",
+                    PWP_Product_PIE_Data::USE_IMAGE_UPLOAD . "[{$loop}]",
                     'Use Image Uploads',
-                    $editor_data->pie_data()->get_uses_image_upload(),
+                    $editor_data->pie_data()->uses_image_upload(),
                     ['form-row', 'form-row-full'],
                 );
 
                 PWP_INPUT_FIELDS::number_input(
-                    PWP_PIE_DATA::MIN_IMAGES . "[{$loop}]",
+                    PWP_Product_PIE_Data::MIN_IMAGES . "[{$loop}]",
                     'Min Images for upload',
                     $editor_data->pie_data()->get_min_images(),
                     ['form-row', 'form-row-first'],
@@ -140,7 +140,7 @@ class PWP_Variable_Product_Custom_Fields extends PWP_Abstract_Action_hookable
                 );
 
                 PWP_INPUT_FIELDS::number_input(
-                    PWP_PIE_DATA::MAX_IMAGES . "[{$loop}]",
+                    PWP_Product_PIE_Data::MAX_IMAGES . "[{$loop}]",
                     'Max Images for upload',
                     $editor_data->pie_data()->get_max_images(),
                     ['form-row', 'form-row-last'],
@@ -149,7 +149,7 @@ class PWP_Variable_Product_Custom_Fields extends PWP_Abstract_Action_hookable
                 );
 
                 PWP_INPUT_FIELDS::text_input(
-                    PWP_IMAXEL_DATA::TEMPLATE_ID_KEY . "[{$loop}]",
+                    PWP_Product_IMAXEL_Data::TEMPLATE_ID_KEY . "[{$loop}]",
                     'IMAXEL template ID',
                     $editor_data->imaxel_data()->get_template_id(),
                     '',
@@ -158,7 +158,7 @@ class PWP_Variable_Product_Custom_Fields extends PWP_Abstract_Action_hookable
                 );
 
                 PWP_INPUT_FIELDS::text_input(
-                    PWP_IMAXEL_DATA::VARIANT_ID_KEY . "[{$loop}]",
+                    PWP_Product_IMAXEL_Data::VARIANT_ID_KEY . "[{$loop}]",
                     'IMAXEL Variant ID',
                     $editor_data->imaxel_data()->get_variant_id(),
                     '',

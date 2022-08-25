@@ -17,7 +17,7 @@ class PWP_Change_Add_To_Cart_Button_Label extends PWP_Abstract_Filter_Hookable
 
     public function change_add_to_cart_button_label(string $default, WC_Product $product): string
     {
-        error_log($product->get_meta('customizable_product'));
+        error_log("is product customizable: " . ($product->get_meta('customizable_product') ? "yes" : "no"));
         if (boolval($product->get_meta('customizable_product'))) {
             return $product->get_meta('custom_add_to_cart_label') ?: "customize & add to cart";
         }

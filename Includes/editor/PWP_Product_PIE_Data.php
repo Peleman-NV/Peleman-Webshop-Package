@@ -6,7 +6,7 @@ namespace PWP\includes\editor;
 
 use WC_Product;
 
-class PWP_PIE_Data extends PWP_Product_Meta
+class PWP_Product_PIE_Data extends PWP_Product_Meta
 {
 
     public string $templateId;
@@ -94,7 +94,7 @@ class PWP_PIE_Data extends PWP_Product_Meta
         $this->variantId = $variantId;
     }
 
-    public function get_uses_image_upload(): bool
+    public function uses_image_upload(): bool
     {
         return $this->usesImageUpload;
     }

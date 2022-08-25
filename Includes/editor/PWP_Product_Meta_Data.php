@@ -23,8 +23,8 @@ class PWP_Product_Meta_Data extends PWP_Product_Meta
     private int $minPages;
     private float $pricePerPage;
 
-    public ?PWP_PIE_Data $pieData;
-    public ?PWP_IMAXEL_Data $imaxelData;
+    public ?PWP_Product_PIE_Data $pieData;
+    public ?PWP_Product_IMAXEL_Data $imaxelData;
 
     public function __construct(WC_Product $product)
     {
@@ -134,18 +134,18 @@ class PWP_Product_Meta_Data extends PWP_Product_Meta
     }
 
 
-    public function imaxel_data(): PWP_IMAXEL_Data
+    public function imaxel_data(): PWP_Product_IMAXEL_Data
     {
         if ($this->imaxelData === null) {
-            $this->imaxelData = new PWP_IMAXEL_Data($this->get_parent());
+            $this->imaxelData = new PWP_Product_IMAXEL_Data($this->get_parent());
         }
         return $this->imaxelData;
     }
 
-    public function pie_data(): PWP_PIE_Data
+    public function pie_data(): PWP_Product_PIE_Data
     {
         if ($this->pieData === null) {
-            $this->pieData = new PWP_PIE_Data($this->get_parent());
+            $this->pieData = new PWP_Product_PIE_Data($this->get_parent());
         }
         return $this->pieData;
     }

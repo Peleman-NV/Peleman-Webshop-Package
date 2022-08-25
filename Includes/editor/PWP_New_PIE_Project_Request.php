@@ -42,7 +42,7 @@ class PWP_New_PIE_Project_Request extends PWP_Abstract_Request
     private string $customerId;
     private string $apiKey;
 
-    private ?PWP_PIE_Data $editorData;
+    private ?PWP_Product_PIE_Data $editorData;
 
     private int $userId;
     private string $language;
@@ -91,7 +91,7 @@ class PWP_New_PIE_Project_Request extends PWP_Abstract_Request
         return $this;
     }
 
-    public function initialize_from_pie_data(PWP_PIE_Data $data): self
+    public function initialize_from_pie_data(PWP_Product_PIE_Data $data): self
     {
         $this->editorData = $data;
         return $this;
@@ -128,7 +128,7 @@ class PWP_New_PIE_Project_Request extends PWP_Abstract_Request
     }
     #endregion
 
-    public function data(): PWP_PIE_Data
+    public function data(): PWP_Product_PIE_Data
     {
         return $this->editorData;
     }
@@ -139,7 +139,7 @@ class PWP_New_PIE_Project_Request extends PWP_Abstract_Request
         return $this->customizable && $this->templateId;
     }
 
-    public function make_request(): PWP_PIE_Editor_Project
+    public function make_request(): PWP_PIE_Project
     {
         $url = $this->endpoint .= '?' . http_build_query($this->generate_request_array());
 
@@ -162,11 +162,11 @@ class PWP_New_PIE_Project_Request extends PWP_Abstract_Request
             throw new PWP_Invalid_Response_Exception('No valid response received. Likely an authentication issue. Try again later.');
         }
 
-        //use this code when the api returns a json array
+        //use this code when the api returns a json array, which right now it does not do
         // $response = json_decode($response, true, 512, 0);
-        // return new PWP_PIE_Editor_Project($response['project_id']);
+        // return new PWP_PIE_Project($response['project_id']);
 
-        return new PWP_PIE_Editor_Project($this->editorData, $response);
+        return new PWP_PIE_Project($this->editorData, $response);
     }
 
     protected function generate_request_array(): array

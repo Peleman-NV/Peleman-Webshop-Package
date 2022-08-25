@@ -42,17 +42,17 @@
         function attemptAddProductToCart(Button, productId, variationId, quantity, contentFileId = null) {
             $('#redirection-info').html('');
             const data = {
-                action: 'PWP_Ajax_Redirect_To_Editor',
+                action: 'PWP_Ajax_Add_To_Cart',
                 product: productId,
                 variant: variationId,
                 quantity: quantity,
                 content: contentFileId,
-                nonce: PWP_Ajax_Redirect_To_Editor_object.nonce,
+                nonce: PWP_Ajax_Add_To_Cart_object.nonce,
             };
 
             $(document.body).trigger('adding_to_cart', [Button, data])
             $.ajax({
-                url: PWP_Ajax_Redirect_To_Editor_object.ajax_url,
+                url: PWP_Ajax_Add_To_Cart_object.ajax_url,
                 method: 'POST',
                 data: data,
                 cache: false,
@@ -73,7 +73,7 @@
                         $('#redirection-info').addClass('ppi-response-error');
                         return;
                     }
-                    if (response.data.destination_url !== '') {
+                    if (response.data.destination_url) {
                         //if the response has a destination url, redirect.
                         console.log(response.data.destination_url);
                         window.location.href = response.data.destination_url;

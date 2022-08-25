@@ -7,7 +7,7 @@ namespace PWP\includes\editor;
 use PWP\includes\services\ImaxelService;
 use PWP\includes\utilities\response\PWP_I_Response;
 
-class PWP_IMAXEL_Editor_Project extends PWP_Editor_Project implements PWP_I_Response
+class PWP_IMAXEL_Project extends PWP_Editor_Project implements PWP_I_Response
 {
     private ImaxelService $service;
 

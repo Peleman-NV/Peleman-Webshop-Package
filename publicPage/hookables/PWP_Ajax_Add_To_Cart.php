@@ -8,21 +8,21 @@ use Error;
 use Exception;
 use PWP\includes\editor\PWP_Product_Meta_Data;
 use pwp\includes\editor\PWP_Editor_Project;
-use PWP\includes\editor\PWP_IMAXEL_Data;
-use PWP\includes\editor\PWP_IMAXEL_Editor_Project;
+use PWP\includes\editor\PWP_Product_IMAXEL_Data;
+use PWP\includes\editor\PWP_IMAXEL_Project;
 use PWP\includes\editor\PWP_New_IMAXEL_Project_Request;
 use PWP\includes\editor\PWP_New_PIE_Project_Request;
-use PWP\includes\editor\PWP_PIE_Data;
-use PWP\includes\editor\PWP_PIE_Editor_Project;
+use PWP\includes\editor\PWP_Product_PIE_Data;
+use PWP\includes\editor\PWP_PIE_Project;
 use PWP\includes\hookables\abstracts\PWP_Abstract_Ajax_Hookable;
 use WC_Product_Variation;
 
-class PWP_Ajax_Redirect_To_Editor extends PWP_Abstract_Ajax_Hookable
+class PWP_Ajax_Add_To_Cart extends PWP_Abstract_Ajax_Hookable
 {
     public function __construct()
     {
         parent::__construct(
-            'PWP_Ajax_Redirect_To_Editor',
+            'PWP_Ajax_Add_To_Cart',
             plugins_url('Peleman-Webshop-Package/publicPage/js/add-to-cart.js'),
             5
         );
@@ -34,9 +34,14 @@ class PWP_Ajax_Redirect_To_Editor extends PWP_Abstract_Ajax_Hookable
             error_log("add to cart request received with incorrect nonce value: aborting");
             wp_send_json_error('incorrect nonce', 401);
         }
+
         try {
             if (!isset($_REQUEST['product'])) {
-                wp_send_json_error(array('message' => 'missing necessary data!'), 400);
+                //we can safely assume that the product is a simple product that does not require special handling
+                wp_send_json_success(array(
+                    'message' => "continue as you were",
+                    'destination_url' => '',
+                ), 200);
             }
             error_log("incoming add to cart request: " . print_r($_REQUEST, true));
 
@@ -79,9 +84,14 @@ class PWP_Ajax_Redirect_To_Editor extends PWP_Abstract_Ajax_Hookable
                     );
                 }
 
+                $destination = '';
+                if ('yes' === get_option('woocommerce_cart_redirect_after_add')) {
+                    wc_add_to_cart_message(array($variationId ?? $productId => $quantity), true);
+                    $destination = wc_get_cart_url();
+                }
                 wp_send_json_success(array(
                     'message' => 'standard product, using default functionality',
-                    'destination_url' => '',
+                    'destination_url' => $destination,
                 ), 200);
             }
             throw new Exception("something unexpected went wrong", 500);
@@ -96,11 +106,6 @@ class PWP_Ajax_Redirect_To_Editor extends PWP_Abstract_Ajax_Hookable
                 500
             );
         }
-
-        //get url of current page:
-        // $redirectUrl = get_permalink();
-        //get url of cart:
-        // $redirectUrl = wc_get_cart_url();
     }
 
     public function callback_nopriv(): void
@@ -120,9 +125,9 @@ class PWP_Ajax_Redirect_To_Editor extends PWP_Abstract_Ajax_Hookable
     {
         error_log($data->get_editor_id());
         switch ($data->get_editor_id()) {
-            case PWP_PIE_DATA::MY_EDITOR:
+            case PWP_Product_PIE_Data::MY_EDITOR:
                 return $this->new_PIE_Project($data->pie_data(), $returnURL ?: site_url());
-            case PWP_IMAXEL_Data::MY_EDITOR:
+            case PWP_Product_IMAXEL_Data::MY_EDITOR:
                 return $this->new_IMAXEL_Project($data->imaxel_data(), $returnURL ?: site_url());
             default:
                 return null;
@@ -133,9 +138,9 @@ class PWP_Ajax_Redirect_To_Editor extends PWP_Abstract_Ajax_Hookable
      *
      * @param integer $variant_id product or variant id of the product
      * @param string $returnUrl when the user has completed their project, they will be redirected to this URL
-     * @return PWP_PIE_Editor_Project project object
+     * @return PWP_PIE_Project project object
      */
-    private function new_PIE_Project(PWP_PIE_Data $data, string $returnUrl): PWP_PIE_Editor_Project
+    private function new_PIE_Project(PWP_Product_PIE_Data $data, string $returnUrl): PWP_PIE_Project
     {
         return
             PWP_New_PIE_Project_Request::new(
@@ -162,7 +167,7 @@ class PWP_Ajax_Redirect_To_Editor extends PWP_Abstract_Ajax_Hookable
             )->make_request();
     }
 
-    private function new_IMAXEL_Project(PWP_IMAXEL_Data $data, string $returnUrl): PWP_IMAXEL_Editor_Project
+    private function new_IMAXEL_Project(PWP_Product_IMAXEL_Data $data, string $returnUrl): PWP_IMAXEL_Project
     {
         return
             PWP_New_IMAXEL_Project_Request::new()

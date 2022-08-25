@@ -11,7 +11,7 @@ use PWP\includes\utilities\response\PWP_I_Response;
 class PWP_New_IMAXEL_Project_Request extends PWP_Abstract_Request
 {
     private ImaxelService $service;
-    private PWP_IMAXEL_Data $editorData;
+    private PWP_Product_IMAXEL_Data $editorData;
     private string $backUrl;
     private string $addToCartUrl;
 
@@ -38,7 +38,7 @@ class PWP_New_IMAXEL_Project_Request extends PWP_Abstract_Request
         return $this;
     }
 
-    public function initialize_from_imaxel_data(PWP_IMAXEL_Data $data): self
+    public function initialize_from_imaxel_data(PWP_Product_IMAXEL_Data $data): self
     {
         $this->editorData = $data;
         return $this;
@@ -62,7 +62,7 @@ class PWP_New_IMAXEL_Project_Request extends PWP_Abstract_Request
     }
     #region
 
-    public function make_request(): PWP_IMAXEL_Editor_Project
+    public function make_request(): PWP_IMAXEL_Project
     {
         $response = $this->service->create_project(
             $this->editorData->get_template_id(),
@@ -76,7 +76,7 @@ class PWP_New_IMAXEL_Project_Request extends PWP_Abstract_Request
 
         //TODO: parse response and create project
 
-        return new PWP_IMAXEL_Editor_Project(
+        return new PWP_IMAXEL_Project(
             $projectId,
             $this->backUrl,
             $this->addToCartUrl,

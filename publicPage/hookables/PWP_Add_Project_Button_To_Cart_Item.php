@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace PWP\publicPage\hookables;
 
-use PWP\includes\editor\PWP_IMAXEL_Data;
-use PWP\includes\editor\PWP_PIE_Data;
+use PWP\includes\editor\PWP_Product_IMAXEL_Data;
+use PWP\includes\editor\PWP_Product_PIE_Data;
 use PWP\includes\hookables\abstracts\PWP_Abstract_Action_Hookable;
 use PWP\includes\services\ImaxelService;
 
@@ -27,10 +27,10 @@ class PWP_Add_Project_Button_To_Cart_Item extends PWP_Abstract_Action_Hookable
         $project_url = '';
 
         switch ($editor_id) {
-            case (PWP_PIE_Data::MY_EDITOR):
+            case (PWP_Product_PIE_Data::MY_EDITOR):
                 $project_url = $this->get_PIE_Project_Url($cart_item, $project_id);
                 break;
-            case (PWP_IMAXEL_Data::MY_EDITOR):
+            case (PWP_Product_IMAXEL_Data::MY_EDITOR):
                 $project_url = $this->get_IMAXEL_project_url($cart_item, $project_id);
                 break;
             default:

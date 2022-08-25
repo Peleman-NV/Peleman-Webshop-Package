@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace PWP\adminPage\hookables;
 
-use PWP\includes\editor\PWP_IMAXEL_Data;
-use PWP\includes\editor\PWP_PIE_Data;
+use PWP\includes\editor\PWP_Product_IMAXEL_Data;
+use PWP\includes\editor\PWP_Product_PIE_Data;
 use PWP\includes\editor\PWP_Product_Meta;
 use PWP\includes\editor\PWP_Product_Meta_Data;
 use PWP\includes\hookables\abstracts\PWP_Abstract_Action_Hookable;
@@ -55,6 +55,12 @@ class PWP_Parent_Product_Custom_Fields extends PWP_Abstract_Action_Hookable
         );
     }
 
+    /**
+     * render additional buttons for a simple product
+     *
+     * @param WC_Product_Simple $product
+     * @return void
+     */
     private function render_simple_product_settings(WC_Product_Simple $product): void
     {
         $meta_data = new PWP_Product_Meta_Data($product);
@@ -107,8 +113,8 @@ class PWP_Parent_Product_Custom_Fields extends PWP_Abstract_Action_Hookable
             "editor",
             array(
                 '' => 'no customization',
-                PWP_PIE_Data::MY_EDITOR => "Peleman Image Editor",
-                PWP_IMAXEL_Data::MY_EDITOR => "Imaxel"
+                PWP_Product_PIE_Data::MY_EDITOR => "Peleman Image Editor",
+                PWP_Product_IMAXEL_Data::MY_EDITOR => "Imaxel"
             ),
             $meta_data->get_editor_id(),
             ['form-row', 'form-row-full', 'editor_select'],
@@ -122,7 +128,7 @@ class PWP_Parent_Product_Custom_Fields extends PWP_Abstract_Action_Hookable
     private function render_PIE_product_settings(PWP_Product_Meta_Data $meta_data): void
     {
         PWP_INPUT_FIELDS::text_input(
-            PWP_PIE_DATA::TEMPLATE_ID_KEY,
+            PWP_Product_PIE_Data::TEMPLATE_ID_KEY,
             'PIE Template ID',
             $meta_data->pie_data()->get_template_id(),
             '',
@@ -130,7 +136,7 @@ class PWP_Parent_Product_Custom_Fields extends PWP_Abstract_Action_Hookable
         );
 
         PWP_INPUT_FIELDS::text_input(
-            PWP_PIE_DATA::DESIGN_ID_KEY,
+            PWP_Product_PIE_Data::DESIGN_ID_KEY,
             'Design ID',
             $meta_data->pie_data()->get_design_id(),
             '',
@@ -138,7 +144,7 @@ class PWP_Parent_Product_Custom_Fields extends PWP_Abstract_Action_Hookable
         );
 
         PWP_INPUT_FIELDS::text_input(
-            PWP_PIE_DATA::COLOR_CODE_KEY,
+            PWP_Product_PIE_Data::COLOR_CODE_KEY,
             'Color Code',
             $meta_data->pie_data()->get_color_code(),
             '',
@@ -146,7 +152,7 @@ class PWP_Parent_Product_Custom_Fields extends PWP_Abstract_Action_Hookable
         );
 
         PWP_INPUT_FIELDS::text_input(
-            PWP_PIE_DATA::BACKGROUND_ID_KEY,
+            PWP_Product_PIE_Data::BACKGROUND_ID_KEY,
             'PIE background ID',
             $meta_data->pie_data()->get_background_id(),
             '',
@@ -154,15 +160,15 @@ class PWP_Parent_Product_Custom_Fields extends PWP_Abstract_Action_Hookable
         );
 
         PWP_INPUT_FIELDS::checkbox_input(
-            PWP_PIE_DATA::USE_IMAGE_UPLOAD,
+            PWP_Product_PIE_Data::USE_IMAGE_UPLOAD,
             'Use Image Uploads',
-            $meta_data->pie_data()->get_uses_image_upload(),
+            $meta_data->pie_data()->uses_image_upload(),
             [],
         );
 
         $this->open_form_field('minmax', ' ');
         PWP_INPUT_FIELDS::number_input(
-            PWP_PIE_DATA::MIN_IMAGES,
+            PWP_Product_PIE_Data::MIN_IMAGES,
             'Min Images for upload',
             $meta_data->pie_data()->get_min_images(),
             ['input-text'],
@@ -171,7 +177,7 @@ class PWP_Parent_Product_Custom_Fields extends PWP_Abstract_Action_Hookable
         );
 
         PWP_INPUT_FIELDS::number_input(
-            PWP_PIE_DATA::MAX_IMAGES,
+            PWP_Product_PIE_Data::MAX_IMAGES,
             'Max Images for upload',
             $meta_data->pie_data()->get_max_images(),
             ['input-text'],
@@ -185,7 +191,7 @@ class PWP_Parent_Product_Custom_Fields extends PWP_Abstract_Action_Hookable
     {
         $this->open_form_field('imaxel', 'imaxel template ids');
         PWP_INPUT_FIELDS::text_input(
-            PWP_IMAXEL_DATA::TEMPLATE_ID_KEY,
+            PWP_Product_IMAXEL_Data::TEMPLATE_ID_KEY,
             'IMAXEL template ID',
             $meta_data->imaxel_data()->get_template_id(),
             '',
@@ -194,7 +200,7 @@ class PWP_Parent_Product_Custom_Fields extends PWP_Abstract_Action_Hookable
         );
 
         PWP_INPUT_FIELDS::text_input(
-            PWP_IMAXEL_DATA::VARIANT_ID_KEY,
+            PWP_Product_IMAXEL_Data::VARIANT_ID_KEY,
             'IMAXEL Variant ID',
             $meta_data->imaxel_data()->get_variant_id(),
             '',

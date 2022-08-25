@@ -5,9 +5,10 @@ declare(strict_types=1);
 namespace PWP\adminPage\hookables;
 
 use PWP\includes\editor\PWP_Product_Meta_Data;
-use PWP\includes\editor\PWP_IMAXEL_Data;
-use PWP\includes\editor\PWP_PIE_Data;
+use PWP\includes\editor\PWP_Product_IMAXEL_Data;
+use PWP\includes\editor\PWP_Product_PIE_Data;
 use PWP\includes\hookables\abstracts\PWP_Abstract_Action_hookable;
+use WC_Product_Simple;
 use WP_Post;
 
 class PWP_Save_Parent_Custom_Fields extends PWP_Abstract_Action_hookable
@@ -38,6 +39,13 @@ class PWP_Save_Parent_Custom_Fields extends PWP_Abstract_Action_hookable
             'custom_add_to_cart_label',
             sanitize_text_field($_POST['custom_add_to_cart_label']),
         );
+
+        if($product instanceof WC_Product_Simple)
+        {
+            $product->update_meta_data(
+                
+            )
+        }
 
         $product->save_meta_data();
     }

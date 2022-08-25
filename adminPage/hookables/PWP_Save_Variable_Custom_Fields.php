@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace PWP\adminPage\hookables;
 
 use PWP\includes\editor\PWP_Product_Meta_Data;
-use PWP\includes\editor\PWP_IMAXEL_Data;
-use PWP\includes\editor\PWP_PIE_Data;
+use PWP\includes\editor\PWP_Product_IMAXEL_Data;
+use PWP\includes\editor\PWP_Product_PIE_Data;
 use PWP\includes\hookables\abstracts\PWP_Abstract_Action_hookable;
 
 class PWP_Save_Variable_Custom_Fields extends PWP_Abstract_Action_hookable
@@ -44,57 +44,57 @@ class PWP_Save_Variable_Custom_Fields extends PWP_Abstract_Action_hookable
 
         $pie_data->set_template_id(
             esc_attr(sanitize_text_field(
-                $_POST[PWP_PIE_DATA::TEMPLATE_ID_KEY][$loop]
+                $_POST[PWP_Product_PIE_Data::TEMPLATE_ID_KEY][$loop]
             ))
         );
 
         //PIE specific data
         $pie_data->set_design_id(
             esc_attr(sanitize_text_field(
-                $_POST[PWP_PIE_DATA::DESIGN_ID_KEY][$loop]
+                $_POST[PWP_Product_PIE_Data::DESIGN_ID_KEY][$loop]
             ))
         );
 
         $pie_data->set_color_code(
             esc_attr(sanitize_text_field(
-                $_POST[PWP_PIE_DATA::COLOR_CODE_KEY][$loop]
+                $_POST[PWP_Product_PIE_Data::COLOR_CODE_KEY][$loop]
             ))
         );
 
         $pie_data->set_background_id(
             esc_attr(sanitize_text_field(
-                $_POST[PWP_PIE_DATA::BACKGROUND_ID_KEY][$loop]
+                $_POST[PWP_Product_PIE_Data::BACKGROUND_ID_KEY][$loop]
             ))
         );
 
         $pie_data->set_uses_image_upload(
             isset(
-                $_POST[PWP_PIE_DATA::USE_IMAGE_UPLOAD][$loop]
+                $_POST[PWP_Product_PIE_Data::USE_IMAGE_UPLOAD][$loop]
             )
         );
 
         $pie_data->set_max_images(
             (int)esc_attr(sanitize_text_field(
-                $_POST[PWP_PIE_DATA::MAX_IMAGES][$loop]
+                $_POST[PWP_Product_PIE_Data::MAX_IMAGES][$loop]
             ))
         );
 
         $pie_data->set_min_images(
             (int)esc_attr(sanitize_text_field(
-                $_POST[PWP_PIE_DATA::MIN_IMAGES][$loop]
+                $_POST[PWP_Product_PIE_Data::MIN_IMAGES][$loop]
             ))
         );
 
         //IMAXEL specific data
         $imaxel_data->set_template_id(
             esc_attr(sanitize_text_field(
-                $_POST[PWP_IMAXEL_Data::TEMPLATE_ID_KEY][$loop]
+                $_POST[PWP_Product_IMAXEL_Data::TEMPLATE_ID_KEY][$loop]
             ))
         );
 
         $imaxel_data->set_variant_id(
             esc_attr(sanitize_text_field(
-                $_POST[PWP_IMAXEL_Data::VARIANT_ID_KEY][$loop]
+                $_POST[PWP_Product_IMAXEL_Data::VARIANT_ID_KEY][$loop]
             ))
         );
 
