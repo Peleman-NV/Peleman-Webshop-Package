@@ -167,6 +167,30 @@ class PWP_Parent_Product_Custom_Fields extends PWP_Abstract_Action_Hookable
             [],
         );
 
+        PWP_INPUT_FIELDS::checkbox_input(
+            PWP_Product_PIE_Data::AUTOFILL,
+            'autofill templage pages in editor',
+            $meta_data->pie_data()->get_autofill(),
+            [],
+        );
+
+        PWP_INPUT_FIELDS::text_input(
+            PWP_Product_PIE_DATA::FORMAT_ID,
+            'format id',
+            $meta_data->pie_data()->get_format_id(),
+            '',
+            [],
+        );
+
+        PWP_INPUT_FIELDS::number_input(
+            PWP_Product_PIE_Data::NUM_PAGES,
+            'Pages to Fill',
+            $meta_data->pie_data()->get_num_pages(),
+            [],
+            '',
+            array('min' => 0)
+        );
+
         $this->open_form_field('minmax', ' ');
         PWP_INPUT_FIELDS::number_input(
             PWP_Product_PIE_Data::MIN_IMAGES,

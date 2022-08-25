@@ -45,31 +45,44 @@ class PWP_Save_Variable_Product_Custom_Fields extends PWP_Abstract_Action_hookab
         );
 
         //PIE specific data
-        $pie_data->set_design_id(
-            esc_attr(sanitize_text_field(
-                $_POST[PWP_Product_PIE_Data::DESIGN_ID_KEY][$loop]
-            ))
-        )->set_color_code(
-            esc_attr(sanitize_text_field(
-                $_POST[PWP_Product_PIE_Data::COLOR_CODE_KEY][$loop]
-            ))
-        )->set_background_id(
-            esc_attr(sanitize_text_field(
-                $_POST[PWP_Product_PIE_Data::BACKGROUND_ID_KEY][$loop]
-            ))
-        )->set_uses_image_upload(
-            isset(
-                $_POST[PWP_Product_PIE_Data::USE_IMAGE_UPLOAD][$loop]
-            )
-        )->set_max_images(
-            (int)esc_attr(sanitize_text_field(
-                $_POST[PWP_Product_PIE_Data::MAX_IMAGES][$loop]
-            ))
-        )->set_min_images(
-            (int)esc_attr(sanitize_text_field(
-                $_POST[PWP_Product_PIE_Data::MIN_IMAGES][$loop]
-            ))
-        );
+        $pie_data
+            ->set_design_id(
+                esc_attr(sanitize_text_field(
+                    $_POST[PWP_Product_PIE_Data::DESIGN_ID_KEY][$loop]
+                ))
+            )->set_color_code(
+                esc_attr(sanitize_text_field(
+                    $_POST[PWP_Product_PIE_Data::COLOR_CODE_KEY][$loop]
+                ))
+            )->set_background_id(
+                esc_attr(sanitize_text_field(
+                    $_POST[PWP_Product_PIE_Data::BACKGROUND_ID_KEY][$loop]
+                ))
+            )->set_uses_image_upload(
+                isset(
+                    $_POST[PWP_Product_PIE_Data::USE_IMAGE_UPLOAD][$loop]
+                )
+            )->set_autofill(
+                isset(
+                    $_POST[PWP_Product_PIE_Data::AUTOFILL][$loop]
+                )
+            )->set_num_pages(
+                (int)esc_attr(sanitize_text_field(
+                    $_POST[PWP_Product_PIE_Data::NUM_PAGES][$loop]
+                ))
+            )->set_format_id(
+                esc_attr(sanitize_text_field(
+                    $_POST[PWP_Product_PIE_Data::FORMAT_ID][$loop]
+                ))
+            )->set_max_images(
+                (int)esc_attr(sanitize_text_field(
+                    $_POST[PWP_Product_PIE_Data::MAX_IMAGES][$loop]
+                ))
+            )->set_min_images(
+                (int)esc_attr(sanitize_text_field(
+                    $_POST[PWP_Product_PIE_Data::MIN_IMAGES][$loop]
+                ))
+            );
 
         //IMAXEL specific data
         $imaxel_data->set_template_id(
