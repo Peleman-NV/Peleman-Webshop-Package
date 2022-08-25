@@ -23,9 +23,9 @@ use PWP\adminPage\hookables\PWP_Register_Editor_Options;
 use PWP\includes\hookables\PWP_Add_PDF_Contents_To_Cart;
 use PWP\adminPage\hookables\PWP_PIE_Editor_Control_Panel;
 use PWP\publicPage\hookables\PWP_Ajax_Add_To_Cart;
-use PWP\adminPage\hookables\PWP_Save_Parent_Custom_Fields;
+use PWP\adminPage\hookables\PWP_Save_Parent_Product_Custom_Fields;
 use PWP\publicPage\hookables\PWP_Add_Fields_To_Variations;
-use PWP\adminPage\hookables\PWP_Save_Variable_Custom_Fields;
+use PWP\adminPage\hookables\PWP_Save_Variable_Product_Custom_Fields;
 use PWP\adminPage\hookables\PWP_Parent_Product_Custom_Fields;
 use PWP\includes\hookables\abstracts\PWP_I_Hookable_Component;
 use PWP\publicPage\hookables\PWP_Add_Custom_Project_On_Return;
@@ -86,8 +86,8 @@ class PWP_Plugin implements PWP_I_Hookable_Component
         /* product page hookables */
         $this->add_hookable(new PWP_Parent_Product_Custom_Fields());
         $this->add_hookable(new PWP_Variable_Product_Custom_Fields());
-        $this->add_hookable(new PWP_Save_Parent_Custom_Fields());
-        $this->add_hookable(new PWP_Save_Variable_Custom_Fields());
+        $this->add_hookable(new PWP_Save_Parent_Product_Custom_Fields());
+        $this->add_hookable(new PWP_Save_Variable_Product_Custom_Fields());
     }
 
     private function public_hooks(): void

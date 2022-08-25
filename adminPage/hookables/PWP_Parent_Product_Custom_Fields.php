@@ -46,9 +46,9 @@ class PWP_Parent_Product_Custom_Fields extends PWP_Abstract_Action_Hookable
         );
 
         PWP_Input_Fields::text_input(
-            'custom_add_to_cart_label',
+            PWP_Product_Meta_Data::CUSTOM_LABEL,
             'Custom add to cart label',
-            $product->get_meta('custom_add_to_cart_label') ?: '',
+            $product->get_meta(PWP_Product_Meta_Data::CUSTOM_LABEL) ?: '',
             'eg. Design Project',
             ['short'],
             'Define a custom Add to Cart label'
@@ -64,6 +64,7 @@ class PWP_Parent_Product_Custom_Fields extends PWP_Abstract_Action_Hookable
     private function render_simple_product_settings(WC_Product_Simple $product): void
     {
         $meta_data = new PWP_Product_Meta_Data($product);
+
         /* F2D settings */
         PWP_Input_Fields::checkbox_input(
             'call_to_order',

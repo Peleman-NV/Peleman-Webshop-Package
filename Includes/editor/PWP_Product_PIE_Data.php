@@ -49,9 +49,10 @@ class PWP_Product_PIE_Data extends PWP_Product_Meta
         return $this->templateId;
     }
 
-    public function set_template_id(string $id): void
+    public function set_template_id(string $id): self
     {
         $this->templateId = $id;
+        return $this;
     }
 
     public function get_design_id(): string
@@ -59,9 +60,10 @@ class PWP_Product_PIE_Data extends PWP_Product_Meta
         return $this->designId;
     }
 
-    public function set_design_id(string $code): void
+    public function set_design_id(string $code): self
     {
         $this->designId = $code;
+        return $this;
     }
 
     public function get_color_code(): string
@@ -69,9 +71,10 @@ class PWP_Product_PIE_Data extends PWP_Product_Meta
         return $this->colorCode;
     }
 
-    public function set_color_code(string $code): void
+    public function set_color_code(string $code): self
     {
         $this->colorCode = $code;
+        return $this;
     }
 
     public function get_background_id(): string
@@ -79,9 +82,10 @@ class PWP_Product_PIE_Data extends PWP_Product_Meta
         return $this->backgroundId;
     }
 
-    public function set_background_id(string $id): void
+    public function set_background_id(string $id): self
     {
         $this->backgroundId = $id;
+        return $this;
     }
 
     public function get_variant_id(): string
@@ -89,9 +93,10 @@ class PWP_Product_PIE_Data extends PWP_Product_Meta
         return $this->variantId;
     }
 
-    public function set_variant_id(string $variantId): void
+    public function set_variant_id(string $variantId): self
     {
         $this->variantId = $variantId;
+        return $this;
     }
 
     public function uses_image_upload(): bool
@@ -99,9 +104,10 @@ class PWP_Product_PIE_Data extends PWP_Product_Meta
         return $this->usesImageUpload;
     }
 
-    public function set_uses_image_upload(bool $useUpload): void
+    public function set_uses_image_upload(bool $useUpload): self
     {
         $this->usesImageUpload = $useUpload;
+        return $this;
     }
 
     public function get_max_images(): int
@@ -109,10 +115,11 @@ class PWP_Product_PIE_Data extends PWP_Product_Meta
         return $this->maxImages;
     }
 
-    public function set_max_images(int $count): void
+    public function set_max_images(int $count): self
     {
         $count = max(0, $count);
         $this->maxImages = $count;
+        return $this;
     }
 
     public function get_min_images(): int
@@ -120,15 +127,17 @@ class PWP_Product_PIE_Data extends PWP_Product_Meta
         return $this->minImages;
     }
 
-    public function set_min_images(int $count): void
+    public function set_min_images(int $count): self
     {
         $count = max(0, $count);
         $this->minImages = $count;
+        return $this;
     }
 
-    public function set_as_editor(): void
+    public function set_as_editor(): self
     {
         $this->editorId = "PIE";
+        return $this;
     }
 
     public function update_meta_data(): void

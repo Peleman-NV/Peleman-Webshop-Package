@@ -45,38 +45,36 @@ class PWP_Product_Meta_Data extends PWP_Product_Meta
         $this->imaxelData           = null;
     }
 
-    public function set_uses_pdf_content(bool $usePDFContent): void
+    public function set_uses_pdf_content(bool $usePDFContent): self
     {
         $this->usePDFContent = $usePDFContent;
+        return $this;
     }
     public function uses_pdf_content(): bool
     {
         return $this->usePDFContent;
     }
 
-
-    public function set_customizable(bool $customizable): void
-    {
-        $this->customizable = $customizable;
-    }
     public function is_customizable(): bool
     {
         return $this->customizable;
     }
 
-
-    public function set_editor(string $editorId): void
+    public function set_editor(string $editorId): self
     {
         $this->editorId = $editorId;
+        $this->customizable = !empty($editorId);
+        return $this;
     }
     public function get_editor_id(): string
     {
         return $this->editorId;
     }
 
-    public function set_custom_add_to_cart_label(string $label): void
+    public function set_custom_add_to_cart_label(string $label): self
     {
         $this->customAddToCartLabel = $label;
+        return $this;
     }
     public function get_custom_add_to_cart_label(): string
     {
@@ -84,9 +82,10 @@ class PWP_Product_Meta_Data extends PWP_Product_Meta
     }
 
 
-    public function set_pdf_width(int $width): void
+    public function set_pdf_width(int $width): self
     {
         $this->pdf_width_mm = $width;
+        return $this;
     }
     public function get_pdf_width(): ?int
     {
@@ -94,9 +93,10 @@ class PWP_Product_Meta_Data extends PWP_Product_Meta
     }
 
 
-    public function set_pdf_height(int $height): void
+    public function set_pdf_height(int $height): self
     {
         $this->pdf_height_mm = $height;
+        return $this;
     }
     public function get_pdf_height(): ?int
     {
@@ -104,9 +104,10 @@ class PWP_Product_Meta_Data extends PWP_Product_Meta
     }
 
 
-    public function set_pdf_min_pages(int $pages): void
+    public function set_pdf_min_pages(int $pages): self
     {
         $this->minPages = $pages;
+        return $this;
     }
     public function get_pdf_min_pages(): ?int
     {
@@ -114,9 +115,10 @@ class PWP_Product_Meta_Data extends PWP_Product_Meta
     }
 
 
-    public function set_pdf_max_pages(int $pages): void
+    public function set_pdf_max_pages(int $pages): self
     {
         $this->maxPages = $pages;
+        return $this;
     }
     public function get_pdf_max_pages(): ?int
     {
@@ -124,9 +126,10 @@ class PWP_Product_Meta_Data extends PWP_Product_Meta
     }
 
 
-    public function set_price_per_page(float $pricePerPage): void
+    public function set_price_per_page(float $pricePerPage): self
     {
         $this->pricePerPage = $pricePerPage;
+        return $this;
     }
     public function get_price_per_page(): ?float
     {

@@ -17,9 +17,12 @@ class PWP_Change_Add_To_Cart_Button_Label extends PWP_Abstract_Filter_Hookable
 
     public function change_add_to_cart_button_label(string $default, WC_Product $product): string
     {
-        error_log("is product customizable: " . ($product->get_meta('customizable_product') ? "yes" : "no"));
-        if (boolval($product->get_meta('customizable_product'))) {
-            return $product->get_meta('custom_add_to_cart_label') ?: "customize & add to cart";
+        $meta = new PWP_Product_Meta_Data($product);
+        $customizable = $meta->is_customizable();
+
+        error_log("is product customizable: " . ($customizable ? "yes" : "no"));
+        if ($customizable) {
+            return $meta->get_custom_add_to_cart_label() ?: "customize & add to cart";
         }
 
         return $default;

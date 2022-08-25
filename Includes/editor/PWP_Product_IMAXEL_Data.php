@@ -26,9 +26,10 @@ class PWP_Product_IMAXEL_Data extends PWP_Product_Meta
         return $this->templateId;
     }
 
-    public function set_template_id(string $templateId): void
+    public function set_template_id(string $templateId): self
     {
         $this->templateId = $templateId;
+        return $this;
     }
 
     public function get_variant_id(): string
@@ -36,9 +37,10 @@ class PWP_Product_IMAXEL_Data extends PWP_Product_Meta
         return $this->variantId;
     }
 
-    public function set_variant_id(string $variantId): void
+    public function set_variant_id(string $variantId): self
     {
         $this->variantId = $variantId;
+        return $this;
     }
 
     public function update_meta_data(): void
