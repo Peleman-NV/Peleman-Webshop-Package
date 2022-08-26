@@ -37,9 +37,11 @@ class PWP_Add_Project_Button_To_Cart_Item extends PWP_Abstract_Action_Hookable
                 return;
         }
 ?>
-        <p>
-            <a href="<?= $project_url ?>" class="button">edit project</a>
-        </p>
+        <span>
+            <p>
+                <a href="<?= $project_url ?>" class="pwp_editor_button"><?= esc_html__('edit'); ?></a>
+            </p>
+        </span>
 <?php
     }
 

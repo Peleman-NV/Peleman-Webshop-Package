@@ -26,7 +26,8 @@
 .ppi-upload-parameters table tbody td,
 .ppi-upload-parameters table tbody th {
     padding: 0.15em 0.5em;
-    font-size: 15px; /*0.95em;*/
+    font-size: 15px;
+    /*0.95em;*/
 }
 
 .ppi-upload-parameters table tbody tr td:nth-child(2) {
@@ -42,9 +43,8 @@
     margin-bottom: 8px;
     display: inline-block;
     width: 100%;
-    background: var(
-        --main-color-peleman
-    ); /* default, but the actual color depends on the url - see js/upload-content.js */
+    background: var(--main-color-peleman);
+    /* default, but the actual color depends on the url - see js/upload-content.js */
     border-radius: 6px;
 }
 
@@ -107,19 +107,23 @@
         color: rgb(24, 53, 94);
         transform: rotate(90deg);
     }
+
     50% {
         color: rgb(24, 53, 94);
         transform: rotate(180deg);
     }
+
     75% {
         color: rgb(24, 53, 94);
         transform: rotate(270deg);
     }
+
     100% {
         color: white;
         transform: rotate(360deg);
     }
 }
+
 @keyframes rotate {
     to {
         transform: rotate(360deg);
@@ -150,4 +154,25 @@
 
 .bundle-suffix {
     font-size: 80% !important;
+}
+
+.pwp_editor_button {
+    background-color: #434343;
+    /* border-radius: 3px; */
+    color: white;
+    padding: 4px 16px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    transition-duration: .2s;
+}
+
+.pwp_editor_button:hover {
+    background-color: rgb(180, 180, 180);
+
+}
+
+.pwp_editor_button:active {
+    background-color: rgb(255, 255, 255);
+    color: rgb(21, 21, 21);
 }
