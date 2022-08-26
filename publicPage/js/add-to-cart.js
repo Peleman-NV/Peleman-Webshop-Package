@@ -21,6 +21,7 @@
             overrideDefaultAddToCartBehaviour
         );
 
+        console.log('add to cart js initializing...');
 
         function overrideDefaultAddToCartBehaviour(e) {
             $('#ppi-loading').removeClass('ppi-hidden');
