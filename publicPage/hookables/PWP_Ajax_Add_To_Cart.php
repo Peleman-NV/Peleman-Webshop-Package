@@ -57,6 +57,7 @@ class PWP_Ajax_Add_To_Cart extends PWP_Abstract_Ajax_Hookable
 
                 if ($editorData->is_customizable()) {
                     //BEGIN CUSTOM PROJECT REDIRECT FLOW
+                    error_log("product is customizable. generating project files...");
                     session_start();
 
                     //create custom id for a session variable to store the order data
@@ -82,16 +83,18 @@ class PWP_Ajax_Add_To_Cart extends PWP_Abstract_Ajax_Hookable
                         ),
                         201
                     );
+                    return;
                 }
+                error_log("product is not customizable. returning to regular flow...");
 
                 $destination = '';
-                if ('yes' === get_option('woocommerce_cart_redirect_after_add')) {
-                    wc_add_to_cart_message(array($variationId ?? $productId => $quantity), true);
-                    $destination = wc_get_cart_url();
-                }
+                // if ('yes' === get_option('woocommerce_cart_redirect_after_add')) {
+                //     wc_add_to_cart_message(array($variationId ?? $productId => $quantity), true);
+                //     $destination = wc_get_cart_url();
+                // }
                 wp_send_json_success(array(
                     'message' => 'standard product, using default functionality',
-                    'destination_url' => $destination,
+                    'destination_url' => '',
                 ), 200);
             }
             throw new Exception("something unexpected went wrong", 500);
