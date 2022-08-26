@@ -168,7 +168,7 @@ class PWP_New_PIE_Project_Request extends PWP_Abstract_Request
         $response = curl_exec($curl);
         curl_close($curl);
 
-        error_log(print_r($response, true));
+        error_log('editor response: ' . print_r($response, true));
         if (empty($response) || is_bool($response)) {
             throw new PWP_Invalid_Response_Exception('No valid response received. Likely an authentication issue. Try again later.');
         }
