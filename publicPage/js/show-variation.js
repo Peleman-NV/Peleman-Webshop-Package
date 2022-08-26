@@ -73,7 +73,7 @@
                 dataType: 'json',
                 beforeSend: function () {
                     console.log('working...');
-                    disableAddToCartButton('loading...');
+                    disableAddToCartButton(getLoadingMsg());
                 },
                 complete: function () {
                     console.log('completed');
@@ -233,6 +233,27 @@
                     return 'Aggiungi al carrello';
                 case 'es':
                     return 'Añadir al carrito';
+            }
+        }
+
+        function getLoadingMsg() {
+            const lang = getSiteLanguage();
+
+            switch (lang) {
+                case 'en':
+                default:
+                    return 'loading...';
+                case 'nl':
+                    return 'laden...';
+                case 'fr':
+                    return 'chargement...';
+                case 'de':
+                    return 'laden...'
+                case 'it':
+                    return 'caricamento...';
+                case 'es':
+                    return 'carga...';
+
             }
         }
 
