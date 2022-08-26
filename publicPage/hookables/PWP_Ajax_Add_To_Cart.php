@@ -158,7 +158,7 @@ class PWP_Ajax_Add_To_Cart extends PWP_Abstract_Ajax_Hookable
             ->set_return_url($returnUrl)
             ->set_user_id(get_current_user_id())
             ->set_language(defined('ICL_LANGUAGE_CODE') ? ICL_LANGUAGE_CODE : 'en')
-            ->set_project_name(explode('-', $data->get_parent()->get_name())[0])
+            ->set_project_name($data->get_parent()->get_name())
             ->set_editor_instructions(
                 // PIE_USE_DESIGN_MODE,
                 PIE_USE_BACKGROUNDS,
