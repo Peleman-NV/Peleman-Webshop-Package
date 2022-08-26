@@ -77,6 +77,10 @@
                         //if the response has a destination url, redirect.
                         console.log(response.data.destination_url);
                         window.location.href = response.data.destination_url;
+                        // window.location.replace(response.data.destination_url);
+                        if (location.protocol !== 'https:') {
+                            location.replace(`https:${location.href.substring(location.protocol.length)}`);
+                        }
                         return;
                     }
 
