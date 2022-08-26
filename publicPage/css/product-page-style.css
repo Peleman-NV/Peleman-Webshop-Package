@@ -157,22 +157,24 @@
 }
 
 .pwp_editor_button {
-    background-color: #434343;
-    /* border-radius: 3px; */
-    color: white;
+    width: 30%;
+    background-color: #000000 !important;
+    border-radius: 3px !important;
+    color: white !important;
     padding: 4px 16px;
     text-align: center;
     text-decoration: none;
     display: inline-block;
-    transition-duration: .2s;
+    transition-duration: .1s;
 }
 
 .pwp_editor_button:hover {
-    background-color: rgb(180, 180, 180);
+    background-color: rgb(110, 110, 110) !important;
 
 }
 
 .pwp_editor_button:active {
-    background-color: rgb(255, 255, 255);
-    color: rgb(21, 21, 21);
+    background-color: rgb(255, 255, 255) !important;
+    border: #000000 !important;
+    color: rgb(21, 21, 21) !important;
 }
