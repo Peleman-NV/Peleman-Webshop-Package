@@ -30,15 +30,11 @@ class PWP_Save_Cart_Item_Meta_To_Order_Item_Meta extends PWP_Abstract_Action_Hoo
                 $values['_project_id'],
                 true
             );
-            $item->add_meta_data(
-                '_project_url',
-                $values['_project_url'],
-                true
-            );
-        }
-
-        if (!empty(wc_get_product($item->get_id)->get_meta('cart_price'))) {
-                // $item->add_meta_data('_');
+            // $item->add_meta_data(
+            //     '_project_url',
+            //     $values['_project_url'],
+            //     true
+            // );
         }
     }
 }

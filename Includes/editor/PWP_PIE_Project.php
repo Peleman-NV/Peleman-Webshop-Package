@@ -18,15 +18,15 @@ class PWP_PIE_Project extends PWP_Editor_Project implements PWP_I_Response, PWP_
         parent::__construct(PWP_Product_PIE_Data::MY_EDITOR, $projectId);
     }
 
-    public function get_project_editor_url(): string
+    public function get_project_editor_url(bool $skipUpload = false): string
     {
         $id = $this->get_project_id();
-        if (!$this->editorData->uses_image_upload()) {
-            //add parameter to force the editor to skip the upload screen
-            $params = ['skip' => 'true'];
-        } else {
-            $params = $this->editorData->get_editor_params();
-        }
+        
+        $params = array();
+        if ($skipUpload || !$this->editorData->uses_image_upload())
+            $params['skip'] = 'true';
+
+        $params = array_merge($params,$this->editorData->get_editor_params());
         $params['customerapikey'] = get_option('pie_api_key');
 
         $url = get_option('pie_domain') . "/editor/upload";
@@ -35,6 +35,7 @@ class PWP_PIE_Project extends PWP_Editor_Project implements PWP_I_Response, PWP_
 
         $url .= '&' . http_build_query($params);
 
+        error_log($url);
         return $url;
     }
 }

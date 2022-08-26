@@ -32,7 +32,7 @@ abstract class PWP_Editor_Project implements PWP_I_Response, PWP_I_Response_Comp
         return $this->editorId;
     }
 
-    public abstract function get_project_editor_url(): string;
+    public abstract function get_project_editor_url(bool $skipUpload = false): string;
 
     public function to_array(): array
     {

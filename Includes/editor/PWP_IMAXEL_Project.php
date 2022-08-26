@@ -40,7 +40,7 @@ class PWP_IMAXEL_Project extends PWP_Editor_Project implements PWP_I_Response
         return $this;
     }
 
-    public function get_project_editor_url(): string
+    public function get_project_editor_url(bool $skipUpload = false): string
     {
         return $this->service->get_editor_url(
             $this->get_project_id(),

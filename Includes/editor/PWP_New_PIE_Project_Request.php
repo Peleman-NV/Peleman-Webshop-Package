@@ -49,6 +49,8 @@ class PWP_New_PIE_Project_Request extends PWP_Abstract_Request
     private array $editorInstructions;
     private string $projectName;
     private string $returnUrl;
+
+    private string $formatId;
     #endregion
 
     public function __construct(string $clientDomain,  string $customerId, string $apiKey)
@@ -126,6 +128,13 @@ class PWP_New_PIE_Project_Request extends PWP_Abstract_Request
         $this->projectName = $name;
         return $this;
     }
+
+    public function set_format_id(string $id): self
+    {
+        $this->formatId = $id;
+        return $this;
+    }
+
     #endregion
 
     public function data(): PWP_Product_PIE_Data
@@ -181,7 +190,8 @@ class PWP_New_PIE_Project_Request extends PWP_Abstract_Request
             'backgroundId'          => $this->editorData->get_background_id(),
             'colorcode'             => $this->editorData->get_color_code(),
             'editorinstructions'    => $this->editorInstructions,
-            // 'projectname'           => $this->projectName,
+            'projectname'           => $this->projectName,
+            'formatid'              => $this->formatId,
             'returnurl'             => $this->returnUrl,
         );
 

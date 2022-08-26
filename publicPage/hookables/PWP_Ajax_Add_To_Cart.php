@@ -73,13 +73,17 @@ class PWP_Ajax_Add_To_Cart extends PWP_Abstract_Ajax_Hookable
                         'product_id'    => $productId,
                         'quantity'      => $quantity,
                         'variation_id'  => $variationId,
-                        'item_meta'     => $projectData->to_array(),
+                        'item_meta'     => array(
+                            '_editor_id'    => $projectData->get_editor_id(),
+                            '_project_id'   => $projectData->get_project_id(),
+                            '_project_url'  => $projectData->get_project_editor_url(true),
+                        )
                     );
 
                     wp_send_json_success(
                         array(
                             'message' => 'external project created, redirecting user to editor for customization...',
-                            'destination_url' => $projectData->get_project_editor_url(),
+                            'destination_url' => $projectData->get_project_editor_url(false),
                         ),
                         201
                     );
@@ -155,7 +159,8 @@ class PWP_Ajax_Add_To_Cart extends PWP_Abstract_Ajax_Hookable
             ->set_return_url($returnUrl)
             ->set_user_id(get_current_user_id())
             ->set_language(defined('ICL_LANGUAGE_CODE') ? ICL_LANGUAGE_CODE : 'en')
-            ->set_project_name("k" . uniqid())
+            ->set_project_name(explode('-', $data->get_parent()->get_name())[0])
+            ->set_format_id($data->get_format_id())
             ->set_editor_instructions(
                 // PIE_USE_DESIGN_MODE,
                 PIE_USE_BACKGROUNDS,
