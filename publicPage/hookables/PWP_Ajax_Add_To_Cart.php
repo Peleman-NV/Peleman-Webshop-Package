@@ -76,7 +76,6 @@ class PWP_Ajax_Add_To_Cart extends PWP_Abstract_Ajax_Hookable
                         'item_meta'     => array(
                             '_editor_id'    => $projectData->get_editor_id(),
                             '_project_id'   => $projectData->get_project_id(),
-                            '_project_url'  => $projectData->get_project_editor_url(true),
                         )
                     );
 
@@ -160,7 +159,6 @@ class PWP_Ajax_Add_To_Cart extends PWP_Abstract_Ajax_Hookable
             ->set_user_id(get_current_user_id())
             ->set_language(defined('ICL_LANGUAGE_CODE') ? ICL_LANGUAGE_CODE : 'en')
             ->set_project_name(explode('-', $data->get_parent()->get_name())[0])
-            ->set_format_id($data->get_format_id())
             ->set_editor_instructions(
                 // PIE_USE_DESIGN_MODE,
                 PIE_USE_BACKGROUNDS,

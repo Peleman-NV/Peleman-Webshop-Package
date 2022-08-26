@@ -66,6 +66,8 @@ class PWP_New_PIE_Project_Request extends PWP_Abstract_Request
         $this->editorInstructions = [];
         $this->projectName = '';
         $this->returnUrl = '';
+
+        $this->formatId = '';
     }
 
     #region BUILDER METHODS
@@ -189,9 +191,9 @@ class PWP_New_PIE_Project_Request extends PWP_Abstract_Request
             // 'designid'              => $this->editorData->get_template_id(),
             'backgroundId'          => $this->editorData->get_background_id(),
             'colorcode'             => $this->editorData->get_color_code(),
+            'formatid'              => $this->editorData->get_format_id(),
             'editorinstructions'    => $this->editorInstructions,
             'projectname'           => $this->projectName,
-            'formatid'              => $this->formatId,
             'returnurl'             => $this->returnUrl,
         );
 

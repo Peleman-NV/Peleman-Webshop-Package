@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace PWP\publicPage\hookables;
 
+use PWP\includes\editor\PWP_PIE_Project;
 use PWP\includes\editor\PWP_Product_IMAXEL_Data;
 use PWP\includes\editor\PWP_Product_PIE_Data;
 use PWP\includes\hookables\abstracts\PWP_Abstract_Action_Hookable;
@@ -47,7 +48,11 @@ class PWP_Add_Project_Button_To_Cart_Item extends PWP_Abstract_Action_Hookable
 
     private function get_PIE_Project_Url(array $cart_item, string $project_id): string
     {
-        return wc_clean($cart_item['_project_url']);
+        $variant_id = $cart_item['variation_id'];
+        $product_id = $cart_item['product_id'];
+        $data = new PWP_Product_PIE_Data(wc_get_product($variant_id ?: $product_id));
+        $project = new PWP_PIE_Project($data, $project_id);
+        return wc_clean($project->get_project_editor_url(true));
     }
 
     private function get_IMAXEL_project_url(array $cart_item, string $project_id): string
