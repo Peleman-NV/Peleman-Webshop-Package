@@ -9,20 +9,6 @@ use WC_Product;
 class PWP_Product_PIE_Data extends PWP_Product_Meta
 {
 
-    public string $templateId;
-    public string $designId;
-    public string $designProjectId;
-    public string $colorCode;
-    public string $backgroundId;
-
-    public bool $usesImageUpload;
-    public int $minImages;
-    public int $maxImages;
-
-    public int $numPages;
-    public bool $autofill;
-    public string $formatId;
-
     public const TEMPLATE_ID_KEY = 'pie_template_id';
     public const DESIGN_ID_KEY = 'pie_design_id';
     public const DESIGN_PROJECT_ID = 'pie_design_project_id';
@@ -38,6 +24,21 @@ class PWP_Product_PIE_Data extends PWP_Product_Meta
     public const FORMAT_ID = 'pie_format_id';
 
     public const MY_EDITOR = 'PIE';
+
+    public string $templateId;
+    public string $designId;
+    public string $designProjectId;
+    public string $colorCode;
+    public string $backgroundId;
+
+    public bool $usesImageUpload;
+    public int $minImages;
+    public int $maxImages;
+
+    public int $numPages;
+    public bool $autofill;
+    public string $formatId;
+
 
     public function __construct(WC_Product $parent)
     {
