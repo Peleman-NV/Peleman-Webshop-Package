@@ -32,10 +32,7 @@ class PWP_PIE_Project extends PWP_Editor_Project implements PWP_I_Response, PWP_
         $url = get_option('pie_domain') . "/editor/upload";
         $url .= "?projectid={$id}";
 
-
         $url .= '&' . http_build_query($params);
-
-        error_log($url);
         return $url;
     }
 }
