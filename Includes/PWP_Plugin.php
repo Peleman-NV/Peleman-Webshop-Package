@@ -10,7 +10,6 @@ use PWP\includes\loaders\PWP_Plugin_Loader;
 
 use Automattic\WooCommerce\Admin\Overrides\Order;
 
-use PWP\includes\hookables\PWP_Add_Product_Fields;
 use PWP\includes\traits\PWP_Hookable_Parent_Trait;
 
 use PWP\adminPage\hookables\PWP_Admin_Control_Panel;
@@ -107,7 +106,6 @@ class PWP_Plugin implements PWP_I_Hookable_Component
         /* EDITOR product hookables */
         $this->add_hookable(new PWP_Ajax_Show_Variation());
         $this->add_hookable(new PWP_Ajax_Add_To_Cart());
-        // $this->add_hookable(new PWP_Add_Product_Fields());
         // $this->add_hookable(new PWP_Add_PDF_Contents_To_Cart());
         $this->add_hookable(new PWP_Add_Project_Button_To_Cart_Item());
         $this->add_hookable(new PWP_Add_Custom_Project_On_Return());

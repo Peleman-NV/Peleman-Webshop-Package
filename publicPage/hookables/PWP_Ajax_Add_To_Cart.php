@@ -157,7 +157,7 @@ class PWP_Ajax_Add_To_Cart extends PWP_Abstract_Ajax_Hookable
             ->set_timeout(10)
             ->set_return_url($returnUrl)
             ->set_user_id(get_current_user_id())
-            ->set_language(defined('ICL_LANGUAGE_CODE') ? ICL_LANGUAGE_CODE : 'en')
+            ->set_language($this->get_site_language())
             ->set_project_name($data->get_parent()->get_name())
             ->set_editor_instructions(
                 // PIE_USE_DESIGN_MODE,
@@ -181,5 +181,13 @@ class PWP_Ajax_Add_To_Cart extends PWP_Abstract_Ajax_Hookable
             ->set_back_url(wc_get_cart_url())
             ->set_add_to_cart_url($returnUrl)
             ->make_request();
+    }
+
+    private function get_site_language(): string
+    {
+        if (defined('ICL_LANGUAGE_CODE')) {
+            return ICL_LANGUAGE_CODE;
+        }
+        return explode("_", get_locale())[0];
     }
 }

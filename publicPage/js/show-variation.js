@@ -258,6 +258,8 @@
         }
 
         function getSiteLanguage() {
+            var userlang = navigator.language;
+            if (userlang !== null) { return userlang; }
             const cookies = document.cookie;
             const cookieArray = cookies.split(';');
             for (const cookie of cookieArray) {
