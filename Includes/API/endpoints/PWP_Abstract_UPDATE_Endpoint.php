@@ -15,11 +15,6 @@ abstract class PWP_Abstract_UPDATE_Endpoint extends PWP_Endpoint_Controller
         return $this->get_authenticator()->auth_get_items($request);
     }
 
-    public function get_arguments(): array
-    {
-        return [];
-    }
-
     final public function get_methods(): string
     {
         return 'PUT, PATCH';

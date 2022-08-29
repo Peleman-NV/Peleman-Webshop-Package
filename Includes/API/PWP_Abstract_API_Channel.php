@@ -24,15 +24,15 @@ class PWP_Abstract_API_Channel implements PWP_I_Hookable_Component
         $this->authenticator = $authenticator;
     }
 
-    final protected function add_endpoint(PWP_I_Endpoint $endpoint): void
+    final protected function register_endpoint(PWP_I_Endpoint $endpoint): void
     {
         $this->endpoints[] = $endpoint;
     }
 
-    final public function register_hooks(PWP_Plugin_Loader $loader): void
+    final public function register(): void
     {
         foreach ($this->endpoints as $endpoint) {
-            $loader->add_API_Endpoint($this->definition->get_namespace(), $endpoint);
+            $endpoint->register();
         }
     }
 

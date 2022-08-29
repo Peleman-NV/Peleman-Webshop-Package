@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PWP\templates;
 
-abstract class Template
+class PWP_Template
 {
     public $sourceFolder;
 

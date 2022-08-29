@@ -13,11 +13,6 @@ abstract class PWP_Abstract_DELETE_Endpoint extends PWP_Endpoint_Controller
         return $this->get_authenticator()->auth_delete_item($request);
     }
 
-    public function get_arguments(): array
-    {
-        return [];
-    }
-
     final public function get_methods(): string
     {
         return \WP_REST_Server::DELETABLE;

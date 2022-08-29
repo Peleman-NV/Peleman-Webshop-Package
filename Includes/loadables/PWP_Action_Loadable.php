@@ -2,12 +2,14 @@
 
 declare(strict_types=1);
 
-namespace PWP\includes\loaders;
+namespace PWP\includes\loadables;
+
+use PWP\includes\hookables\abstracts\PWP_I_Hookable_Component;
 
 /**
  * wrapper class for Wordpress action hooks
  */
-final class PWP_Action_Loader implements PWP_ILoader
+final class PWP_Action_Loadable implements PWP_I_Hookable_Component
 {
     private string $name;
     private object $component;

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace PWP\includes\hookables\abstracts;
 
 use PWP\includes\hookables\abstracts\PWP_I_Hookable_Component;
-use PWP\includes\loaders\PWP_Plugin_Loader;
+use PWP\includes\loadables\PWP_Plugin_Loader;
 
 abstract class PWP_Abstract_Filter_Hookable implements PWP_I_Hookable_Component
 {
@@ -24,10 +24,14 @@ abstract class PWP_Abstract_Filter_Hookable implements PWP_I_Hookable_Component
 
     final public function register_hooks(PWP_Plugin_Loader $loader): void
     {
-        $loader->add_filter(
+        $loader->add_hookable($this);
+    }
+
+    final public function register(): void
+    {
+        \add_filter(
             $this->hook,
-            $this,
-            $this->callback,
+            array($this, $this->callback),
             $this->priority,
             $this->accepted_args
         );

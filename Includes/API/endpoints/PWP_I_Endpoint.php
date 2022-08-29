@@ -40,4 +40,6 @@ interface PWP_I_Endpoint
      * @return string
      */
     public function get_path(): string;
+
+    public function register(): void;
 }

@@ -2,12 +2,10 @@
 
 declare(strict_types=1);
 
-namespace PWP\includes\loaders;
+namespace PWP\includes\loadables;
 
 use PWP\includes\API\endpoints\PWP_I_Endpoint;
-use PWP\includes\loaders\PWP_Action_Loader;
-use PWP\includes\loaders\PWP_Filter_Loader;
-use PWP\includes\loaders\PWP_Shortcode_Loader;
+use PWP\includes\hookables\abstracts\PWP_I_Hookable_Component;
 
 class PWP_Plugin_Loader
 {
@@ -15,7 +13,7 @@ class PWP_Plugin_Loader
 
      * @var PWP_I_Loader[]
      */
-    private array $loaders;
+    private array $loadables;
     /**
      * Undocumented variable
      *
@@ -25,7 +23,7 @@ class PWP_Plugin_Loader
 
     public function __construct()
     {
-        $this->loaders = array();
+        $this->loadables = array();
         $this->endpoints = array();
 
         $this->add_action("rest_api_init", $this, "register_endpoints_to_wp");
@@ -43,7 +41,7 @@ class PWP_Plugin_Loader
      */
     public function add_action(string $hook, object $component, string $callback, int $priority = 10, int $accepted_args = 1): void
     {
-        $this->loaders[] = new PWP_Action_Loader($hook, $component, $callback, $priority, $accepted_args);
+        $this->loadables[] = new PWP_Action_Loadable($hook, $component, $callback, $priority, $accepted_args);
     }
 
     /**
@@ -58,7 +56,7 @@ class PWP_Plugin_Loader
      */
     public function add_ajax_action(string $hook, object $component, string $callback, int $priority = 10, int $accepted_args = 1): void
     {
-        $this->loaders[] = new PWP_Action_Loader("wp_ajax_{$hook}", $component, $callback, $priority, $accepted_args);
+        $this->loadables[] = new PWP_Action_Loadable("wp_ajax_{$hook}", $component, $callback, $priority, $accepted_args);
     }
 
     /**
@@ -73,7 +71,7 @@ class PWP_Plugin_Loader
      */
     public function add_ajax_nopriv_action(string $hook, object $component, string $callback, int $priority = 10, int $accepted_args = 1): void
     {
-        $this->loaders[] = new PWP_Action_Loader("wp_ajax_nopriv_{$hook}", $component, $callback, $priority, $accepted_args);
+        $this->loadables[] = new PWP_Action_Loadable("wp_ajax_nopriv_{$hook}", $component, $callback, $priority, $accepted_args);
     }
 
     /**
@@ -88,7 +86,7 @@ class PWP_Plugin_Loader
      */
     public function add_admin_post_action(string $hook, object $component, string $callback, int $priority = 10, int $accepted_args = 1): void
     {
-        $this->loaders[] = new PWP_Action_Loader("admin_post_{$hook}", $component, $callback, $priority, $accepted_args);
+        $this->loadables[] = new PWP_Action_Loadable("admin_post_{$hook}", $component, $callback, $priority, $accepted_args);
     }
 
     /**
@@ -103,7 +101,7 @@ class PWP_Plugin_Loader
      */
     public function add_admin_post_nopriv_action(string $hook, object $component, string $callback, int $priority = 10, int $accepted_args = 1): void
     {
-        $this->loaders[] = new PWP_Action_Loader("admin_post_nopriv_{$hook}", $component, $callback, $priority, $accepted_args);
+        $this->loadables[] = new PWP_Action_Loadable("admin_post_nopriv_{$hook}", $component, $callback, $priority, $accepted_args);
     }
 
     /**
@@ -118,7 +116,7 @@ class PWP_Plugin_Loader
      */
     public function add_filter(string $hook, object $component, string $callback, int $priority = 10, int $accepted_args = 1): void
     {
-        $this->loaders[] = new PWP_Filter_Loader($hook, $component, $callback, $priority, $accepted_args);
+        $this->loadables[] = new PWP_Filter_Loadable($hook, $component, $callback, $priority, $accepted_args);
     }
 
     /**
@@ -131,7 +129,12 @@ class PWP_Plugin_Loader
      */
     public function add_shortcode(string $tag, object $component, string $callback): void
     {
-        $this->loaders[] = new PWP_Shortcode_Loader($tag, $component, $callback);
+        $this->loadables[] = new PWP_Shortcode_Loadable($tag, $component, $callback);
+    }
+
+    public function add_hookable(PWP_I_Hookable_Component $hookable)
+    {
+        $this->loadables[] = $hookable;
     }
 
     /**
@@ -141,23 +144,23 @@ class PWP_Plugin_Loader
      * @param PWP_I_Endpoint $endpoint 
      * @return void
      */
-    public function add_API_Endpoint(string $namespace, PWP_I_Endpoint $endpoint): void
+    public function add_API_endpoint(PWP_I_Endpoint $endpoint): void
     {
-        $this->endpoints[] = new PWP_Endpoint_Loader($namespace, $endpoint);
+        $this->endpoints[] = $endpoint;
     }
 
     /**
-     * callback function to register all hooks.
+     * callback function to add all hooks.
      *
      * @return void
      */
     final public function register_hooks_to_wp(): void
     {
-        foreach ($this->loaders as $loader) {
-            $loader->register();
+        foreach ($this->loadables as $loadable) {
+            $loadable->register();
         }
 
-        $this->loaders = array();
+        $this->loadables = array();
     }
 
     /**
@@ -167,8 +170,8 @@ class PWP_Plugin_Loader
      */
     final public function register_endpoints_to_wp(): void
     {
-        foreach ($this->endpoints as $loader) {
-            $loader->register();
+        foreach ($this->endpoints as $endpoint) {
+            $endpoint->register();
         }
 
         $this->endpoints = array();

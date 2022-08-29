@@ -17,8 +17,6 @@ abstract class PWP_Abstract_BATCH_Endpoint extends PWP_Endpoint_Controller
         return $this->get_authenticator()->auth_batch_items($request);
     }
 
-    abstract public function get_arguments(): array;
-
     final public function get_methods(): string
     {
         return \WP_REST_Server::EDITABLE;

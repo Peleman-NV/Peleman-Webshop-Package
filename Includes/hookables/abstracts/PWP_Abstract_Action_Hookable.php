@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace PWP\includes\hookables\abstracts;
 
 use PWP\includes\hookables\abstracts\PWP_I_Hookable_Component;
+use PWP\includes\loaders\PWP_ILoader;
 use PWP\includes\loaders\PWP_Plugin_Loader;
 
 abstract class PWP_Abstract_Action_Hookable implements PWP_I_Hookable_Component
@@ -28,12 +29,11 @@ abstract class PWP_Abstract_Action_Hookable implements PWP_I_Hookable_Component
         $this->accepted_args = $accepted_args;
     }
 
-    public function register_hooks(PWP_Plugin_Loader $loader): void
+    final public function register(): void
     {
-        $loader->add_action(
+        \add_action(
             $this->hook,
-            $this,
-            $this->callback,
+            array($this, $this->callback),
             $this->priority,
             $this->accepted_args
         );
