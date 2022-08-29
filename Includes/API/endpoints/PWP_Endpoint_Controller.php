@@ -54,12 +54,12 @@ abstract class PWP_Endpoint_Controller implements PWP_I_Endpoint, PWP_I_Hookable
     {
         register_rest_route(
             $this->namespace,
-            $this->endpoint->get_path(),
+            $this->get_path(),
             array(
-                'args' => $this->endpoint->get_arguments(),
-                'callback' => $this->endpoint->get_callback(),
-                'methods' => $this->endpoint->get_methods(),
-                'permission_callback' => $this->endpoint->get_permission_callback(),
+                'args' => $this->get_arguments(),
+                'callback' => $this->get_callback(),
+                'methods' => $this->get_methods(),
+                'permission_callback' => $this->get_permission_callback(),
             )
         );
     }
