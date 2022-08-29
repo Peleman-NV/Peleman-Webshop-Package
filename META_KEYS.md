@@ -2,7 +2,7 @@
 
 the Peleman Webshop Package Plugin adds a series of meta keys to the standard Woocommerce Products, needed for its own operation and the connection with the Peleman Image Editor/Imaxel systems.
 
-This is a record of the keys added to the standard `WC_Product` objects by the plugin.
+This is a reference of the keys added to the standard `WC_Product` objects by the plugin, for use both in development and internal use of the plugin, as well as a reference for F2D usage of the keys, their meaning, intent, and types.
 
 These values can be adjust manually in the Woocommerce 'edit project' panel, or through the woocommerce Rest API as metadata values.
 ## general keys
@@ -49,7 +49,6 @@ Valid values: `PIE`, `IMAXEL` or `null`
 Represents the editor which is to be used for the customization of the project. if set to `empty`, `null`, `false`, `0` or another non-valid value, the plugin will assume the project cannot be edited. If no template ID is set, for either of the editors, the plugin will also assume the project cannot be edited.
 
 ## Peleman Image Editor
-___
 ### pie_template_id
 `string`
 
@@ -103,12 +102,12 @@ maximum amount of images the user *can* upload to the upload page of the project
 **Only relevant when `pie_image_upload` is set to `true`.**
 ___
 ## Imaxel
-## imaxel_template_id
+### imaxel_template_id
 `string`
 
 Imaxel template ID for the product.
 ___
-## imaxel_variant_id
+### imaxel_variant_id
 `string`
 
 Imaxel variant ID of the template, for the product.
