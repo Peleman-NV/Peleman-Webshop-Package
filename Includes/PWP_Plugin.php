@@ -15,20 +15,16 @@ use PWP\includes\traits\PWP_Hookable_Parent_Trait;
 use PWP\adminPage\hookables\PWP_Admin_Control_Panel;
 use PWP\adminPage\hookables\PWP_Admin_Notice_Poster;
 
-use PWP\publicPage\hookables\PWP_Upload_PDF_Content;
 use PWP\adminPage\hookables\PWP_Admin_Enqueue_Styles;
 use PWP\publicPage\hookables\PWP_Render_PDF_Upload_Form;
 use PWP\adminPage\hookables\PWP_Register_Editor_Options;
-use PWP\includes\hookables\PWP_Add_PDF_Contents_To_Cart;
 use PWP\adminPage\hookables\PWP_PIE_Editor_Control_Panel;
 use PWP\publicPage\hookables\PWP_Ajax_Add_To_Cart;
 use PWP\adminPage\hookables\PWP_Save_Parent_Product_Custom_Fields;
 use PWP\publicPage\hookables\PWP_Add_Fields_To_Variations;
 use PWP\adminPage\hookables\PWP_Save_Variable_Product_Custom_Fields;
 use PWP\adminPage\hookables\PWP_Parent_Product_Custom_Fields;
-use PWP\includes\hookables\abstracts\PWP_I_Hookable_Component;
 use PWP\publicPage\hookables\PWP_Add_Custom_Project_On_Return;
-use PWP\publicPage\hookables\PWP_Display_Project_Data_In_Cart;
 use PWP\adminPage\hookables\PWP_Variable_Product_Custom_Fields;
 use PWP\includes\API\endpoints\PWP_TEST_OAuth2_Client_Endpoint;
 use PWP\includes\API\PWP_API_V1_Plugin;
@@ -74,6 +70,12 @@ class PWP_Plugin
         $this->api_endpoints();
     }
 
+    final public static function run()
+    {
+        $instance = new PWP_Plugin();
+        $instance->register_components();
+        do_action('pwp_plugin_loaded');
+    }
     private function admin_hooks(): void
     {
         $this->loader->add_hookable($this->noticePoster);
@@ -100,6 +102,7 @@ class PWP_Plugin
         $this->loader->add_hookable(new PWP_Render_PDF_Upload_Form($this->templateEngine));
         //$this->loader->add_hookable(new PWP_Upload_PDF_Content());
         $this->loader->add_hookable(new PWP_Add_Fields_To_Variations());
+        
         /* EDITOR product hookables */
         $this->loader->add_hookable(new PWP_Ajax_Show_Variation());
         $this->loader->add_hookable(new PWP_Ajax_Add_To_Cart());
@@ -112,14 +115,8 @@ class PWP_Plugin
     private function api_endpoints(): void
     {
         $this->loader->add_API_endpoint(new PWP_TEST_OAuth2_Client_Endpoint());
-        $this->loader->add_hookable(new PWP_API_V1_Plugin('pwp/v1'));
-    }
 
-    final public static function run()
-    {
-        $instance = new PWP_Plugin();
-        $instance->register_components();
-        do_action('PWP_plugin_loaded');
+        $this->loader->add_hookable(new PWP_API_V1_Plugin('pwp/v1'));
     }
 
     private function register_components()
