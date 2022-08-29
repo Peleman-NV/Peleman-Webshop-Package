@@ -68,6 +68,7 @@
 .ppi-upload-form .upload-label {
     color: rgb(105, 105, 105);
     cursor: pointer;
+    -webkit-user-select: nonse;
     user-select: none;
     padding: 5px;
     margin-bottom: 0;
