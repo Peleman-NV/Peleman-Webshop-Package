@@ -10,8 +10,7 @@ class PWP_Product_PIE_Data extends PWP_Product_Meta
 {
 
     public const TEMPLATE_ID_KEY = 'pie_template_id';
-    public const DESIGN_ID_KEY = 'pie_design_id';
-    public const DESIGN_PROJECT_ID = 'pie_design_project_id';
+    public const DESIGN_ID_KEY = 'pie_design_project_id';
     public const COLOR_CODE_KEY = 'pie_color_code';
     public const BACKGROUND_ID_KEY = 'pie_background_id';
 
@@ -46,7 +45,6 @@ class PWP_Product_PIE_Data extends PWP_Product_Meta
 
         $this->templateId = $this->parent->get_meta(self::TEMPLATE_ID_KEY) ?? '';
         $this->designId = $this->parent->get_meta(self::DESIGN_ID_KEY) ?? '';
-        $this->designProjectId = $this->parent->get_meta(self::DESIGN_PROJECT_ID) ?? '';
         $this->colorCode = $this->parent->get_meta(self::COLOR_CODE_KEY) ?? '';
         $this->backgroundId =  $this->parent->get_meta(self::BACKGROUND_ID_KEY) ?? '';
 
@@ -115,17 +113,6 @@ class PWP_Product_PIE_Data extends PWP_Product_Meta
     public function set_design_id(string $code): self
     {
         $this->designId = $code;
-        return $this;
-    }
-
-    public function get_design_project_id(): string
-    {
-        return $this->designProjectId;
-    }
-
-    public function set_design_project_id(string $id): self
-    {
-        $this->designProjectId = $id;
         return $this;
     }
 
@@ -224,8 +211,8 @@ class PWP_Product_PIE_Data extends PWP_Product_Meta
     public function get_editor_params(): array
     {
         $params = array();
-        if ($this->designProjectId)
-            $params['designprojectid'] =  $this->designProjectId;
+        if ($this->designId)
+            $params['designprojectid'] =  $this->designId;
         if ($this->get_max_images() > 0)
             $params['maximages'] = $this->get_max_images();
         if ($this->get_min_images() > 0)
