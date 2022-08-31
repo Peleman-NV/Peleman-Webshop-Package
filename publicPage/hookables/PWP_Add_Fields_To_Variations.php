@@ -18,7 +18,7 @@ class PWP_Add_Fields_To_Variations extends PWP_Abstract_Filter_Hookable
     public function add_extra_value(array $data, \WC_Product_Variable $product, \WC_Product_Variation $variation)
     {
         if ($variation->get_meta(PWP_Product_Meta_Data::USE_PDF_CONTENT)) {
-            // $data['variation_description'] .= '<p><b>beep<b></p>';
+            do_action('pwp_render_pdf_upload_form');
         }
 
         return $data;

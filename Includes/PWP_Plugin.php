@@ -79,6 +79,7 @@ class PWP_Plugin
     private function admin_hooks(): void
     {
         $this->loader->add_hookable($this->noticePoster);
+        /** control panel hookables */
         $this->loader->add_hookable(new PWP_Admin_Enqueue_Styles());
         $this->loader->add_hookable(new PWP_Register_Editor_Options());
         $this->loader->add_hookable(new PWP_PIE_Editor_Control_Panel());
@@ -100,8 +101,8 @@ class PWP_Plugin
 
         /* PDF upload hookables */
         $this->loader->add_hookable(new PWP_Render_PDF_Upload_Form($this->templateEngine));
-        //$this->loader->add_hookable(new PWP_Upload_PDF_Content());
         $this->loader->add_hookable(new PWP_Add_Fields_To_Variations());
+        //$this->loader->add_hookable(new PWP_Upload_PDF_Content());
         
         /* EDITOR product hookables */
         $this->loader->add_hookable(new PWP_Ajax_Show_Variation());
