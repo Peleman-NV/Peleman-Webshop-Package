@@ -4,38 +4,33 @@ declare(strict_types=1);
 
 namespace PWP\includes;
 
-use PWP\includes\API\PWP_API_Plugin;
-use PWP\adminPage\PWP_Parent_Custom_Fields;
+use PWP\templates\PWP_Template;
 use PWP\includes\loadables\PWP_Plugin_Loader;
 
-use Automattic\WooCommerce\Admin\Overrides\Order;
-
-use PWP\includes\traits\PWP_Hookable_Parent_Trait;
+use PWP\publicPage\hookables\PWP_Ajax_Add_To_Cart;
+use PWP\publicPage\hookables\PWP_Ajax_Show_Variation;
+use PWP\publicPage\hookables\PWP_Enqueue_Public_Styles;
+use PWP\publicPage\hookables\PWP_Render_PDF_Upload_Form;
+use PWP\publicPage\hookables\PWP_Add_Fields_To_Variations;
+use PWP\publicPage\hookables\PWP_Add_Custom_Project_On_Return;
+use PWP\publicPage\hookables\PWP_Change_Add_To_Cart_Button_Label;
+use PWP\publicPage\hookables\PWP_Add_Project_Button_To_Cart_Item;
+use PWP\publicPage\hookables\PWP_Add_Fields_To_Add_To_Cart_Button;
+use PWP\publicPage\hookables\PWP_Change_Add_To_Cart_Label_For_Archive;
+use PWP\publicPage\hookables\PWP_Save_Cart_Item_Meta_To_Order_Item_Meta;
 
 use PWP\adminPage\hookables\PWP_Admin_Control_Panel;
 use PWP\adminPage\hookables\PWP_Admin_Notice_Poster;
-
 use PWP\adminPage\hookables\PWP_Admin_Enqueue_Styles;
-use PWP\publicPage\hookables\PWP_Render_PDF_Upload_Form;
 use PWP\adminPage\hookables\PWP_Register_Editor_Options;
 use PWP\adminPage\hookables\PWP_PIE_Editor_Control_Panel;
-use PWP\publicPage\hookables\PWP_Ajax_Add_To_Cart;
-use PWP\adminPage\hookables\PWP_Save_Parent_Product_Custom_Fields;
-use PWP\publicPage\hookables\PWP_Add_Fields_To_Variations;
-use PWP\adminPage\hookables\PWP_Save_Variable_Product_Custom_Fields;
 use PWP\adminPage\hookables\PWP_Parent_Product_Custom_Fields;
-use PWP\publicPage\hookables\PWP_Add_Custom_Project_On_Return;
 use PWP\adminPage\hookables\PWP_Variable_Product_Custom_Fields;
-use PWP\includes\API\endpoints\PWP_TEST_OAuth2_Client_Endpoint;
+use PWP\adminPage\hookables\PWP_Save_Parent_Product_Custom_Fields;
+use PWP\adminPage\hookables\PWP_Save_Variable_Product_Custom_Fields;
+
 use PWP\includes\API\PWP_API_V1_Plugin;
-use PWP\publicPage\hookables\PWP_Add_Fields_To_Add_To_Cart_Button;
-use PWP\publicPage\hookables\PWP_Add_Project_Button_To_Cart_Item;
-use PWP\publicPage\hookables\PWP_Ajax_Show_Variation;
-use PWP\publicPage\hookables\PWP_Change_Add_To_Cart_Button_Label;
-use PWP\publicPage\hookables\PWP_Change_Add_To_Cart_Label_For_Archive;
-use PWP\publicPage\hookables\PWP_Enqueue_Public_Styles;
-use PWP\publicPage\hookables\PWP_Save_Cart_Item_Meta_To_Order_Item_Meta;
-use PWP\templates\PWP_Template;
+use PWP\includes\API\endpoints\PWP_TEST_OAuth2_Client_Endpoint;
 
 if (!function_exists('is_plugin_active')) {
     include_once(ABSPATH . '/wp-admin/includes/plugin.php');
@@ -103,7 +98,7 @@ class PWP_Plugin
         $this->loader->add_hookable(new PWP_Render_PDF_Upload_Form($this->templateEngine));
         $this->loader->add_hookable(new PWP_Add_Fields_To_Variations());
         //$this->loader->add_hookable(new PWP_Upload_PDF_Content());
-        
+
         /* EDITOR product hookables */
         $this->loader->add_hookable(new PWP_Ajax_Show_Variation());
         $this->loader->add_hookable(new PWP_Ajax_Add_To_Cart());
