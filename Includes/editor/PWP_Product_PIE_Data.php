@@ -49,7 +49,8 @@ class PWP_Product_PIE_Data extends PWP_Product_Meta
         $this->designId = $this->parent->get_meta(self::DESIGN_ID_KEY) ?? '';
         $this->colorCode = $this->parent->get_meta(self::COLOR_CODE_KEY) ?? '';
         $this->backgroundId =  $this->parent->get_meta(self::BACKGROUND_ID_KEY) ?? '';
-        $this->editorInstructions = $this->parent->get_meta(self::EDITOR_INSTRUCTIONS) ?? '';
+        $this->editorInstructions = (array)unserialize($this->parent->get_meta(self::EDITOR_INSTRUCTIONS)) ?? [];
+        error_log("editor instructions for product with id {$parent->get_id()} : " . print_r($this->editorInstructions, true));
 
         $this->usesImageUpload = boolval($this->parent->get_meta(self::USE_IMAGE_UPLOAD));
         $this->minImages = (int)$this->parent->get_meta(self::MIN_IMAGES) ?? 0;

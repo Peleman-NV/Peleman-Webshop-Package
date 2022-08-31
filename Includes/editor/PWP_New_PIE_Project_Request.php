@@ -192,7 +192,7 @@ class PWP_New_PIE_Project_Request extends PWP_Abstract_Request
             'backgroundId'          => $this->editorData->get_background_id(),
             'colorcode'             => $this->editorData->get_color_code(),
             'formatid'              => $this->editorData->get_format_id(),
-            'editorinstructions'    => $this->editorData->get_editor_instructions(),
+            'editorinstructions'    => array_merge($this->editorData->get_editor_instructions(), $this->editorInstructions),
             'projectname'           => $this->projectName,
             'returnurl'             => $this->returnUrl,
         );
