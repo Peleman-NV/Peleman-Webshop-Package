@@ -110,6 +110,17 @@ class PWP_Variable_Product_Custom_Fields extends PWP_Abstract_Action_hookable
                     ['form-row', 'form-row-last'],
                 );
 
+                $instructions = $editor_data->pie_data()->get_editor_instructions();
+                woocommerce_wp_textarea_input(array(
+                    'label' => 'editor instructions',
+                    'name' => PWP_PIE_Editor_Instructions::EDITOR_INSTRUCTIONS_KEY . $loopEnd,
+                    'id' => PWP_PIE_Editor_Instructions::EDITOR_INSTRUCTIONS_KEY . $loopEnd,
+                    'value' => implode(" ", $instructions),
+                    'desc_tip' => true,
+                    'description' => 'editor instruction values. for reference, see the PIE editor documentation. enter values separated by a space.',
+                    'wrapper_class' => implode(' ', ['form-row', 'form-row-full']),
+                ));
+
                 PWP_INPUT_FIELDS::create_field(
                     PWP_Product_PIE_Data::COLOR_CODE_KEY . $loopEnd,
                     'Color Code',
@@ -175,18 +186,6 @@ class PWP_Variable_Product_Custom_Fields extends PWP_Abstract_Action_hookable
                     '',
                     array('min' => 0)
                 );
-
-
-                $instructions = $editor_data->pie_data()->get_editor_instructions();
-                woocommerce_wp_textarea_input(array(
-                    'label' => 'instructions',
-                    'name' => PWP_PIE_Editor_Instructions::EDITOR_INSTRUCTIONS_KEY . $loopEnd,
-                    'id' => PWP_PIE_Editor_Instructions::EDITOR_INSTRUCTIONS_KEY . $loopEnd,
-                    'value' => implode(" ", $instructions),
-                    'desc_tip' => true,
-                    'description' => 'editor instruction values. for reference, see the PIE editor documentation. enter values separated by a space.',
-                    'wrapper_class' => ['form-row', 'form-row-full'],
-                ));
 
                 PWP_INPUT_FIELDS::text_input(
                     PWP_Product_IMAXEL_Data::TEMPLATE_ID_KEY . $loopEnd,

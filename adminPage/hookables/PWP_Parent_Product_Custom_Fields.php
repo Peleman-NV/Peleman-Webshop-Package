@@ -129,6 +129,7 @@ class PWP_Parent_Product_Custom_Fields extends PWP_Abstract_Action_Hookable
 
     private function render_PIE_product_settings(PWP_Product_Meta_Data $meta_data): void
     {
+        $this->open_form_div();
         PWP_INPUT_FIELDS::text_input(
             PWP_Product_PIE_Data::TEMPLATE_ID_KEY,
             'PIE Template ID',
@@ -145,6 +146,22 @@ class PWP_Parent_Product_Custom_Fields extends PWP_Abstract_Action_Hookable
             [],
         );
 
+        $this->close_form_div();
+        $this->open_form_div();
+
+        $instructions = $meta_data->pie_data()->get_editor_instructions();
+        woocommerce_wp_textarea_input(array(
+            'label' => 'instructions',
+            'name' => PWP_PIE_Editor_Instructions::EDITOR_INSTRUCTIONS_KEY,
+            'id' => PWP_PIE_Editor_Instructions::EDITOR_INSTRUCTIONS_KEY,
+            'value' => implode(" ", $instructions),
+            'desc_tip' => true,
+            'description' => 'editor instruction values. for reference, see the PIE editor documentation. enter values separated by a space.',
+            'wrapper_class' => implode(" ", []),
+        ));
+        $this->close_form_div();
+        $this->open_form_div();
+
         PWP_INPUT_FIELDS::text_input(
             PWP_Product_PIE_Data::COLOR_CODE_KEY,
             'Color Code',
@@ -160,6 +177,8 @@ class PWP_Parent_Product_Custom_Fields extends PWP_Abstract_Action_Hookable
             '',
             [],
         );
+        $this->close_form_div();
+        $this->open_form_div();
 
         PWP_INPUT_FIELDS::checkbox_input(
             PWP_Product_PIE_Data::USE_IMAGE_UPLOAD,
@@ -192,7 +211,6 @@ class PWP_Parent_Product_Custom_Fields extends PWP_Abstract_Action_Hookable
             array('min' => 0)
         );
 
-        $this->open_form_field('minmax', ' ');
         PWP_INPUT_FIELDS::number_input(
             PWP_Product_PIE_Data::MIN_IMAGES,
             'Min Images for upload',
@@ -211,22 +229,11 @@ class PWP_Parent_Product_Custom_Fields extends PWP_Abstract_Action_Hookable
             array('min' => 0)
         );
 
-        $instructions = $meta_data->pie_data()->get_editor_instructions();
-        woocommerce_wp_textarea_input(array(
-            'label' => 'instructions',
-            'name' => PWP_PIE_Editor_Instructions::EDITOR_INSTRUCTIONS_KEY,
-            'id' => PWP_PIE_Editor_Instructions::EDITOR_INSTRUCTIONS_KEY,
-            'value' => implode(" ", $instructions),
-            'desc_tip' => true,
-            'description' => 'editor instruction values. for reference, see the PIE editor documentation. enter values separated by a space.',
-            'wrapper_class' => ['form-row', 'form-row-full'],
-        ));
-        $this->close_form_field();
+        $this->close_form_div();
     }
 
     private function render_IMAXEL_product_settings(PWP_Product_Meta_Data $meta_data): void
     {
-        $this->open_form_field('imaxel', 'imaxel template ids');
         PWP_INPUT_FIELDS::text_input(
             PWP_Product_IMAXEL_Data::TEMPLATE_ID_KEY,
             'IMAXEL template ID',
@@ -244,22 +251,16 @@ class PWP_Parent_Product_Custom_Fields extends PWP_Abstract_Action_Hookable
             ['input-text'],
             'IMAXEL specific variant ID'
         );
-        $this->close_form_field();
     }
 
-    private function open_form_field(string $id, string $label_text): void
+    private function open_form_div(array $classes = []): void
     {
-
-        echo ("<p class='form-field'>
-            <span class='wrap'>
-                <label for={$id}>{$label_text}</label>"
-        );
+        $classes = implode(' ', $classes);
+        echo ("<div class='options_group {$classes}'>");
     }
 
-    private function close_form_field(): void
+    private function close_form_div(): void
     {
-        echo ("
-        </p>
-        </span>");
+        echo ("</div>");
     }
 }
