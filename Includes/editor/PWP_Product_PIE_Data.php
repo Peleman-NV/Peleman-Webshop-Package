@@ -13,7 +13,6 @@ class PWP_Product_PIE_Data extends PWP_Product_Meta
     public const DESIGN_ID_KEY = 'pie_design_project_id';
     public const COLOR_CODE_KEY = 'pie_color_code';
     public const BACKGROUND_ID_KEY = 'pie_background_id';
-    public const EDITOR_INSTRUCTIONS = 'pie_editor_instructions';
 
     public const USE_IMAGE_UPLOAD = 'pie_image_upload';
     public const MAX_IMAGES = 'pie_max_images';
@@ -30,7 +29,7 @@ class PWP_Product_PIE_Data extends PWP_Product_Meta
     public string $designProjectId;
     public string $colorCode;
     public string $backgroundId;
-    public array $editorInstructions;
+    private PWP_PIE_Editor_Instructions $editorInstructions;
 
     public bool $usesImageUpload;
     public int $minImages;
@@ -49,8 +48,8 @@ class PWP_Product_PIE_Data extends PWP_Product_Meta
         $this->designId = $this->parent->get_meta(self::DESIGN_ID_KEY) ?? '';
         $this->colorCode = $this->parent->get_meta(self::COLOR_CODE_KEY) ?? '';
         $this->backgroundId =  $this->parent->get_meta(self::BACKGROUND_ID_KEY) ?? '';
-        $this->editorInstructions = (array)unserialize($this->parent->get_meta(self::EDITOR_INSTRUCTIONS)) ?? [];
-        error_log("editor instructions for product with id {$parent->get_id()} : " . print_r($this->editorInstructions, true));
+
+        $this->editorInstructions = new PWP_PIE_Editor_Instructions($this->parent);
 
         $this->usesImageUpload = boolval($this->parent->get_meta(self::USE_IMAGE_UPLOAD));
         $this->minImages = (int)$this->parent->get_meta(self::MIN_IMAGES) ?? 0;
@@ -100,20 +99,27 @@ class PWP_Product_PIE_Data extends PWP_Product_Meta
 
     public function get_editor_instructions(): array
     {
-        return $this->editorInstructions;
+        return $this->editorInstructions->get_instructions();
     }
 
     public function set_editor_instructions(array $instructions): self
     {
-        $this->editorInstructions = $instructions;
+        $this->editorInstructions->set_instructions($instructions);
         return $this;
     }
 
     public function add_editor_instruction(string $instruction): self
     {
-        $this->editorInstructions[] = $instruction;
+        $this->editorInstructions->add_instruction($instruction);
         return $this;
     }
+
+    public function remove_editor_instruction(string $instruction): self
+    {
+        $this->editorInstructions->remove_instruction($instruction);
+        return $this;
+    }
+
 
     public function get_template_id(): string
     {
@@ -213,6 +219,7 @@ class PWP_Product_PIE_Data extends PWP_Product_Meta
 
     public function update_meta_data(): void
     {
+
         $this->parent->update_meta_data(self::TEMPLATE_ID_KEY, $this->templateId);
         $this->parent->update_meta_data(self::BACKGROUND_ID_KEY, $this->backgroundId,);
         $this->parent->update_meta_data(self::COLOR_CODE_KEY, $this->colorCode);
@@ -226,6 +233,7 @@ class PWP_Product_PIE_Data extends PWP_Product_Meta
         $this->parent->update_meta_data(self::FORMAT_ID, $this->formatId);
         $this->parent->update_meta_data(self::NUM_PAGES, $this->numPages);
 
+        $this->editorInstructions->update_meta_data();
         $this->parent->save_meta_data();
     }
 

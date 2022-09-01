@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace PWP\adminPage\hookables;
 
+use PWP\includes\editor\PWP_PIE_Editor_Instructions;
 use PWP\includes\editor\PWP_Product_Meta_Data;
 use PWP\includes\editor\PWP_Product_IMAXEL_Data;
 use PWP\includes\editor\PWP_Product_PIE_Data;
@@ -48,7 +49,8 @@ class PWP_Save_Parent_Product_Custom_Fields extends PWP_Abstract_Action_hookable
             $pieData
                 ->set_design_id(
                     esc_attr(sanitize_text_field($_POST[PWP_Product_PIE_Data::DESIGN_ID_KEY]))
-                )->set_color_code(
+                )
+                ->set_color_code(
                     esc_attr(sanitize_text_field($_POST[PWP_Product_PIE_Data::COLOR_CODE_KEY]))
                 )
                 ->set_background_id(
@@ -71,6 +73,12 @@ class PWP_Save_Parent_Product_Custom_Fields extends PWP_Abstract_Action_hookable
                 )
                 ->set_min_images(
                     (int)esc_attr(sanitize_text_field($_POST[PWP_Product_PIE_Data::MIN_IMAGES]))
+                )
+                ->set_editor_instructions(
+                    explode(
+                        ' ',
+                        esc_attr($_POST[PWP_PIE_Editor_Instructions::EDITOR_INSTRUCTIONS_KEY])
+                    )
                 );
 
             $imaxelData->set_template_id(

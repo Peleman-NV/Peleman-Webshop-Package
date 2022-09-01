@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace PWP\adminPage\hookables;
 
+use PWP\includes\editor\PWP_PIE_Editor_Instructions;
 use PWP\includes\editor\PWP_Product_Meta_Data;
 use PWP\includes\editor\PWP_Product_IMAXEL_Data;
 use PWP\includes\editor\PWP_Product_PIE_Data;
@@ -82,6 +83,11 @@ class PWP_Save_Variable_Product_Custom_Fields extends PWP_Abstract_Action_hookab
                 (int)esc_attr(sanitize_text_field(
                     $_POST[PWP_Product_PIE_Data::MIN_IMAGES][$loop]
                 ))
+            )->set_editor_instructions(
+                explode(
+                    ' ',
+                    ($_POST[PWP_PIE_Editor_Instructions::EDITOR_INSTRUCTIONS_KEY][$loop])
+                )
             );
 
         //IMAXEL specific data

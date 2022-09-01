@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace PWP\adminPage\hookables;
 
+use PWP\includes\editor\PWP_PIE_Editor_Instructions;
 use PWP\includes\editor\PWP_Product_IMAXEL_Data;
 use PWP\includes\editor\PWP_Product_PIE_Data;
 use PWP\includes\editor\PWP_Product_Meta;
@@ -209,6 +210,17 @@ class PWP_Parent_Product_Custom_Fields extends PWP_Abstract_Action_Hookable
             '',
             array('min' => 0)
         );
+
+        $instructions = $meta_data->pie_data()->get_editor_instructions();
+        woocommerce_wp_textarea_input(array(
+            'label' => 'instructions',
+            'name' => PWP_PIE_Editor_Instructions::EDITOR_INSTRUCTIONS_KEY,
+            'id' => PWP_PIE_Editor_Instructions::EDITOR_INSTRUCTIONS_KEY,
+            'value' => implode(" ", $instructions),
+            'desc_tip' => true,
+            'description' => 'editor instruction values. for reference, see the PIE editor documentation. enter values separated by a space.',
+            'wrapper_class' => ['form-row', 'form-row-full'],
+        ));
         $this->close_form_field();
     }
 

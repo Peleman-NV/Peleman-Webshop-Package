@@ -184,7 +184,7 @@ class PWP_New_PIE_Project_Request extends PWP_Abstract_Request
     {
         $request = array(
             'customerid'            => $this->customerId,
-            'customerapikey'        => $this->apiKey,
+            // 'customerapikey'        => $this->apiKey,
             'userid'                => $this->userId,
             'language'              => $this->language,
             'templateid'            => $this->editorData->get_template_id(),
@@ -205,7 +205,8 @@ class PWP_New_PIE_Project_Request extends PWP_Abstract_Request
     {
         $referer = get_site_url();
         $header = array(
-            // "PIEAPIKEY : {$this->apiKey}",
+            "PIEAPIKEY : {$this->apiKey}",
+            "PROJECTNAME : {$this->projectName}",
         );
 
         error_log("header: " . print_r($header, true));

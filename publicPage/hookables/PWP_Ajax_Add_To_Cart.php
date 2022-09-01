@@ -12,6 +12,7 @@ use PWP\includes\editor\PWP_Product_IMAXEL_Data;
 use PWP\includes\editor\PWP_IMAXEL_Project;
 use PWP\includes\editor\PWP_New_IMAXEL_Project_Request;
 use PWP\includes\editor\PWP_New_PIE_Project_Request;
+use PWP\includes\editor\PWP_PIE_Editor_Instructions;
 use PWP\includes\editor\PWP_Product_PIE_Data;
 use PWP\includes\editor\PWP_PIE_Project;
 use PWP\includes\hookables\abstracts\PWP_Abstract_Ajax_Hookable;
@@ -148,6 +149,7 @@ class PWP_Ajax_Add_To_Cart extends PWP_Abstract_Ajax_Hookable
      */
     private function new_PIE_Project(PWP_Product_PIE_Data $data, string $returnUrl): PWP_PIE_Project
     {
+        $instructions = new PWP_PIE_Editor_Instructions($data->get_parent());
         return
             PWP_New_PIE_Project_Request::new(
                 get_option('pie_domain', 'https://deveditor.peleman.com'),
@@ -160,14 +162,9 @@ class PWP_Ajax_Add_To_Cart extends PWP_Abstract_Ajax_Hookable
             ->set_language($this->get_site_language())
             ->set_project_name($data->get_parent()->get_name())
             ->set_editor_instructions(
-                // PIE_USE_DESIGN_MODE,
                 PIE_USE_BACKGROUNDS,
-                PIE_USE_DESIGNS,
-                // PIE_SHOW_CROP_ZONE,
-                // PIE_SHOW_SAFE_ZONE,
                 PIE_USE_TEXT,
                 PIE_USE_ELEMENTS,
-                // PIE_USE_OPEN_FILE,
                 PIE_USE_IMAGE_UPLOAD,
             )->make_request();
     }
