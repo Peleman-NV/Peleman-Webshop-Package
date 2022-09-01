@@ -13,6 +13,7 @@ use Automattic\WooCommerce\Admin\Overrides\Order;
 use PWP\includes\traits\PWP_Hookable_Parent_Trait;
 
 use PWP\adminPage\hookables\PWP_Admin_Control_Panel;
+use PWP\adminPage\hookables\PWP_Admin_Enqueue_Scripts;
 use PWP\adminPage\hookables\PWP_Admin_Notice_Poster;
 
 use PWP\publicPage\hookables\PWP_Upload_PDF_Content;
@@ -78,6 +79,8 @@ class PWP_Plugin implements PWP_I_Hookable_Component
     {
         $this->add_hookable($this->noticePoster);
         $this->add_hookable(new PWP_Admin_Enqueue_Styles());
+        // $this->add_hookable(new PWP_Admin_Enqueue_Scripts());
+
         $this->add_hookable(new PWP_Register_Editor_Options());
         $this->add_hookable(new PWP_PIE_Editor_Control_Panel());
         $this->add_hookable(new PWP_Admin_Control_Panel());

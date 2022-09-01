@@ -119,7 +119,7 @@ class PWP_Parent_Product_Custom_Fields extends PWP_Abstract_Action_Hookable
                 PWP_Product_IMAXEL_Data::MY_EDITOR => "Imaxel"
             ),
             $meta_data->get_editor_id(),
-            ['form-row', 'form-row-full', 'editor_select'],
+            ['form-row', 'form-row-full', 'pwp-editor-select'],
             'which editor to use for this product. Ensure the template and variant IDs are valid for the editor.'
         );
 

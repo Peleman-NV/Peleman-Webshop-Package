@@ -99,9 +99,9 @@ class PWP_Input_Fields
     public static function dropdown_input(string $id, string $label, array $options, string $selectedOption, array $classes = [], string $description = ''): void
     {
 ?>
-        <p class="form-field form-row form-row-full <?= $id ?>_field form-row form-row-full <?= implode(' ', $classes); ?>" ?>
+        <p class="form-field form-row form-row-full">
             <label for="<?= $id; ?>"><?= $label; ?></label>
-            <select style id="<?= $id; ?>" name="<?= $id; ?>" class="">
+            <select style id="<?= $id; ?>" name="<?= $id; ?>" class="<?= implode(' ', $classes); ?> ">
                 <?php foreach ($options as $key => $option) : ?>
                     <option value="<?= $key; ?>" <?= $key === $selectedOption ? "selected" : ''; ?>><?= $option; ?></option>
                 <?php endforeach; ?>
