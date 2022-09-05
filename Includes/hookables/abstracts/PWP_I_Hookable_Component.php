@@ -14,5 +14,5 @@ interface PWP_I_Hookable_Component
     /**
      * register actions and filters for this class
      */
-    public function register_hooks(PWP_Plugin_Loader $loader) : void;
+    public function register(): void;
 }

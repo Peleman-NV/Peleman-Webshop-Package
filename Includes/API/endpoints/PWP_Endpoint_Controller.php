@@ -45,9 +45,23 @@ abstract class PWP_Endpoint_Controller implements PWP_I_Endpoint, PWP_I_Hookable
         return $this->authenticator;
     }
 
-    public function register_hooks(PWP_Plugin_Loader $loader): void
+    public function get_arguments(): array
     {
-        $loader->add_API_Endpoint($this->namespace, $this);
+        return [];
+    }
+
+    final public function register(): void
+    {
+        register_rest_route(
+            $this->namespace,
+            $this->get_path(),
+            array(
+                'args' => $this->get_arguments(),
+                'callback' => $this->get_callback(),
+                'methods' => $this->get_methods(),
+                'permission_callback' => $this->get_permission_callback(),
+            )
+        );
     }
 
     public abstract function do_action(\WP_REST_Request $request): \WP_REST_Response;

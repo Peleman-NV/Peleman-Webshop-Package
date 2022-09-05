@@ -40,22 +40,30 @@ abstract class PWP_Abstract_Ajax_Hookable implements PWP_I_Hookable_Component
         $this->accepted_args = $accepted_args;
     }
 
-    final public function register_hooks(PWP_Plugin_Loader $loader): void
+    final public function register(): void
     {
-        $loader->add_action('wp_enqueue_scripts', $this, 'enqueue_ajax', 5);
-
-        $loader->add_action(
+        \add_action(
+            'wp_enqueue_scripts',
+            array(
+                $this,
+                'enqueue_ajax'
+            ),
+        );
+        \add_action(
             "wp_ajax_{$this->scriptHandle}",
-            $this,
-            self::CALLBACK,
+            array(
+                $this,
+                self::CALLBACK
+            ),
             $this->priority,
             $this->accepted_args
         );
-
-        $loader->add_action(
+        \add_action(
             "wp_ajax_nopriv_{$this->scriptHandle}",
-            $this,
-            self::CALLBACK_NOPRIV,
+            array(
+                $this,
+                self::CALLBACK_NOPRIV
+            ),
             $this->priority,
             $this->accepted_args
         );

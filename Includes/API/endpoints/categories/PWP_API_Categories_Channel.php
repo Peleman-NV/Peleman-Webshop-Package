@@ -27,15 +27,15 @@ class PWP_API_Categories_Channel extends PWP_Abstract_API_Channel
         /* REGISTER ENDPOINTS HERE */
 
         //Testing Endpoint; to be removed when no longer relevant
-        $this->add_endpoint(new PWP_Test_Endpoint($this->get_definition()->get_namespace(), $this->authenticator));
+        $this->register_endpoint(new PWP_Test_Endpoint($this->get_definition()->get_namespace(), $this->authenticator));
 
-        $this->add_endpoint(new PWP_Categories_BATCH_Endpoint($this->definition, $this->authenticator));
-        $this->add_endpoint(new PWP_Categories_CREATE_Endpoint($this->definition, $this->authenticator));
-        $this->add_endpoint(new PWP_Categories_READ_Endpoint($this->definition, $this->authenticator));
-        $this->add_endpoint(new PWP_Categories_FIND_Endpoint($this->definition, $this->authenticator));
-        $this->add_endpoint(new PWP_Categories_UPDATE_Endpoint($this->definition, $this->authenticator));
-        $this->add_endpoint(new PWP_Categories_DELETE_Endpoint($this->definition, $this->authenticator));
+        $this->register_endpoint(new PWP_Categories_BATCH_Endpoint($this->definition, $this->authenticator));
+        $this->register_endpoint(new PWP_Categories_CREATE_Endpoint($this->definition, $this->authenticator));
+        $this->register_endpoint(new PWP_Categories_READ_Endpoint($this->definition, $this->authenticator));
+        $this->register_endpoint(new PWP_Categories_FIND_Endpoint($this->definition, $this->authenticator));
+        $this->register_endpoint(new PWP_Categories_UPDATE_Endpoint($this->definition, $this->authenticator));
+        $this->register_endpoint(new PWP_Categories_DELETE_Endpoint($this->definition, $this->authenticator));
 
-        $this->add_endpoint(new PWP_Categories_UNPARENT_Endpoint($this->definition, $this->authenticator));
+        $this->register_endpoint(new PWP_Categories_UNPARENT_Endpoint($this->definition, $this->authenticator));
     }
 }

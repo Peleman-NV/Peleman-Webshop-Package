@@ -18,13 +18,9 @@ abstract class PWP_Abstract_Shortcode_Hookable implements PWP_I_Hookable_Compone
         $this->tag = $tag;
     }
 
-    final public function register_hooks(PWP_Plugin_Loader $loader): void
+    final public function register(): void
     {
-        $loader->add_shortcode(
-            $this->tag,
-            $this,
-            SELF::CALLBACK,
-        );
+        \add_shortcode($this->tag, array($this, self::CALLBACK));
     }
 
     public abstract function shortcode_callback(...$args): void;
