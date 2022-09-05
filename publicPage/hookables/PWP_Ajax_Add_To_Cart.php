@@ -161,12 +161,13 @@ class PWP_Ajax_Add_To_Cart extends PWP_Abstract_Ajax_Hookable
             ->set_user_id(get_current_user_id())
             ->set_language($this->get_site_language())
             ->set_project_name($data->get_parent()->get_name())
-            ->set_editor_instructions(
-                PIE_USE_BACKGROUNDS,
-                PIE_USE_TEXT,
-                PIE_USE_ELEMENTS,
-                PIE_USE_IMAGE_UPLOAD,
-            )->make_request();
+            // ->set_editor_instructions(
+            //     PIE_USE_BACKGROUNDS,
+            //     PIE_USE_TEXT,
+            //     PIE_USE_ELEMENTS,
+            //     PIE_USE_IMAGE_UPLOAD,
+            // )
+            ->make_request();
     }
 
     private function new_IMAXEL_Project(PWP_Product_IMAXEL_Data $data, string $returnUrl): PWP_IMAXEL_Project

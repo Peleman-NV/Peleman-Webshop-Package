@@ -26,7 +26,7 @@ class PWP_Parent_Product_Custom_Fields extends PWP_Abstract_Action_Hookable
         $product = wc_get_product(get_the_ID());
         if (!$product) return;
 ?>
-        <div class="option_group">
+        <div class="options_group">
             <?php
             $this->render_standard_product_settings($product);
             if ($product instanceof WC_Product_Simple)
