@@ -32,6 +32,7 @@ use PWP\adminPage\hookables\PWP_Save_Variable_Product_Custom_Fields;
 
 use PWP\includes\API\PWP_API_V1_Plugin;
 use PWP\includes\API\endpoints\PWP_TEST_OAuth2_Client_Endpoint;
+use PWP\includes\hookables\abstracts\PWP_I_Hookable_Component;
 
 if (!function_exists('is_plugin_active')) {
     include_once(ABSPATH . '/wp-admin/includes/plugin.php');
@@ -74,46 +75,46 @@ class PWP_Plugin
     }
     private function admin_hooks(): void
     {
-        $this->loader->add_hookable($this->noticePoster);
+        $this->add_hookable($this->noticePoster);
         /** control panel hookables */
-        $this->loader->add_hookable(new PWP_Admin_Enqueue_Styles());
-        $this->loader->add_hookable(new PWP_Register_Editor_Options());
-        $this->loader->add_hookable(new PWP_PIE_Editor_Control_Panel());
-        $this->loader->add_hookable(new PWP_Admin_Control_Panel());
+        $this->add_hookable(new PWP_Admin_Enqueue_Styles());
+        $this->add_hookable(new PWP_Register_Editor_Options());
+        $this->add_hookable(new PWP_PIE_Editor_Control_Panel());
+        $this->add_hookable(new PWP_Admin_Control_Panel());
 
         /* product page hookables */
-        $this->loader->add_hookable(new PWP_Parent_Product_Custom_Fields());
-        $this->loader->add_hookable(new PWP_Variable_Product_Custom_Fields());
-        $this->loader->add_hookable(new PWP_Save_Parent_Product_Custom_Fields());
-        $this->loader->add_hookable(new PWP_Save_Variable_Product_Custom_Fields());
+        $this->add_hookable(new PWP_Parent_Product_Custom_Fields());
+        $this->add_hookable(new PWP_Variable_Product_Custom_Fields());
+        $this->add_hookable(new PWP_Save_Parent_Product_Custom_Fields());
+        $this->add_hookable(new PWP_Save_Variable_Product_Custom_Fields());
     }
 
     private function public_hooks(): void
     {
-        $this->loader->add_hookable(new PWP_Enqueue_Public_Styles());
-        $this->loader->add_hookable(new PWP_Change_Add_To_Cart_Label_For_Archive());
-        $this->loader->add_hookable(new PWP_Change_Add_To_Cart_Button_Label());
-        $this->loader->add_hookable(new PWP_Add_Fields_To_Add_To_Cart_Button());
+        $this->add_hookable(new PWP_Enqueue_Public_Styles());
+        $this->add_hookable(new PWP_Change_Add_To_Cart_Label_For_Archive());
+        $this->add_hookable(new PWP_Change_Add_To_Cart_Button_Label());
+        $this->add_hookable(new PWP_Add_Fields_To_Add_To_Cart_Button());
 
         /* PDF upload hookables */
-        $this->loader->add_hookable(new PWP_Render_PDF_Upload_Form($this->templateEngine));
-        $this->loader->add_hookable(new PWP_Add_Fields_To_Variations());
-        //$this->loader->add_hookable(new PWP_Upload_PDF_Content());
+        $this->add_hookable(new PWP_Render_PDF_Upload_Form($this->templateEngine));
+        $this->add_hookable(new PWP_Add_Fields_To_Variations());
+        //$this->add_hookable(new PWP_Upload_PDF_Content());
 
         /* EDITOR product hookables */
-        $this->loader->add_hookable(new PWP_Ajax_Show_Variation());
-        $this->loader->add_hookable(new PWP_Ajax_Add_To_Cart());
-        //$this->loader->add_hookable(new PWP_Add_PDF_Contents_To_Cart());
-        $this->loader->add_hookable(new PWP_Add_Project_Button_To_Cart_Item());
-        $this->loader->add_hookable(new PWP_Add_Custom_Project_On_Return());
-        $this->loader->add_hookable(new PWP_Save_Cart_Item_Meta_To_Order_Item_Meta());
+        $this->add_hookable(new PWP_Ajax_Show_Variation());
+        $this->add_hookable(new PWP_Ajax_Add_To_Cart());
+        //$this->add_hookable(new PWP_Add_PDF_Contents_To_Cart());
+        $this->add_hookable(new PWP_Add_Project_Button_To_Cart_Item());
+        $this->add_hookable(new PWP_Add_Custom_Project_On_Return());
+        $this->add_hookable(new PWP_Save_Cart_Item_Meta_To_Order_Item_Meta());
     }
 
     private function api_endpoints(): void
     {
         $this->loader->add_API_endpoint(new PWP_TEST_OAuth2_Client_Endpoint());
 
-        $this->loader->add_hookable(new PWP_API_V1_Plugin('pwp/v1'));
+        $this->add_hookable(new PWP_API_V1_Plugin('pwp/v1'));
     }
 
     private function register_components()
@@ -132,5 +133,10 @@ class PWP_Plugin
         }
 
         return true;
+    }
+
+    private function add_hookable(PWP_I_Hookable_Component $hookable): void
+    {
+        $this->loader->add_hookable(($hookable));
     }
 }
