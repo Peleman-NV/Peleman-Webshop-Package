@@ -71,7 +71,7 @@ class PWP_Variable_Product_Custom_Fields extends PWP_Abstract_Action_hookable
                 PWP_Input_Fields::text_input(
                     PWP_Product_Meta_Data::CUSTOM_LABEL . $loopEnd,
                     'Custom add to cart label',
-                    $editor_data->get_custom_add_to_cart_label() ?: '',163
+                    $editor_data->get_custom_add_to_cart_label() ?: '',
                     'add to cart',
                     ['form-row', 'form-row-full'],
                     'custom add to cart button label for this variation'
