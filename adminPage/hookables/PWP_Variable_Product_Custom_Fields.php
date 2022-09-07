@@ -59,14 +59,14 @@ class PWP_Variable_Product_Custom_Fields extends PWP_Abstract_Action_hookable
                     'F2D article code'
                 );
 
-                PWP_INPUT_FIELDS::create_field(
-                    PWP_Product_Meta_Data::USE_PDF_CONTENT . $loopEnd,
-                    'use pdf content upload',
-                    'bool',
-                    $editor_data->uses_pdf_content(),
-                    ['form-row', 'form-row-full', 'checkbox', 'pie-pdf_content'],
-                    'whether the product requires a PDF file for its contents'
-                );
+                // PWP_INPUT_FIELDS::create_field(
+                //     PWP_Product_Meta_Data::USE_PDF_CONTENT . $loopEnd,
+                //     'use pdf content upload',
+                //     'bool',
+                //     $editor_data->uses_pdf_content(),
+                //     ['form-row', 'form-row-full', 'checkbox', 'pie-pdf_content'],
+                //     'whether the product requires a PDF file for its contents'
+                // );
 
                 PWP_Input_Fields::text_input(
                     PWP_Product_Meta_Data::CUSTOM_LABEL . $loopEnd,

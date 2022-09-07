@@ -38,13 +38,13 @@ class PWP_Parent_Product_Custom_Fields extends PWP_Abstract_Action_Hookable
 
     private function render_standard_product_settings(WC_Product $product): void
     {
-        PWP_Input_Fields::checkbox_input(
-            'customizable_product',
-            'Customizable Product',
-            boolval($product->get_meta('customizable_product')),
-            ['short'],
-            'Check if this product can be personalized with the editor'
-        );
+        // PWP_Input_Fields::checkbox_input(
+        //     'customizable_product',
+        //     'Customizable Product',
+        //     boolval($product->get_meta('customizable_product')),
+        //     ['short'],
+        //     'Check if this product can be personalized with the editor'
+        // );
 
         PWP_Input_Fields::text_input(
             PWP_Product_Meta_Data::CUSTOM_LABEL,
@@ -52,7 +52,7 @@ class PWP_Parent_Product_Custom_Fields extends PWP_Abstract_Action_Hookable
             $product->get_meta(PWP_Product_Meta_Data::CUSTOM_LABEL) ?: '',
             'eg. Design Project',
             ['short'],
-            'Define a custom Add to Cart label'
+            'Define a custom Add to Cart label. will be the backup label for variable products'
         );
     }
 
@@ -67,13 +67,13 @@ class PWP_Parent_Product_Custom_Fields extends PWP_Abstract_Action_Hookable
         $meta_data = new PWP_Product_Meta_Data($product);
 
         /* F2D settings */
-        PWP_Input_Fields::checkbox_input(
-            'call_to_order',
-            'Call us to order',
-            boolval($product->get_meta('call_to_order')),
-            ['short'],
-            'Remove Add to Cart button and display "call us to order" instead'
-        );
+        // PWP_Input_Fields::checkbox_input(
+        //     'call_to_order',
+        //     'Call us to order',
+        //     boolval($product->get_meta('call_to_order')),
+        //     ['short'],
+        //     'Remove Add to Cart button and display "call us to order" instead'
+        // );
 
         PWP_Input_Fields::number_input(
             'cart_price',
