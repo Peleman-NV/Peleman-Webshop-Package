@@ -22,7 +22,7 @@ class PWP_Admin_Control_Panel extends PWP_Abstract_Action_Hookable
             "Peleman_Control_Panel",
             array($this, 'render_panel'),
             'dashicons-hammer',
-            34
+            120
         );
     }
 
