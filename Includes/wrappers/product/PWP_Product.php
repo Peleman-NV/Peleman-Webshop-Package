@@ -29,7 +29,7 @@ class PWP_Product extends PWP_Component
 
     public function is_SKU_unique(): bool
     {
-        return 0 >= wc_get_product_id_by_SKU($this->data->SKU);
+        return 0 >= wc_get_product_id_by_SKU($this->SKU());
     }
 
     public function type(): string

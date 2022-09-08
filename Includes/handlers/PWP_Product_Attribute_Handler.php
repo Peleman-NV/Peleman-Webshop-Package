@@ -12,7 +12,7 @@ use PWP\includes\utilities\PWP_ILogger;
  * 
  * @deprecated version
  */
-class PWP_Product_Attribute_Handler implements PWP_I_Handler
+class PWP_Product_Attribute_Handler
 {
 
     public function __construct(PWP_ILogger $logger)
