@@ -33,11 +33,6 @@ class PWP_Variations_CREATE_Endpoint extends PWP_Abstract_CREATE_Endpoint
         // a duplicate variation will happen if there is a mismatch with the attributes
         // in an already existing variation of the same variable product
         // 
-        return new WP_REST_Response('test');
-    }
-
-    public function get_arguments(): array
-    {
-        return [];
+        return new WP_REST_Response('test - create variation endpoint');
     }
 }

@@ -15,6 +15,7 @@ use PWP\includes\utilities\PWP_ILogger;
 class PWP_Product_Attribute_Handler
 {
 
+    private array $taxonomyIds;
     public function __construct(PWP_ILogger $logger)
     {
         $this->logger = $logger;
@@ -27,16 +28,19 @@ class PWP_Product_Attribute_Handler
 
     public function get_items(array $args = []): array
     {
-        $ids = wc_get_attribute_taxonomy_ids();
+        if ($this->taxonomyIds = null) {
+            //retrieve and cache woocommerce attribute taxonomy taxonomyIds
+            $this->taxonomyIds = wc_get_attribute_taxonomy_ids();
+        }
         $attributes = array();
-        foreach ($ids as $id) {
+        foreach ($this->taxonomyIds as $id) {
             $attributes[] = wc_get_attribute($id);
         }
 
         return $attributes;
     }
 
-    public function create_item(array $createData, array $args = []): object
+    public function create_item(string $name, array $attributes): object
     {
         throw new PWP_Not_Implemented_Exception(__METHOD__);
     }

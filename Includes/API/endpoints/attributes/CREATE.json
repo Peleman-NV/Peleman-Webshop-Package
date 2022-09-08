@@ -1,0 +1,27 @@
+{
+    "name": "example attribute",
+    "slug": "example_slug",
+    "type": "select",
+    "order_by": "menu_order",
+    "has_archives": false,
+    "terms": [
+        {
+            "name": "term 1",
+            "slug": "term_1",
+            "description": "description for the first term",
+            "menu_order": 1
+        },
+        {
+            "name": "term 2",
+            "slug": "term_2",
+            "description": "description for the second term",
+            "menu_order": 2
+        },
+        {
+            "name": "term 3",
+            "slug": "term_3",
+            "description": "description for the third term",
+            "menu_order": 3
+        }
+    ]
+}

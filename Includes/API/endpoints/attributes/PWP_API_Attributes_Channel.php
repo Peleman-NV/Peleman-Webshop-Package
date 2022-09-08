@@ -30,7 +30,7 @@ class PWP_API_Attributes_Channel extends PWP_Abstract_API_Channel
         // $this->register_endpoint(new PWP_Test_Endpoint($this->get_definition()->get_namespace(), $this->authenticator));
 
         // $this->register_endpoint(new PWP_Attributes_BATCH_Endpoint($this->definition, $this->authenticator));
-        // $this->register_endpoint(new PWP_Attributes_CREATE_Endpoint($this->definition, $this->authenticator));
+        $this->register_endpoint(new PWP_Attributes_CREATE_Endpoint($this->definition, $this->authenticator));
         // $this->register_endpoint(new PWP_Attributes_READ_Endpoint($this->definition, $this->authenticator));
         // $this->register_endpoint(new PWP_Attributes_FIND_Endpoint($this->definition, $this->authenticator));
         // $this->register_endpoint(new PWP_Attributes_UPDATE_Endpoint($this->definition, $this->authenticator));
