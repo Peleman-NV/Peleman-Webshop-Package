@@ -51,4 +51,9 @@ class PWP_Notification implements PWP_I_Notification, PWP_I_Response
 
         return $response;
     }
+
+    public function add_response_component(PWP_I_Response $response): void
+    {
+        //FIXME: add functionality
+    }
 }

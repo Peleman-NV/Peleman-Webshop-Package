@@ -28,7 +28,7 @@ class PWP_Create_Product_Attribute_Command implements PWP_I_Command
         $this->taxonomy = 'pa_' . $this->slug;
     }
 
-    public function do_action(): PWP_I_Response
+    public function do_action(): PWP_Response
     {
         if (taxonomy_exists($this->taxonomy)) {
             return PWP_Response::failure('Attribute already exists.', 409);

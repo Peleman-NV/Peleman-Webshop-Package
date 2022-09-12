@@ -66,4 +66,8 @@ class PWP_Error_Notice implements PWP_I_Notification_Message, PWP_I_Response
     {
         return new WP_REST_Response($this->to_array(), 200);
     }
+
+    public function add_response_component(PWP_I_Response $response): void
+    {
+    }
 }

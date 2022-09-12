@@ -42,4 +42,8 @@ class PWP_Success_Notice implements PWP_I_Notification_Message, PWP_I_Response
             "data" => $this->data,
         );
     }
+
+    public function add_response_component(PWP_I_Response $response): void
+    {
+    }
 }

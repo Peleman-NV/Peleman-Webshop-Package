@@ -44,21 +44,20 @@ class PWP_Attributes_Create_Endpoint extends PWP_Abstract_CREATE_Endpoint
         );
 
         $result = $createCommand->do_action();
-        $response = $result;
 
         // $taxonomy = $createCommand->get_taxonomy();
         // //create terms within taxonomy
         // foreach ($request['terms'] as $term) {
         //     $command = new PWP_Create_Product_Attribute_term_Command(
-        //         $request['name'],
-        //         $request['slug'],
         //         $taxonomy,
-        //         $request['description'],
-        //         $request['menuOrder'] ?: 0
+        //         $term['name'],
+        //         $term['slug'],
+        //         $term['description'] ?: '',
+        //         $term['menuOrder'] ?: 0
         //     );
-        //     $response->add_response($command->do_action());
+        //     $response->add_response_component($command->do_action());
         // }
 
-        return new WP_REST_Response($response->to_array());
+        return new WP_REST_Response($result->to_array());
     }
 }

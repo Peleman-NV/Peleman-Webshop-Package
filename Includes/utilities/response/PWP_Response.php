@@ -40,6 +40,11 @@ class PWP_Response implements PWP_I_Response
         return $this->data;
     }
 
+    final public function add_response_component(PWP_I_Response $response): void
+    {
+        $this->components[] = $response;
+    }
+
     final public function get_components(): array
     {
         return $this->components;

@@ -6,6 +6,7 @@ namespace PWP\includes\handlers\commands;
 
 use PWP\includes\utilities\notification\PWP_Error_Notice;
 use PWP\includes\utilities\response\PWP_I_Response;
+use PWP\includes\utilities\response\PWP_Response;
 
 class PWP_Create_Product_Command implements PWP_I_Command
 {
@@ -18,20 +19,20 @@ class PWP_Create_Product_Command implements PWP_I_Command
         $this->productMetaData = $productMetaData;
     }
 
-    public function do_action(): PWP_I_Response
+    public function do_action(): PWP_Response
     {
         //TODO: implement Product creation through script.
-        return new PWP_Error_Notice(
-            "method not implemented",
-            "method " . __METHOD__ . " not implemented"
+        return PWP_Response::failure(
+            "method " . __METHOD__ . " not implemented",
+            500
         );
     }
 
-    public function undo_action(): PWP_I_Response
+    public function undo_action(): PWP_Response
     {
-        return new PWP_Error_Notice(
-            "method not implemented",
-            "method " . __METHOD__ . " not implemented"
+        return PWP_Response::failure(
+            "method " . __METHOD__ . " not implemented",
+            500
         );
     }
 }

@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace PWP\includes\handlers\commands;
 
-use PWP\includes\utilities\notification\PWP_Error_Notice;
 use PWP\includes\utilities\notification\PWP_Success_Notice;
 use PWP\includes\utilities\response\PWP_I_Response;
+use PWP\includes\utilities\response\PWP_Response;
 
 class PWP_Create_Product_Attribute_term_Command implements PWP_I_Command
 {
@@ -16,21 +16,21 @@ class PWP_Create_Product_Attribute_term_Command implements PWP_I_Command
     private string $description;
     private int $menuOrder;
 
-    public function __construct(string $name, string $slug, string $taxonomy, string $description, int $menuOrder)
+    public function __construct(string $taxonomy, string $name, string $slug,  string $description, int $menuOrder)
     {
+        $this->taxonomy = $taxonomy;
         $this->name = $name;
         $this->slug = $slug;
-        $this->taxonomy = $taxonomy;
         $this->description = $description;
         $this->menuOrder = $menuOrder;
     }
 
-    public function do_action(): PWP_I_Response
+    public function do_action(): PWP_Response
     {
         if (term_exists($this->slug, $this->taxonomy)) {
-            return new PWP_Error_Notice(
-                'Term already exists',
-                "an attribute term with name {$this->name} already exists within this taxonomy."
+            return PWP_Response::failure(
+                "an attribute term with name {$this->name} already exists within this taxonomy.",
+                409
             );
         }
         $name_data = wp_insert_term($this->name, $this->taxonomy, array(
@@ -39,16 +39,16 @@ class PWP_Create_Product_Attribute_term_Command implements PWP_I_Command
             'menu_order' => $this->menuOrder,
         ));
         if ($name_data instanceof \WP_Error) {
-            return new PWP_Error_Notice(
-                'Term creation failed',
+            return PWP_Response::failure(
                 "Creation of product attribute {$this->name} failed",
+                400,
                 $name_data->error_data
             );
         }
 
-        return new PWP_Success_Notice(
-            'Term created',
-            "product attribute term with name {$this->name} created successfully"
+        return PWP_Response::success(
+            "product attribute term with name {$this->name} created successfully",
+            200,
         );
     }
 }
