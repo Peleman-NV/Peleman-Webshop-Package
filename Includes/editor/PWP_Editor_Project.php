@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace pwp\includes\editor;
 
 use PWP\includes\utilities\response\PWP_I_Response;
-use PWP\includes\utilities\response\PWP_I_Response_Component;
+use PWP\includes\utilities\response\PWP_I_Response;
 
-abstract class PWP_Editor_Project implements PWP_I_Response, PWP_I_Response_Component
+abstract class PWP_Editor_Project implements PWP_I_Response, PWP_I_Response
 {
     private string $editorId;
     private string $projectId;

@@ -10,7 +10,7 @@ use PWP\includes\handlers\PWP_Product_Attribute_Handler;
 use PWP\includes\handlers\services\PWP_Term_SVC;
 use PWP\includes\utilities\notification\PWP_Error_Notice;
 use PWP\includes\utilities\notification\PWP_Success_Notice;
-use PWP\includes\utilities\response\PWP_I_Response_Component;
+use PWP\includes\utilities\response\PWP_I_Response;
 use WC_Product_Simple;
 
 class PWP_Create_Simple_Product_Command implements PWP_I_Command
@@ -21,7 +21,7 @@ class PWP_Create_Simple_Product_Command implements PWP_I_Command
         $this->data = $data;
     }
 
-    public function do_action(): PWP_I_Response_Component
+    public function do_action(): PWP_I_Response
     {
         $data = $this->data;
         $id = -1;
@@ -57,7 +57,7 @@ class PWP_Create_Simple_Product_Command implements PWP_I_Command
         }
     }
 
-    public function undo_action(): PWP_I_Response_Component
+    public function undo_action(): PWP_I_Response
     {
         return new PWP_Error_Notice(
             "method not implemented",

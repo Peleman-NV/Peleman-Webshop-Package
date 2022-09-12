@@ -16,7 +16,7 @@ use PWP\includes\validation\PWP_Validate_Term_Slug_Exists;
 use PWP\includes\utilities\notification\PWP_I_Notification;
 use PWP\includes\utilities\notification\PWP_Success_Notice;
 use PWP\includes\validation\PWP_Validate_Term_Parent_Exists;
-use PWP\includes\utilities\response\PWP_I_Response_Component;
+use PWP\includes\utilities\response\PWP_I_Response;
 use PWP\includes\validation\PWP_Validate_Term_New_Slug_Unique;
 use PWP\includes\validation\PWP_Validate_Term_Slug_Characters;
 use PWP\includes\validation\PWP_Validate_Term_Translation_Data;
@@ -52,7 +52,7 @@ class PWP_Update_Term_Command implements PWP_I_Command
             ->set_next(new PWP_Validate_Term_New_Slug_Characters($this->service));
     }
 
-    final public function do_action(): PWP_I_Response_Component
+    final public function do_action(): PWP_I_Response
     {
         $notification = new PWP_Notification();
         if (!$this->validate_data($notification)) {
@@ -73,7 +73,7 @@ class PWP_Update_Term_Command implements PWP_I_Command
         );
     }
 
-    final public function undo_action(): PWP_I_Response_Component
+    final public function undo_action(): PWP_I_Response
     {
         $notification = new PWP_Notification();
         return $notification->add_error(

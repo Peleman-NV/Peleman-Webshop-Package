@@ -6,9 +6,9 @@ namespace PWP\includes\editor;
 
 use PWP\includes\editor\PWP_Editor_Project;
 use PWP\includes\utilities\response\PWP_I_Response;
-use PWP\includes\utilities\response\PWP_I_Response_Component;
+use PWP\includes\utilities\response\PWP_I_Response;
 
-class PWP_PIE_Project extends PWP_Editor_Project implements PWP_I_Response, PWP_I_Response_Component
+class PWP_PIE_Project extends PWP_Editor_Project implements PWP_I_Response, PWP_I_Response
 {
     private PWP_Product_PIE_Data $editorData;
     //TODO: fix PIE hardcoding with options.

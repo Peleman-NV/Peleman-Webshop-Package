@@ -4,12 +4,10 @@ declare(strict_types=1);
 
 namespace PWP\includes\handlers\commands;
 
-use PWP\includes\utilities\notification\PWP_Error_Notice;
-use PWP\includes\utilities\notification\PWP_Success_Notice;
-use PWP\includes\utilities\response\PWP_I_Response_Component;
+use PWP\includes\utilities\response\PWP_I_Response;
 use PWP\includes\utilities\response\PWP_Response;
 
-class PWP_Create_Product_Attribute_Command implements PWP_Create_Term_Command
+class PWP_Create_Product_Attribute_Command implements PWP_I_Command
 {
     private string $name;
     private string $slug;
@@ -30,14 +28,10 @@ class PWP_Create_Product_Attribute_Command implements PWP_Create_Term_Command
         $this->taxonomy = 'pa_' . $this->slug;
     }
 
-    public function do_action(): PWP_I_Response_Component
+    public function do_action(): PWP_I_Response
     {
-
         if (taxonomy_exists($this->taxonomy)) {
-            return new PWP_Error_Notice(
-                'attribute creation failed',
-                'cannot create attribute, as the taxonomy already exists',
-            );
+            return PWP_Response::failure('Attribute already exists.', 409);
         }
 
         $id = wc_create_attribute(array(
@@ -49,11 +43,19 @@ class PWP_Create_Product_Attribute_Command implements PWP_Create_Term_Command
         ));
 
         if ($id instanceof \WP_Error) {
-            return new PWP_Error_Notice(
-                'attribute creation failed',
-                'something went wrong when trying to create the attribute'
+            return PWP_Response::failure(
+                'Attribute creation failed.',
+                400
             );
         };
+
+        $attr = wc_get_attribute($id);
+
+        return PWP_Response::success(
+            'Attribute successfully created',
+            200,
+            (array)$attr
+        );
     }
 
     public function get_taxonomy(): string

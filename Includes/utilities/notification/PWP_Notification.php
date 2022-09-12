@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace PWP\includes\utilities\notification;
 
-use PWP\includes\utilities\response\PWP_I_Response_Component;
+use PWP\includes\utilities\response\PWP_I_Response;
 
-class PWP_Notification implements PWP_I_Notification, PWP_I_Response_Component
+class PWP_Notification implements PWP_I_Notification, PWP_I_Response
 {
     private array $errors;
     private bool $isSuccess;

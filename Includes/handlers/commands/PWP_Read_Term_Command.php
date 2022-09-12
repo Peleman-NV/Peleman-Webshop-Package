@@ -11,7 +11,7 @@ use PWP\includes\utilities\notification\PWP_Success_Notice;
 use PWP\includes\validation\PWP_Abstract_Term_Handler;
 use PWP\includes\utilities\notification\PWP_Notification;
 use PWP\includes\utilities\notification\PWP_I_Notification;
-use PWP\includes\utilities\response\PWP_I_Response_Component;
+use PWP\includes\utilities\response\PWP_I_Response;
 
 final class PWP_Read_Term_Command implements PWP_I_Command
 {
@@ -27,7 +27,7 @@ final class PWP_Read_Term_Command implements PWP_I_Command
         $this->handler = new PWP_Validation_Handler($this->service);
     }
 
-    public function do_action(): PWP_I_Response_Component
+    public function do_action(): PWP_I_Response
     {
         $this->service->enable_sitepress_get_term_filter();
         $items = $this->service->get_items($this->args);
@@ -41,7 +41,7 @@ final class PWP_Read_Term_Command implements PWP_I_Command
         ));
     }
 
-    public function undo_action(): PWP_I_Response_Component
+    public function undo_action(): PWP_I_Response
     {
         return new PWP_Error_Notice("method not implemented", "method " . __METHOD__ . " not implemented");
     }

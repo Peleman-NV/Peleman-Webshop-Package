@@ -6,9 +6,9 @@ namespace PWP\includes\handlers\commands;
 
 use PWP\includes\utilities\notification\PWP_Error_Notice;
 use PWP\includes\utilities\notification\PWP_Success_Notice;
-use PWP\includes\utilities\response\PWP_I_Response_Component;
+use PWP\includes\utilities\response\PWP_I_Response;
 
-class PWP_Creat_Product_Attribute_term_Command implements PWP_I_Command
+class PWP_Create_Product_Attribute_term_Command implements PWP_I_Command
 {
     private string $name;
     private string $slug;
@@ -25,7 +25,7 @@ class PWP_Creat_Product_Attribute_term_Command implements PWP_I_Command
         $this->menuOrder = $menuOrder;
     }
 
-    public function do_action(): PWP_I_Response_Component
+    public function do_action(): PWP_I_Response
     {
         if (term_exists($this->slug, $this->taxonomy)) {
             return new PWP_Error_Notice(
