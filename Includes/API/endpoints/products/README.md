@@ -15,40 +15,40 @@ Create an individual new product in woocommerce.
 ### parameters
 
 #### name
->`string` - `REQUIRED`
+`string` - `REQUIRED`
 
 Name of the product being created, will be displayed in the store page
 ___
 #### sku
->`string` - `REQUIRED`
+`string` - `REQUIRED`
 
 Product specific SKU for use within woocommerce. Must be unique within woocommerce. **Not required for Variable products.**
 ___
 #### parent_sku
->`string` - `REQUIRED` for **variations**
+`string` - `REQUIRED` for **variations**
 
 SKU of the parent of this product. Only required for `variations` to be properly configured as children of a `variable` product. 
 ___
 #### f2d_sku
->`string` - `REQUIRED`
+`string` - `REQUIRED`
 
 Fly2Data specific SKU value. No particular use within woocommerce, but required for orders to be understood properly by Fly2Data
 ___
 #### f2d_article_code
->`string`
+`string`
 ___
 #### add_to_cart_label
->`string`
+`string`
 
 Custom text to override the standard "add to cart" button text in Woocommerce. The custom label for a product variation will take precedence over the custom label of the variable parent product. If none is defined, the add to cart label will use the one defined by woocommerce.
 ___
 #### call_to_order
->`boolean` - default `false`
+`boolean` - default `false`
 
 Wether the product page should disable the standard add to cart button and instead display a field with the telephone contact details of Peleman, so the customer can order the product in question.
 ___
 #### type
->`string` - default `simple`
+`string` - default `simple`
 
 Which type of product is to be created. Accepted values are
 
@@ -57,12 +57,12 @@ Which type of product is to be created. Accepted values are
 * `variation` - variation product, will have a **variable** parent product
 ___
 #### lang
->`string` - default `en`
+`string` - default `en`
 
 for translation purposes within WooCommerce using WPML. The language code should be an [ISO 639-1 code](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes). The default language for the API and most webshops will be English (en). In order for proper product parenting, ensure that the product's *sku* and *f2d_sku* match. Ideally, most information will be the exact same, with the exception of display strings such as the name and descriptions.
 ___
 #### status
->`string` - default `publish`
+`string` - default `publish`
 
 Status of the product upon creation. Accepted values are
 
@@ -72,12 +72,12 @@ Status of the product upon creation. Accepted values are
 * `publish` - product is published, visible and available to visitors
 ___
 #### featured
->`bool` - default `false`
+`bool` - default `false`
 
 Wether this product should be a featured product or not.
 ___
 #### catalog_visibility
->`string` - default `hidden`
+`string` - default `hidden`
 
 Catalog visibility options. Accepted values are
 
@@ -87,22 +87,22 @@ Catalog visibility options. Accepted values are
 * `hidden`
 ___
 #### description
->`string`
+`string`
 
 Complete product description for display on the product page in the webshop.
 ___
 #### short_description
->`string`
+`string`
 
 Short product description
 ___
 #### regular_price
->`float` - `REQUIRED`
+`float` - `REQUIRED`
 
 Regular product price.
 ___
 #### tax_status
->`string` - default `taxable`
+`string` - default `taxable`
 
 Tax status of the product. For use in internal Woocommerce Tax Calculations. Accepted values are:
 * `none`
@@ -110,61 +110,61 @@ Tax status of the product. For use in internal Woocommerce Tax Calculations. Acc
 * `shipping`
 ___
 #### tax_class
->`string`
+`string`
 
 Product's tax class. Who knows what this means.
 ___
 #### sold_individually
->`bool` - default `false`
+`bool` - default `false`
 
 Wether any given order can only contain **one** instance of the product.
 ___
 #### weight
->`float`
+`float`
 
 Product weight in *kg*.
 ___
 #### dimensions
->`object`
+`object`
 
 Product dimensions object. See the Dimensions Properties component.
 ___
 #### upsell_skus
->`array` - `string`
+`array` - `string`
 
 SKUs of upsell products.
 ___
 #### cross_sell_skus
->`array` - `string`
+`array` - `string`
 
 SKUs of cross-sell products.
 ___
 #### purchase_note
->`string`
+`string`
 
 Optional note to send the customer after purhcase of this product.
 ___
 #### categories
->`array` - `string`
+`array` - `string`
 
 Array of product category slugs.
 ___
 #### tags
->`array` - `string`
+`array` - `string`
 
 Array of product tag slugs.
 ___
 #### images
->`array`
+`array`
 ***TO BE DONE***
 ___
 #### menu_order
->`int`
+`int`
 
 Menu order, used for custom product sorting.
 ___
 #### editor_id
->`string` - default `NONE`
+`string` - default `NONE`
 
 Editor ID for the product. Determines wether the product is customizable, and which editor to use for customization.
 Accepted values are:
@@ -174,116 +174,116 @@ Accepted values are:
 * `IMAXEL` - **Imaxel Editor**, being phased out, only here for legacy products and compatibility purposes. Will use Imaxel Editor data and functionality.
 ___
 #### pie_settings
->`object` - `RECOMMENDED` if using the **Peleman Image Editor**
+`object` - `RECOMMENDED` if using the **Peleman Image Editor**
 
 Object containing product-specific data required for proper communication and usage of the Peleman Image Editor. See the pie_settings component.
 ___
 #### imaxel_settings
->`object` - `RECOMMENDED` if using the **Imaxel Editor**
+`object` - `RECOMMENDED` if using the **Imaxel Editor**
 
 Object containing product specific data required for proper communication and usage of the Imaxel Editor. See the Imaxel_settings component.
 ___
 #### price_per_page
->`float`
+`float`
 
 For products that require a PDF upload or have editable contents through an editor. Additional cost to be charged for each page. A single piece or sheet of paper constitutes 2 pages.
 ___
 #### base_page_count
->`int`
+`int`
 
 **TO BE DONE**
 ___
 #### unit_price
->`float`
+`float`
 
 **TO BE DONE**
 ___
 #### unit_amount
->`int`
+`int`
 
 **TO BE DONE**
 ___
 #### unit_code
->`string`
+`string`
 
 **TO BE DONE**
 ___
 #### pdf_upload
->`object`
+`object`
 
 object of PDF upload data. See the pdf_upload component.
 ___
 #### meta_data
->`array` - `object`
+`array` - `object`
 
 Array of Meta Data objects. See the meta_data component.
 ___
 
 ### Dimensions Properties
->`object`
+`object`
 Dimensions component.
 #### length
->`float`
+`float`
 
 Length of the product in *mm*.
 ___
 #### height
->`float`
+`float`
 
 Height of the product in *mm*.
 ___
 #### width
->`float`
+`float`
 
 Width of the product in *mm*.
 ___
 ### PIE PROPERTIES
->`object`
+`object`
 
 Object of Peleman Image Editor specific settings.
 
 #### template_id
->`string` - `REQUIRED`
+`string` - `REQUIRED`
 
 Template ID specific to the Peleman Image Editor.
 ___
 #### design_id
->`string`
+`string`
 
 Design ID specific to this product. **under development, may be subject to change in near future**
 ___
 #### min_images
->`int` - default `0`
+`int` - default `0`
 
 Minimum image count for the product. Default value is 0, meaning no images are required. This value should never be higher than the `max_images` count. If the two values are the same, we can assume a *precise* number of images is required.
 ___
 #### max_images
->`int` - default `0`
+`int` - default `0`
 
 Maximum image count for the product. Default value is 0, meaning the limit of images that the customer can upload is only restricted by the editor. This value should **never** be lower than the `min_images` count. If the two values are the same, we can assume a *precise* number of images is required.
 ___
 #### color_code
->`string`
+`string`
 
 Standardized color code (hex or internal color code system of Peleman?)
 ___
 #### background_id
->`string`
+`string`
 
 Product specific background id
 ___
 #### format_id
->`string`
+`string`
 
 For photo books, the specific format id for internal layouts.
 ___
 #### pages_to_fill
->`int`
+`int`
 
 For products with customizable contents, the amount of pages that the customer should be able to fill with their own contents.
 ___
 #### editor_instructions
->`array` - `string`
+`array` - `string`
 
 Instructions for launching and controlling the editor. Should be an array of individual strings, each of wich is a valid PIE editor instruction. See the PIE documentation for a list of valid editor instructions.
 
@@ -293,54 +293,54 @@ ___
 `object`
 Similar to the `pie_settings`, an object containing Imaxel product specific data.
 #### template_id
->`string` - `REQUIRED`
+`string` - `REQUIRED`
 
 Template ID of the product to be used within Imaxel.
 ___
 #### variant_code
->`string`
+`string`
 
 Variant ID of the template variation to be used for this product.
 ___
 ### PDF UPLOAD PROPERTIES
->`object`
+`object`
 
 #### requires_upload
->`bool` - default `false`
+`bool` - default `false`
 
 Wether this product requires\allows a customer PDF upload before allowing an order. 
 ___
 #### min_pages
->`int`
+`int`
 
 Minimum pages that the uploaded PDF is allowed to contain.
 ___
 #### max_pages
->`int`
+`int`
 
 Maximum pages that the uploaded PDF is allowed to contain.
 ___
 #### page_width
->`float`
+`float`
 
 Permitted page width in *mm*.
 ___
 #### page_height
->`float`
+`float`
 
 Permitted page height in *mm*.
 ___
 ### Meta Data Properties
->`object`
+`object`
 
 object representing a product meta-data key-value pair.
 #### key
->`string` - `REQUIRED`
+`string` - `REQUIRED`
 
 key of the meta data value.
 ___
 #### value
->`mixed` - `REQUIRED`
+`mixed` - `REQUIRED`
 
 string value of the meta data value. Recommended property types are
 * `bool`
