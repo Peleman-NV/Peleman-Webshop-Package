@@ -1,0 +1,274 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "title": "Product",
+    "description": "Peleman Webshop Package Product",
+    "type": "object",
+    "properties": {
+      "name": {
+        "type": "string"
+      },
+      "sku": {
+        "type": "string"
+      },
+      "f2d_sku": {
+        "type": "string"
+      },
+      "f2d_article_code": {
+        "type": "string"
+      },
+      "add_to_cart_label": {
+        "type": "string"
+      },
+      "call_to_order": {
+        "type": "boolean"
+      },
+      "type": {
+        "type": "string"
+      },
+      "lang": {
+        "type": "string"
+      },
+      "status": {
+        "type": "string"
+      },
+      "featured": {
+        "type": "boolean"
+      },
+      "catalog_visibility": {
+        "type": "string"
+      },
+      "description": {
+        "type": "string"
+      },
+      "short_description": {
+        "type": "string"
+      },
+      "regular_price": {
+        "type": "number",
+        "minimum": 0,
+        "exclusiveMinimum": true
+      },
+      "tax_status": {
+        "type": "string"
+      },
+      "tax_class": {
+        "type": "string"
+      },
+      "sold_individually": {
+        "type": "boolean"
+      },
+      "weight": {
+        "type": "number"
+      },
+      "dimensions": {
+        "type": "object",
+        "properties": {
+          "length": {
+            "type": "number"
+          },
+          "height": {
+            "type": "number"
+          },
+          "width": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "length",
+          "height",
+          "width"
+        ]
+      },
+      "upsell_skus": {
+        "type": "array",
+        "items": [
+          {
+            "type": "string"
+          }
+        ],
+        "additionalItems": true,
+        "uniqueItems": true
+      },
+      "cross_sell_skus": {
+        "type": "array",
+        "items": [
+          {
+            "type": "string"
+          }
+        ],
+        "additionalItems": true,
+        "uniqueItems": true
+      },
+      "parent_sku": {
+        "type": "string"
+      },
+      "purchase_note": {
+        "type": "string"
+      },
+      "categories": {
+        "type": "array",
+        "items": [
+          {
+            "type": "string"
+          }
+        ],
+        "additionalItems": true,
+        "uniqueItems": true
+      },
+      "tags": {
+        "type": "array",
+        "items": [
+          {
+            "type": "string"
+          }
+        ],
+        "additionalItems": true,
+        "uniqueItems": true
+      },
+      "images": {
+        "type": "array",
+        "items": {},
+        "additionalItems": true
+      },
+      "menu_order": {
+        "type": "string"
+      },
+      "editor_id": {
+        "type": "string",
+        "enum":["none", "pie", "imaxel"]
+      },
+      "pie_settings": {
+        "type": "object",
+        "properties": {
+          "template_id": {
+            "type": "string"
+          },
+          "design_id": {
+            "type": "string"
+          },
+          "min_images": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "max_images": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "color_code": {
+            "type": "string"
+          },
+          "background_id": {
+            "type": "string"
+          },
+          "format_id": {
+            "type": "string"
+          },
+          "pages_to_fill": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "editor_instructions": {
+            "type": "array",
+            "items": [
+              {
+                "type": "string"
+              }
+            ],
+            "additionalItems": true
+          }
+        },
+        "required": [
+          "template_id"
+        ]
+      },
+      "imaxel_settings": {
+        "type": "object",
+        "properties": {
+          "template_id": {
+            "type": "string"
+          },
+          "variant_code": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "template_id"
+        ]
+      },
+      "price_per_page": {
+        "type": "number",
+        "minimum": 0
+      },
+      "base_page_count": {
+        "type": "integer",
+        "minimum": 0
+      },
+      "unit_price": {
+        "type": "number",
+        "minimum": 0
+      },
+      "unit_amount": {
+        "type": "integer"
+      },
+      "unit_code": {
+        "type": "string"
+      },
+      "pdf_upload": {
+        "type": "object",
+        "properties": {
+          "requires_upload": {
+            "type": "boolean"
+          },
+          "min_pages": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "max_pages": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "page_width": {
+            "type": "integer"
+          },
+          "page_height": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "requires_upload",
+          "min_pages",
+          "max_pages",
+          "page_width",
+          "page_height"
+        ]
+      },
+      "meta_data": {
+        "type": "array",
+        "items": [
+          {
+            "type": "object",
+            "properties": {
+              "key": {
+                "type": "string"
+              },
+              "value": {
+                "type": ["number", "integer", "boolean", "string", "null"]
+              }
+            },
+            "required": [
+              "key",
+              "value"
+            ]
+          }
+        ],
+        "additionalItems": true
+      }
+    },
+    "required": [
+      "name",
+      "sku",
+      "f2d_sku",
+      "f2d_article_code",
+      "regular_price"
+    ]
+  }

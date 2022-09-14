@@ -60,6 +60,12 @@ class PWP_Product_Meta_Data extends PWP_Product_Meta
         return $this->customizable;
     }
 
+    /**
+     * set editor ID for product.
+     *
+     * @param string $editorId
+     * @return self
+     */
     public function set_editor(string $editorId): self
     {
         $this->editorId = $editorId;

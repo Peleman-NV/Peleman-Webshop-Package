@@ -3,9 +3,9 @@ API Endpoint for uploading, updating, and deleting products & product variations
     {{domain}}/wp-json/pwp/v1/products
 
 ## Available Endpoints
-* [ ] CREATE - `POST` - create new product
+* [x] CREATE - `POST` - create new product
 * [ ] DELETE - `DELETE` - delete existing product
-* [ ] FIND - `GET` - get existing products without parameter
+* [x] FIND - `GET` - get existing products without parameter
 * [ ] READ - `GET` - get existing products with parameter
 * [ ] UPDATE - `PUT\PATCH` - updating existing product
 * [ ] BATCH - `POST` - create, update, and delete products in a single batched call.
