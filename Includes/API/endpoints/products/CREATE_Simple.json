@@ -1,0 +1,88 @@
+{
+    "name": "my_simple_product",
+    "sku": "PRD123456",
+    "f2d_sku": "PRD123456",
+    "f2d_article_code": "f2d_art_code",
+    "add_to_cart_label": "click to buy!",
+    "call_to_order": false,
+    "type": "simple",
+    "lang": "en",
+    "status": "publish",
+    "featured": false,
+    "catalog_visibility": "hidden",
+    "description": "this is a simple product uploaded through the api",
+    "short_description": "this is a simple product",
+    "regular_price": "12.99",
+    "tax_status": "taxable",
+    "tax_class": "idk",
+    "sold_individually": false,
+    "weight": 10.50,
+    "dimensions": {
+        "length": 2,
+        "height": 2,
+        "width": 2
+    },
+    "upsell_skus": [
+        "PRD11111",
+        "PRD11112"
+    ],
+    "cross_sell_skus": [
+        "PRD11113"
+    ],
+    "parent_sku": "",
+    "purchase_note": "thanks for buying",
+    "categories": [
+        "my_category_1",
+        "my_category_2",
+        "my_category_3"
+    ],
+    "tags": [
+        "tag 1",
+        "tag 2",
+        "tag 3"
+    ],
+    "images": [],
+    "menu_order": -1,
+    "editor_id": "",
+    "pie_settings": {
+        "template_id": "tpl123456",
+        "design_id": "tpl123456_1",
+        "min_images": 0,
+        "max_images": 0,
+        "color_code": "#121212",
+        "background_id": "bckg_123",
+        "format_id": "frm_123456",
+        "pages_to_fill": 12,
+        "editor_instructions": [
+            "USE_DESIGN_MODE",
+            "USE_BACKGROUNDS",
+            "USE_UPLOADS"
+        ]
+    },
+    "imaxel_settings": {
+        "template_id": "123456",
+        "variant_code": "654321"
+    },
+    "price_per_page": 0.02,
+    "base_page_count": 1,
+    "unit_price": 12.00,
+    "unit_amount": 2,
+    "unit_code": "654321",
+    "pdf_upload": {
+        "requires_upload": true,
+        "min_pages": 0,
+        "max_pages": 0,
+        "page_width": 210,
+        "page_height": 297
+    },
+    "meta_data": [
+        {
+            "key": "pie_is_tasty",
+            "value": true
+        },
+        {
+            "key": "imaxel_works",
+            "value": "maybe"
+        }
+    ]
+}
