@@ -5,8 +5,10 @@ declare(strict_types=1);
 namespace PWP\includes\API\endpoints;
 
 use PWP\includes\authentication\PWP_I_Api_Authenticator;
+use PWP\includes\exceptions\PWP_Invalid_Input_Exception;
 use PWP\includes\hookables\abstracts\PWP_I_Hookable_Component;
 use PWP\includes\loaders\PWP_Plugin_Loader;
+use PWP\includes\utilities\response\PWP_Error_Response;
 
 abstract class PWP_Endpoint_Controller implements PWP_I_Endpoint, PWP_I_Hookable_Component
 {
@@ -62,6 +64,19 @@ abstract class PWP_Endpoint_Controller implements PWP_I_Endpoint, PWP_I_Hookable
                 'permission_callback' => $this->get_permission_callback(),
             )
         );
+    }
+
+    final protected function validate_request_with_schema(array $request): array
+    {
+        $schema = $this->get_arguments();
+        $result = rest_validate_value_from_schema($request, $schema);
+        if (is_wp_error($result)) {
+            throw new PWP_Invalid_Input_Exception(
+                $result->get_error_message(),
+            );
+        }
+        $request = rest_sanitize_value_from_schema($request, $schema);
+        return $request;
     }
 
     public abstract function do_action(\WP_REST_Request $request): \WP_REST_Response;

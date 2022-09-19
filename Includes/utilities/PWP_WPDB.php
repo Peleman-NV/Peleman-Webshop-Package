@@ -60,14 +60,14 @@ class PWP_WPDB
     /**
      * prepare query for term translation updating. works with WPML's wp_icl_translations table.
      *
-     * @param string $myLang 2 character lower-case language code of the current entry.
-     * @param string $sourceLang 2 character lower-case language code of the default/parent entry.
+     * @param string $myLang ISO 639-1 language code of the current entry.
+     * @param string $sourceLang ISO 6391 language code of the default/parent entry.
      * @param integer $trid (trid) translations share their trid in the table
      * @param string $elementType identifier for the type of element which is translated. not the same as a taxonomy
-     * @param integer $taxonomyId id of the taxonomy which is translated. 
+     * @param integer $id id of the property which is being translated (taxonomy id, post id, product id, etc.)
      * @return string the completed query as a string
      */
-    final public function prepare_term_translation_query(string $myLang, ?string $sourceLang, int $trid, string $elementType, int $taxonomyId): string
+    final public function prepare_term_translation_query(string $myLang, ?string $sourceLang, int $trid, string $elementType, int $id): string
     {
         $table = $this->db->prefix . 'icl_translations';
         $sourceLang = is_null($sourceLang) ? 'NULL' : "{$sourceLang}";
@@ -78,7 +78,7 @@ class PWP_WPDB
             $sourceLang,
             $trid,
             $elementType,
-            $taxonomyId
+            $id
         ));
     }
 
