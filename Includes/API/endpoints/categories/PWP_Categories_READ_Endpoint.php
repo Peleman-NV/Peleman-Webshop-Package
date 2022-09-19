@@ -30,4 +30,9 @@ class PWP_Categories_READ_Endpoint extends PWP_Abstract_READ_Endpoint
         $command = $factory->new_read_term_command($data);
         return new WP_REST_Response($command->do_action()->to_array());
     }
+
+    public function get_schema(): array
+    {
+        return [];
+    }
 }

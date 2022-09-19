@@ -7,12 +7,10 @@ namespace PWP\includes\API\endpoints;
 use PWP\includes\authentication\PWP_I_Api_Authenticator;
 use PWP\includes\exceptions\PWP_Invalid_Input_Exception;
 use PWP\includes\hookables\abstracts\PWP_I_Hookable_Component;
-use PWP\includes\loaders\PWP_Plugin_Loader;
-use PWP\includes\utilities\response\PWP_Error_Response;
+use WP_REST_Controller;
 
-abstract class PWP_Endpoint_Controller implements PWP_I_Endpoint, PWP_I_Hookable_Component
+abstract class PWP_Endpoint_Controller extends WP_REST_Controller implements PWP_I_Endpoint, PWP_I_Hookable_Component
 {
-    protected string $namespace;
     protected string $path;
     protected string $title;
     protected PWP_I_Api_Authenticator $authenticator;
@@ -47,10 +45,6 @@ abstract class PWP_Endpoint_Controller implements PWP_I_Endpoint, PWP_I_Hookable
         return $this->authenticator;
     }
 
-    public function get_arguments(): array
-    {
-        return [];
-    }
 
     final public function register(): void
     {
@@ -58,11 +52,14 @@ abstract class PWP_Endpoint_Controller implements PWP_I_Endpoint, PWP_I_Hookable
             $this->namespace,
             $this->get_path(),
             array(
-                'args' => $this->get_arguments(),
-                'callback' => $this->get_callback(),
-                'methods' => $this->get_methods(),
-                'permission_callback' => $this->get_permission_callback(),
-            )
+                array(
+                    'methods' => $this->get_methods(),
+                    'callback' => $this->get_callback(),
+                    'permission_callback' => $this->get_permission_callback(),
+                    'args' => $this->get_arguments(),
+                ),
+                'schema' => array($this, 'get_schema'),
+            ),
         );
     }
 
@@ -92,6 +89,11 @@ abstract class PWP_Endpoint_Controller implements PWP_I_Endpoint, PWP_I_Hookable
         return $request;
     }
 
+    public function get_arguments(): array
+    {
+        return [];
+    }
     public abstract function do_action(\WP_REST_Request $request): \WP_REST_Response;
+    public abstract function get_schema(): array;
     public abstract function authenticate(\WP_REST_Request $request): bool;
 }

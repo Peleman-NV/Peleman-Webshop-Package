@@ -178,10 +178,11 @@ class PWP_Product_Meta_Data extends PWP_Product_Meta
         $this->pie_data()->update_meta_data();
     }
 
-    public function save(): void
+    public function save_meta_data(): void
     {
         $this->parent->save();
-        $this->imaxel_data()->save();
-        $this->pie_data()->save();
+        $this->imaxel_data()->save_meta_data();
+        $this->pie_data()->save_meta_data();
+        $this->parent->save_meta_data();
     }
 }

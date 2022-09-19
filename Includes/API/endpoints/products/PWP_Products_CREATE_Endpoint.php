@@ -47,7 +47,7 @@ class PWP_Products_CREATE_Endpoint extends PWP_Abstract_CREATE_Endpoint
         } catch (PWP_Invalid_Input_Exception $exception) {
             $response = new PWP_Error_Response($exception->getMessage(), 400);
         } catch (Exception $exception) {
-            error_log("error happened");
+            error_log((string)$exception);
             $response = new PWP_Error_Response("Internal Server Error.", 500);
         } finally {
             return new WP_REST_Response(
@@ -63,7 +63,7 @@ class PWP_Products_CREATE_Endpoint extends PWP_Abstract_CREATE_Endpoint
         return $command->do_action();
     }
 
-    public function get_arguments(): array
+    public function get_schema(): array
     {
         $schema = new PWP_Product_Schema();
         return $schema->to_array();

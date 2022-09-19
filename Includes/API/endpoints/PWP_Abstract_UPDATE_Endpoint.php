@@ -19,4 +19,9 @@ abstract class PWP_Abstract_UPDATE_Endpoint extends PWP_Endpoint_Controller
     {
         return 'PUT, PATCH';
     }
+
+    public function get_schema(): array
+    {
+        return [];
+    }
 }

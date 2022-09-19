@@ -37,9 +37,9 @@ class PWP_Error_Response implements PWP_I_Response
         $array = array(
             'code' => $this->code,
             'message' => $this->message,
+            'data' => $this->data,
         );
 
-        $array += $this->data;
 
         return $array;
     }

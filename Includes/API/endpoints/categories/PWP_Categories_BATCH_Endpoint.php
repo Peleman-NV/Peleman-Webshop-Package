@@ -118,4 +118,9 @@ class PWP_Categories_BATCH_Endpoint extends PWP_Abstract_BATCH_Endpoint
             $response->add_response($notification);
         }
     }
+
+    public function get_schema(): array
+    {
+        return [];
+    }
 }

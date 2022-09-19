@@ -19,6 +19,11 @@ Create an individual new product in woocommerce.
 
 Name of the product being created, will be displayed in the store page
 ___
+#### reviews_allowed
+`bool` - default `false`
+
+Wether customers can leave reviews on this product or not.
+___
 #### sku
 `string` - `REQUIRED`
 
