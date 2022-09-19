@@ -66,16 +66,29 @@ abstract class PWP_Endpoint_Controller implements PWP_I_Endpoint, PWP_I_Hookable
         );
     }
 
-    final protected function validate_request_with_schema(array $request): array
+    /**
+     * helper function for validing REST api requests with a json schema,
+     * combining the functionality of both the 
+     * `rest_validate_value_from_schema` and `rest_sanitize_value_from_schema` methods
+     *
+     * @param array $request request array body
+     * @param string $name name of the object to be used in error/validation messages
+     * @return array returns validated & sanitized request array
+     * @throws PWP_Invalid_Input_Exception thrown if validation fails due to missing or incorrect parameter(s)
+     */
+    final protected function validate_request_with_schema(array $request, string $name = ''): array
     {
         $schema = $this->get_arguments();
-        $result = rest_validate_value_from_schema($request, $schema);
+        $result = rest_validate_value_from_schema($request, $schema, $name);
         if (is_wp_error($result)) {
-            throw new PWP_Invalid_Input_Exception(
-                $result->get_error_message(),
-            );
+            throw new PWP_Invalid_Input_Exception($result->get_error_message());
         }
-        $request = rest_sanitize_value_from_schema($request, $schema);
+
+        $request = rest_sanitize_value_from_schema($request, $schema, $name);
+        if (is_wp_error($request)) {
+            throw new PWP_Invalid_Input_Exception($request->get_error_message());
+        }
+
         return $request;
     }
 

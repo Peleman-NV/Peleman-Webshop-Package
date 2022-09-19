@@ -8,4 +8,6 @@ interface PWP_I_Response
 {
     public function add_response_component(PWP_I_Response $response): void;
     public function to_array(): array;
+    public function get_message(): string;
+    public function get_code(): int;
 }

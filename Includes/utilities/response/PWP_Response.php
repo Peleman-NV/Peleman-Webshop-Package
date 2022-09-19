@@ -30,7 +30,7 @@ class PWP_Response implements PWP_I_Response
         $this->components[] = $response;
     }
 
-    final public function get_http_code(): int
+    final public function get_code(): int
     {
         return $this->httpCode;
     }
@@ -50,6 +50,10 @@ class PWP_Response implements PWP_I_Response
         return $this->components;
     }
 
+    final public function get_message(): string
+    {
+        return $this->get_message();
+    }
     public function to_array(): array
     {
         $response = array(

@@ -49,6 +49,11 @@ class PWP_Error_Response implements PWP_I_Response
         return $this->code;
     }
 
+    public function get_message(): string
+    {
+        return $this->message;
+    }
+
     public function add_response_component(PWP_I_Response $response): void
     {
     }
