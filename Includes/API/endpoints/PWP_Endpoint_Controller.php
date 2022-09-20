@@ -9,7 +9,7 @@ use PWP\includes\exceptions\PWP_Invalid_Input_Exception;
 use PWP\includes\hookables\abstracts\PWP_I_Hookable_Component;
 use WP_REST_Controller;
 
-abstract class PWP_Endpoint_Controller extends WP_REST_Controller implements PWP_I_Endpoint, PWP_I_Hookable_Component
+abstract class PWP_Endpoint_Controller implements PWP_I_Endpoint, PWP_I_Hookable_Component
 {
     protected string $path;
     protected string $title;
@@ -75,7 +75,7 @@ abstract class PWP_Endpoint_Controller extends WP_REST_Controller implements PWP
      */
     final protected function validate_request_with_schema(array $request, string $name = ''): array
     {
-        $schema = $this->get_arguments();
+        $schema = $this->get_schema();
         $result = rest_validate_value_from_schema($request, $schema, $name);
         if (is_wp_error($result)) {
             throw new PWP_Invalid_Input_Exception($result->get_error_message());
@@ -93,7 +93,12 @@ abstract class PWP_Endpoint_Controller extends WP_REST_Controller implements PWP
     {
         return [];
     }
+
+    public function get_schema(): array
+    {
+        return [];
+    }
+
     public abstract function do_action(\WP_REST_Request $request): \WP_REST_Response;
-    public abstract function get_schema(): array;
     public abstract function authenticate(\WP_REST_Request $request): bool;
 }

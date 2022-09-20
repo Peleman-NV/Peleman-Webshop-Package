@@ -45,7 +45,7 @@ class PWP_Product_Schema extends PWP_Schema
                 'call_to_order' => array(
                     'type' => 'boolean'
                 ),
-                'type' => array(
+                'product_type' => array(
                     'type' => 'string',
                     'context' => array('view', 'edit'),
                     'enum' => array('simple', 'variable', 'variant', null),
@@ -55,13 +55,25 @@ class PWP_Product_Schema extends PWP_Schema
                     'type' => 'string'
                 ),
                 'status' => array(
-                    'type' => 'string'
+                    'type' => 'string',
+                    'enum' => array(
+                        'draft',
+                        'pending',
+                        'private',
+                        'publish',
+                    ),
                 ),
                 'featured' => array(
                     'type' => 'boolean'
                 ),
                 'catalog_visibility' => array(
-                    'type' => 'string'
+                    'type' => 'string',
+                    'enum' => array(
+                        'visible',
+                        'catalog',
+                        'search',
+                        'hidden',
+                    ),
                 ),
                 'description' => array(
                     'type' => 'string'
@@ -76,7 +88,12 @@ class PWP_Product_Schema extends PWP_Schema
                     'exclusiveMinimum' => true
                 ),
                 'tax_status' => array(
-                    'type' => 'string'
+                    'type' => 'string',
+                    'enum' => array(
+                        'none',
+                        'taxable',
+                        'shipping',
+                    ),
                 ),
                 'tax_class' => array(
                     'type' => 'string'
@@ -100,31 +117,27 @@ class PWP_Product_Schema extends PWP_Schema
                             'type' => 'number'
                         )
                     ),
-                    'required' => [
+                    'required' => array(
                         'length',
                         'height',
                         'width'
-                    ]
+                    )
                 ),
                 'upsell_skus' => array(
                     'type' => 'array',
-                    'items' => [
-                        array(
-                            'type' => 'string'
-                        )
-                    ],
+                    'items' => array(
+                        'type' => 'string'
+                    ),
                     'additionalItems' => true,
                     'uniqueItems' => true
                 ),
                 'cross_sell_skus' => array(
                     'type' => 'array',
-                    'items' => [
-                        array(
-                            'type' => 'string'
-                        )
-                    ],
                     'additionalItems' => true,
-                    'uniqueItems' => true
+                    'uniqueItems' => true,
+                    'items' => array(
+                        'type' => 'string'
+                    )
                 ),
                 'parent_sku' => array(
                     'type' => 'string'
@@ -134,27 +147,26 @@ class PWP_Product_Schema extends PWP_Schema
                 ),
                 'categories' => array(
                     'type' => 'array',
-                    'items' => [
-                        array(
-                            'type' => 'string'
-                        )
-                    ],
                     'additionalItems' => true,
-                    'uniqueItems' => true
+                    'uniqueItems' => true,
+                    'items' => array(
+                        'type' => 'string'
+                    )
+
                 ),
                 'tags' => array(
                     'type' => 'array',
-                    'items' => [
-                        array(
-                            'type' => 'string'
-                        )
-                    ],
-                    'additionalItems' => true,
-                    'uniqueItems' => true
+                    'items' => array(
+                        'additionalItems' => true,
+                        'uniqueItems' => true,
+                        'type' => 'string'
+                    ),
                 ),
                 'images' => array(
                     'type' => 'array',
-                    'items' => array(),
+                    'items' => array(
+                        'type' => 'string',
+                    ),
                     'additionalItems' => true
                 ),
                 'menu_order' => array(
@@ -205,9 +217,9 @@ class PWP_Product_Schema extends PWP_Schema
                             ),
                         ),
                     ),
-                    'required' => [
+                    'required' => array(
                         'template_id'
-                    ]
+                    ),
                 ),
                 'imaxel_settings' => array(
                     'type' => 'object',
@@ -219,9 +231,9 @@ class PWP_Product_Schema extends PWP_Schema
                             'type' => 'string'
                         )
                     ),
-                    'required' => [
+                    'required' => array(
                         'template_id'
-                    ]
+                    ),
                 ),
                 'price_per_page' => array(
                     'type' => 'number',
@@ -262,43 +274,43 @@ class PWP_Product_Schema extends PWP_Schema
                             'type' => 'integer'
                         )
                     ),
-                    'required' => [
+                    'required' => array(
                         'requires_upload',
                         'min_pages',
                         'max_pages',
                         'page_width',
                         'page_height'
-                    ]
+                    )
                 ),
                 'meta_data' => array(
                     'type' => 'array',
-                    'items' => [
-                        array(
-                            'type' => 'object',
-                            'properties' => array(
-                                'key' => array(
-                                    'type' => 'string'
-                                ),
-                                'value' => array(
-                                    'type' => ['number', 'integer', 'boolean', 'string', 'null']
-                                )
+                    'items' => array(
+                        'type' => 'object',
+                        'properties' => array(
+                            'key' => array(
+                                'type' => 'string',
+                                'required' => true,
                             ),
-                            'required' => [
-                                'key',
-                                'value'
-                            ]
+                            'value' => array(
+                                'type' => array('number', 'integer', 'boolean', 'string', 'null'),
+                                'required' => true,
+                            )
+                        ),
+                        'required' => array(
+                            'key',
+                            'value'
                         )
-                    ],
+                    ),
                     'additionalItems' => true
-                )
+                ),
             ),
-            'required' => [
+            'required' => array(
                 'name',
                 'sku',
                 'f2d_sku',
                 'f2d_article_code',
                 'regular_price'
-            ]
+            ),
         );
     }
 }

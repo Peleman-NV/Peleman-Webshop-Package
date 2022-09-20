@@ -43,26 +43,16 @@ class PWP_Create_Simple_Product_Command extends PWP_Create_Product_Command
         $productId = $product->save();
 
         if (0 >= $productId)
-            return new PWP_Response("something went wrong", false, 404);
+            return new PWP_Error_Response("Something went wrong trying to save a new product, 404");
 
         /** start product meta data flow */
         $productMeta = new PWP_Product_Meta_Data($product);
 
         $productMeta->set_custom_add_to_cart_label($this->data['add_to_cart_label'] ?: '');
 
-        switch ($this->data['editor_id']) {
-            case 'PIE':
-                $productMeta->set_editor(PWP_Product_PIE_Data::MY_EDITOR);
-                break;
-            case 'IMAXEL':
-                $productMeta->set_editor(PWP_Product_IMAXEL_Data::MY_EDITOR);
-                break;
-            default:
-                $productMeta->set_editor('');
-                break;
+        if (isset($this->data['editor_id'])) {
+            $this->set_editor_id($productMeta, $this->data['editor_id']);
         }
-
-        /** SET PIE, IMAXEL, and PDF UPLOAD META SETTIGNS */
         if (isset($this->data['pie_settings'])) {
             $this->set_product_pie_data($productMeta, $this->data['pie_settings']);
         }
@@ -83,6 +73,11 @@ class PWP_Create_Simple_Product_Command extends PWP_Create_Product_Command
         $productMeta->save_meta_data();
 
         // $this->configure_translation($product, $parent);
-        return new PWP_Response("Product successfully created", true, 200, $product->get_data());
+        return new PWP_Response(
+            "Product successfully created",
+            true,
+            200,
+            $product->get_data()
+        );
     }
 }

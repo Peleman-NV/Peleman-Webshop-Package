@@ -10,6 +10,7 @@ use PWP\includes\API\PWP_Channel_Definition;
 use PWP\includes\authentication\PWP_I_Api_Authenticator;
 use PWP\includes\exceptions\PWP_Invalid_Input_Exception;
 use PWP\includes\handlers\commands\PWP_Create_Simple_Product_Command;
+use PWP\includes\handlers\commands\PWP_Create_Variable_Product_Command;
 use PWP\includes\utilities\response\PWP_Error_Response;
 use PWP\includes\utilities\response\PWP_I_Response;
 use PWP\includes\utilities\response\PWP_Response;
@@ -35,13 +36,15 @@ class PWP_Products_CREATE_Endpoint extends PWP_Abstract_CREATE_Endpoint
         try {
             $requestData = $this->validate_request_with_schema($request->get_json_params(), 'product');
             switch ($request['type']) {
-                case 'variable':
-                    break;
-                case 'variant':
-                    break;
                 default:
                 case 'simple':
                     $response = $this->create_new_simple_product($requestData);
+                    break;
+                case 'variable':
+                    $response = $this->create_new_variable_product($requestData);
+                    break;
+                case 'variant':
+                    $response = $this->create_new_variant_product($requestData);
                     break;
             }
         } catch (PWP_Invalid_Input_Exception $exception) {
@@ -61,6 +64,22 @@ class PWP_Products_CREATE_Endpoint extends PWP_Abstract_CREATE_Endpoint
     {
         $command = new PWP_Create_Simple_Product_Command($request);
         return $command->do_action();
+    }
+
+    private function create_new_variable_product(array $request): PWP_I_Response
+    {
+        $command = new PWP_Create_Variable_Product_Command($request);
+        return $command->do_action();
+    }
+
+    private function create_new_variant_product(array $request): PWP_I_Response
+    {
+        return new PWP_Error_Response('method not yet implemented.', 501);
+    }
+
+    public function get_arguments(): array
+    {
+        return $this->get_schema()['properties'];
     }
 
     public function get_schema(): array

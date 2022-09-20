@@ -4,9 +4,12 @@ declare(strict_types=1);
 
 namespace PWP\includes\handlers\commands;
 
-use PWP\includes\editor\PWP_Product_Meta_Data;
-use PWP\includes\utilities\PWP_SitePress_Wrapper;
 use PWP\includes\utilities\PWP_WPDB;
+use Automattic\WooCommerce\Admin\API\Data;
+use PWP\includes\editor\PWP_Product_IMAXEL_Data;
+use PWP\includes\editor\PWP_Product_Meta_Data;
+use PWP\includes\editor\PWP_Product_PIE_Data;
+use PWP\includes\utilities\PWP_SitePress_Wrapper;
 
 abstract class PWP_Create_Product_Command implements PWP_I_Command
 {
@@ -114,6 +117,22 @@ abstract class PWP_Create_Product_Command implements PWP_I_Command
         $result = $wpdb->query($query);
 
         return !$result;
+    }
+
+
+    protected function set_editor_id(PWP_Product_Meta_Data $meta, ?string $id)
+    {
+        switch ($id) {
+            case 'PIE':
+                $meta->set_editor(PWP_Product_PIE_Data::MY_EDITOR);
+                break;
+            case 'IMAXEL':
+                $meta->set_editor(PWP_Product_IMAXEL_Data::MY_EDITOR);
+                break;
+            default:
+                $meta->set_editor('');
+                break;
+        }
     }
 
     protected function set_product_pie_data(PWP_Product_Meta_Data $meta, array $data): void
