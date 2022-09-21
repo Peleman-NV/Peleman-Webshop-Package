@@ -161,7 +161,14 @@ Array of product tag slugs.
 ___
 #### images
 `array`
+
 ***TO BE DONE***
+___
+#### attributes
+`array`
+
+*** TO BE DONE***
+Array of attribute objects, required specifically for the creation of variable products.
 ___
 #### menu_order
 `int`
@@ -241,6 +248,28 @@ ___
 `float`
 
 Width of the product in *mm*.
+___
+
+### ATTRIBUTE PROPERTIES
+`object`
+
+attribute object for variable products/ product variations.
+
+#### name
+`string`
+
+attribute name
+___
+#### terms
+`array`
+
+array of strings, representing the name of the attribute's terms
+___
+#### is_visible
+`bool` - default `false`
+___
+#### for_variation
+`bool` - default `false`
 ___
 ### PIE PROPERTIES
 `object`

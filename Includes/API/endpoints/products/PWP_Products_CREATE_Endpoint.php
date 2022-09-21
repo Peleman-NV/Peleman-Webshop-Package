@@ -4,17 +4,16 @@ declare(strict_types=1);
 
 namespace PWP\includes\API\endpoints\products;
 
-use Exception;
 use PWP\includes\API\endpoints\PWP_Abstract_CREATE_Endpoint;
 use PWP\includes\API\PWP_Channel_Definition;
 use PWP\includes\authentication\PWP_I_Api_Authenticator;
 use PWP\includes\exceptions\PWP_Invalid_Input_Exception;
 use PWP\includes\handlers\commands\PWP_Create_Simple_Product_Command;
 use PWP\includes\handlers\commands\PWP_Create_Variable_Product_Command;
+use PWP\includes\handlers\commands\PWP_Create_Variation_Product_Command;
 use PWP\includes\utilities\response\PWP_Error_Response;
 use PWP\includes\utilities\response\PWP_I_Response;
 use PWP\includes\utilities\response\PWP_Response;
-use Throwable;
 use WP_REST_Request;
 use WP_REST_Response;
 
@@ -48,11 +47,10 @@ class PWP_Products_CREATE_Endpoint extends PWP_Abstract_CREATE_Endpoint
                     $response = $this->create_new_variant_product($requestData);
                     break;
             }
-
         } catch (PWP_Invalid_Input_Exception $exception) {
             error_log((string)$exception);
             $response = new PWP_Error_Response($exception->getMessage(), 400);
-        } catch (Throwable $exception) {
+        } catch (\Throwable $exception) {
             error_log((string)$exception);
             $response = new PWP_Error_Response("Internal Server Error.", 500);
         } finally {
@@ -77,7 +75,14 @@ class PWP_Products_CREATE_Endpoint extends PWP_Abstract_CREATE_Endpoint
 
     private function create_new_variant_product(array $request): PWP_I_Response
     {
-        return new PWP_Error_Response('method not yet implemented.', 501);
+        $parentId = wc_get_product_id_by_sku($request['sku']);
+        if (empty($parentId)) {
+            throw new PWP_Invalid_Input_Exception("variable product with sku {$request['sku']} not found");
+        }
+
+        $parent = wc_get_product($parentId);
+        $command = new PWP_Create_Variation_Product_Command($parent, $request);
+        return $command->do_action();
     }
 
     public function get_arguments(): array
