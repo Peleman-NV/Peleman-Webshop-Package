@@ -25,10 +25,7 @@ class PWP_Create_Variable_Product_Command extends PWP_Create_Product_Command
         }
         $product = new WC_Product_Variable();
         $this->set_product_params_from_data($product);
-        $product->set_default_attributes(array(
-            'name' => 'edition',
-            'option' => 'firsted'
-        ));
+        $product->set_attributes($this->wc_prepare_product_attributes($this->data['attributes']));
         $productId = $product->save();
 
         if (0 >= $productId) {
@@ -69,5 +66,54 @@ class PWP_Create_Variable_Product_Command extends PWP_Create_Product_Command
             200,
             $product->get_data()
         );
+    }
+
+    public function wc_prepare_product_attributes(array $attributes): array
+    {
+
+        $data = array();
+        $position = 0;
+
+        foreach ($attributes as $values) {
+            // $name => $values)
+            $name = $values['name'];
+            $taxonomy = 'pa_' . $name;
+            if (!taxonomy_exists($taxonomy)) {
+                error_log("taxonomy already exists: {$taxonomy}");
+                continue;
+            }
+
+            // Get an instance of the WC_Product_Attribute Object
+            $attribute = new \WC_Product_Attribute();
+
+            $term_ids = array();
+            $terms = $values['terms'];
+
+            // Loop through the term names
+            foreach ($values['terms'] as $term_name) {
+                if (term_exists($term_name, $taxonomy))
+                    // Get and set the term ID in the array from the term name
+                    $term_ids[] = get_term_by('name', $term_name, $taxonomy)->term_id;
+                else
+                    continue;
+            }
+
+            error_log(print_r($term_ids, true));
+            $taxonomy_id = wc_attribute_taxonomy_id_by_name($taxonomy); // Get taxonomy ID
+            error_log('taxonomy id: ' . $taxonomy_id);
+
+            $attribute->set_id($taxonomy_id);
+            $attribute->set_name($name);
+            // $attribute->set_options($term_ids);
+            $attribute->set_options($terms);
+            $attribute->set_position($position);
+            $attribute->set_visible($values['is_visible'] ?: false);
+            $attribute->set_variation($values['for_variation'] ?: false);
+
+            $data[$taxonomy] = $attribute; // Set in an array
+
+            $position++; // Increase position
+        }
+        return $data;
     }
 }

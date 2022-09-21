@@ -104,6 +104,7 @@ class PWP_Product_Schema extends PWP_Schema
                 'weight' => array(
                     'type' => 'number'
                 ),
+                /** PRODUCT DIMENSIONS OBJECT */
                 'dimensions' => array(
                     'type' => 'object',
                     'properties' => array(
@@ -162,12 +163,39 @@ class PWP_Product_Schema extends PWP_Schema
                         'type' => 'string'
                     ),
                 ),
+                /** IMAGES OBJECT */
                 'images' => array(
                     'type' => 'array',
                     'items' => array(
                         'type' => 'string',
                     ),
                     'additionalItems' => true
+                ),
+                /** ATTRIBUTES OBJECT */
+                'attributes' => array(
+                    'type' => 'array',
+                    'items' => array(
+                        'uniqueItems' => true,
+                        'additionalItems' => true,
+                        'type' => 'object',
+                        'properties' => array(
+                            'name' => array(
+                                'type' => 'string',
+                            ),
+                            'terms' => array(
+                                'type' => 'array',
+                                'items' => array(
+                                    'type' => 'string',
+                                )
+                            ),
+                            'is_visible' => array(
+                                'type' => 'bool',
+                            ),
+                            'for_variation' => array(
+                                'type' => 'bool'
+                            ),
+                        ),
+                    ),
                 ),
                 'menu_order' => array(
                     'type' => 'int'
@@ -177,6 +205,7 @@ class PWP_Product_Schema extends PWP_Schema
                     'enum' => array('PIE', 'IMAXEL', 'NONE', '', null),
                     'context' => array('view', 'edit'),
                 ),
+                //** PIE SETTINGS OBJECT */
                 'pie_settings' => array(
                     'type' => 'object',
                     'properties' => array(
@@ -221,6 +250,7 @@ class PWP_Product_Schema extends PWP_Schema
                         'template_id'
                     ),
                 ),
+                /** IMAXEL settings object */
                 'imaxel_settings' => array(
                     'type' => 'object',
                     'properties' => array(
@@ -253,6 +283,7 @@ class PWP_Product_Schema extends PWP_Schema
                 'unit_code' => array(
                     'type' => 'string'
                 ),
+                /** PDF UPLOAD SETTINGS OBJECT */
                 'pdf_upload' => array(
                     'type' => 'object',
                     'properties' => array(
@@ -276,15 +307,15 @@ class PWP_Product_Schema extends PWP_Schema
                     ),
                     'required' => array(
                         'requires_upload',
-                        'min_pages',
-                        'max_pages',
                         'page_width',
                         'page_height'
                     )
                 ),
+                /** META DATA CONTAINER OBJECT */
                 'meta_data' => array(
                     'type' => 'array',
                     'items' => array(
+                        /** META DATA OBJECT */
                         'type' => 'object',
                         'properties' => array(
                             'key' => array(

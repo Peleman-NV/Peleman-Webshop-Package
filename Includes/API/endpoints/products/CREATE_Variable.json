@@ -1,6 +1,6 @@
 {
     "name": "my_simple_product",
-    "sku": "PRD123456",
+    "sku": "PRD2222220",
     "parent_sku": "",
     "f2d_sku": "PRD123456",
     "f2d_article_code": "f2d_art_code",
@@ -45,12 +45,13 @@
     "images": [],
     "attributes": [
         {
-            "slug": "my_attribute",
-            "option": "option_1"
-        },
-        {
-            "slug": "color_attribute",
-            "option": "black"
+            "name": "edition",
+            "terms": [
+                "firsted",
+                "seconded"
+            ],
+            "is_visible": true,
+            "for_variation": false
         }
     ],
     "editor_id": "",

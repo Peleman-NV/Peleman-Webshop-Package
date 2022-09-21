@@ -14,6 +14,7 @@ use PWP\includes\handlers\commands\PWP_Create_Variable_Product_Command;
 use PWP\includes\utilities\response\PWP_Error_Response;
 use PWP\includes\utilities\response\PWP_I_Response;
 use PWP\includes\utilities\response\PWP_Response;
+use Throwable;
 use WP_REST_Request;
 use WP_REST_Response;
 
@@ -35,7 +36,7 @@ class PWP_Products_CREATE_Endpoint extends PWP_Abstract_CREATE_Endpoint
 
         try {
             $requestData = $this->validate_request_with_schema($request->get_json_params(), 'product');
-            switch ($request['type']) {
+            switch ($request['product_type']) {
                 default:
                 case 'simple':
                     $response = $this->create_new_simple_product($requestData);
@@ -47,9 +48,11 @@ class PWP_Products_CREATE_Endpoint extends PWP_Abstract_CREATE_Endpoint
                     $response = $this->create_new_variant_product($requestData);
                     break;
             }
+
         } catch (PWP_Invalid_Input_Exception $exception) {
+            error_log((string)$exception);
             $response = new PWP_Error_Response($exception->getMessage(), 400);
-        } catch (Exception $exception) {
+        } catch (Throwable $exception) {
             error_log((string)$exception);
             $response = new PWP_Error_Response("Internal Server Error.", 500);
         } finally {
