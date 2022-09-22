@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace PWP\includes\handlers\commands;
 
 use PWP\includes\utilities\PWP_WPDB;
-use Automattic\WooCommerce\Admin\API\Data;
 use PWP\includes\editor\PWP_Product_IMAXEL_Data;
 use PWP\includes\editor\PWP_Product_Meta_Data;
 use PWP\includes\editor\PWP_Product_PIE_Data;
@@ -165,5 +164,36 @@ abstract class PWP_Create_Product_Command implements PWP_I_Command
             ->set_pdf_max_pages($data['max_pages'] ?: 0)
             ->set_pdf_width($data['page_width'] ?: 0)
             ->set_pdf_height($data['pdf_height'] ?: 0);
+    }
+
+    protected function handle_producT_meta_components(\WC_Product $product): void
+    {
+        /** start product meta data flow */
+        $productMeta = new PWP_Product_Meta_Data($product);
+
+        $productMeta->set_custom_add_to_cart_label($this->data['add_to_cart_label'] ?: '');
+
+        if (isset($this->data['editor_id'])) {
+            $this->set_editor_id($productMeta, $this->data['editor_id']);
+        }
+        if (isset($this->data['pie_settings'])) {
+            $this->set_product_pie_data($productMeta, $this->data['pie_settings']);
+        }
+
+        if (isset($this->data['imaxel_settings'])) {
+            $this->set_product_imaxel_data($productMeta, $this->data['imaxel_settings']);
+        }
+
+        if (isset($this->data['pdf_upload'])) {
+            $this->set_product_pdf_data($productMeta, $this->data['pdf_upload']);
+        }
+
+        foreach ($this->data['meta_data'] as $meta) {
+            $product->set_meta_data([$meta['key'] => $meta['value']]);
+        }
+
+        /** UPDATE & SAVE META DATA */
+        $productMeta->update_meta_data();
+        $productMeta->save_meta_data();
     }
 }
