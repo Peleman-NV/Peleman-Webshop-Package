@@ -6,7 +6,7 @@ namespace PWP\includes\utilities\notification;
 
 use PWP\includes\utilities\response\PWP_I_Response;
 
-class PWP_Notification implements PWP_I_Notification, PWP_I_Response
+class PWP_Notification implements PWP_I_Notification
 {
     private array $errors;
     private bool $isSuccess;
@@ -26,6 +26,11 @@ class PWP_Notification implements PWP_I_Notification, PWP_I_Response
         return $this;
     }
 
+    /**
+     * Undocumented function
+     *
+     * @return PWP_Error_Notice[]
+     */
     final public function get_errors(): array
     {
         return $this->errors;

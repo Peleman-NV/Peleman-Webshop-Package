@@ -14,9 +14,11 @@
         console.log('initializing pdf upload code...');
         // Event: when the file input changes, ie: when a new file is selected
         $('#file-upload').on('change', e => {
-            const variationId = $("[name='variation_id']").val() || $("[name='add_to_cart']").val();
+            const productId = $("[name='add-to-cart']").val();
+            const variationId = $("[name='variation_id']").val();
             //re-enable this line to automatically disable the upload button
-            // $('.single_add_to_cart_button').addClass('pwp-disabled');
+            $('.single_add_to_cart_button').addClass('pwp-disabled');
+            $('.single_add_to_cart_button').prop("disabled", true);
             $('#upload-info').html(''); // clear html content in upload-info
             $('#upload-info').removeClass(); // removes all classes from upload info
             $('#pwp-loading').removeClass('pwp-hidden'); // display loading animation
@@ -24,7 +26,7 @@
             $('.thumbnail-container').removeClass('pwp-min-height');
             $('.thumbnail-container').prop('alt', '');
 
-            const formData = constructFormData(variationId);
+            const formData = constructFormData(productId, variationId);
 
             // automatically submit form on change event
             $('#file-upload').submit();
@@ -32,7 +34,7 @@
 
             $.ajax({
                 //ajax setup
-                url: PWP_Upload_pdf_object.ajax_url,
+                url: PWP_Upload_PDF_object.ajax_url,
                 method: 'POST',
                 data: formData,
                 processData: false,
@@ -41,7 +43,7 @@
                 cache: false,
                 dataType: 'json',
                 beforeSend: function () {
-                    console.log('pdf upload ajax called');
+                    console.log('uploading pdf...');
                 },
                 success: function (response, textStatus, jqXHR) {
                     onUploadSuccess(response);
@@ -83,23 +85,25 @@
 
         function onUploadSuccess(response) {
             console.log(response);
-            $('#upload-info').html(response.message);
+            $('#upload-info').html(response.data.message);
             if (response.status === 'success') {
-                updatePrice(response.file.price_vat_incl);
+                updatePrice(response.data.file.price_vat_incl);
                 // enable add to cart button
                 $('.single_add_to_cart_button').removeClass('pwp-disabled');
+                $('.single_add_to_cart_button').prop("disabled", false);
+
                 // update thumbnail container   
                 $('.thumbnail-container').addClass('pwp-min-height');
-                $('.thumbnail-container').css('background-image', 'url("' + response.file.thumbnail + '")');
-                $('.thumbnail-container').prop('alt', response.file.name);
+                $('.thumbnail-container').css('background-image', 'url("' + response.data.file.thumbnail + '")');
+                $('.thumbnail-container').prop('alt', response.data.file.name);
 
                 // add content file id to hidden input
                 $("[name='variation_id']").after(
-                    '<input type="hidden" name="content_file_id" class="content_file_id" value="' + response.file.content_file_id + '"></input>'
+                    '<input type="hidden" name="content_file_id" class="content_file_id" value="' + response.data.file.content_file_id + '"></input>'
                 );
                 $('#pwp-loading').addClass('pwp-hidden');
             } else {
-                $('#upload-info').html(response.message);
+                $('#upload-info').html(response.data.description);
                 $('#upload-info').addClass('pwp-response-error');
                 $('#pwp-loading').addClass('pwp-hidden');
             }
@@ -123,15 +127,14 @@
 
         }
 
-        function constructFormData(variationId) {
-            const fileInput = document.getElementById('file-upload');
-            const file = fileInput.files[0];
+        function constructFormData(productID, variationId) {
             const formData = new FormData();
 
-            formData.append('action', 'upload_content_file');
-            formData.append('file', file);
-            formData.append('variant_id', variationId);
-            // formData.append('_ajax_nonce', PWP_Ajax_Upload_PDF_Content_object.nonce); 
+            formData.append('action', 'PWP_Upload_PDF');
+            formData.append('file', document.getElementById('file-upload').files[0]);
+            formData.append('product_id', productID || 0)
+            formData.append('variant_id', variationId || 0);
+            formData.append('nonce', PWP_Upload_PDF_object.nonce);
             return formData;
         }
     });

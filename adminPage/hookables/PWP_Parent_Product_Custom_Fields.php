@@ -281,19 +281,19 @@ class PWP_Parent_Product_Custom_Fields extends PWP_Abstract_Action_Hookable
         );
 
         PWP_Input_Fields::number_input(
-            PWP_PRODUCT_META_DATA::PDF_HEIGHT,
-            'pdf Format Height',
-            $meta_data->get_pdf_height(),
-            [],
-            'permitted height of PDF uploads'
-        );
-
-        PWP_Input_Fields::number_input(
             PWP_PRODUCT_META_DATA::PDF_WIDTH,
             'pdf Format Width',
             $meta_data->get_pdf_width(),
             [],
             'permitted width of PDF uploads'
+        );
+
+        PWP_Input_Fields::number_input(
+            PWP_PRODUCT_META_DATA::PDF_HEIGHT,
+            'pdf Format Height',
+            $meta_data->get_pdf_height(),
+            [],
+            'permitted height of PDF uploads'
         );
 
         //pdf price per additional page field. precision up to 3 decimal places

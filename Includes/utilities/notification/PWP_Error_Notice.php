@@ -7,7 +7,7 @@ namespace PWP\includes\utilities\notification;
 use PWP\includes\utilities\response\PWP_I_Response;
 use WP_REST_Response;
 
-class PWP_Error_Notice implements PWP_I_Notification_Message, PWP_I_Response
+class PWP_Error_Notice implements PWP_I_Notification_Message
 {
     private string $message;
     private string $description;

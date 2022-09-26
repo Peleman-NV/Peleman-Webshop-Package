@@ -38,7 +38,7 @@ define('PWP_VERSION', '0.3.26');
 !defined('PWP_OPTION_GROUP')    ? define('PWP_OPTION_GROUP', 'PWP_OPTIONS') : null;
 !defined('PWP_TEXT_DOMAIN')     ? define('PWP_TEXT_DOMAIN', 'PelemanWebshopPackage') : null;
 !defined('PWP_THUMBNAIL_DIR')   ? define('PWP_THUMBNAIL_DIR', WP_CONTENT_DIR . '/uploads/pwp/thumbnails') : null;
-!defined('PWP_UPLOAD_DIR')      ? define('PWP_UPLOAD_DIR', WP_CONTENT_DIR . '/uploads/pwp/contents') : null;
+!defined('PWP_UPLOAD_DIR')      ? define('PWP_UPLOAD_DIR', WP_CONTENT_DIR . '/uploads/pwp/') : null;
 !defined('PWP_TEMPLATES_DIR')   ? define('PWP_TEMPLATES_DIR',  plugin_dir_path(__FILE__) . '/templates') : null;
 !defined('PWP_LOG_DIR')         ? define('PWP_LOG_DIR', WP_CONTENT_DIR . '/uploads/pwp/logs') : "";
 

@@ -32,6 +32,11 @@ final class PWP_Validate_File_Size extends PWP_Abstract_File_Handler
 
     public function handle(PWP_File_Data $file, PWP_I_Notification $notification): bool
     {
-        return ($file->get_size() <= $this->maxFileSize) ? $this->handle_next($file, $notification) : false;
+        if ($file->get_size() <= $this->maxFileSize)
+            return $this->handle_next($file, $notification);
+
+        $notification->add_error('file too large', 'The file is too large. Please upload a file smaller than the maximum upload size.');
+        return false;
+        // return ($file->get_size() <= $this->maxFileSize) ? $this->handle_next($file, $notification) : false;
     }
 }
