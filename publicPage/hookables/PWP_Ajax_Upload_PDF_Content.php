@@ -15,13 +15,14 @@ use PWP\includes\validation\PWP_Abstract_File_Handler;
 use PWP\includes\validation\PWP_Validate_File_Errors;
 use PWP\includes\validation\PWP_Validate_File_Type;
 
-class PWP_Upload_PDF_Content extends PWP_Abstract_Ajax_Hookable
+class PWP_Ajax_Upload_PDF_Content extends PWP_Abstract_Ajax_Hookable
 {
     public function __construct()
     {
         parent::__construct(
-            'upload_content',
-            plugins_url('js/upload-content.js', __FILE__),
+            'PWP_Upload_pdf',
+            plugins_url('Peleman-Webshop-Package/publicPage/js/upload-content.js'),
+            6,
         );
     }
 
@@ -43,7 +44,7 @@ class PWP_Upload_PDF_Content extends PWP_Abstract_Ajax_Hookable
 
         $file = new PWP_File_Data($_FILES['file']);
         $productId = $_REQUEST['product_id'];
-        $variantId = $_REQUEST['variant_id'] ?: null;
+        $variantId = sanitize_text_field($_REQUEST['variant_id']) ?: null;
 
         $notification = new PWP_Notification();
         var_dump($file);
@@ -62,7 +63,6 @@ class PWP_Upload_PDF_Content extends PWP_Abstract_Ajax_Hookable
             return;
         }
 
-        $variantId = sanitize_text_field($_POST['variant_id']);
         //check if variant Id leads to a valid product
         $product = wc_get_product((int)$variantId);
 
@@ -71,13 +71,14 @@ class PWP_Upload_PDF_Content extends PWP_Abstract_Ajax_Hookable
                 __("invalid id", PWP_TEXT_DOMAIN),
                 __("invalid variant Id passed, no valid product found", PWP_TEXT_DOMAIN)
             );
-            wp_send_json($error->to_array());
-            return;
+            wp_send_json_error($error->to_array());
         }
 
         $variant = new PWP_Product_Meta_Data($product);
         $min_pages = $variant->get_pdf_min_pages();
         $max_pages = $variant->get_pdf_max_pages();
+        $heightRange = $variant->get_pdf_height();
+        $widthRange = $variant->get_pdf_width();
 
         // page & dimension validation
         if (!empty($min_pages) && $pages < $min_pages) {
@@ -86,8 +87,7 @@ class PWP_Upload_PDF_Content extends PWP_Abstract_Ajax_Hookable
                 __("Your file has too few pages", PWP_TEXT_DOMAIN),
                 array('file' => array('pages' => $pages))
             );
-            wp_send_json($error->to_array());
-            return;
+            wp_send_json_error($error->to_array());
         }
         if (!empty($max_pages) && $pages > $max_pages) {
             $error = new PWP_Error_Notice(
@@ -95,9 +95,26 @@ class PWP_Upload_PDF_Content extends PWP_Abstract_Ajax_Hookable
                 __("Your file has too many pages", PWP_TEXT_DOMAIN),
                 array('file' => array('pages' => $pages))
             );
-            wp_send_json($error->to_array());
-            return;
+            wp_send_json_error($error->to_array());
         }
+
+        //precision of .5 mm. temporarily hard coded
+        $pdfPrecision = 0.5;
+        if (
+            !$this->number_is_in_range($dimensions['height'], $heightRange, $pdfPrecision)
+            || !$this->number_is_in_range($dimensions['width'], $widthRange, $pdfPrecision)
+        ) {
+            $error = new PWP_Error_Notice(
+                __("incorrect dimensions", PWP_TEXT_DOMAIN),
+                __("pdf dimensions do not match the required dimensions", PWP_TEXT_DOMAIN),
+                array('file' => array(
+                    'width' => $dimensions['width'],
+                    'height' => $dimensions['height']
+                )),
+            );
+            wp_send_json_error($error->to_array());
+        }
+
 
         $id = $this->generate_content_file_id($variantId);
         $path = $this->save_file($id, 'content');
@@ -156,5 +173,18 @@ class PWP_Upload_PDF_Content extends PWP_Abstract_Ajax_Hookable
             wp_send_json($error->to_array());
             return;
         }
+    }
+
+    /**
+     * returns `true` or `false` if the difference between a value and a range is within a permitted precision value
+     *
+     * @param float $value 
+     * @param float $range
+     * @param float $precision
+     * @return boolean
+     */
+    private function number_is_in_range(float $value, float $range, float $precision): bool
+    {
+        return $precision >= abs($value - $range);
     }
 }

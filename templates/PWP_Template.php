@@ -6,23 +6,23 @@ namespace PWP\templates;
 
 class PWP_Template
 {
-    public $sourceFolder;
+    public $templateDirectory;
 
-    public function __construct(string $folder = null)
+    public function __construct(string $directory = null)
     {
-        if ($folder) {
-            $this->set_folder($folder);
+        if ($directory) {
+            $this->set_directory($directory);
         }
     }
 
-    public function set_folder(string $folder): void
+    public function set_directory(string $directory): void
     {
-        $this->sourceFolder = rtrim($folder);
+        $this->templateDirectory = rtrim($directory);
     }
 
     public function render(string $template, array $vars = []): string
     {
-        $template =  "{$this->folder}/{$template}.php";
+        $template =  "{$this->templateDirectory}/{$template}.php";
         $output = '';
         if ($template) {
             $output = $this->render_template($template, $vars);

@@ -59,11 +59,11 @@
                 cache: false,
                 dataType: 'json',
                 beforeSend: function (response) {
-                    console.log("clicked button");
+                    // console.log("clicked button");
                     Button.removeClass('added').addClass('loading');
                 },
                 complete: function (response) {
-                    console.log("response received");
+                    // console.log("response received");
                     Button.addClass('added').removeClass('loading');
                 },
                 success: function (response) {
@@ -76,7 +76,7 @@
                     }
                     if (response.data.destination_url) {
                         //if the response has a destination url, redirect.
-                        console.log(response.data.destination_url);
+                        // console.log(response.data.destination_url);
                         window.location.href = response.data.destination_url;
 
                         return;

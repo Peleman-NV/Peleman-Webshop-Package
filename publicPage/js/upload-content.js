@@ -6,17 +6,15 @@
  * where the file is validated and uploaded to the server on success.
  * A response is then return (success or error) after which the "add to cart" button is
  * enabled, or an error message is displayed.
- *
- * The upload button's colour is also set, depending on the URL.
  */
 
 (function ($) {
     'use strict';
     $(function () {
-
+        console.log('initializing pdf upload code...');
         // Event: when the file input changes, ie: when a new file is selected
         $('#file-upload').on('change', e => {
-            const variationId = $("[name='variation_id']").val();
+            const variationId = $("[name='variation_id']").val() || $("[name='add_to_cart']").val();
             //re-enable this line to automatically disable the upload button
             // $('.single_add_to_cart_button').addClass('pwp-disabled');
             $('#upload-info').html(''); // clear html content in upload-info
@@ -26,7 +24,7 @@
             $('.thumbnail-container').removeClass('pwp-min-height');
             $('.thumbnail-container').prop('alt', '');
 
-            const formData = constructFormData();
+            const formData = constructFormData(variationId);
 
             // automatically submit form on change event
             $('#file-upload').submit();
@@ -34,7 +32,7 @@
 
             $.ajax({
                 //ajax setup
-                url: PWP_Upload_PDF_Content_object.ajax_url,
+                url: PWP_Upload_pdf_object.ajax_url,
                 method: 'POST',
                 data: formData,
                 processData: false,
@@ -42,12 +40,17 @@
                 enctype: 'multipart/form-data',
                 cache: false,
                 dataType: 'json',
-                success: function (response) {
+                beforeSend: function () {
+                    console.log('pdf upload ajax called');
+                },
+                success: function (response, textStatus, jqXHR) {
                     onUploadSuccess(response);
                 },
                 error: function (jqXHR, textStatus, errorThrown) {
                     onUploadError(jqXHR, textStatus, errorThrown);
                 },
+                complete: function (jqXHR, textStatus) { },
+
             });
             $('#file-upload').val('');
         });
@@ -120,7 +123,7 @@
 
         }
 
-        function constructFormData() {
+        function constructFormData(variationId) {
             const fileInput = document.getElementById('file-upload');
             const file = fileInput.files[0];
             const formData = new FormData();
@@ -128,7 +131,7 @@
             formData.append('action', 'upload_content_file');
             formData.append('file', file);
             formData.append('variant_id', variationId);
-            // formData.append('_ajax_nonce', PWP_Upload_PDF_Content_object.nonce); 
+            // formData.append('_ajax_nonce', PWP_Ajax_Upload_PDF_Content_object.nonce); 
             return formData;
         }
     });

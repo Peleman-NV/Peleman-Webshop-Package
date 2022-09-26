@@ -86,6 +86,8 @@ abstract class PWP_Abstract_Ajax_Hookable implements PWP_I_Hookable_Component
                 'nonce' => wp_create_nonce($this->nonceName)
             )
         );
+
+        // error_log("{$this->scriptHandle} registered");
     }
 
     /**

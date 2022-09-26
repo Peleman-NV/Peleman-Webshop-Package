@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PWP\includes\hookables;
+namespace PWP\adminPage\hookables;
 
 use PWP\includes\hookables\abstracts\PWP_Abstract_Filter_Hookable;
 

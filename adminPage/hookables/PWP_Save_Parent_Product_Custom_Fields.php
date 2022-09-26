@@ -36,11 +36,18 @@ class PWP_Save_Parent_Product_Custom_Fields extends PWP_Abstract_Action_hookable
 
         $editorMeta->set_uses_pdf_content(
             isset($_POST[PWP_Product_Meta_Data::USE_PDF_CONTENT])
-        )->set_custom_add_to_cart_label(
-            esc_attr(sanitize_text_field($_POST[PWP_Product_Meta_Data::CUSTOM_LABEL]))
-        )->set_editor(
-            esc_attr(sanitize_text_field($_POST[PWP_Product_Meta_Data::EDITOR_ID]))
-        );
+        )
+            ->set_pdf_max_pages((int)$_POST[PWP_Product_Meta_Data::PDF_MAX_PAGES])
+            ->set_pdf_min_pages((int)$_POST[PWP_Product_Meta_Data::PDF_MIN_PAGES])
+            ->set_pdf_height((int)$_POST[PWP_Product_Meta_Data::PDF_HEIGHT])
+            ->set_pdf_width((int)$_POST[PWP_Product_Meta_Data::PDF_WIDTH])
+            ->set_price_per_page((float)$_POST[PWP_Product_Meta_Data::PDF_PRICE_PER_PAGE])
+            ->set_custom_add_to_cart_label(
+                esc_attr(sanitize_text_field($_POST[PWP_Product_Meta_Data::CUSTOM_LABEL]))
+            )
+            ->set_editor(
+                esc_attr(sanitize_text_field($_POST[PWP_Product_Meta_Data::EDITOR_ID]))
+            );
 
         if ($product instanceof WC_Product_Simple) {
             $pieData = $editorMeta->pie_data();
@@ -94,6 +101,6 @@ class PWP_Save_Parent_Product_Custom_Fields extends PWP_Abstract_Action_hookable
 
         $product->save_meta_data();
         $editorMeta->update_meta_data();
-        $editorMeta->save();
+        $editorMeta->save_meta_data();
     }
 }

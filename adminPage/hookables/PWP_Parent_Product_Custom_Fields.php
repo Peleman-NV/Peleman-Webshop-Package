@@ -125,6 +125,7 @@ class PWP_Parent_Product_Custom_Fields extends PWP_Abstract_Action_Hookable
 
         $this->render_PIE_product_settings($meta_data);
         $this->render_IMAXEL_product_settings($meta_data);
+        $this->render_PDF_upload_settings($meta_data);
     }
 
     private function render_PIE_product_settings(PWP_Product_Meta_Data $meta_data): void
@@ -250,6 +251,59 @@ class PWP_Parent_Product_Custom_Fields extends PWP_Abstract_Action_Hookable
             '',
             ['input-text'],
             'IMAXEL specific variant ID'
+        );
+    }
+
+    private function render_PDF_upload_settings(PWP_Product_Meta_Data $meta_data): void
+    {
+        PWP_Input_Fields::checkbox_input(
+            PWP_Product_Meta_Data::USE_PDF_CONTENT,
+            'Require PDF upload',
+            $meta_data->uses_pdf_content(),
+            [],
+            'wether this product requires customers to upload a pdf file for contents.'
+        );
+
+        PWP_Input_Fields::number_input(
+            PWP_PRODUCT_META_DATA::PDF_MIN_PAGES,
+            'pdf Min Pages',
+            $meta_data->get_pdf_min_pages(),
+            [],
+            'min pages allowed per PDF upload'
+        );
+
+        PWP_Input_Fields::number_input(
+            PWP_PRODUCT_META_DATA::PDF_MAX_PAGES,
+            'pdf Max Pages',
+            $meta_data->get_pdf_max_pages(),
+            [],
+            'max pages allowed per PDF upload'
+        );
+
+        PWP_Input_Fields::number_input(
+            PWP_PRODUCT_META_DATA::PDF_HEIGHT,
+            'pdf Format Height',
+            $meta_data->get_pdf_height(),
+            [],
+            'permitted height of PDF uploads'
+        );
+
+        PWP_Input_Fields::number_input(
+            PWP_PRODUCT_META_DATA::PDF_WIDTH,
+            'pdf Format Width',
+            $meta_data->get_pdf_width(),
+            [],
+            'permitted width of PDF uploads'
+        );
+
+        //pdf price per additional page field. precision up to 3 decimal places
+        PWP_Input_Fields::number_input(
+            PWP_PRODUCT_META_DATA::PDF_PRICE_PER_PAGE,
+            'pdf price per page',
+            $meta_data->get_price_per_page(),
+            [],
+            'additional price per page',
+            array('step' => 0.001)
         );
     }
 
