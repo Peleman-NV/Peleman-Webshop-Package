@@ -12,10 +12,23 @@ class PWP_Validate_File_PageCount extends PWP_Abstract_File_Handler
     public function __construct(int $minPages, int $maxPages)
     {
         parent::__construct();
+        $this->minPages = $minPages;
+        $this->maxPages = $maxPages;
     }
 
-    public function handle(PWP_File_Data $data, PWP_I_Notification $notifictation): bool
+    public function handle(PWP_File_Data $data, PWP_I_Notification $notification): bool
     {
-        return false;
+        $pages = $data->get_page_count();
+
+        if ($pages > $this->maxPages) {
+            $notification->add_error('too many pages', 'File has more than the maximum allowed page count.');
+            return false;
+        }
+        if ($pages < $this->minPages) {
+            $notification->add_error('too few pages', 'File is below the minimum allowed page count.');
+            return false;
+        }
+
+        return $this->handle_next($data, $notification);
     }
 }

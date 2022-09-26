@@ -13,7 +13,9 @@ use PWP\includes\utilities\notification\PWP_Notification;
 use PWP\includes\utilities\notification\PWP_Success_Notice;
 use PWP\includes\utilities\PWP_Thumbnail_Generator_JPG;
 use PWP\includes\validation\PWP_Abstract_File_Handler;
+use PWP\includes\validation\PWP_Validate_File_Dimensions;
 use PWP\includes\validation\PWP_Validate_File_Errors;
+use PWP\includes\validation\PWP_Validate_File_PageCount;
 use PWP\includes\validation\PWP_Validate_File_Size;
 use PWP\includes\validation\PWP_Validate_File_Type;
 use WP_Image_Editor_Imagick;
@@ -48,33 +50,7 @@ class PWP_Ajax_Upload_PDF_Content extends PWP_Abstract_Ajax_Hookable
         $file = new PWP_File_Data($_FILES['file']);
         $productId = (int)sanitize_text_field($_REQUEST['variant_id'] ?: $_REQUEST['product_id']);
         $product = wc_get_product($productId);
-
-        $notification = new PWP_Notification();
-        error_log(print_r($_REQUEST, true));
-        error_log(print_r($file, true));
-
-        if (!$this->validation_chain()->handle($file, $notification)) {
-            $error = $notification->get_errors()[0];
-            $this->send_json_error(
-                $error->get_message(),
-                $error->get_description(),
-                420
-            );
-        }
-
-        /** 3) */
-        try {
-            $pdf = new Fpdi();
-            $pageCount = $pdf->setSourceFile($file->get_tmp_name());
-            $importedPage = $pdf->importPage(1);
-            $dimensions = $pdf->getTemplateSize($importedPage);
-        } catch (\Throwable $error) {
-            $this->send_json_error(
-                $error->getMessage(),
-                '',
-                415
-            );
-        }
+        $productMeta = new PWP_Product_Meta_Data($product);
 
         //check if product Id leads to a valid product
         if (!$product) {
@@ -86,32 +62,33 @@ class PWP_Ajax_Upload_PDF_Content extends PWP_Abstract_Ajax_Hookable
             );
         }
 
-        $productMeta = new PWP_Product_Meta_Data($product);
-        $min_pages = $productMeta->get_pdf_min_pages();
-        $max_pages = $productMeta->get_pdf_max_pages();
+        $notification = new PWP_Notification();
+        error_log(print_r($_REQUEST, true));
+        error_log(print_r($file, true));
 
-        if ($min_pages && $pageCount < $min_pages)
-            $this->send_json_error(
-                'Too few pages',
-                'File is below the minimum allowed page count.',
-                401
-            );
+        /** 3) */
+        try {
+            $pdf = new Fpdi();
+            $file->set_page_count($pdf->setSourceFile($file->get_tmp_name()));
+            $importedPage = $pdf->importPage(1);
 
-        if ($max_pages && $pageCount > $max_pages)
+            $dimensions = $pdf->getTemplateSize($importedPage);
+            $file->set_dimensions($dimensions['width'], $dimensions['height']);
+        } catch (\Throwable $error) {
             $this->send_json_error(
-                'Too many pages',
-                'File has more than the maximum allowed page count.',
-                401
-            );
-
-        if ($this->validate_pdf_dimensions((int)$dimensions['height'], (int)$dimensions['width'], $productMeta)) {
-            $this->send_json_error(
-                'Dimensions not valid',
-                'The dimensions of the PDF do not match the dimensions of the product.',
-                419
+                $error->getMessage(),
+                '',
+                420
             );
         }
-
+        if (!$this->validation_chain($productMeta)->handle($file, $notification)) {
+            $error = $notification->get_errors()[0];
+            $this->send_json_error(
+                $error->get_message(),
+                $error->get_description(),
+                420
+            );
+        }
 
         /** 4) */
         $id = $this->generate_content_file_id($productId);
@@ -205,14 +182,22 @@ class PWP_Ajax_Upload_PDF_Content extends PWP_Abstract_Ajax_Hookable
      *
      * @return PWP_Abstract_File_Handler
      */
-    private function validation_chain(): PWP_Abstract_File_Handler
+    private function validation_chain(PWP_Product_Meta_Data $metaData): PWP_Abstract_File_Handler
     {
         $maxFileSize = (int)ini_get('upload_max_filesize') * PWP_Validate_File_Size::MB;
 
         $validator = new PWP_Validate_File_Type();
         $validator
             ->set_next(new PWP_Validate_File_Errors())
-            ->set_next(new PWP_Validate_File_Size($maxFileSize));
+            ->set_next(new PWP_Validate_File_Size($maxFileSize))
+            ->set_next(new PWP_Validate_File_PageCount(
+                $metaData->get_pdf_min_pages(),
+                $metaData->get_pdf_max_pages()
+            ))
+            ->set_next(new PWP_Validate_File_Dimensions(
+                $metaData->get_pdf_height(),
+                $metaData->get_pdf_width()
+            ));
 
         return $validator;
     }

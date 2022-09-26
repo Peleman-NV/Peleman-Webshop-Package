@@ -22,7 +22,7 @@ abstract class PWP_Abstract_File_Handler
         return $this->next;
     }
 
-    abstract public function handle(PWP_File_Data $data, PWP_I_Notification $notifictation): bool;
+    abstract public function handle(PWP_File_Data $data, PWP_I_Notification $notification): bool;
 
     final protected function handle_next(PWP_File_Data $file, PWP_I_Notification $notification): bool
     {
