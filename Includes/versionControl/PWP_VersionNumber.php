@@ -28,7 +28,7 @@ class PWP_VersionNumber
     public static function from_string(string $version): self
     {
         $version = explode('.', $version, 4);
-        return new PWP_VersionNumber((int)$version[0], (int)$version[1], (int)$version[2], $version[3] ?: '');
+        return new PWP_VersionNumber((int)$version[0], (int)$version[1], (int)$version[2], isset($version[3]) ? $version[3] : '');
     }
 
     /**

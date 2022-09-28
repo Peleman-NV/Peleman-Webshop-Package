@@ -40,6 +40,7 @@ class PWP_Ajax_Upload_PDF_Content extends PWP_Abstract_Ajax_Hookable
          * 2) check if file upload is successful (should work with the error code from the $FILES global)
          * 3) check if PDF is valid
          * 4) Save PDF
+         *  - how do we save pdfs and avoid file conflicts without ending up with tons of uploads cluttering the uploads folder?
          * 5) Generate success response with PDF details
          */
 
@@ -96,13 +97,21 @@ class PWP_Ajax_Upload_PDF_Content extends PWP_Abstract_Ajax_Hookable
         error_log($path);
         // $this->generate_thumbnail($path, $id, 160);
 
+
+        //calculate prices
+
+        $priceVatExcl = wc_get_price_excluding_tax($product);
+        $priceVatIncl = wc_get_price_including_tax($product);
+        $pricePerPage = $productMeta->get_price_per_page();
+
+        $priceWithPages = $pricePerPage * $file->get_page_count() + $priceVatExcl;
         $this->send_json_success(
             'success',
             'success! you have successfully reached the end of the operation chain!',
             200,
             array(
                 'file' => array(
-                    'price_vat_incl'    => 120.00,
+                    'price_vat_incl'    => $priceWithPages,
                     'name'              => 'bleep',
                     'content_file_id'   => '123456789bbb',
                 )
@@ -113,28 +122,6 @@ class PWP_Ajax_Upload_PDF_Content extends PWP_Abstract_Ajax_Hookable
     public function callback_nopriv(): void
     {
         $this->callback();
-    }
-
-    private function validate_page_count(int $pageCount, PWP_Product_Meta_data $meta): void
-    {
-    }
-
-    /**
-     * Undocumented function
-     *
-     * @param integer $width width of the pdf/image being compared
-     * @param integer $height height of the pdf/image being compared
-     * @param PWP_Product_meta_data $meta meta data container of the product we are comparing our values against
-     * @param float $tolerance tolerance (in mm) of the comparison. the lower the tolerance, the closer the measurements have to be
-     * @return boolean returns true if both the height and width are within accepted tolerances from the product's values.
-     */
-    private function validate_pdf_dimensions(int $width, int $height, PWP_Product_meta_data $meta, float $tolerance = .5): bool
-    {
-        $heightRange = $meta->get_pdf_height();
-        $widthRange = $meta->get_pdf_width();
-
-        return ($this->number_is_in_range($height, $heightRange, $tolerance)
-            && $this->number_is_in_range($width, $widthRange, $tolerance));
     }
 
     private function generate_content_file_id(int $productId): string
@@ -200,19 +187,6 @@ class PWP_Ajax_Upload_PDF_Content extends PWP_Abstract_Ajax_Hookable
             ));
 
         return $validator;
-    }
-
-    /**
-     * returns `true` or `false` if the difference between a value and a range is within a permitted precision value
-     *
-     * @param float $value
-     * @param float $range
-     * @param float $precision
-     * @return boolean
-     */
-    private function number_is_in_range(float $value, float $range, float $precision): bool
-    {
-        return $precision >= abs($value - $range);
     }
 
     private function validate_request_nonce(string $nonce): void

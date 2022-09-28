@@ -35,12 +35,15 @@ defined('WPINC') || die;
 
 //define PWP constant values
 define('PWP_VERSION', '0.3.26');
-!defined('PWP_OPTION_GROUP')    ? define('PWP_OPTION_GROUP', 'PWP_OPTIONS') : null;
-!defined('PWP_TEXT_DOMAIN')     ? define('PWP_TEXT_DOMAIN', 'PelemanWebshopPackage') : null;
-!defined('PWP_THUMBNAIL_DIR')   ? define('PWP_THUMBNAIL_DIR', WP_CONTENT_DIR . '/uploads/pwp/thumbnails') : null;
-!defined('PWP_UPLOAD_DIR')      ? define('PWP_UPLOAD_DIR', WP_CONTENT_DIR . '/uploads/pwp/') : null;
-!defined('PWP_TEMPLATES_DIR')   ? define('PWP_TEMPLATES_DIR',  plugin_dir_path(__FILE__) . '/templates') : null;
-!defined('PWP_LOG_DIR')         ? define('PWP_LOG_DIR', WP_CONTENT_DIR . '/uploads/pwp/logs') : "";
+!defined('PWP_OPTION_GROUP')        ? define('PWP_OPTION_GROUP', 'PWP_OPTIONS') : null;
+!defined('PWP_TEXT_DOMAIN')         ? define('PWP_TEXT_DOMAIN', 'PelemanWebshopPackage') : null;
+!defined('PWP_THUMBNAIL_DIR')       ? define('PWP_THUMBNAIL_DIR', WP_CONTENT_DIR . '/uploads/pwp/thumbnails') : null;
+!defined('PWP_UPLOAD_DIR')          ? define('PWP_UPLOAD_DIR', WP_CONTENT_DIR . '/uploads/pwp/') : null;
+!defined('PWP_TEMPLATES_DIR')       ? define('PWP_TEMPLATES_DIR',  plugin_dir_path(__FILE__) . '/templates') : null;
+!defined('PWP_LOG_DIR')             ? define('PWP_LOG_DIR', WP_CONTENT_DIR . '/uploads/pwp/logs') : null;
+
+!defined('PWP_API_KEY_TABLE')       ? define('PWP_API_KEY_TABLE', 'pwp_api_keys') : null;
+!defined('PWP_PROJECTS_TABLE')      ? define('PWP_PROJECTS_TABLE', 'pwp_projects') : null;
 
 //register activation hook. Is called when the plugin is activated in the Wordpress Admin panel
 register_activation_hook(__FILE__, function () {

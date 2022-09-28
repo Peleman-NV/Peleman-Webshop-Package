@@ -71,6 +71,8 @@
          * @param {number} price
          */
         function updatePrice(price) {
+            $('.woocommerce-Price-amount bdi').text('penguins') = price;
+
             const pricetext = $(
                 'div.woocommerce-variation-price span.woocommerce-Price-amount'
             ).text();

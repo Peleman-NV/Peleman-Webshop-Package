@@ -56,7 +56,7 @@ class PWP_Product_Meta_Data extends PWP_Product_Meta
         $this->usePDFContent = $usePDFContent;
         return $this;
     }
-    
+
     public function uses_pdf_content(): bool
     {
         return $this->usePDFContent;
@@ -144,9 +144,9 @@ class PWP_Product_Meta_Data extends PWP_Product_Meta
         $this->pricePerPage = $pricePerPage;
         return $this;
     }
-    public function get_price_per_page(): ?float
+    public function get_price_per_page(): float
     {
-        return $this->pricePerPage;
+        return $this->pricePerPage ?: 0.0;
     }
 
 

@@ -10,12 +10,19 @@ class PWP_File_Data extends PWP_Component
     private float $height;
     private float $width;
 
+    private string $contentId;
+    private string $location;
+
+
     public function __construct(array $data = [])
     {
         parent::__construct($data);
         $this->pageCount = 0;
         $this->height = 0;
         $this->width = 0;
+
+        $this->contentId = '';
+        $this->location = '';
     }
     public function get_name(): string
     {
@@ -71,5 +78,37 @@ class PWP_File_Data extends PWP_Component
     public function get_width(): float
     {
         return $this->width;
+    }
+
+    public function set_content_id(string $id): void
+    {
+        $this->contentId = $id;
+    }
+
+    public function get_content_id(): string
+    {
+        return $this->contentId;
+    }
+
+    public function set_file_location(string $location): void
+    {
+        $this->location = $location;
+    }
+    public function get_file_location(): string
+    {
+        return $this->location;
+    }
+
+    public function to_array(): array
+    {
+        return array(
+            'name'              => $this->get_name(),
+            'content_file_id'   => $this->get_content_id(),
+            'location'          => $this->get_file_location(),
+            'fileSize'          => $this->get_size(),
+            'width'             => $this->get_width(),
+            'height'            => $this->get_height(),
+            'pages'             => $this->get_page_count(),
+        );
     }
 }
