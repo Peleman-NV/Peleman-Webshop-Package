@@ -33,6 +33,7 @@ use PWP\adminPage\hookables\PWP_Save_Variable_Product_Custom_Fields;
 use PWP\includes\API\PWP_API_V1_Plugin;
 use PWP\includes\API\endpoints\PWP_TEST_OAuth2_Client_Endpoint;
 use PWP\includes\hookables\abstracts\PWP_I_Hookable_Component;
+use PWP\publicPage\hookables\PWP_Add_PDF_To_Cart_Item;
 use PWP\publicPage\hookables\PWP_Ajax_Upload_PDF_Content;
 
 if (!function_exists('is_plugin_active')) {
@@ -101,6 +102,7 @@ class PWP_Plugin
         // $this->add_hookable(new PWP_Add_Fields_To_Variations());
         $this->add_hookable(new PWP_Render_PDF_Upload_Form($this->templateEngine));
         $this->add_hookable(new PWP_Ajax_Upload_PDF_Content());
+        $this->add_hookable(new PWP_Add_PDF_To_Cart_Item());
 
         /* EDITOR product hookables */
         $this->add_hookable(new PWP_Ajax_Show_Variation());
