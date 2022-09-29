@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace PWP\includes\handlers\commands;
 
+use PWP\includes\utilities\notification\PWP_I_Notice;
 use PWP\includes\utilities\response\PWP_Error_Response;
 use PWP\includes\utilities\response\PWP_I_Response;
 use PWP\includes\utilities\response\PWP_Response;
@@ -11,7 +12,7 @@ use WC_Product_Variable;
 
 class PWP_Create_Variable_Product_Command extends PWP_Create_Product_Command
 {
-    public function do_action(): PWP_I_Response
+    public function do_action(): PWP_I_Notice
     {
         //check for duplicate SKU
         if (wc_get_product_id_by_sku($this->data['sku'])) {
@@ -32,9 +33,9 @@ class PWP_Create_Variable_Product_Command extends PWP_Create_Product_Command
 
         $this->handle_product_meta_components($product);
 
-        return new PWP_Response(
+        return PWP_Response::success(
+            'success',
             'new Variable product created',
-            true,
             200,
             $product->get_data()
         );

@@ -29,6 +29,7 @@ class PWP_Create_Product_Attribute_term_Command implements PWP_I_Command
     {
         if (term_exists($this->slug, $this->taxonomy)) {
             return PWP_Response::failure(
+                'failure',
                 "an attribute term with name {$this->name} already exists within this taxonomy.",
                 409
             );
@@ -40,6 +41,7 @@ class PWP_Create_Product_Attribute_term_Command implements PWP_I_Command
         ));
         if ($name_data instanceof \WP_Error) {
             return PWP_Response::failure(
+                'failure',
                 "Creation of product attribute {$this->name} failed",
                 400,
                 $name_data->error_data
@@ -47,6 +49,7 @@ class PWP_Create_Product_Attribute_term_Command implements PWP_I_Command
         }
 
         return PWP_Response::success(
+            'success',
             "product attribute term with name {$this->name} created successfully",
             200,
         );

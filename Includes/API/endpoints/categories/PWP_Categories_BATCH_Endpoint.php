@@ -66,9 +66,9 @@ class PWP_Categories_BATCH_Endpoint extends PWP_Abstract_BATCH_Endpoint
             );
         }
 
-        $response = new PWP_Response(
+        $response = PWP_Response::success(
             'batch',
-            true,
+            'product batch',
             200,
             array(
                 'create operations' => count($createOperations),
@@ -80,7 +80,10 @@ class PWP_Categories_BATCH_Endpoint extends PWP_Abstract_BATCH_Endpoint
         $this->generate_commands($createOperations, $updateOperations, $deleteOperations, $updateCanCreate, $canChangeParent);
         $this->execute_commands($response);
 
-        $response->add_response(PWP_Response::success("operation completed!"));
+        $response->add_response(PWP_Response::success(
+            "operation completed!",
+            "Batch operation completed successfully."
+        ));
         return $response;
     }
 

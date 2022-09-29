@@ -31,9 +31,9 @@ class PWP_Project implements PWP_I_Entity, JsonSerializable
         $this->file_name = $fileName;
         $this->pages = $pages;
         $this->price_vat_excl = 0.0;
-        $this->created = null;
-        $this->updated = null;
-        $this->ordered = null;
+        $this->created = '';
+        $this->updated = '';
+        $this->ordered = '';
     }
 
     public static function get_by_id(int $id): ?self
@@ -188,7 +188,7 @@ class PWP_Project implements PWP_I_Entity, JsonSerializable
 
     public function persist(): void
     {
-        if (0 >= $this->id) {
+        if (0 <= $this->id) {
             //if id is not 0, this project already exists in the database
             $this->update();
             return;

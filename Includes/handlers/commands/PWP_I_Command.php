@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace PWP\includes\handlers\commands;
 
-use PWP\includes\utilities\response\PWP_I_Response;
+use PWP\includes\utilities\notification\PWP_I_Notice;
 
 interface PWP_I_Command
 {
-    public function do_action(): PWP_I_Response;
+    public function do_action(): PWP_I_Notice;
 }

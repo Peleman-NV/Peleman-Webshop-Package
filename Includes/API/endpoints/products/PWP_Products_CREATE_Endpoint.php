@@ -11,6 +11,7 @@ use PWP\includes\exceptions\PWP_Invalid_Input_Exception;
 use PWP\includes\handlers\commands\PWP_Create_Simple_Product_Command;
 use PWP\includes\handlers\commands\PWP_Create_Variable_Product_Command;
 use PWP\includes\handlers\commands\PWP_Create_Variation_Product_Command;
+use PWP\includes\utilities\notification\PWP_I_Notice;
 use PWP\includes\utilities\response\PWP_Error_Response;
 use PWP\includes\utilities\response\PWP_I_Response;
 use PWP\includes\utilities\response\PWP_Response;
@@ -31,7 +32,7 @@ class PWP_Products_CREATE_Endpoint extends PWP_Abstract_CREATE_Endpoint
 
     public function do_action(WP_REST_Request $request): WP_REST_Response
     {
-        $response = new PWP_Response('request not processed', false, 500);
+        $response = PWP_Response::failure('failure', 'request not processed', 500);
 
         try {
             $requestData = $this->validate_request_with_schema($request->get_json_params(), 'product');
@@ -61,19 +62,19 @@ class PWP_Products_CREATE_Endpoint extends PWP_Abstract_CREATE_Endpoint
         }
     }
 
-    private function create_new_simple_product(array $request): PWP_I_Response
+    private function create_new_simple_product(array $request): PWP_I_Notice
     {
         $command = new PWP_Create_Simple_Product_Command($request);
         return $command->do_action();
     }
 
-    private function create_new_variable_product(array $request): PWP_I_Response
+    private function create_new_variable_product(array $request): PWP_I_Notice
     {
         $command = new PWP_Create_Variable_Product_Command($request);
         return $command->do_action();
     }
 
-    private function create_new_variant_product(array $request): PWP_I_Response
+    private function create_new_variant_product(array $request): PWP_I_Notice
     {
         $parentId = wc_get_product_id_by_sku($request['sku']);
         if (empty($parentId)) {

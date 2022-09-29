@@ -23,7 +23,7 @@ class PWP_Attribute_Terms_Create_Endpoint extends PWP_Abstract_CREATE_Endpoint
         $slug = $request['slug'];
         $taxonomy = $this->prefix . $slug;
 
-        $response = new PWP_Response('creating new attribute terms');
+        $response = PWP_Response::success('create', 'creating new attribute terms');
         foreach ($request['data'] as $term) {
             $command = new PWP_Create_Term_Command(new PWP_Term_SVC($taxonomy, 'em', $slug), new PWP_Term_Data($term));
             $response->add_response_component($command->do_action());

@@ -6,7 +6,7 @@ namespace PWP\includes\utilities\notification;
 
 use PWP\includes\utilities\response\PWP_I_Response;
 
-class PWP_Success_Notice implements PWP_I_Notification_Message
+class PWP_Success_Notice implements PWP_I_Notice
 {
     private string $message;
     private string $description;
@@ -45,5 +45,10 @@ class PWP_Success_Notice implements PWP_I_Notification_Message
 
     public function add_response_component(PWP_I_Response $response): void
     {
+    }
+
+    public function is_success(): bool
+    {
+        return false;
     }
 }

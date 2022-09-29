@@ -26,7 +26,7 @@ class PWP_Attributes_Create_Endpoint extends PWP_Abstract_CREATE_Endpoint
 
     public function do_action(WP_REST_Request $request): WP_REST_Response
     {
-        $response = new PWP_Response('create', true);
+        $response = PWP_Response::success('create', 'creating new product');
         $name = $request['name'];
         $slug = $request['slug'];
         $type = $request['type'] ?: 'select';

@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace PWP\includes\utilities\notification;
 
-interface PWP_I_Notification_Message
+interface PWP_I_Notice
 {
     public function get_message(): string;
     public function get_description(): string;
+    public function to_array(): array;
+    public function is_success(): bool;
 }

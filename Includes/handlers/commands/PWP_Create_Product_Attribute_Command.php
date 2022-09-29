@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace PWP\includes\handlers\commands;
 
+use PWP\includes\utilities\notification\PWP_I_Notice;
 use PWP\includes\utilities\response\PWP_I_Response;
 use PWP\includes\utilities\response\PWP_Response;
 
@@ -28,10 +29,10 @@ class PWP_Create_Product_Attribute_Command implements PWP_I_Command
         $this->taxonomy = 'pa_' . $this->slug;
     }
 
-    public function do_action(): PWP_Response
+    public function do_action(): PWP_I_Notice
     {
         if (taxonomy_exists($this->taxonomy)) {
-            return PWP_Response::failure('Attribute already exists.', 409);
+            return PWP_Response::failure('failure', 'Attribute already exists.', 409);
         }
 
         $id = wc_create_attribute(array(
@@ -44,6 +45,7 @@ class PWP_Create_Product_Attribute_Command implements PWP_I_Command
 
         if ($id instanceof \WP_Error) {
             return PWP_Response::failure(
+                'failure',
                 'Attribute creation failed.',
                 400
             );
@@ -52,6 +54,7 @@ class PWP_Create_Product_Attribute_Command implements PWP_I_Command
         $attr = wc_get_attribute($id);
 
         return PWP_Response::success(
+            'success',
             'Attribute successfully created',
             200,
             (array)$attr

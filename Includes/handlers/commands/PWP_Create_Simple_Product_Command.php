@@ -4,15 +4,14 @@ declare(strict_types=1);
 
 namespace PWP\includes\handlers\commands;
 
-
+use PWP\includes\utilities\notification\PWP_I_Notice;
 use PWP\includes\utilities\response\PWP_Error_Response;
-use PWP\includes\utilities\response\PWP_I_Response;
 use PWP\includes\utilities\response\PWP_Response;
 use WC_Product_Simple;
 
 class PWP_Create_Simple_Product_Command extends PWP_Create_Product_Command
 {
-    public function do_action(): PWP_I_Response
+    public function do_action(): PWP_I_Notice
     {
         if (isset($this->data['lang']) && 'en' !== $this->data['lang']) {
             $lang = $this->data['lang'];
@@ -46,9 +45,9 @@ class PWP_Create_Simple_Product_Command extends PWP_Create_Product_Command
         $this->handle_product_meta_components($product);
 
         // $this->configure_translation($product, $parent);
-        return new PWP_Response(
+        return PWP_Response::success(
+            "success",
             "Product successfully created",
-            true,
             200,
             $product->get_data()
         );
