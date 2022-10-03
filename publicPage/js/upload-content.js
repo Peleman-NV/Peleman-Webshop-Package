@@ -11,14 +11,13 @@
 (function ($) {
     'use strict';
     $(function () {
-        console.log('initializing pdf upload code...');
+        // console.log('initializing pdf upload code...');
+        disableAddToCartButton();
         // Event: when the file input changes, ie: when a new file is selected
         $('#file-upload').on('change', e => {
             const productId = $("[name='add-to-cart']").val();
             const variationId = $("[name='variation_id']").val();
             //re-enable this line to automatically disable the upload button
-            $('.single_add_to_cart_button').addClass('pwp-disabled');
-            $('.single_add_to_cart_button').prop("disabled", true);
             $('#upload-info').html(''); // clear html content in upload-info
             $('#upload-info').removeClass(); // removes all classes from upload info
             $('#pwp-loading').removeClass('pwp-hidden'); // display loading animation
@@ -87,12 +86,10 @@
 
         function onUploadSuccess(response) {
             console.log(response);
+            enableAddToCartButton();
             $('#upload-info').html(response.data.message);
             if (response.status === 'success') {
                 updatePrice(response.data.file.price_vat_incl);
-                // enable add to cart button
-                $('.single_add_to_cart_button').removeClass('pwp-disabled');
-                $('.single_add_to_cart_button').prop("disabled", false);
 
                 // update thumbnail container   
                 $('.thumbnail-container').addClass('pwp-min-height');
@@ -100,9 +97,9 @@
                 $('.thumbnail-container').prop('alt', response.data.file.name);
 
                 // add content file id to hidden input
-                $("[name='variation_id']").after(
-                    '<input type="hidden" name="content_file_id" class="content_file_id" value="' + response.data.file.content_file_id + '"></input>'
-                );
+                // $("[name='variation_id']").after(
+                //     '<input type="hidden" name="content_file_id" class="content_file_id" value="' + response.data.file.content_file_id + '"></input>'
+                // );
                 $('#pwp-loading').addClass('pwp-hidden');
             } else {
                 $('#upload-info').html(response.data.description);
@@ -138,6 +135,16 @@
             formData.append('variant_id', variationId || 0);
             formData.append('nonce', PWP_Upload_PDF_object.nonce);
             return formData;
+        }
+
+        function disableAddToCartButton() {
+            $('.single_add_to_cart_button').addClass('pwp-disabled');
+            $('.single_add_to_cart_button').prop("disabled", true);
+        }
+
+        function enableAddToCartButton() {
+            $('.single_add_to_cart_button').removeClass('pwp-disabled');
+            $('.single_add_to_cart_button').prop("disabled", false);
         }
     });
 })(jQuery);

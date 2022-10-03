@@ -188,8 +188,8 @@ class PWP_Project implements PWP_I_Entity, JsonSerializable
 
     public function persist(): void
     {
-        if (0 <= $this->id) {
-            //if id is not 0, this project already exists in the database
+        if (-1 !==$this->id) {
+            //if id is more than 0, this project already exists in the database
             $this->update();
             return;
         }

@@ -101,7 +101,7 @@ class PWP_Plugin
         /* PDF upload hookables */
         // $this->add_hookable(new PWP_Add_Fields_To_Variations());
         $this->add_hookable(new PWP_Render_PDF_Upload_Form($this->templateEngine));
-        $this->add_hookable(new PWP_Ajax_Upload_PDF_Content());
+        // $this->add_hookable(new PWP_Ajax_Upload_PDF_Content());
         $this->add_hookable(new PWP_Add_PDF_To_Cart_Item());
 
         /* EDITOR product hookables */

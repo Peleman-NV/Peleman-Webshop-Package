@@ -6,6 +6,7 @@ namespace PWP\publicPage\hookables;
 
 use PWP\includes\editor\PWP_Product_Meta_Data;
 use PWP\includes\hookables\abstracts\PWP_Abstract_Action_Hookable;
+use PWP\includes\validation\PWP_Validate_File_Size;
 use PWP\templates\PWP_Template;
 
 class PWP_Render_PDF_Upload_Form extends PWP_Abstract_Action_Hookable
@@ -29,6 +30,7 @@ class PWP_Render_PDF_Upload_Form extends PWP_Abstract_Action_Hookable
         $params = array(
             'button_label' => esc_html__('Click here to upload your PDF file', PWP_TEXT_DOMAIN),
             'max_file_size' => '200 MB',
+            'size' => (int)ini_get('upload_max_filesize') * PWP_Validate_File_Size::MB,
             'pdf_width' => $meta->get_pdf_width() . ' mm',
             'pdf_height' => $meta->get_pdf_height() . ' mm',
             'pdf_min_pages' => $meta->get_pdf_min_pages(),

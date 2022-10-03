@@ -93,8 +93,8 @@ class PWP_Ajax_Upload_PDF_Content extends PWP_Abstract_Ajax_Hookable
 
         /** 4) */
         $id = $this->generate_content_file_id($productId);
-        $path = $this->save_file($id, 'content');
-        error_log($path);
+        // $path = $this->save_file($id, 'content');
+        // error_log($path);
         // $this->generate_thumbnail($path, $id, 160);
 
 
