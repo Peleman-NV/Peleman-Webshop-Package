@@ -4,13 +4,10 @@ declare(strict_types=1);
 
 namespace PWP\publicPage\hookables;
 
-use Exception;
 use PWP\includes\editor\PWP_Product_Meta_Data;
 use PWP\includes\hookables\abstracts\PWP_Abstract_Filter_Hookable;
 use PWP\includes\services\entities\PWP_Project;
 use PWP\includes\utilities\PWP_PDF_Factory;
-use PWP\includes\wrappers\PWP_File_Data;
-use setasign\Fpdi\Fpdi;
 
 /**
  * Filter hookable class for handling PDF uploads when adding an item to the cart. If the product
@@ -29,16 +26,13 @@ class PWP_Add_PDF_To_Cart_Item extends PWP_Abstract_Filter_Hookable
     {
         //TODO: implementation
         $meta = new PWP_Product_Meta_Data(wc_get_product($product_id));
-        error_log($meta->uses_pdf_content() ? 'foo' : 'bar');
-        error_log(print_r($_FILES, true));
-
         $fileArr = $_FILES['pdf_upload'];
 
         try {
 
             // Undefined | Multiple Files | $_FILES Corruption Attack
             // If this request falls under any of them, treat it invalid.
-         
+
             if ($meta->uses_pdf_content() && 'application/pdf' == $fileArr['type'] && 0 === $fileArr['error']) {
 
                 if (4 == $fileArr['error']) {
@@ -57,20 +51,16 @@ class PWP_Add_PDF_To_Cart_Item extends PWP_Abstract_Filter_Hookable
                 );
                 $project->persist();
                 $id = $project->get_id();
-                $uploadFile = realpath(PWP_UPLOAD_DIR) . "/{$id}/" . basename($filename);
-                error_log("new project ID: {$id}");
-                error_log("new file destination: {$uploadFile}");
-                /** STEPS:
-                 * 1) create and save new entry for the item.
-                 * 2) use the ID of the new entry to create a directory
-                 * 3) store .pdf in directory
-                 * 4) if all has gone well, we can add the ID to the meta data of the item
-                 */
+                $safeName = sha1_file($pdf->get_tmp_name());
+                $uploadFile = realpath(PWP_UPLOAD_DIR) . "/{$id}/{$safeName}.pdf";
 
                 if (!realpath(PWP_UPLOAD_DIR . "/{$id}")) {
                     mkdir(realpath(PWP_UPLOAD_DIR) . "/{$id}", 0660);
                 }
-                if (move_uploaded_file($pdf->get_tmp_name(), $uploadFile)) {
+                if (move_uploaded_file(
+                    $pdf->get_tmp_name(),
+                    $uploadFile
+                )) {
                 }
             }
 

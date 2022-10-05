@@ -25,26 +25,40 @@ class PWP_Validate_PDF_Upload extends PWP_Abstract_Filter_Hookable
     public function validate_pdf_upload(bool $passed, int $product_id, int $quantity, int $variation_id = 0, int $variations = 0)
     {
         $product = new PWP_Product_Meta_Data(wc_get_product($variation_id ?: $product_id));
-        if (!$product->uses_pdf_content())
-            return true;
+        if (!$product->uses_pdf_content()) return true;
         if (
             !isset($_FILES['pdf_upload']['error']) ||
             is_array($_FILES['pdf_upload']['error'])
         ) {
-            wc_add_notice(__('invalid file upload parameters. Try again with a different file.', PWP_TEXT_DOMAIN));
+            wc_add_notice(
+                __('invalid file upload parameters. Try again with a different file.', PWP_TEXT_DOMAIN),
+                'error'
+            );
             return false;
         }
-        $pdfFactory = new PWP_PDF_Factory();
-        $pdf = $pdfFactory->generate_from_upload($_FILES['pdf_upload']);
+        try {
 
-        $notification = new PWP_Notification();
-        $validator = $this->validation_chain($product, $notification);
+            $pdfFactory = new PWP_PDF_Factory();
+            $pdf = $pdfFactory->generate_from_upload($_FILES['pdf_upload']);
 
-        if (!$notification->is_success()) {
-            wc_add_notice($notification->get_errors()[0]);
+            $notification = new PWP_Notification();
+            $this->validation_chain($product,)->handle($pdf, $notification);
+
+            if (!$notification->is_success()) {
+                wc_add_notice(
+                    $notification ? $notification->get_errors()[0]->get_description() : __('the uploaded pdf is not valid', PWP_TEXT_DOMAIN),
+                    'error'
+                );
+            }
+
+            return $notification->is_success();
+        } catch (\Exception $e) {
+            wc_add_notice(
+                __('could not process PDF upload. try again with a different file.', PWP_TEXT_DOMAIN),
+                'error'
+            );
+            return false;
         }
-
-        return $notification->is_success();
     }
 
     /**

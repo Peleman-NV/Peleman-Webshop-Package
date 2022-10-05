@@ -4,11 +4,8 @@ declare(strict_types=1);
 
 namespace PWP\includes\handlers\commands;
 
-use PWP\includes\utilities\notification\PWP_Error_Notice;
+
 use PWP\includes\utilities\notification\PWP_I_Notice;
-use PWP\includes\utilities\notification\PWP_Success_Notice;
-use PWP\includes\utilities\response\PWP_Error_Response;
-use PWP\includes\utilities\response\PWP_I_Response;
 use PWP\includes\utilities\response\PWP_Response;
 use WC_Product_Variation;
 

@@ -36,6 +36,7 @@ use PWP\includes\hookables\abstracts\PWP_I_Hookable_Component;
 use PWP\publicPage\hookables\PWP_Add_PDF_Data_Display_To_Cart_Item;
 use PWP\publicPage\hookables\PWP_Add_PDF_To_Cart_Item;
 use PWP\publicPage\hookables\PWP_Ajax_Upload_PDF;
+use PWP\publicPage\hookables\PWP_Remove_PDF_On_Cart_Deletion;
 use PWP\publicPage\hookables\PWP_Validate_PDF_Upload;
 
 if (!function_exists('is_plugin_active')) {
@@ -107,6 +108,7 @@ class PWP_Plugin
         $this->add_hookable(new PWP_Validate_PDF_Upload);
         $this->add_hookable(new PWP_Add_PDF_To_Cart_Item());
         $this->add_hookable(new PWP_Add_PDF_Data_Display_To_Cart_Item());
+        $this->add_hookable(new PWP_Remove_PDF_On_Cart_Deletion());
 
         /* EDITOR product hookables */
         $this->add_hookable(new PWP_Ajax_Show_Variation());

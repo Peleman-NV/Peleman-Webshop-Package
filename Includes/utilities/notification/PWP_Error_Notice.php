@@ -67,12 +67,17 @@ class PWP_Error_Notice implements PWP_I_Notice
         return new WP_REST_Response($this->to_array(), 200);
     }
 
-    public function add_response_component(PWP_I_Response $response): void
+    public function add_response_component(PWP_I_Notice $response): void
     {
     }
 
     public function is_success(): bool
     {
         return false;
+    }
+
+    public function __tostring(): string
+    {
+        return "{$this->message}: {$this->description}";
     }
 }

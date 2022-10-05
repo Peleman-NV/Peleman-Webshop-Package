@@ -22,14 +22,16 @@ class PWP_Validate_File_Dimensions extends PWP_Abstract_File_Handler
 
     public function handle(PWP_File_Data $data, ?PWP_I_Notification $notification = null): bool
     {
-
-        $heightFit = $this->number_is_in_range(
+        error_log('height: ' . $data->get_height());
+        error_log('width: ' . $data->get_width());
+        
+        $heightFit = $this->value_is_in_range(
             $data->get_height(),
             $this->heightRange,
             $this->precision
         );
 
-        $widthFit = $this->number_is_in_range(
+        $widthFit = $this->value_is_in_range(
             $data->get_width(),
             $this->widthRange,
             $this->precision
@@ -37,11 +39,14 @@ class PWP_Validate_File_Dimensions extends PWP_Abstract_File_Handler
         if ($heightFit && $widthFit) {
             return $this->handle_next($data, $notification);
         }
-        $notification->add_error('Dimensions not valid', 'The dimensions of the file do not match the specified dimensions');
+        $notification->add_error(
+            'Dimensions not valid',
+            __('The dimensions of the file do not match the specified dimensions', PWP_TEXT_DOMAIN)
+        );
         return false;
     }
 
-    private function number_is_in_range(float $value, float $range, float $precision): bool
+    private function value_is_in_range(float $value, float $range, float $precision): bool
     {
         return $precision >= abs($value - $range);
     }

@@ -48,14 +48,14 @@ class PWP_Project implements PWP_I_Entity, JsonSerializable
             if (!$row) return null;
 
             $product = new self(
-                $row->user_id,
-                $row->product_id,
+                (int)$row->user_id,
+                (int)$row->product_id,
                 $row->file_name,
-                $row->pages,
-                $row->price_vat_excl,
+                (int)$row->pages,
+                (float)$row->price_vat_excl,
             );
-            $product->id = $row->id;
-            $product->project_id = $row->project_id;
+            $product->id = (int)$row->id;
+            $product->project_id = $row->project_id ?? '';
             $product->created = $row->created;
             $product->updated = $row->updated;
             $product->ordered = $row->ordered;
@@ -188,12 +188,26 @@ class PWP_Project implements PWP_I_Entity, JsonSerializable
 
     public function persist(): void
     {
-        if (-1 !==$this->id) {
+        if (-1 !== $this->id) {
             //if id is more than 0, this project already exists in the database
             $this->update();
             return;
         }
         $this->save();
+    }
+
+    public function delete(): void
+    {
+        if (-1 === $this->id) return;
+
+        global $wpdb;
+        if ($wpdb instanceof \wpdb) {
+            if (!$wpdb->delete(
+                $wpdb->prefix . PWP_PROJECTS_TABLE,
+                array('id' => $this->id),
+                array('%d')
+            ));
+        }
     }
 
     private function save(): void

@@ -44,6 +44,7 @@ if (!defined('ABSPATH')) {
         <div id='upload-info'></div> -->
     </div>
     <label class='upload-label button' for='file-upload'><?= esc_html__('upload .pdf file', PWP_TEXT_DOMAIN); ?></label>
-    <input id='file-upload' type='file' accept='application/pdf' name='pdf_upload' size='<?= $size; ?>' style='display: none;'>
+    <input id='file-upload' type='file' accept='application/pdf' name='pdf_upload' size='<?= $size; ?>'>
 </div>
-<div id='upload-info'></div>
+<div id=' upload-info'>
+</div>
