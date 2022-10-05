@@ -34,6 +34,7 @@ use PWP\includes\API\PWP_API_V1_Plugin;
 use PWP\includes\API\endpoints\PWP_TEST_OAuth2_Client_Endpoint;
 use PWP\includes\hookables\abstracts\PWP_I_Hookable_Component;
 use PWP\publicPage\hookables\PWP_Add_PDF_Data_Display_To_Cart_Item;
+use PWP\publicPage\hookables\PWP_Add_PDF_Prices_To_Cart;
 use PWP\publicPage\hookables\PWP_Add_PDF_To_Cart_Item;
 use PWP\publicPage\hookables\PWP_Ajax_Upload_PDF;
 use PWP\publicPage\hookables\PWP_Remove_PDF_On_Cart_Deletion;
@@ -109,6 +110,7 @@ class PWP_Plugin
         $this->add_hookable(new PWP_Add_PDF_To_Cart_Item());
         $this->add_hookable(new PWP_Add_PDF_Data_Display_To_Cart_Item());
         $this->add_hookable(new PWP_Remove_PDF_On_Cart_Deletion());
+        $this->add_hookable(new PWP_Add_PDF_Prices_To_Cart());
 
         /* EDITOR product hookables */
         $this->add_hookable(new PWP_Ajax_Show_Variation());

@@ -30,7 +30,7 @@ class PWP_Project implements PWP_I_Entity, JsonSerializable
         $this->product_id = $productId;
         $this->file_name = $fileName;
         $this->pages = $pages;
-        $this->price_vat_excl = 0.0;
+        $this->price_vat_excl = $price_vat_excl;
         $this->created = '';
         $this->updated = '';
         $this->ordered = '';
@@ -64,7 +64,7 @@ class PWP_Project implements PWP_I_Entity, JsonSerializable
         return null;
     }
 
-    public static function create_new(int $userId, int $productId, string $fileName, int $pages = 0, float $price): self
+    public static function create_new(int $userId, int $productId, string $fileName, int $pages = 0, float $price = 0.00): self
     {
         return new self($userId, $productId, $fileName, $pages, $price);
     }

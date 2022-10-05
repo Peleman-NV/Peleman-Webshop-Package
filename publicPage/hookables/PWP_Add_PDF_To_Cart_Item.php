@@ -47,7 +47,7 @@ class PWP_Add_PDF_To_Cart_Item extends PWP_Abstract_Filter_Hookable
                     $product_id,
                     $filename,
                     $pdf->get_page_count(),
-                    12.00
+                    $pdf->get_page_count() * $meta->get_price_per_page()
                 );
                 $project->persist();
                 $id = $project->get_id();
@@ -66,7 +66,9 @@ class PWP_Add_PDF_To_Cart_Item extends PWP_Abstract_Filter_Hookable
 
             $cart_item_data['_pdf_data'] = array(
                 'id'        => $id,
-                'pdf_name'  => $filename
+                'pdf_name'  => $filename,
+                'pages'     => $pdf->get_page_count(),
+                'extra_cost' => $pdf->get_page_count() * $meta->get_price_per_page()
             );
 
             return $cart_item_data;

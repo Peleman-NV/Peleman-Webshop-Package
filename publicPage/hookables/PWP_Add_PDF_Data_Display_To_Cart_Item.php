@@ -18,10 +18,11 @@ class PWP_Add_PDF_Data_Display_To_Cart_Item extends PWP_Abstract_Action_Hookable
         if (isset($cart_item['_pdf_data'])) {
             $id = $cart_item['_pdf_data']['id'];
             $filename = $cart_item['_pdf_data']['pdf_name'];
+            $pages = $cart_item['_pdf_data']['pages'];
 
 ?>
-            <!-- <div>id: <?= $id; ?></div> -->
-            <div>pdf: <?= $filename; ?></div>
+            <div><strong>pdf</strong>: <?= $filename; ?></div>
+            <div><strong>pages</strong>: <?= $pages; ?></div>
 <?php
         }
     }
