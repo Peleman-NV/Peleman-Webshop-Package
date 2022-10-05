@@ -16,7 +16,7 @@ class PWP_Validate_File_PageCount extends PWP_Abstract_File_Handler
         $this->maxPages = $maxPages;
     }
 
-    public function handle(PWP_File_Data $data, PWP_I_Notification $notification): bool
+    public function handle(PWP_File_Data $data, ?PWP_I_Notification $notification = null): bool
     {
         $pages = $data->get_page_count();
 

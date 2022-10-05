@@ -11,16 +11,14 @@ use PWP\includes\hookables\abstracts\PWP_Abstract_Ajax_Hookable;
 use PWP\includes\utilities\notification\PWP_Error_Notice;
 use PWP\includes\utilities\notification\PWP_Notification;
 use PWP\includes\utilities\notification\PWP_Success_Notice;
-use PWP\includes\utilities\PWP_Thumbnail_Generator_JPG;
 use PWP\includes\validation\PWP_Abstract_File_Handler;
 use PWP\includes\validation\PWP_Validate_File_Dimensions;
 use PWP\includes\validation\PWP_Validate_File_Errors;
 use PWP\includes\validation\PWP_Validate_File_PageCount;
 use PWP\includes\validation\PWP_Validate_File_Size;
-use PWP\includes\validation\PWP_Validate_File_Type;
-use WP_Image_Editor_Imagick;
+use PWP\includes\validation\PWP_Validate_File_Type_Is_PDF;
 
-class PWP_Ajax_Upload_PDF_Content extends PWP_Abstract_Ajax_Hookable
+class PWP_Ajax_Upload_PDF extends PWP_Abstract_Ajax_Hookable
 {
     public function __construct()
     {
@@ -58,7 +56,7 @@ class PWP_Ajax_Upload_PDF_Content extends PWP_Abstract_Ajax_Hookable
             $this->send_json_error(
                 'invalid product id',
                 'no product with this product ID passed',
-                420,
+                200,
                 array('id' => $productId)
             );
         }
@@ -79,7 +77,7 @@ class PWP_Ajax_Upload_PDF_Content extends PWP_Abstract_Ajax_Hookable
             $this->send_json_error(
                 $error->getMessage(),
                 '',
-                420
+                200
             );
         }
         if (!$this->validation_chain($productMeta)->handle($file, $notification)) {
@@ -173,7 +171,7 @@ class PWP_Ajax_Upload_PDF_Content extends PWP_Abstract_Ajax_Hookable
     {
         $maxFileSize = (int)ini_get('upload_max_filesize') * PWP_Validate_File_Size::MB;
 
-        $validator = new PWP_Validate_File_Type();
+        $validator = new PWP_Validate_File_Type_Is_PDF();
         $validator
             ->set_next(new PWP_Validate_File_Errors())
             ->set_next(new PWP_Validate_File_Size($maxFileSize))

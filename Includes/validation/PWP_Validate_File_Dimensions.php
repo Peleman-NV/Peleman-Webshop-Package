@@ -20,10 +20,10 @@ class PWP_Validate_File_Dimensions extends PWP_Abstract_File_Handler
         $this->precision = $precision;
     }
 
-    public function handle(PWP_File_Data $data, PWP_I_Notification $notification): bool
+    public function handle(PWP_File_Data $data, ?PWP_I_Notification $notification = null): bool
     {
 
-        $heightFit =             $this->number_is_in_range(
+        $heightFit = $this->number_is_in_range(
             $data->get_height(),
             $this->heightRange,
             $this->precision

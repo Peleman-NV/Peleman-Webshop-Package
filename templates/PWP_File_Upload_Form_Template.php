@@ -4,10 +4,10 @@ if (!defined('ABSPATH')) {
 }
 ?>
 
-<div class='ppi-upload-form'>
-    <div class='ppi-upload-parameters'>
+<div class='pwp-upload-form'>
+    <div class='pwpi-upload-parameters'>
         <div class='thumbnail-container'>
-            <img id='ppi-thumbnail' />
+            <img id='pwp-thumbnail' />
         </div>
         <table>
             <tbody>

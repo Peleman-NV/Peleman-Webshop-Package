@@ -9,7 +9,7 @@ use PWP\includes\wrappers\PWP_File_Data;
 
 class PWP_Validate_File_Errors extends PWP_Abstract_File_Handler
 {
-    final public function handle(PWP_File_Data $file, PWP_I_Notification $notification): bool
+    final public function handle(PWP_File_Data $file, ?PWP_I_Notification $notification = null): bool
     {
         if (!empty($file->get_error())) {
             $notification->add_error(
