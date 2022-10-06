@@ -22,10 +22,21 @@ class PWP_Validate_PDF_Upload extends PWP_Abstract_Filter_Hookable
         parent::__construct('woocommerce_add_to_cart_validation', 'validate_pdf_upload', 1, 5);
     }
 
-    public function validate_pdf_upload(bool $passed, int $product_id, int $quantity, int $variation_id = 0, int $variations = 0)
+    public function validate_pdf_upload(bool $passed, int $product_id, int $quantity, int $variation_id = 0, array $variations = [])
     {
+        error_log("product: {$product_id}");
+        error_log("variation: {$variation_id}");
+        error_log("files: " . print_r($_FILES, true));
+
         $product = new PWP_Product_Meta_Data(wc_get_product($variation_id ?: $product_id));
         if (!$product->uses_pdf_content()) return true;
+        if (!isset($_FILES['pdf_upload'])) {
+            wc_add_notice(
+                __('product requires pdf upload.', PWP_TEXT_DOMAIN),
+                'error'
+            );
+            return false;
+        }
         if (
             !isset($_FILES['pdf_upload']['error']) ||
             is_array($_FILES['pdf_upload']['error'])

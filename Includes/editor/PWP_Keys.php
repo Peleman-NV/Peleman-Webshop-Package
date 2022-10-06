@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace PWP\includes\editor;
 
+/**
+ * Static utility class; contains all the individual constant keys for product meta data.
+ */
 class PWP_Keys
 {
     public const USE_PDF_CONTENT_KEY = 'pwp_use_pdf_content';

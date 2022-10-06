@@ -40,21 +40,21 @@
         });
 
         function hideElement(element) {
-            element.addClass('ppi-hidden');
+            element.addClass('pwp-hidden');
         }
 
         function showElement(element) {
-            element.removeClass('ppi-hidden');
+            element.removeClass('pwp-hidden');
         }
 
         function enableElement(element) {
             element.prop('disabled', false);
-            element.removeClass('ppi-disabled');
+            element.removeClass('pwp-disabled');
         }
 
         function disableElement(element) {
             element.prop('disabled', true)
-            element.addClass('ppi-enabled');
+            element.addClass('pwp-enabled');
         }
 
         function getProductVariationData(variationId) {
@@ -97,17 +97,19 @@
                             return;
                         }
                         if (response.data.requires_pdf_upload) {
-                            enableAddToCartButton(buttonText);
-                            displayUploadElements(response.data);
-                            return
+                            console.log("foo");
+                            displayUploadElement(response.data);
+                        } else {
+                            console.log("bar");
+                            hideUploadElement(response.data);
                         }
                         enableAddToCartButton(buttonText);
                         return;
 
                     }
                     $('#variant-info').html(response.data.message);
-                    $('#variant-info').addClass('ppi-response-error');
-                    hideElement($('#ppi-loading'));
+                    $('#variant-info').addClass('pwp-response-error');
+                    hideElement($('#pwp-loading'));
 
                 },
                 error: function (jqXHR, textStatus, errorThrown) {
@@ -131,7 +133,7 @@
             // display loading animation
             showElement($('#ppi-loading'));
             // clear any old upload information
-            $('#upload-info').html('');
+            // $('#pwp-file-upload').val('');
             // hide the ever present max upload file size
             hideElement($('#max-upload-size'));
             // disable add-to-cart btn
@@ -163,25 +165,32 @@
         /**
          * Function displays the necessary parameters, when present
          */
-        function displayUploadElements(response) {
+        function displayUploadElement(data) {
             enableUploadBtn();
             const { height, width, min_pages, max_pages, price_per_page } =
-                response;
+                data.pdf_data;
+            // height = data.pdf_data.height;
+            // width = data.pdf_data.width;
+            // min_pages = data.pdf_data.min_pages;
+            // max_pages = data.pdf_data.max_pages;
+            // price_per_page = data.pdf_data.price_per_page;
+
             hideElement($('#ppi-loading'));
 
-            showElement($('.ppi-upload-form'));
+            showElement($('.pwp-upload-form'));
             showElement($('.upload-label'));
-
-            showElement($('.ppi-upload-form'));
             showElement($('#max-upload-size'));
+            $('#pwp-file-upload').prop('required', true);
+            // $('#pwp-file-upload').val();
+
             if (height != '') {
-                $('#content-height').html(height + 'mm');
+                $('#content-height').html(height);
                 showElement($('#content-height').parent());
             } else {
                 hideElement($('#content-height').parent());
             }
             if (width != '') {
-                $('#content-width').html(width + 'mm');
+                $('#content-width').html(width);
                 showElement($('#content-width').parent());
             } else {
                 hideElement($('#content-width').parent());
@@ -204,16 +213,19 @@
             } else {
                 hideElement($('#content-price-per-page').parent());
             }
-            showElement($('.ppi-upload-parameters'));
+            showElement($('.upload-parameters'));
+
         }
 
         /**
          * Function hides upload parameters,
          * because a  new variant may not have upload parameters
          */
-        function hideUploadElements() {
-            $('.upload-label').addClass('upload-disabled');
+        function hideUploadElement() {
+            hideElement($('.pwp-upload-form'));
             hideElement($('.upload-parameters'));
+            $('.upload-label').addClass('upload-disabled');
+            $('#pwp-file-upload').prop('required', false);
         }
 
         function setAddToCartLabel() {

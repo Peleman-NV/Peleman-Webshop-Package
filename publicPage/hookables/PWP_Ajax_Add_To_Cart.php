@@ -101,7 +101,7 @@ class PWP_Ajax_Add_To_Cart extends PWP_Abstract_Ajax_Hookable
                     'destination_url' => '',
                 ), 200);
             }
-            throw new Exception("something unexpected went wrong", 500);
+            throw new Exception("a validation error occurred.", 500);
         } catch (Error $err) {
             error_log(sprintf("PHP Error: %s in %s on line %s", $err->getMessage(), $err->getFile(), $err->getLine()));
             error_log($err->getTraceAsString());

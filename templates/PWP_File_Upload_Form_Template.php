@@ -4,8 +4,8 @@ if (!defined('ABSPATH')) {
 }
 ?>
 
-<div class='pwp-upload-form'>
-    <div class='pwpi-upload-parameters'>
+<div class='pwp-upload-form <?= $enabled ? '' :  'pwp-hidden'; ?>'>
+    <div class='pwp-upload-parameters'>
         <div class='thumbnail-container'>
             <img id='pwp-thumbnail' />
         </div>
@@ -37,13 +37,9 @@ if (!defined('ABSPATH')) {
                 </tr>
             <tbody>
         </table>
-        <!-- <div class='ppi-upload-form ppi-hidden'>
-            <label class='upload-label upload-disabled' for='file-upload'><?= $button_label; ?></label>
-            <input id='file-upload' type='file' accept='application/pdf' name='pdf_upload' style='display: none;'>
-        </div> -->
-        <div id='upload-info' class='pwp-upload-form pwp-hidden'>
-            <label class='upload-label' for='file-upload'><?= esc_html__('upload .pdf file', PWP_TEXT_DOMAIN); ?></label>
-            <input class='upload-field' id='file-upload' type='file' accept='application/pdf' name='pdf_upload' size='<?= $size; ?>' required>
+        <div id='upload-info'>
+            <label class='pwp-upload-label' for='pwp-file-upload'><?= esc_html__('upload .pdf file', PWP_TEXT_DOMAIN); ?></label>
+            <input class='pwp-upload-field' id='pwp-file-upload' type='file' accept='application/pdf' name='pdf_upload' size='<?= $size; ?>' required />
         </div>
     </div>
 </div>

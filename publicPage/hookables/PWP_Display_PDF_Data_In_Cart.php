@@ -6,7 +6,7 @@ namespace PWP\publicPage\hookables;
 
 use PWP\includes\hookables\abstracts\PWP_Abstract_Action_Hookable;
 
-class PWP_Add_PDF_Data_Display_To_Cart_Item extends PWP_Abstract_Action_Hookable
+class PWP_Display_PDF_Data_In_Cart extends PWP_Abstract_Action_Hookable
 {
     public function __construct()
     {

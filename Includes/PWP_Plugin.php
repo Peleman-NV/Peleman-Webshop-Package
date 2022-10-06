@@ -10,11 +10,11 @@ use PWP\includes\loadables\PWP_Plugin_Loader;
 use PWP\publicPage\hookables\PWP_Ajax_Add_To_Cart;
 use PWP\publicPage\hookables\PWP_Ajax_Show_Variation;
 use PWP\publicPage\hookables\PWP_Enqueue_Public_Styles;
-use PWP\publicPage\hookables\PWP_Render_PDF_Upload_Form;
-use PWP\publicPage\hookables\PWP_Add_Fields_To_Variations;
+use PWP\publicPage\hookables\PWP_Display_PDF_Upload_Form;
+use PWP\publicPage\hookables\PWP_Display_PDF_Fields_On_Variations;
 use PWP\publicPage\hookables\PWP_Add_Custom_Project_On_Return;
 use PWP\publicPage\hookables\PWP_Change_Add_To_Cart_Button_Label;
-use PWP\publicPage\hookables\PWP_Add_Project_Button_To_Cart_Item;
+use PWP\publicPage\hookables\PWP_Display_Editor_Project_Button_In_Cart;
 use PWP\publicPage\hookables\PWP_Add_Fields_To_Add_To_Cart_Button;
 use PWP\publicPage\hookables\PWP_Change_Add_To_Cart_Label_For_Archive;
 use PWP\publicPage\hookables\PWP_Save_Cart_Item_Meta_To_Order_Item_Meta;
@@ -33,7 +33,7 @@ use PWP\adminPage\hookables\PWP_Save_Variable_Product_Custom_Fields;
 use PWP\includes\API\PWP_API_V1_Plugin;
 use PWP\includes\API\endpoints\PWP_TEST_OAuth2_Client_Endpoint;
 use PWP\includes\hookables\abstracts\PWP_I_Hookable_Component;
-use PWP\publicPage\hookables\PWP_Add_PDF_Data_Display_To_Cart_Item;
+use PWP\publicPage\hookables\PWP_Display_PDF_Data_In_Cart;
 use PWP\publicPage\hookables\PWP_Add_PDF_Prices_To_Cart;
 use PWP\publicPage\hookables\PWP_Add_PDF_To_Cart_Item;
 use PWP\publicPage\hookables\PWP_Ajax_Upload_PDF;
@@ -103,12 +103,12 @@ class PWP_Plugin
         $this->add_hookable(new PWP_Add_Fields_To_Add_To_Cart_Button());
 
         /* PDF upload hookables */
-        // $this->add_hookable(new PWP_Add_Fields_To_Variations());
-        $this->add_hookable(new PWP_Render_PDF_Upload_Form($this->templateEngine));
+        // $this->add_hookable(new PWP_Display_PDF_Fields_On_Variations());
+        $this->add_hookable(new PWP_Display_PDF_Upload_Form($this->templateEngine));
         // $this->add_hookable(new PWP_Ajax_Upload_PDF());
         $this->add_hookable(new PWP_Validate_PDF_Upload);
         $this->add_hookable(new PWP_Add_PDF_To_Cart_Item());
-        $this->add_hookable(new PWP_Add_PDF_Data_Display_To_Cart_Item());
+        $this->add_hookable(new PWP_Display_PDF_Data_In_Cart());
         $this->add_hookable(new PWP_Remove_PDF_On_Cart_Deletion());
         $this->add_hookable(new PWP_Add_PDF_Prices_To_Cart());
 
@@ -116,7 +116,7 @@ class PWP_Plugin
         $this->add_hookable(new PWP_Ajax_Show_Variation());
         $this->add_hookable(new PWP_Ajax_Add_To_Cart());
         //$this->add_hookable(new PWP_Add_PDF_Contents_To_Cart());
-        $this->add_hookable(new PWP_Add_Project_Button_To_Cart_Item());
+        $this->add_hookable(new PWP_Display_Editor_Project_Button_In_Cart());
         $this->add_hookable(new PWP_Add_Custom_Project_On_Return());
         $this->add_hookable(new PWP_Save_Cart_Item_Meta_To_Order_Item_Meta());
     }

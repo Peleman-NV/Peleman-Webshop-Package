@@ -10,7 +10,7 @@ use PWP\includes\editor\PWP_Product_PIE_Data;
 use PWP\includes\hookables\abstracts\PWP_Abstract_Action_Hookable;
 use PWP\includes\services\ImaxelService;
 
-class PWP_Add_Project_Button_To_Cart_Item extends PWP_Abstract_Action_Hookable
+class PWP_Display_Editor_Project_Button_In_Cart extends PWP_Abstract_Action_Hookable
 {
     public function __construct()
     {

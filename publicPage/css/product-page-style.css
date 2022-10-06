@@ -79,12 +79,12 @@
     margin-bottom: 8px;
 }
 
-.ppi-disabled {
+.pwp-disabled {
     cursor: not-allowed !important;
     opacity: 0.5 !important;
 }
 
-.ppi-disabled:active {
+.pwp-disabled:active {
     pointer-events: none;
 }
 
@@ -99,8 +99,10 @@
     animation: rotate-with-color 1.5s linear infinite;
 }
 
-.ppi-hidden {
+.pwp-hidden {
     display: none !important;
+    cursor: not allowed !important;
+    pointer-events: none !important;
 }
 
 @keyframes rotate-with-color {
