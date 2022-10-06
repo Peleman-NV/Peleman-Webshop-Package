@@ -9,19 +9,7 @@ use WC_Product;
 class PWP_Product_PIE_Data extends PWP_Product_Meta
 {
 
-    public const TEMPLATE_ID_KEY = 'pie_template_id';
-    public const DESIGN_ID_KEY = 'pie_design_project_id';
-    public const COLOR_CODE_KEY = 'pie_color_code';
-    public const BACKGROUND_ID_KEY = 'pie_background_id';
-
-    public const USE_IMAGE_UPLOAD = 'pie_image_upload';
-    public const MAX_IMAGES = 'pie_max_images';
-    public const MIN_IMAGES = 'pie_min_images';
-
-    public const NUM_PAGES = 'pie_num_pages';
-    public const AUTOFILL = 'pie_autofill';
-    public const FORMAT_ID = 'pie_format_id';
-
+    
     public const MY_EDITOR = 'PIE';
 
     public string $templateId;
@@ -44,21 +32,21 @@ class PWP_Product_PIE_Data extends PWP_Product_Meta
     {
         parent::__construct($parent);
 
-        $this->templateId = $this->parent->get_meta(self::TEMPLATE_ID_KEY) ?? '';
-        $this->designId = $this->parent->get_meta(self::DESIGN_ID_KEY) ?? '';
-        $this->colorCode = $this->parent->get_meta(self::COLOR_CODE_KEY) ?? '';
-        $this->backgroundId =  $this->parent->get_meta(self::BACKGROUND_ID_KEY) ?? '';
+        $this->templateId = $this->parent->get_meta(PWP_Keys::PIE_TEMPLATE_ID_KEY) ?? '';
+        $this->designId = $this->parent->get_meta(PWP_Keys::DESIGN_ID_KEY) ?? '';
+        $this->colorCode = $this->parent->get_meta(PWP_Keys::COLOR_CODE_KEY) ?? '';
+        $this->backgroundId =  $this->parent->get_meta(PWP_Keys::BACKGROUND_ID_KEY) ?? '';
 
         $this->editorInstructions = new PWP_PIE_Editor_Instructions($this->parent);
 
-        $this->usesImageUpload = boolval($this->parent->get_meta(self::USE_IMAGE_UPLOAD));
-        $this->minImages = (int)$this->parent->get_meta(self::MIN_IMAGES) ?? 0;
+        $this->usesImageUpload = boolval($this->parent->get_meta(PWP_Keys::USE_IMAGE_UPLOAD_KEY));
+        $this->minImages = (int)$this->parent->get_meta(PWP_Keys::MIN_IMAGES_KEY) ?? 0;
         //if max_images is 0, we can assume there is no limit to the amount of images.
-        $this->maxImages = (int)$this->parent->get_meta(self::MAX_IMAGES) ?? 0;
+        $this->maxImages = (int)$this->parent->get_meta(PWP_Keys::MAX_IMAGES_KEY) ?? 0;
 
-        $this->numPages = (int)$this->parent->get_meta(self::NUM_PAGES) ?? -1;
-        $this->autofill = boolval($this->parent->get_meta(self::AUTOFILL));
-        $this->formatId = $this->parent->get_meta(self::FORMAT_ID ?? '');
+        $this->numPages = (int)$this->parent->get_meta(PWP_Keys::NUM_PAGES_KEY) ?? -1;
+        $this->autofill = boolval($this->parent->get_meta(PWP_Keys::AUTOFILL_KEY));
+        $this->formatId = $this->parent->get_meta(PWP_Keys::FORMAT_ID_KEY ?? '');
     }
 
     public function get_num_pages(): int
@@ -220,18 +208,18 @@ class PWP_Product_PIE_Data extends PWP_Product_Meta
     public function update_meta_data(): void
     {
 
-        $this->parent->update_meta_data(self::TEMPLATE_ID_KEY, $this->templateId);
-        $this->parent->update_meta_data(self::BACKGROUND_ID_KEY, $this->backgroundId,);
-        $this->parent->update_meta_data(self::COLOR_CODE_KEY, $this->colorCode);
-        $this->parent->update_meta_data(self::DESIGN_ID_KEY, $this->designId);
+        $this->parent->update_meta_data(PWP_Keys::PIE_TEMPLATE_ID_KEY, $this->templateId);
+        $this->parent->update_meta_data(PWP_Keys::BACKGROUND_ID_KEY, $this->backgroundId,);
+        $this->parent->update_meta_data(PWP_Keys::COLOR_CODE_KEY, $this->colorCode);
+        $this->parent->update_meta_data(PWP_Keys::DESIGN_ID_KEY, $this->designId);
 
-        $this->parent->update_meta_data(self::USE_IMAGE_UPLOAD, $this->usesImageUpload ? 1 : 0);
-        $this->parent->update_meta_data(self::MIN_IMAGES, $this->minImages);
-        $this->parent->update_meta_data(self::MAX_IMAGES, $this->maxImages);
+        $this->parent->update_meta_data(PWP_Keys::USE_IMAGE_UPLOAD_KEY, $this->usesImageUpload ? 1 : 0);
+        $this->parent->update_meta_data(PWP_Keys::MIN_IMAGES_KEY, $this->minImages);
+        $this->parent->update_meta_data(PWP_Keys::MAX_IMAGES_KEY, $this->maxImages);
 
-        $this->parent->update_meta_data(self::AUTOFILL, $this->autofill ? 1 : 0);
-        $this->parent->update_meta_data(self::FORMAT_ID, $this->formatId);
-        $this->parent->update_meta_data(self::NUM_PAGES, $this->numPages);
+        $this->parent->update_meta_data(PWP_Keys::AUTOFILL_KEY, $this->autofill ? 1 : 0);
+        $this->parent->update_meta_data(PWP_Keys::FORMAT_ID_KEY, $this->formatId);
+        $this->parent->update_meta_data(PWP_Keys::NUM_PAGES_KEY, $this->numPages);
 
         $this->editorInstructions->update_meta_data();
         $this->parent->save_meta_data();

@@ -4,19 +4,8 @@ declare(strict_types=1);
 
 namespace PWP\includes\editor;
 
-use WC_Product;
-
 class PWP_Product_Meta_Data extends PWP_Product_Meta
 {
-    public const USE_PDF_CONTENT = 'pwp_use_pdf_content';
-    public const PDF_HEIGHT = 'pdf_height_mm';
-    public const PDF_WIDTH = 'pdf_width_mm';
-    public const PDF_MAX_PAGES = 'pdf_max_pages';
-    public const PDF_MIN_PAGES = 'pdf_min_pages';
-    public const PDF_PRICE_PER_PAGE = 'pdf_price_per_page';
-
-    public const EDITOR_ID = 'pwp_editor_id';
-    public const CUSTOM_LABEL = 'custom_variation_add_to_cart_label';
 
     private bool $customizable;
     private bool $usePDFContent;
@@ -32,20 +21,20 @@ class PWP_Product_Meta_Data extends PWP_Product_Meta
     public ?PWP_Product_PIE_Data $pieData;
     public ?PWP_Product_IMAXEL_Data $imaxelData;
 
-    public function __construct(WC_Product $product)
+    public function __construct(\WC_Product $product)
     {
         parent::__construct($product);
 
-        $this->editorId             = $this->parent->get_meta(self::EDITOR_ID) ?: '';
+        $this->editorId             = $this->parent->get_meta(PWP_Keys::EDITOR_ID_KEY) ?: '';
         $this->customizable         = !empty($this->editorId);
-        $this->usePDFContent        = boolval($this->parent->get_meta(self::USE_PDF_CONTENT)) ?: false;
-        $this->customAddToCartLabel = $this->parent->get_meta(self::CUSTOM_LABEL) ?: '';
+        $this->usePDFContent        = boolval($this->parent->get_meta(PWP_Keys::USE_PDF_CONTENT_KEY)) ?: false;
+        $this->customAddToCartLabel = $this->parent->get_meta(PWP_Keys::CUSTOM_LABEL_KEY) ?: '';
 
-        $this->pdfHeight            = (int)$this->parent->get_meta(self::PDF_HEIGHT) ?: 0;
-        $this->pdfWidth             = (int)$this->parent->get_meta(self::PDF_WIDTH) ?: 0;
-        $this->maxPages             = (int)$this->parent->get_meta(self::PDF_MAX_PAGES) ?: -1;
-        $this->minPages             = (int)$this->parent->get_meta(self::PDF_MIN_PAGES) ?: 1;
-        $this->pricePerPage         = (float)$this->parent->get_meta(self::PDF_PRICE_PER_PAGE) ?: 0;
+        $this->pdfHeight            = (int)$this->parent->get_meta(PWP_Keys::PDF_HEIGHT_KEY) ?: 0;
+        $this->pdfWidth             = (int)$this->parent->get_meta(PWP_Keys::PDF_WIDTH_KEY) ?: 0;
+        $this->maxPages             = (int)$this->parent->get_meta(PWP_Keys::PDF_MAX_PAGES_KEY) ?: -1;
+        $this->minPages             = (int)$this->parent->get_meta(PWP_Keys::PDF_MIN_PAGES_KEY) ?: 1;
+        $this->pricePerPage         = (float)$this->parent->get_meta(PWP_Keys::PDF_PRICE_PER_PAGE_KEY) ?: 0;
 
         $this->pieData              = null;
         $this->imaxelData           = null;
@@ -169,17 +158,17 @@ class PWP_Product_Meta_Data extends PWP_Product_Meta
 
     public function update_meta_data(): void
     {
-        $this->parent->update_meta_data(self::USE_PDF_CONTENT, $this->usePDFContent ? 1 : 0);
-        $this->parent->update_meta_data(self::EDITOR_ID, $this->editorId);
-        $this->parent->update_meta_data(self::CUSTOM_LABEL, $this->customAddToCartLabel);
+        $this->parent->update_meta_data(PWP_Keys::USE_PDF_CONTENT_KEY, $this->usePDFContent ? 1 : 0);
+        $this->parent->update_meta_data(PWP_Keys::EDITOR_ID_KEY, $this->editorId);
+        $this->parent->update_meta_data(PWP_Keys::CUSTOM_LABEL_KEY, $this->customAddToCartLabel);
 
         //TODO: make PDF editor data its own object
         //but this will do for now
-        $this->parent->update_meta_data(self::PDF_HEIGHT, $this->pdfHeight);
-        $this->parent->update_meta_data(self::PDF_WIDTH, $this->pdfWidth);
-        $this->parent->update_meta_data(self::PDF_MIN_PAGES, $this->minPages);
-        $this->parent->update_meta_data(self::PDF_MAX_PAGES, $this->maxPages);
-        $this->parent->update_meta_data(self::PDF_PRICE_PER_PAGE, $this->pricePerPage);
+        $this->parent->update_meta_data(PWP_Keys::PDF_HEIGHT_KEY, $this->pdfHeight);
+        $this->parent->update_meta_data(PWP_Keys::PDF_WIDTH_KEY, $this->pdfWidth);
+        $this->parent->update_meta_data(PWP_Keys::PDF_MIN_PAGES_KEY, $this->minPages);
+        $this->parent->update_meta_data(PWP_Keys::PDF_MAX_PAGES_KEY, $this->maxPages);
+        $this->parent->update_meta_data(PWP_Keys::PDF_PRICE_PER_PAGE_KEY, $this->pricePerPage);
 
         $this->imaxel_data()->update_meta_data();
         $this->pie_data()->update_meta_data();

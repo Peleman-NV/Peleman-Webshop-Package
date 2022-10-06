@@ -4,14 +4,12 @@ declare(strict_types=1);
 
 namespace PWP\adminPage\hookables;
 
-use PWP\includes\editor\PWP_PIE_Editor_Instructions;
+use PWP\includes\editor\PWP_Keys;
 use PWP\includes\editor\PWP_Product_IMAXEL_Data;
 use PWP\includes\editor\PWP_Product_PIE_Data;
-use PWP\includes\editor\PWP_Product_Meta;
 use PWP\includes\editor\PWP_Product_Meta_Data;
 use PWP\includes\hookables\abstracts\PWP_Abstract_Action_Hookable;
 use PWP\includes\utilities\PWP_Input_Fields;
-use WC_Product;
 use WC_Product_Simple;
 
 class PWP_Parent_Product_Custom_Fields extends PWP_Abstract_Action_Hookable
@@ -29,14 +27,14 @@ class PWP_Parent_Product_Custom_Fields extends PWP_Abstract_Action_Hookable
         <div class="options_group">
             <?php
             $this->render_standard_product_settings($product);
-            if ($product instanceof WC_Product_Simple)
+            if ($product instanceof \WC_Product_Simple)
                 $this->render_simple_product_settings($product);
             ?>
         </div>
 <?php
     }
 
-    private function render_standard_product_settings(WC_Product $product): void
+    private function render_standard_product_settings(\WC_Product $product): void
     {
         // PWP_Input_Fields::checkbox_input(
         //     'customizable_product',
@@ -47,9 +45,9 @@ class PWP_Parent_Product_Custom_Fields extends PWP_Abstract_Action_Hookable
         // );
 
         PWP_Input_Fields::text_input(
-            PWP_Product_Meta_Data::CUSTOM_LABEL,
+            PWP_Keys::CUSTOM_LABEL_KEY,
             'Custom add to cart label',
-            $product->get_meta(PWP_Product_Meta_Data::CUSTOM_LABEL) ?: '',
+            $product->get_meta(PWP_Keys::CUSTOM_LABEL_KEY) ?: '',
             'eg. Design Project',
             ['short'],
             'Define a custom Add to Cart label. will be the backup label for variable products'
@@ -111,7 +109,7 @@ class PWP_Parent_Product_Custom_Fields extends PWP_Abstract_Action_Hookable
 
         /* Editor settings */
         PWP_Input_Fields::dropdown_input(
-            PWP_Product_Meta_Data::EDITOR_ID,
+            PWP_Keys::EDITOR_ID_KEY,
             "editor",
             array(
                 '' => 'no customization',
@@ -132,7 +130,7 @@ class PWP_Parent_Product_Custom_Fields extends PWP_Abstract_Action_Hookable
     {
         $this->open_form_div();
         PWP_INPUT_FIELDS::text_input(
-            PWP_Product_PIE_Data::TEMPLATE_ID_KEY,
+            PWP_Keys::PIE_TEMPLATE_ID_KEY,
             'PIE Template ID',
             $meta_data->pie_data()->get_template_id(),
             '',
@@ -140,7 +138,7 @@ class PWP_Parent_Product_Custom_Fields extends PWP_Abstract_Action_Hookable
         );
 
         PWP_INPUT_FIELDS::text_input(
-            PWP_Product_PIE_Data::DESIGN_ID_KEY,
+            PWP_Keys::DESIGN_ID_KEY,
             'Design ID',
             $meta_data->pie_data()->get_design_id(),
             '',
@@ -153,8 +151,8 @@ class PWP_Parent_Product_Custom_Fields extends PWP_Abstract_Action_Hookable
         $instructions = $meta_data->pie_data()->get_editor_instructions();
         woocommerce_wp_textarea_input(array(
             'label' => 'instructions',
-            'name' => PWP_PIE_Editor_Instructions::EDITOR_INSTRUCTIONS_KEY,
-            'id' => PWP_PIE_Editor_Instructions::EDITOR_INSTRUCTIONS_KEY,
+            'name' => PWP_Keys::EDITOR_INSTRUCTIONS_KEY,
+            'id' => PWP_Keys::EDITOR_INSTRUCTIONS_KEY,
             'value' => implode(" ", $instructions),
             'desc_tip' => true,
             'description' => 'editor instruction values. for reference, see the PIE editor documentation. enter values separated by a space.',
@@ -164,7 +162,7 @@ class PWP_Parent_Product_Custom_Fields extends PWP_Abstract_Action_Hookable
         $this->open_form_div();
 
         PWP_INPUT_FIELDS::text_input(
-            PWP_Product_PIE_Data::COLOR_CODE_KEY,
+            PWP_Keys::COLOR_CODE_KEY,
             'Color Code',
             $meta_data->pie_data()->get_color_code(),
             '',
@@ -172,7 +170,7 @@ class PWP_Parent_Product_Custom_Fields extends PWP_Abstract_Action_Hookable
         );
 
         PWP_INPUT_FIELDS::text_input(
-            PWP_Product_PIE_Data::BACKGROUND_ID_KEY,
+            PWP_Keys::BACKGROUND_ID_KEY,
             'PIE background ID',
             $meta_data->pie_data()->get_background_id(),
             '',
@@ -182,21 +180,21 @@ class PWP_Parent_Product_Custom_Fields extends PWP_Abstract_Action_Hookable
         $this->open_form_div();
 
         PWP_INPUT_FIELDS::checkbox_input(
-            PWP_Product_PIE_Data::USE_IMAGE_UPLOAD,
+            PWP_Keys::USE_IMAGE_UPLOAD_KEY,
             'Use Image Uploads',
             $meta_data->pie_data()->uses_image_upload(),
             [],
         );
 
         PWP_INPUT_FIELDS::checkbox_input(
-            PWP_Product_PIE_Data::AUTOFILL,
+            PWP_Keys::AUTOFILL_KEY,
             'autofill templage pages in editor',
             $meta_data->pie_data()->get_autofill(),
             [],
         );
 
         PWP_INPUT_FIELDS::text_input(
-            PWP_Product_PIE_DATA::FORMAT_ID,
+            PWP_Keys::FORMAT_ID_KEY,
             'format id',
             $meta_data->pie_data()->get_format_id(),
             '',
@@ -204,7 +202,7 @@ class PWP_Parent_Product_Custom_Fields extends PWP_Abstract_Action_Hookable
         );
 
         PWP_INPUT_FIELDS::number_input(
-            PWP_Product_PIE_Data::NUM_PAGES,
+            PWP_Keys::NUM_PAGES_KEY,
             'Pages to Fill',
             $meta_data->pie_data()->get_num_pages(),
             [],
@@ -213,7 +211,7 @@ class PWP_Parent_Product_Custom_Fields extends PWP_Abstract_Action_Hookable
         );
 
         PWP_INPUT_FIELDS::number_input(
-            PWP_Product_PIE_Data::MIN_IMAGES,
+            PWP_Keys::MIN_IMAGES_KEY,
             'Min Images for upload',
             $meta_data->pie_data()->get_min_images(),
             ['input-text'],
@@ -222,7 +220,7 @@ class PWP_Parent_Product_Custom_Fields extends PWP_Abstract_Action_Hookable
         );
 
         PWP_INPUT_FIELDS::number_input(
-            PWP_Product_PIE_Data::MAX_IMAGES,
+            PWP_Keys::MAX_IMAGES_KEY,
             'Max Images for upload',
             $meta_data->pie_data()->get_max_images(),
             ['input-text'],
@@ -236,7 +234,7 @@ class PWP_Parent_Product_Custom_Fields extends PWP_Abstract_Action_Hookable
     private function render_IMAXEL_product_settings(PWP_Product_Meta_Data $meta_data): void
     {
         PWP_INPUT_FIELDS::text_input(
-            PWP_Product_IMAXEL_Data::TEMPLATE_ID_KEY,
+            PWP_Keys::IMAXEL_TEMPLATE_ID_KEY,
             'IMAXEL template ID',
             $meta_data->imaxel_data()->get_template_id(),
             '',
@@ -245,7 +243,7 @@ class PWP_Parent_Product_Custom_Fields extends PWP_Abstract_Action_Hookable
         );
 
         PWP_INPUT_FIELDS::text_input(
-            PWP_Product_IMAXEL_Data::VARIANT_ID_KEY,
+            PWP_Keys::IMAXEL_VARIANT_ID_KEY,
             'IMAXEL Variant ID',
             $meta_data->imaxel_data()->get_variant_id(),
             '',
@@ -257,7 +255,7 @@ class PWP_Parent_Product_Custom_Fields extends PWP_Abstract_Action_Hookable
     private function render_PDF_upload_settings(PWP_Product_Meta_Data $meta_data): void
     {
         PWP_Input_Fields::checkbox_input(
-            PWP_Product_Meta_Data::USE_PDF_CONTENT,
+            PWP_Keys::USE_PDF_CONTENT_KEY,
             'Require PDF upload',
             $meta_data->uses_pdf_content(),
             [],
@@ -265,7 +263,7 @@ class PWP_Parent_Product_Custom_Fields extends PWP_Abstract_Action_Hookable
         );
 
         PWP_Input_Fields::number_input(
-            PWP_PRODUCT_META_DATA::PDF_MIN_PAGES,
+            PWP_Keys::PDF_MIN_PAGES_KEY,
             'pdf Min Pages',
             $meta_data->get_pdf_min_pages(),
             [],
@@ -273,7 +271,7 @@ class PWP_Parent_Product_Custom_Fields extends PWP_Abstract_Action_Hookable
         );
 
         PWP_Input_Fields::number_input(
-            PWP_PRODUCT_META_DATA::PDF_MAX_PAGES,
+            PWP_Keys::PDF_MAX_PAGES_KEY,
             'pdf Max Pages',
             $meta_data->get_pdf_max_pages(),
             [],
@@ -281,7 +279,7 @@ class PWP_Parent_Product_Custom_Fields extends PWP_Abstract_Action_Hookable
         );
 
         PWP_Input_Fields::number_input(
-            PWP_PRODUCT_META_DATA::PDF_WIDTH,
+            PWP_Keys::PDF_WIDTH_KEY,
             'pdf Format Width',
             $meta_data->get_pdf_width(),
             [],
@@ -289,7 +287,7 @@ class PWP_Parent_Product_Custom_Fields extends PWP_Abstract_Action_Hookable
         );
 
         PWP_Input_Fields::number_input(
-            PWP_PRODUCT_META_DATA::PDF_HEIGHT,
+            PWP_Keys::PDF_HEIGHT_KEY,
             'pdf Format Height',
             $meta_data->get_pdf_height(),
             [],
@@ -298,7 +296,7 @@ class PWP_Parent_Product_Custom_Fields extends PWP_Abstract_Action_Hookable
 
         //pdf price per additional page field. precision up to 3 decimal places
         PWP_Input_Fields::number_input(
-            PWP_PRODUCT_META_DATA::PDF_PRICE_PER_PAGE,
+            PWP_Keys::PDF_PRICE_PER_PAGE_KEY,
             'pdf price per page',
             $meta_data->get_price_per_page(),
             [],

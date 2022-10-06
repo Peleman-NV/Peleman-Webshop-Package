@@ -42,8 +42,8 @@ if (!defined('ABSPATH')) {
             <input id='file-upload' type='file' accept='application/pdf' name='pdf_upload' style='display: none;'>
         </div> -->
         <div id='upload-info' class='pwp-upload-form pwp-hidden'>
-            <label class='upload-label button' for='file-upload'><?= esc_html__('upload .pdf file', PWP_TEXT_DOMAIN); ?></label>
-            <input id='file-upload' type='file' accept='application/pdf' name='pdf_upload' size='<?= $size; ?>'>
+            <label class='upload-label' for='file-upload'><?= esc_html__('upload .pdf file', PWP_TEXT_DOMAIN); ?></label>
+            <input class='upload-field' id='file-upload' type='file' accept='application/pdf' name='pdf_upload' size='<?= $size; ?>' required>
         </div>
     </div>
 </div>

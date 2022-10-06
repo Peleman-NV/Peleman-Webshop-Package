@@ -8,17 +8,14 @@ use WC_Product;
 
 class PWP_Product_IMAXEL_Data extends PWP_Product_Meta
 {
-    public const TEMPLATE_ID_KEY = 'imaxel_template_id';
-    public const VARIANT_ID_KEY = 'imaxel_variant_id';
-
     public const MY_EDITOR = 'IMAXEL';
 
     public function __construct(WC_Product $parent)
     {
         parent::__construct($parent);
 
-        $this->templateId = $this->parent->get_meta(self::TEMPLATE_ID_KEY, true) ?? '';
-        $this->variantId = $this->parent->get_meta(self::VARIANT_ID_KEY, true) ?? '';
+        $this->templateId = $this->parent->get_meta(PWP_Keys::IMAXEL_TEMPLATE_ID_KEY, true) ?? '';
+        $this->variantId = $this->parent->get_meta(PWP_Keys::IMAXEL_VARIANT_ID_KEY, true) ?? '';
     }
 
     public function get_template_id(): string
@@ -45,7 +42,7 @@ class PWP_Product_IMAXEL_Data extends PWP_Product_Meta
 
     public function update_meta_data(): void
     {
-        $this->parent->update_meta_data(self::TEMPLATE_ID_KEY, $this->templateId);
-        $this->parent->update_meta_data(self::VARIANT_ID_KEY, $this->variantId);
+        $this->parent->update_meta_data(PWP_Keys::IMAXEL_TEMPLATE_ID_KEY, $this->templateId);
+        $this->parent->update_meta_data(PWP_Keys::IMAXEL_VARIANT_ID_KEY, $this->variantId);
     }
 }
