@@ -3,7 +3,7 @@
  * if the product has a template attached, in the admin backend.
  * It fires on the click event, and passes the variantId and,
  * if present, the content file Id.  It call   the PHP function
- * "ppi_add_to_cart" in PublicPage/PpiProductPage.php,
+ * "pwp_add_to_cart" in PublicPage/pwpProductPage.php,
  * which makes a request to Imaxel to create a project.
  * It then persists this as a customer project and redirects the user to the editor.
  *
@@ -24,7 +24,7 @@
         console.log('add to cart js initializing...');
 
         function overrideDefaultAddToCartBehaviour(e) {
-            $('#ppi-loading').removeClass('ppi-hidden');
+            $('#pwp-loading').removeClass('pwp-hidden');
             e.preventDefault();
             var $thisButton = $(this),
                 $form = $thisButton.closest('form.cart'),
@@ -71,7 +71,7 @@
                     if (response.success !== true) {
                         //in case something went wrong generating a new project and we cannot redirect the user
                         $('#redirection-info').html(response.data.message);
-                        $('#redirection-info').addClass('ppi-response-error');
+                        $('#redirection-info').addClass('pwp-response-error');
                         return;
                     }
                     if (response.data.destination_url) {

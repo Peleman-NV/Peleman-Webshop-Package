@@ -8,7 +8,7 @@
  * an upload form with parameters is displayed.
  * 'upload-content.js' fires on the change event of that form,
  * and performs an AJAX call to the PHP function "upload_content_file"
- * in /PublicPage/PpiProductPage.php, where the file is validated
+ * in /PublicPage/pwpProductPage.php, where the file is validated
  * and uploaded to the server on success.
  * A response is then returned and displayed.
  * On success, the "add to cart" button is enabled.
@@ -40,28 +40,28 @@
         });
 
         function hideElement(element) {
-            element.addClass('ppi-hidden');
+            element.addClass('pwp-hidden');
         }
 
         function showElement(element) {
-            element.removeClass('ppi-hidden');
+            element.removeClass('pwp-hidden');
         }
 
         function enableElement(element) {
             element.prop('disabled', false);
-            element.removeClass('ppi-disabled');
+            element.removeClass('pwp-disabled');
         }
 
         function disableElement(element) {
             element.prop('disabled', true)
-            element.addClass('ppi-enabled');
+            element.addClass('pwp-enabled');
         }
 
         function getProductVariationData(variationId) {
             const data = {
                 variant: variationId,
                 action: 'PWP_Ajax_Show_Variation',
-                //_ajax_nonce: ppi_product_variation_information_object.nonce,
+                //_ajax_nonce: pwp_product_variation_information_object.nonce,
             };
             let fallbackAddToCartLabel = setAddToCartLabel();
 
@@ -106,8 +106,8 @@
 
                     }
                     $('#variant-info').html(response.data.message);
-                    $('#variant-info').addClass('ppi-response-error');
-                    hideElement($('#ppi-loading'));
+                    $('#variant-info').addClass('pwp-response-error');
+                    hideElement($('#pwp-loading'));
 
                 },
                 error: function (jqXHR, textStatus, errorThrown) {
@@ -129,7 +129,7 @@
         // when showing a (new) variation, all previous elements need to be cleared or hidden
         function initRefreshVariantElements() {
             // display loading animation
-            showElement($('#ppi-loading'));
+            showElement($('#pwp-loading'));
             // clear any old upload information
             $('#upload-info').html('');
             // hide the ever present max upload file size
@@ -137,9 +137,9 @@
             // disable add-to-cart btn
             disableElement($('.single_add_to_cart_button'));
             // hide upload button
-            hideElement($('.ppi-upload-form'));
+            hideElement($('.pwp-upload-form'));
             // hide upload parameters block
-            hideElement($('.ppi-upload-parameters'));
+            hideElement($('.pwp-upload-parameters'));
 
             $('.single_variation_wrap').show();
             $('.summary p.price').show();
@@ -167,12 +167,12 @@
             enableUploadBtn();
             const { height, width, min_pages, max_pages, price_per_page } =
                 response;
-            hideElement($('#ppi-loading'));
+            hideElement($('#pwp-loading'));
 
-            showElement($('.ppi-upload-form'));
+            showElement($('.pwp-upload-form'));
             showElement($('.upload-label'));
 
-            showElement($('.ppi-upload-form'));
+            showElement($('.pwp-upload-form'));
             showElement($('#max-upload-size'));
             if (height != '') {
                 $('#content-height').html(height + 'mm');
@@ -204,7 +204,7 @@
             } else {
                 hideElement($('#content-price-per-page').parent());
             }
-            showElement($('.ppi-upload-parameters'));
+            showElement($('.pwp-upload-parameters'));
         }
 
         /**
@@ -273,19 +273,19 @@
         function enableAddToCartButton(addToCartLabel = '') {
             enableElement($('.single_add_to_cart_button'));
             $('.single_add_to_cart_button').html(
-                '<span id="ppi-loading" class="dashicons dashicons-update ppi-hidden"></span>' +
+                '<span id="pwp-loading" class="dashicons dashicons-update pwp-hidden"></span>' +
                 addToCartLabel
             );
-            hideElement($('#ppi-loading'));
+            hideElement($('#pwp-loading'));
         }
 
         function disableAddToCartButton(addToCartLabel = '') {
             disableElement($('.single_add_to_cart_button'));
             $('.single_add_to_cart_button').html(
-                '<span id="ppi-loading" class="dashicons dashicons-update rotate"></span>' +
+                '<span id="pwp-loading" class="dashicons dashicons-update rotate"></span>' +
                 addToCartLabel
             );
-            showElement($('#ppi-loading'));
+            showElement($('#pwp-loading'));
         }
 
         function disableUploadButton() {
@@ -318,7 +318,7 @@
             } = bundleObject;
 
             // hide individual price
-            $('.individual-price').addClass('ppi-hidden');
+            $('.individual-price').addClass('pwp-hidden');
             if (!bundlePriceExists) {
                 $('.add-to-cart-price span.price-amount').html(
                     individualPriceWithCurrencySymbol
@@ -327,7 +327,7 @@
                     priceSuffix
                 );
             } else {
-                $('.individual-price').removeClass('ppi-hidden');
+                $('.individual-price').removeClass('pwp-hidden');
                 $('.add-to-cart-price span.price-amount').html(
                     bundlePriceWithCurrencySymbol
                 );
