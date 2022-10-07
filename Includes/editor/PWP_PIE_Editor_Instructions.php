@@ -21,8 +21,8 @@ class PWP_PIE_Editor_Instructions extends PWP_Product_Meta
     {
         $this->parent = $parent;
         $meta = $this->parent->get_meta(self::EDITOR_INSTRUCTIONS_KEY);
-        $this->instruction = explode(' ', $meta);
-        // $this->instructions = (array)unserialize($meta) ?? [];
+        // $this->instruction = explode(' ', $meta);
+        $this->instructions = (array)unserialize($meta) ?? [];
         error_log("editor instructions for product with id {$parent->get_id()} : " . print_r($this->instructions, true));
     }
 
@@ -54,15 +54,15 @@ class PWP_PIE_Editor_Instructions extends PWP_Product_Meta
 
     public function update_meta_data(): void
     {
-        $this->parent->update_meta_data(
-            $this::EDITOR_INSTRUCTIONS_KEY,
-            (implode(' ', $this->instructions))
-        );
-
         // $this->parent->update_meta_data(
         //     $this::EDITOR_INSTRUCTIONS_KEY,
-        //     serialize($this->instructions)
+        //     (implode(' ', $this->instructions))
         // );
+
+        $this->parent->update_meta_data(
+            $this::EDITOR_INSTRUCTIONS_KEY,
+            serialize($this->instructions)
+        );
         $this->parent->save_meta_data();
     }
 }
