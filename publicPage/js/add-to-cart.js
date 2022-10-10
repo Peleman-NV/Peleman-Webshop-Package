@@ -49,7 +49,7 @@
                 nonce: PWP_Ajax_Add_To_Cart_object.nonce,
             };
 
-            $(document.body).trigger('adding_to_cart', [Button, data])
+            $(document.body).trigger('adding_to_cart', [Button, data]);
             $.ajax({
                 url: PWP_Ajax_Add_To_Cart_object.ajax_url,
                 method: 'POST',

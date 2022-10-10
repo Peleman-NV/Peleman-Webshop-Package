@@ -20,7 +20,7 @@ class PWP_Change_Add_To_Cart_Button_Label extends PWP_Abstract_Filter_Hookable
         $meta = new PWP_Product_Meta_Data($product);
         $customizable = $meta->is_customizable();
 
-        error_log("is product customizable: " . ($customizable ? "yes" : "no"));
+        // error_log("is product customizable: " . ($customizable ? "yes" : "no"));
         if ($customizable) {
             return $meta->get_custom_add_to_cart_label() ?: "customize & add to cart";
         }

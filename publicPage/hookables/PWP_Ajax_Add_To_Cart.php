@@ -23,7 +23,7 @@ class PWP_Ajax_Add_To_Cart extends PWP_Abstract_Ajax_Hookable
     {
         parent::__construct(
             'PWP_Ajax_Add_To_Cart',
-            plugins_url('Peleman-Webshop-Package/publicPage/js/add-to-cart.js'),
+            plugins_url('Peleman-Webshop-Package/publicPage/js/add-to-cart-update.js'),
             5
         );
     }
@@ -31,7 +31,8 @@ class PWP_Ajax_Add_To_Cart extends PWP_Abstract_Ajax_Hookable
     public function callback(): void
     {
         error_log('incoming request: ' . print_r($_REQUEST, true));
-        
+        error_log('files: ' . print_r($_FILES, true));
+
         if (!$this->verify_nonce($_REQUEST['nonce'])) {
             error_log("add to cart request received with incorrect nonce value: aborting");
             wp_send_json_error('incorrect nonce', 401);
