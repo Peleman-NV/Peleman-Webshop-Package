@@ -8,7 +8,7 @@ use PHPUnit\Framework\TestCase;
 use PWP\includes\utilities\notification\PWP_I_Notification;
 use PWP\includes\utilities\notification\PWP_Notification;
 use PWP\includes\validation\PWP_Validate_File_Size;
-use PWP\includes\wrappers\PWP_File_Data;
+use PWP\includes\wrappers\PWP_PDF_Upload;
 
 class PWP_Validate_File_Size_Test extends TestCase
 {
@@ -17,9 +17,9 @@ class PWP_Validate_File_Size_Test extends TestCase
         $notification = new PWP_Notification('');
 
         return array(
-            array(new PWP_File_Data(['size' => 8]), $notification, 12, true),
-            array(new PWP_File_Data(['size' => 10]), $notification, 10, true),
-            array(new PWP_File_Data(['size' => 12]), $notification, 10, false),
+            array(new PWP_PDF_Upload(['size' => 8]), $notification, 12, true),
+            array(new PWP_PDF_Upload(['size' => 10]), $notification, 10, true),
+            array(new PWP_PDF_Upload(['size' => 12]), $notification, 10, false),
         );
     }
 
@@ -28,7 +28,7 @@ class PWP_Validate_File_Size_Test extends TestCase
      * @dataProvider  file_data_provider
      * @return void
      */
-    public function test_size_validation(PWP_File_Data $data, PWP_I_Notification $notification, int $maxFileSize, bool $expected): void
+    public function test_size_validation(PWP_PDF_Upload $data, PWP_I_Notification $notification, int $maxFileSize, bool $expected): void
     {
         $validator = new PWP_Validate_File_Size($maxFileSize);
         $this->assertEquals($expected, $validator->handle($data, $notification));

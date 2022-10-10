@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PWP\includes\validation;
 
-use PWP\includes\wrappers\PWP_File_Data;
+use PWP\includes\wrappers\PWP_PDF_Upload;
 use PWP\includes\utilities\notification\PWP_I_Notification;
 
 class PWP_Validate_File_Dimensions extends PWP_Abstract_File_Handler
@@ -20,7 +20,7 @@ class PWP_Validate_File_Dimensions extends PWP_Abstract_File_Handler
         $this->precision = $precision;
     }
 
-    public function handle(PWP_File_Data $data, ?PWP_I_Notification $notification = null): bool
+    public function handle(PWP_PDF_Upload $data, ?PWP_I_Notification $notification = null): bool
     {
         error_log('height: ' . $data->get_height());
         error_log('width: ' . $data->get_width());

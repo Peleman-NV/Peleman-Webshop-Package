@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PWP\includes\utilities;
 
-use PWP\includes\wrappers\PWP_File_Data;
+use PWP\includes\wrappers\PWP_PDF_Upload;
 use setasign\Fpdi\Fpdi;
 
 class PWP_PDF_Factory
@@ -13,9 +13,9 @@ class PWP_PDF_Factory
     {
     }
 
-    public static function generate_from_upload(array $upload): PWP_File_Data
+    public static function generate_from_upload(array $upload): PWP_PDF_Upload
     {
-        $pdf = new PWP_File_Data($upload);
+        $pdf = new PWP_PDF_Upload($upload);
 
         $fpdi = new Fpdi();
 

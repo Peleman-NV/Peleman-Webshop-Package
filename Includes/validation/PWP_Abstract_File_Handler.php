@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace PWP\includes\validation;
 
 use PWP\includes\utilities\notification\PWP_I_Notification;
-use PWP\includes\wrappers\PWP_File_Data;
+use PWP\includes\wrappers\PWP_PDF_Upload;
 
 abstract class PWP_Abstract_File_Handler
 {
@@ -22,9 +22,9 @@ abstract class PWP_Abstract_File_Handler
         return $this->next;
     }
 
-    abstract public function handle(PWP_File_Data $data, ?PWP_I_Notification $notification = null): bool;
+    abstract public function handle(PWP_PDF_Upload $data, ?PWP_I_Notification $notification = null): bool;
 
-    final protected function handle_next(PWP_File_Data $file, ?PWP_I_Notification $notification = null): bool
+    final protected function handle_next(PWP_PDF_Upload $file, ?PWP_I_Notification $notification = null): bool
     {
         return is_null($this->next)
             ? ($notification->is_success() ?? true)

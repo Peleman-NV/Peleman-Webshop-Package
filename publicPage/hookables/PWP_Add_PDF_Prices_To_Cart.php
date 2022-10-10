@@ -19,6 +19,9 @@ class PWP_Add_PDF_Prices_To_Cart extends PWP_Abstract_Action_Hookable
     {
         foreach ($cart->get_cart() as $key => $value) {
             $product = $value['data'];
+            if (!isset($value['_pdf_data']))
+                continue;
+
             $pdfData = $value['_pdf_data'];
             if ($product instanceof WC_Product && $pdfData) {
                 $meta = new PWP_Product_Meta_Data($product);

@@ -6,6 +6,7 @@ namespace PWP\includes\services\entities;
 
 use DateTime;
 use JsonSerializable;
+use PWP\includes\wrappers\PWP_PDF_Upload;
 use Serializable;
 use wpdb;
 
@@ -15,6 +16,7 @@ class PWP_Project implements PWP_I_Entity, JsonSerializable
     private int $user_id;
     private string $project_id;
     private int $product_id;
+    private string $path;
     private string $file_name;
     private int $pages;
     private float $price_vat_excl;
@@ -22,6 +24,16 @@ class PWP_Project implements PWP_I_Entity, JsonSerializable
     private string $updated;
     private string $ordered;
 
+    /**
+     * Create PDF project for prdocut
+     *
+     * @param integer $userId id of the user. if user is not logged in, should be 0
+     * @param integer $productId id of the product this pdf is to be applied to
+     * @param string $path relative path of the pdf in the wp_uploads folder
+     * @param string $fileName original name of the file, given by the uploader/user
+     * @param integer $pages amount of pages in the PDF
+     * @param float $price_vat_excl total price of the PDF, calculated from the amount of pages and cost per page of the product
+     */
     private function __construct(int $userId, int $productId, string $fileName, int $pages = 0, float $price_vat_excl = 0.0)
     {
         $this->id = -1;
@@ -59,6 +71,7 @@ class PWP_Project implements PWP_I_Entity, JsonSerializable
             $product->created = $row->created;
             $product->updated = $row->updated;
             $product->ordered = $row->ordered;
+            $product->path = $row->path;
             return $product;
         }
         return null;
@@ -150,9 +163,11 @@ class PWP_Project implements PWP_I_Entity, JsonSerializable
         return isset($this->ordered);
     }
 
-    public function get_file_location(): string
+    public function get_path(bool $relative = false): string
     {
-        return PWP_UPLOAD_DIR . "/{$this->id}/{$this->file_name}";
+        $path = $this->path;
+        if ($relative) $path = PWP_UPLOAD_DIR . $path;
+        return $path;
     }
 
     public function get_file_name(): string
@@ -199,6 +214,7 @@ class PWP_Project implements PWP_I_Entity, JsonSerializable
     public function delete(): void
     {
         if (-1 === $this->id) return;
+        $this->delete_files();
 
         global $wpdb;
         if ($wpdb instanceof \wpdb) {
@@ -210,17 +226,29 @@ class PWP_Project implements PWP_I_Entity, JsonSerializable
         }
     }
 
+    public function save_file(PWP_PDF_Upload $pdf): void
+    {
+        $safeName = uniqid();
+        $this->path = "/{$safeName}.pdf";
+        if (!move_uploaded_file($pdf->get_tmp_name(), $this->get_path(true))) {
+            throw new \Exception("something went wrong trying to save the uploaded .pdf file.", 500);
+        }
+
+        $this->save();
+    }
+
     private function save(): void
     {
         global $wpdb;
-        // if ($wpdb instanceof \wpdb) {
-        $result = $wpdb->insert(
-            $wpdb->prefix . PWP_PROJECTS_TABLE,
-            $this->db_data_array(),
-            $this->db_data_format_array(),
-        );
-        if (!$result) {
-            throw new \Exception("Encountered problem when trying to insert project into database. Check logs for more information");
+        if ($wpdb instanceof \wpdb) {
+            $result = $wpdb->insert(
+                $wpdb->prefix . PWP_PROJECTS_TABLE,
+                $this->db_data_array(),
+                $this->db_data_format_array(),
+            );
+            if (!$result) {
+                throw new \Exception("Encountered problem when trying to insert project into database. Check logs for more information");
+            }
         }
         $this->id = $wpdb->insert_id;
     }
@@ -241,12 +269,25 @@ class PWP_Project implements PWP_I_Entity, JsonSerializable
         }
     }
 
+    public function jsonSerialize(): mixed
+    {
+        return $this->data();
+    }
+
+    public function delete_files(): void
+    {
+        $path = $this->get_path(true);
+        // array_map('unlink', array_filter((array) glob($path) ?: []));
+        rmdir($path);
+    }
+
     private function db_data_array(): array
     {
         return array(
             'user_id'           => $this->user_id,
             'project_id'        => $this->project_id,
             'product_id'        => $this->product_id,
+            'path'              => $this->path,
             'file_name'         => $this->file_name,
             'pages'             => $this->pages,
             'price_vat_excl'    => $this->price_vat_excl,
@@ -256,7 +297,7 @@ class PWP_Project implements PWP_I_Entity, JsonSerializable
 
     private function db_data_format_array(): array
     {
-        return array('%d', '%s', '%d', '%s', '%d', '%f', '%s');
+        return array('%d', '%s', '%d', '%s', '%s', '%d', '%f', '%s');
     }
 
     public function data()
@@ -273,10 +314,5 @@ class PWP_Project implements PWP_I_Entity, JsonSerializable
             'updated'           => $this->ordered,
             'ordered'           => $this->orderered,
         );
-    }
-
-    public function jsonSerialize(): mixed
-    {
-        return $this->data();
     }
 }

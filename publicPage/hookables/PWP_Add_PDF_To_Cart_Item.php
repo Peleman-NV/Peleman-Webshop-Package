@@ -24,8 +24,10 @@ class PWP_Add_PDF_To_Cart_Item extends PWP_Abstract_Filter_Hookable
 
     public function add_PDF_to_cart_item(array $cart_item_data, int $product_id): array
     {
-        //TODO: implementation
         $meta = new PWP_Product_Meta_Data(wc_get_product($product_id));
+        if (!$meta->uses_pdf_content())
+            return $cart_item_data;
+
         $fileArr = $_FILES['pdf_upload'];
 
         try {
@@ -49,24 +51,12 @@ class PWP_Add_PDF_To_Cart_Item extends PWP_Abstract_Filter_Hookable
                     $pdf->get_page_count(),
                     $pdf->get_page_count() * $meta->get_price_per_page()
                 );
-                $project->persist();
-                $id = $project->get_id();
-                $safeName = sha1_file($pdf->get_tmp_name());
-                $uploadFile = realpath(PWP_UPLOAD_DIR) . "/{$id}/{$safeName}.pdf";
-
-                if (!realpath(PWP_UPLOAD_DIR . "/{$id}")) {
-                    mkdir(realpath(PWP_UPLOAD_DIR) . "/{$id}", 0660);
-                }
-                if (move_uploaded_file(
-                    $pdf->get_tmp_name(),
-                    $uploadFile
-                )) {
-                }
+                $project->save_file($pdf);
             }
 
             $cart_item_data['_pdf_data'] = array(
-                'id'        => $id,
-                'pdf_name'  => $filename,
+                'id'        => $project->get_id(),
+                'pdf_name'  => $project->get_file_name(),
                 'pages'     => $pdf->get_page_count(),
                 'extra_cost' => $pdf->get_page_count() * $meta->get_price_per_page()
             );

@@ -115,7 +115,6 @@ class PWP_Plugin
         /* EDITOR product hookables */
         $this->add_hookable(new PWP_Ajax_Show_Variation());
         $this->add_hookable(new PWP_Ajax_Add_To_Cart());
-        //$this->add_hookable(new PWP_Add_PDF_Contents_To_Cart());
         $this->add_hookable(new PWP_Display_Editor_Project_Button_In_Cart());
         $this->add_hookable(new PWP_Add_Custom_Project_On_Return());
         $this->add_hookable(new PWP_Save_Cart_Item_Meta_To_Order_Item_Meta());

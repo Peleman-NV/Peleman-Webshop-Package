@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PWP\includes\wrappers;
 
-class PWP_File_Data extends PWP_Component
+class PWP_PDF_Upload extends PWP_Component
 {
     private int $pageCount;
     private float $height;

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PWP\includes\validation;
 
-use PWP\includes\wrappers\PWP_File_Data;
+use PWP\includes\wrappers\PWP_PDF_Upload;
 use PWP\includes\utilities\notification\PWP_I_Notification;
 
 class PWP_Validate_File_PageCount extends PWP_Abstract_File_Handler
@@ -16,7 +16,7 @@ class PWP_Validate_File_PageCount extends PWP_Abstract_File_Handler
         $this->maxPages = $maxPages;
     }
 
-    public function handle(PWP_File_Data $data, ?PWP_I_Notification $notification = null): bool
+    public function handle(PWP_PDF_Upload $data, ?PWP_I_Notification $notification = null): bool
     {
         $pages = $data->get_page_count();
 

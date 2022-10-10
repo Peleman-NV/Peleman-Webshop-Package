@@ -62,7 +62,7 @@ class PWP_Validate_PDF_Upload extends PWP_Abstract_Filter_Hookable
                 );
             }
 
-            return $notification->is_success();
+            return $notification->is_success() ? $passed : false;
         } catch (\Exception $e) {
             wc_add_notice(
                 __('could not process PDF upload. try again with a different file.', PWP_TEXT_DOMAIN),

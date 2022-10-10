@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace PWP\includes\validation;
 
 use PWP\includes\utilities\notification\PWP_I_Notification;
-use PWP\includes\wrappers\PWP_File_Data;
+use PWP\includes\wrappers\PWP_PDF_Upload;
 
 class PWP_Validate_File_Errors extends PWP_Abstract_File_Handler
 {
-    final public function handle(PWP_File_Data $file, ?PWP_I_Notification $notification = null): bool
+    final public function handle(PWP_PDF_Upload $file, ?PWP_I_Notification $notification = null): bool
     {
         if (!empty($file->get_error())) {
             $notification->add_error(

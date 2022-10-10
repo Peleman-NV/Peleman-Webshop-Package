@@ -62,16 +62,17 @@ class PWP_Activator
             $table_name = $wpdb->prefix . PWP_PROJECTS_TABLE;
 
             $sql = "CREATE TABLE {$table_name} (
-                id mediumint(9) NOT NULL AUTO_INCREMENT,
-                user_id int(11) NOT NULL,
-                project_id tinytext DEFAULT NULL,
-                product_id int(11) NOT NULL,
-                file_name tinytext NOT NULL,
-                pages int(11) DEFAULT NULL,
-                price_vat_excl decimal(15,4) DEFAULT NULL,
-                created datetime DEFAULT CURRENT_TIMESTAMP NOT NULL,
-                updated datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NOT NULL,
-                ordered datetime DEFAULT NULL,
+                id              mediumint(9) NOT NULL AUTO_INCREMENT,
+                user_id         int(11) NOT NULL,
+                project_id      tinytext DEFAULT NULL,
+                product_id      int(11) NOT NULL,
+                file_name       tinytext NOT NULL,
+                path            tinytext NOT NULL,
+                pages           int(11) DEFAULT NULL,
+                price_vat_excl  decimal(15,5) DEFAULT NULL,
+                created         datetime DEFAULT CURRENT_TIMESTAMP NOT NULL,
+                updated         datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NOT NULL,
+                ordered         datetime DEFAULT NULL,
                 PRIMARY KEY  (id)
                 ){$charset_collate}";
 

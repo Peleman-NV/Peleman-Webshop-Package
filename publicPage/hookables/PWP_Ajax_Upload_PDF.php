@@ -6,7 +6,7 @@ namespace PWP\publicPage\hookables;
 
 use PWP\includes\editor\PWP_Product_Meta_Data;
 use setasign\Fpdi\Fpdi;
-use PWP\includes\wrappers\PWP_File_Data;
+use PWP\includes\wrappers\PWP_PDF_Upload;
 use PWP\includes\hookables\abstracts\PWP_Abstract_Ajax_Hookable;
 use PWP\includes\utilities\notification\PWP_Error_Notice;
 use PWP\includes\utilities\notification\PWP_Notification;
@@ -46,7 +46,7 @@ class PWP_Ajax_Upload_PDF extends PWP_Abstract_Ajax_Hookable
         $this->validate_request_nonce($_REQUEST['nonce']);
 
         /** 2) */
-        $file = new PWP_File_Data($_FILES['file']);
+        $file = new PWP_PDF_Upload($_FILES['file']);
         $productId = (int)sanitize_text_field($_REQUEST['variant_id'] ?: $_REQUEST['product_id']);
         $product = wc_get_product($productId);
         $productMeta = new PWP_Product_Meta_Data($product);
