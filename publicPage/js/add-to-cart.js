@@ -16,98 +16,91 @@
 (function ($) {
     ('use strict');
     $(function () {
-        $('.single_add_to_cart_button').on(
-            'click',
-            overrideDefaultAddToCartBehaviour
-        );
 
-        console.log('add to cart js initializing...');
+        console.log('updated add to cart js initializing...');
 
-        function overrideDefaultAddToCartBehaviour(e) {
-            $('#ppi-loading').removeClass('ppi-hidden');
+
+        $(document).on('click', '.single_add_to_cart_button', function (e) {
             e.preventDefault();
-            var $thisButton = $(this),
-                $form = $thisButton.closest('form.cart'),
-                id = $thisButton.val(),
-                product_qty = $form.find('input[name="quantity"]').val() || 1,
-                product_id = $form.find('input[name="product_id"]').val() || id,
-                variation_id = $form.find('input[name="variation_id"]').val() || 0;
 
-            const quantity = product_qty;
-            const productId = product_id;
-            const variationId = variation_id;
-            attemptAddProductToCart($thisButton, productId, variationId, quantity);
-        }
+            var $thisButton = $(this);
+            var $form = $thisButton.closest('form.cart');
+            var id = $thisButton.val();
+            var product_qty = $form.find('input[name=quantity]').val() || 1;
+            var product_id = $form.find('input[name=product_id]').val() || id;
+            var variation_id = $form.find('input[name=variation_id]').val() || 0;
+            var file = $form.find('input[id="pwp-file-upload"]')[0].files[0];
 
-        function attemptAddProductToCart(Button, productId, variationId, quantity) {
-            $('#redirection-info').html('');
-            const data = {
-                action: 'PWP_Ajax_Add_To_Cart',
-                product: productId,
-                variant: variationId,
-                quantity: quantity,
-                nonce: PWP_Ajax_Add_To_Cart_object.nonce,
-            };
+            var formData = new FormData();
+            formData.append('action', 'PWP_Ajax_Add_To_Cart');
+            formData.append('product_id', product_id);
+            formData.append('product_sku', '');
+            formData.append('quantity', product_qty);
+            formData.append('variation_id', variation_id);
+            formData.append('upload', file);
+            formData.append('nonce', PWP_Ajax_Add_To_Cart_object.nonce);
 
-            $(document.body).trigger('adding_to_cart', [Button, data]);
+            $(document.body).trigger('adding_to_cart', [$thisButton, formData]);
+
             $.ajax({
                 url: PWP_Ajax_Add_To_Cart_object.ajax_url,
                 method: 'POST',
-                data: data,
-                cache: false,
-                dataType: 'json',
-                beforeSend: function (response) {
-                    // console.log("clicked button");
-                    Button.removeClass('added').addClass('loading');
+                type: 'POST',
+                data: formData,
+                processData: false,
+                contentType: false,
+                beforeSend: function () {
+                    $thisButton.removeClass('pwp-added').addClass('pwp-loading');
                 },
                 complete: function (response) {
-                    // console.log("response received");
-                    Button.addClass('added').removeClass('loading');
+                    $thisButton.addClass('pwp-added').removeClass('pwp-loading');
+                    console.log(response);
                 },
                 success: function (response) {
-                    console.log(response);
-                    if (response.success !== true) {
-                        //in case something went wrong generating a new project and we cannot redirect the user
-                        $('#redirection-info').html(response.data.message);
-                        $('#redirection-info').addClass('ppi-response-error');
-                        return;
-                    }
-                    if (response.data.destination_url) {
-                        //if the response has a destination url, redirect.
-                        // console.log(response.data.destination_url);
-                        window.location.href = response.data.destination_url;
-
-                        return;
-                    }
-
-                    //if we're at this point in the script, we can safely assume that we should use the default functionality of the button.
-                    $(document.body).trigger('added_to_cart',
-                        [
-                            response.fragments,
-                            response.cart_hash,
-                            Button
-                        ]);
-                    $('.single_add_to_cart_button').off(
-                        'click',
-                        overrideDefaultAddToCartBehaviour
-                    );
-                    $('.single_add_to_cart_button').trigger('click');
-                    return;
+                    data = response.data;
+                    response.success ? onSuccess(data, $thisButton) : onFailure(data)
                 },
                 error: function (jqXHR, textStatus, errorThrown) {
-                    console.log({ jqXHR });
-                    console.error(
-                        'Something went wrong:\n' +
-                        jqXHR.status +
-                        ': ' +
-                        jqXHR.statusText +
-                        '\nTextstatus: ' +
-                        textStatus +
-                        '\nError thrown: ' +
-                        errorThrown
-                    );
-                },
+                    logAjaxError(jqXHR, textStatus, errorThrown);
+
+                }
             });
-        }
+        });
+        return false;
     });
+
+    function onFailure(data) {
+        alert(data.message);
+        $('#redirection-info').html(data.message);
+        $('#redirection-info').addClass('ppi-response-error');
+    }
+
+    function onSuccess(data, button) {
+        if (data.destination_url) {
+            window.location.href = data.destination_url;
+            return;
+        }
+
+        $(document.body).trigger('added_to_cart', [
+            data.fragments,
+            data.cart_hash,
+            button
+        ]);
+    }
+
+    function logAjaxError(jqXHR, textStatus, errorThrown) {
+        alert(textStatus);
+
+        console.log(jqXHR);
+        console.error(
+            'Something went wrong:\n' +
+            jqXHR.status +
+            ': ' +
+            jqXHR.statusText +
+            '\nTextstatus: ' +
+            textStatus +
+            '\nError thrown: ' +
+            errorThrown);
+    }
+
 })(jQuery);
