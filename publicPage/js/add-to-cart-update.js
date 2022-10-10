@@ -4,16 +4,17 @@
 
         console.log('updated add to cart js initializing...');
 
+
         $(document).on('click', '.single_add_to_cart_button', function (e) {
             e.preventDefault();
 
-            var $thisButton = $(this),
-                $form = $thisButton.closest('form.cart'),
-                id = $thisButton.val(),
-                product_qty = $form.find('input[name=quantity]').val() || 1,
-                product_id = $form.find('input[name=product_id]').val() || id,
-                variation_id = $form.find('input[name=variation_id]').val() || 0,
-                file = $form.find('input[id="pwp-file-upload"]')[0].files[0];
+            var $thisButton = $(this);
+            var $form = $thisButton.closest('form.cart');
+            var id = $thisButton.val();
+            var product_qty = $form.find('input[name=quantity]').val() || 1;
+            var product_id = $form.find('input[name=product_id]').val() || id;
+            var variation_id = $form.find('input[name=variation_id]').val() || 0;
+            var file = $form.find('input[id="pwp-file-upload"]')[0].files[0];
 
             var formData = new FormData();
             formData.append('action', 'PWP_Ajax_Add_To_Cart');
@@ -24,15 +25,6 @@
             formData.append('upload', file);
             formData.append('nonce', PWP_Ajax_Add_To_Cart_object.nonce);
 
-            // var data = {
-            //     action: 'PWP_Ajax_Add_To_Cart',
-            //     product_id: product_id,
-            //     product_sku: '',
-            //     quantity: product_qty,
-            //     variation_id: variation_id,
-            //     files: files,
-            // };
-
             $(document.body).trigger('adding_to_cart', [$thisButton, formData]);
 
             $.ajax({
@@ -42,16 +34,58 @@
                 data: formData,
                 processData: false,
                 contentType: false,
-                beforeSend: function (response) { },
+                beforeSend: function (response) {
+                    $thisButton.removeClass('added').addClass('loading');
+                },
                 complete: function (response) {
+                    $thisButton.addClass('added').removeClass('loading');
                     console.log(response);
                 },
-                success: function (response) { },
+                success: function (response) {
+                    data = response.data;
+                    response.success ? onResponseSuccess(data, $thisButton) : onResponseFailure(data)
+                },
                 error: function (jqXHR, textStatus, errorThrown) {
-                    alert(textStatus);
+                    logAjaxError(jqXHR, textStatus, errorThrown);
+
                 }
             });
         });
         return false;
     });
+
+    function onResponseFailure(data) {
+        alert(data.message);
+        $('#redirection-info').html(data.message);
+        $('#redirection-info').addClass('ppi-response-error');
+    }
+
+    function onResponseSuccess(data, button) {
+        if (data.destination_url) {
+            window.location.href = data.destination_url;
+            return;
+        }
+
+        $(document.body).trigger('added_to_cart', [
+            data.fragments,
+            data.cart_hash,
+            button
+        ]);
+    }
+
+    function logAjaxError(jqXHR, textStatus, errorThrown) {
+        alert(textStatus);
+
+        console.log(jqXHR);
+        console.error(
+            'Something went wrong:\n' +
+            jqXHR.status +
+            ': ' +
+            jqXHR.statusText +
+            '\nTextstatus: ' +
+            textStatus +
+            '\nError thrown: ' +
+            errorThrown);
+    }
+
 })(jQuery);
