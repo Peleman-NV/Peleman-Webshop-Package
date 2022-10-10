@@ -29,7 +29,10 @@ class PWP_Validate_PDF_Upload extends PWP_Abstract_Filter_Hookable
         error_log("files: " . print_r($_FILES, true));
 
         $product = new PWP_Product_Meta_Data(wc_get_product($variation_id ?: $product_id));
-        if (!$product->uses_pdf_content()) return true;
+        if (!$product->uses_pdf_content()) {
+            error_log("product does not require pdf upload. skipping...");
+            return $passed;
+        }
         if (!isset($_FILES['pdf_upload'])) {
             wc_add_notice(
                 __('product requires pdf upload.', PWP_TEXT_DOMAIN),

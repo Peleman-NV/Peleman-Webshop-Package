@@ -33,21 +33,19 @@
                 product_id = $form.find('input[name="product_id"]').val() || id,
                 variation_id = $form.find('input[name="variation_id"]').val() || 0;
 
-            const variationId = $("[name='variation_id']").val();
-            const productId = $("[name='product_id']").val();
-            const contentFileId = $("[name='content_file_id']").val();
-            const quantity = $("[name='quantity']").val();
-            attemptAddProductToCart($thisButton, productId, variationId, quantity, contentFileId);
+            const quantity = product_qty;
+            const productId = product_id;
+            const variationId = variation_id;
+            attemptAddProductToCart($thisButton, productId, variationId, quantity);
         }
 
-        function attemptAddProductToCart(Button, productId, variationId, quantity, contentFileId = null) {
+        function attemptAddProductToCart(Button, productId, variationId, quantity) {
             $('#redirection-info').html('');
             const data = {
                 action: 'PWP_Ajax_Add_To_Cart',
                 product: productId,
                 variant: variationId,
                 quantity: quantity,
-                content: contentFileId,
                 nonce: PWP_Ajax_Add_To_Cart_object.nonce,
             };
 
