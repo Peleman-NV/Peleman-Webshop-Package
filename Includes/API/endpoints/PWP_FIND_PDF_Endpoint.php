@@ -27,6 +27,7 @@ class PWP_FIND_PDF_Endpoint extends PWP_Abstract_FIND_Endpoint
     {
         $projectId = (int)$request['id'];
         $project = PWP_Project::get_by_id($projectId);
+
         if (!$project) {
             return new WP_REST_Response(array(
                 'message' => 'File not found!',
@@ -38,15 +39,15 @@ class PWP_FIND_PDF_Endpoint extends PWP_Abstract_FIND_Endpoint
         //instead, we do it the old fashioned way
         $filePath = PWP_UPLOAD_DIR . $project->get_path();
 
-        $info = pathinfo($filePath);
         $name = $project->get_file_name();
-
+        ob_start();
         header('Content-Type: application/pdf');
         header('Content-Length: ' . filesize($filePath));
         header("Content-disposition: attachment; filename=\"{$name}\"");
         header('Pragma: public');
+        ob_clean();
+        flush();
         readfile($filePath);
-
         exit();
     }
 }

@@ -25,6 +25,7 @@ use PWP\adminPage\hookables\PWP_Admin_Enqueue_Scripts;
 use PWP\adminPage\hookables\PWP_Admin_Notice_Poster;
 use PWP\adminPage\hookables\PWP_Admin_Enqueue_Styles;
 use PWP\adminPage\hookables\PWP_Cleanup_Unordered_Projects;
+use PWP\adminPage\hookables\PWP_Display_PDF_Data_After_Order_Item;
 use PWP\adminPage\hookables\PWP_Register_Editor_Options;
 use PWP\adminPage\hookables\PWP_PIE_Editor_Control_Panel;
 use PWP\adminPage\hookables\PWP_Parent_Product_Custom_Fields;
@@ -118,6 +119,7 @@ class PWP_Plugin
         $this->add_hookable(new PWP_Remove_PDF_On_Cart_Deletion());
         $this->add_hookable(new PWP_Add_PDF_Prices_To_Cart());
         $this->add_hookable(new PWP_Order_Project());
+        $this->add_hookable(new PWP_Display_PDF_Data_After_Order_Item());
 
         /* EDITOR product hookables */
         $this->add_hookable(new PWP_Ajax_Show_Variation());
