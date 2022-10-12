@@ -11,6 +11,7 @@ use PWP\includes\hookables\abstracts\PWP_I_Hookable_Component;
 
 use PWP\includes\API\endpoints\categories\PWP_API_Categories_Channel;
 use PWP\includes\API\endpoints\Products\PWP_API_Products_Channel;
+use PWP\includes\API\endpoints\PWP_FIND_PDF_Endpoint;
 use PWP\includes\API\endpoints\PWP_Test_Endpoint;
 
 /**
@@ -29,6 +30,8 @@ class PWP_API_V1_Plugin implements PWP_I_Hookable_Component
     {
         $this->namespace = $namespace;
         $authenticator = new PWP_Authenticator();
+
+        $this->add_hookable(new PWP_FIND_PDF_Endpoint($this->namespace, $authenticator));
 
         $this->add_hookable(new PWP_API_Categories_Channel($this->namespace, '', $authenticator));
         $this->add_hookable(new PWP_API_Attributes_Channel($this->namespace, '', $authenticator));

@@ -52,7 +52,7 @@ class PWP_Ajax_Add_To_Cart extends PWP_Abstract_Ajax_Hookable
             $quantity       = wc_stock_amount($_REQUEST['quantity'] ?: 1);
 
             if (apply_filters('woocommerce_add_to_cart_validation', true, $productId, $quantity, $variationId)) {
-
+                wc_clear_notices();
                 if ($productMeta->is_customizable()) {
 
                     // error_log("product is customizable. generating project files...");
@@ -128,8 +128,10 @@ class PWP_Ajax_Add_To_Cart extends PWP_Abstract_Ajax_Hookable
                     ), 200);
                 }
             }
+            $notices = wc_get_notices('error');
+            $message = $notices[count($notices) - 1]['notice'];
             wp_send_json_error(
-                array('message' => __('the uploaded file is not valid', PWP_TEXT_DOMAIN)),
+                array('message' => $message),
                 200
             );
         } catch (\Exception $err) {
