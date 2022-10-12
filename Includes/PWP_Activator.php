@@ -31,6 +31,12 @@ class PWP_Activator
         register_setting(PWP_OPTION_GROUP, 'pwp-version', array(
             'default' => '0.0.1',
         ));
+
+        register_setting(PWP_OPTION_GROUP, 'pwp_project_cleanup_cutoff_days', array(
+            'type' => 'integer',
+            'default' => 15,
+            'description' => 'if a customer has a project or PDF that is not ordered, how many days before we delete the local files?',
+        ));
     }
     public function init_database_tables()
     {

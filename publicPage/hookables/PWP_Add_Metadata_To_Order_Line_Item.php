@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace PWP\publicPage\hookables;
 
-use pwp\includes\editor\PWP_Editor_Project;
 use PWP\includes\hookables\abstracts\PWP_Abstract_Action_Hookable;
-use WC_Order_Item_Product;
 
 class PWP_Add_Metadata_To_Order_Line_Item extends PWP_Abstract_Action_Hookable
 {

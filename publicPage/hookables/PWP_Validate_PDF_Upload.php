@@ -24,13 +24,13 @@ class PWP_Validate_PDF_Upload extends PWP_Abstract_Filter_Hookable
 
     public function validate_pdf_upload(bool $passed, int $product_id, int $quantity, int $variation_id = 0, array $variations = [])
     {
-        error_log("product: {$product_id}");
-        error_log("variation: {$variation_id}");
-        error_log("files: " . print_r($_FILES, true));
+        // error_log("product: {$product_id}");
+        // error_log("variation: {$variation_id}");
+        // error_log("files: " . print_r($_FILES, true));
 
         $product = new PWP_Product_Meta_Data(wc_get_product($variation_id ?: $product_id));
         if (!$product->uses_pdf_content()) {
-            error_log("product does not require pdf upload. skipping...");
+            // error_log("product does not require pdf upload. skipping...");
             return $passed;
         }
         if (!isset($_FILES['upload'])) {

@@ -8,7 +8,10 @@ use DateTime;
 use JsonSerializable;
 use PWP\includes\wrappers\PWP_PDF_Upload;
 use Serializable;
+use stdClass;
 use wpdb;
+
+use function PHPUnit\Framework\isNull;
 
 class PWP_Project implements PWP_I_Entity, JsonSerializable
 {
@@ -51,30 +54,31 @@ class PWP_Project implements PWP_I_Entity, JsonSerializable
     public static function get_by_id(int $id): ?self
     {
         global $wpdb;
-        if ($wpdb instanceof wpdb) {
-            $table_name = $wpdb->prefix . PWP_PROJECTS_TABLE;
+        $table_name = $wpdb->prefix . PWP_PROJECTS_TABLE;
 
-            $sql = "SELECT * from {$table_name} where id = %d";
-            $row = $wpdb->get_row($wpdb->prepare($sql, $id));
+        $sql = "SELECT * from {$table_name} where id = %d";
+        $row = $wpdb->get_row($wpdb->prepare($sql, $id));
 
-            if (!$row) return null;
+        if (!$row) return null;
+        return self::create_new_from_row($row);
+    }
 
-            $product = new self(
-                (int)$row->user_id,
-                (int)$row->product_id,
-                $row->file_name,
-                (int)$row->pages,
-                (float)$row->price_vat_excl,
-            );
-            $product->id = (int)$row->id;
-            $product->project_id = $row->project_id ?? '';
-            $product->created = $row->created;
-            $product->updated = $row->updated;
-            $product->ordered = $row->ordered;
-            $product->path = $row->path;
-            return $product;
-        }
-        return null;
+    private static function create_new_from_row(stdClass $row): self
+    {
+        $product = new self(
+            (int)$row->user_id,
+            (int)$row->product_id,
+            $row->file_name,
+            (int)$row->pages,
+            (float)$row->price_vat_excl,
+        );
+        $product->id            = (int)$row->id;
+        $product->project_id    = $row->project_id ?? '';
+        $product->created       = $row->created;
+        $product->updated       = $row->updated;
+        $product->ordered       = $row->ordered;
+        $product->path          = $row->path;
+        return $product;
     }
 
     public static function create_new(int $userId, int $productId, string $fileName, int $pages = 0, float $price = 0.00): self
@@ -160,7 +164,7 @@ class PWP_Project implements PWP_I_Entity, JsonSerializable
 
     public function was_ordered(): bool
     {
-        return isset($this->ordered);
+        return !empty($this->ordered) && $this->ordered !== '0000-00-00 00:00:00';
     }
 
     public function get_path(bool $relative = false): string
@@ -214,7 +218,6 @@ class PWP_Project implements PWP_I_Entity, JsonSerializable
     public function delete(): void
     {
         if (-1 === $this->id) return;
-        $this->delete_files();
 
         global $wpdb;
         if ($wpdb instanceof \wpdb) {
@@ -315,5 +318,32 @@ class PWP_Project implements PWP_I_Entity, JsonSerializable
             'updated'           => $this->ordered,
             'ordered'           => $this->orderered,
         );
+    }
+
+    /**
+     * search and retrieve all unordered projects in the database
+     *
+     * @return PWP_Project[]
+     */
+    public static function get_all_unordered_projects(): array
+    {
+        global $wpdb;
+
+        $table = $wpdb->prefix . PWP_PROJECTS_TABLE;
+        $sql = "SELECT * FROM {$table} 
+        WHERE ordered = '0000-0-0 00:00-00' 
+        OR ordered IS NULL";
+
+        $results = $wpdb->get_results(
+            $wpdb->prepare($sql),
+            OBJECT_K
+        );
+
+        $projects = array();
+        foreach ($results as $id => $project) {
+            $projects[$id] = self::create_new_from_row($project);
+        }
+
+        return $projects;
     }
 }

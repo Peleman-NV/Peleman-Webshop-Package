@@ -30,7 +30,7 @@ class PWP_Ajax_Add_To_Cart extends PWP_Abstract_Ajax_Hookable
     public function callback(): void
     {
         ob_start();
-        $this->log_upload();
+        // $this->log_upload();
 
         if (!$this->verify_nonce($_REQUEST['nonce']))
             wp_send_json_error(
@@ -55,7 +55,7 @@ class PWP_Ajax_Add_To_Cart extends PWP_Abstract_Ajax_Hookable
 
                 if ($productMeta->is_customizable()) {
 
-                    error_log("product is customizable. generating project files...");
+                    // error_log("product is customizable. generating project files...");
                     session_start();
 
                     $sessionId = uniqid('ord');
@@ -161,7 +161,7 @@ class PWP_Ajax_Add_To_Cart extends PWP_Abstract_Ajax_Hookable
      */
     public function generate_new_project(PWP_Product_Meta_Data $data, string $returnURL = '', string $cancelURL = ''): PWP_Editor_Project
     {
-        error_log($data->get_editor_id());
+        // error_log($data->get_editor_id());
         switch ($data->get_editor_id()) {
             case PWP_Product_PIE_Data::MY_EDITOR:
                 return $this->new_PIE_Project($data->pie_data(), $returnURL ?: site_url());
