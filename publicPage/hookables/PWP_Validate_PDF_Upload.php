@@ -33,7 +33,7 @@ class PWP_Validate_PDF_Upload extends PWP_Abstract_Filter_Hookable
             error_log("product does not require pdf upload. skipping...");
             return $passed;
         }
-        if (!isset($_FILES['pdf_upload'])) {
+        if (!isset($_FILES['upload'])) {
             wc_add_notice(
                 __('product requires pdf upload.', PWP_TEXT_DOMAIN),
                 'error'
@@ -41,8 +41,8 @@ class PWP_Validate_PDF_Upload extends PWP_Abstract_Filter_Hookable
             return false;
         }
         if (
-            !isset($_FILES['pdf_upload']['error']) ||
-            is_array($_FILES['pdf_upload']['error'])
+            !isset($_FILES['upload']['error']) ||
+            is_array($_FILES['upload']['error'])
         ) {
             wc_add_notice(
                 __('invalid file upload parameters. Try again with a different file.', PWP_TEXT_DOMAIN),
@@ -53,7 +53,7 @@ class PWP_Validate_PDF_Upload extends PWP_Abstract_Filter_Hookable
         try {
 
             $pdfFactory = new PWP_PDF_Factory();
-            $pdf = $pdfFactory->generate_from_upload($_FILES['pdf_upload']);
+            $pdf = $pdfFactory->generate_from_upload($_FILES['upload']);
 
             $notification = new PWP_Notification();
             $this->validation_chain($product,)->handle($pdf, $notification);

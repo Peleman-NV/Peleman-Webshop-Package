@@ -278,7 +278,8 @@ class PWP_Project implements PWP_I_Entity, JsonSerializable
     {
         $path = $this->get_path(true);
         // array_map('unlink', array_filter((array) glob($path) ?: []));
-        rmdir($path);
+        // rmdir($path);
+        unlink($path,);
     }
 
     private function db_data_array(): array

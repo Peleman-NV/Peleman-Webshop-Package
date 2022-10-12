@@ -15,27 +15,26 @@ use PWP\includes\utilities\PWP_PDF_Factory;
  * this class will generate a new record of the PDF in the database and add a reference
  * to the specific item in the cart.
  */
-class PWP_Add_PDF_To_Cart_Item extends PWP_Abstract_Filter_Hookable
+class PWP_Add_PDF_Data_To_Cart_Item extends PWP_Abstract_Filter_Hookable
 {
     public function __construct()
     {
-        parent::__construct('woocommerce_add_cart_item_data', 'add_PDF_to_cart_item', 30, 2);
+        parent::__construct('pwp_add_cart_item_data', 'add_PDF_to_cart_item', 30, 3);
     }
 
-    public function add_PDF_to_cart_item(array $cart_item_data, int $product_id): array
+    public function add_PDF_to_cart_item(array $data, \WC_Product $product, PWP_Product_Meta_Data $meta): array
     {
-        $meta = new PWP_Product_Meta_Data(wc_get_product($product_id));
         if (!$meta->uses_pdf_content())
-            return $cart_item_data;
+            return $data;
 
-        $fileArr = $_FILES['pdf_upload'];
+        $fileArr = $_FILES['upload'];
 
         try {
 
             // Undefined | Multiple Files | $_FILES Corruption Attack
             // If this request falls under any of them, treat it invalid.
 
-            if ($meta->uses_pdf_content() && 'application/pdf' == $fileArr['type'] && 0 === $fileArr['error']) {
+            if ('application/pdf' == $fileArr['type'] && 0 === $fileArr['error']) {
 
                 if (4 == $fileArr['error']) {
                     wp_die('something went wrong with the file upload', 'upload failure');
@@ -46,7 +45,7 @@ class PWP_Add_PDF_To_Cart_Item extends PWP_Abstract_Filter_Hookable
                 $filename = $pdf->get_name();
                 $project = PWP_Project::create_new(
                     get_current_user_id(),
-                    $product_id,
+                    $product->get_id(),
                     $filename,
                     $pdf->get_page_count(),
                     $pdf->get_page_count() * $meta->get_price_per_page()
@@ -54,14 +53,14 @@ class PWP_Add_PDF_To_Cart_Item extends PWP_Abstract_Filter_Hookable
                 $project->save_file($pdf);
             }
 
-            $cart_item_data['_pdf_data'] = array(
+            $data['_pdf_data'] = array(
                 'id'        => $project->get_id(),
                 'pdf_name'  => $project->get_file_name(),
                 'pages'     => $pdf->get_page_count(),
                 'extra_cost' => $pdf->get_page_count() * $meta->get_price_per_page()
             );
 
-            return $cart_item_data;
+            return $data;
         } catch (\Throwable $exception) {
             throw $exception;
         }

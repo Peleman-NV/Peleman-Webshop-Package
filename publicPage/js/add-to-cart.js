@@ -50,15 +50,17 @@
                 processData: false,
                 contentType: false,
                 beforeSend: function () {
-                    $thisButton.removeClass('pwp-added').addClass('pwp-loading');
+                    $thisButton.removeClass('pwp-added')
+                    $thisButton.addClass('pwp-loading');
                 },
                 complete: function (response) {
-                    $thisButton.addClass('pwp-added').removeClass('pwp-loading');
+                    $thisButton.addClass('pwp-added')
+                    $thisButton.removeClass('pwp-loading');
                     console.log(response);
                 },
                 success: function (response) {
                     data = response.data;
-                    response.success ? onSuccess(data, $thisButton) : onFailure(data)
+                    response.success ? onSuccess(data, $thisButton) : onFailure(data);
                 },
                 error: function (jqXHR, textStatus, errorThrown) {
                     logAjaxError(jqXHR, textStatus, errorThrown);
@@ -70,12 +72,16 @@
     });
 
     function onFailure(data) {
+        console.log('bar...');
+        console.log(data);
         alert(data.message);
         $('#redirection-info').html(data.message);
+
         $('#redirection-info').addClass('ppi-response-error');
     }
 
     function onSuccess(data, button) {
+        console.log('foo!');
         if (data.destination_url) {
             window.location.href = data.destination_url;
             return;

@@ -15,6 +15,7 @@ class PWP_Change_Add_To_Cart_Label_For_Archive extends PWP_Abstract_Filter_Hooka
 
     public function change_add_to_cart_text_for_archive(string $default, \WC_Product $product): string
     {
+        //TODO: make this an option in the wordpress control panel for easy modification
         switch ($product->get_type()) {
             case 'variable':
                 return "Customize me";
