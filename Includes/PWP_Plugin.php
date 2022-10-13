@@ -151,9 +151,9 @@ class PWP_Plugin
             $this->noticePoster->new_warning_notice("{$this->plugin_name} needs Woocommerce to function properly!", true);
         }
 
-        if (!\is_plugin_active('sitepress-multilingual-cms/sitepress.php')) {
-            $this->noticePoster->new_error_notice("{$this->plugin_name} needs WPML to function properly", true);
-        }
+        // if (!\is_plugin_active('sitepress-multilingual-cms/sitepress.php')) {
+        //     $this->noticePoster->new_error_notice("{$this->plugin_name} needs WPML to function properly", true);
+        // }
 
         return true;
     }

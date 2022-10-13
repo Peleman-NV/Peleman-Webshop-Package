@@ -72,7 +72,6 @@
     });
 
     function onFailure(data) {
-        console.log('bar...');
         console.log(data);
         alert(data.message);
         $('#redirection-info').html(data.message);
@@ -81,7 +80,6 @@
     }
 
     function onSuccess(data, button) {
-        console.log('foo!');
         if (data.destination_url) {
             window.location.href = data.destination_url;
             return;
