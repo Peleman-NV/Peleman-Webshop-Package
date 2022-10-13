@@ -29,6 +29,7 @@ use PWP\adminPage\hookables\PWP_Display_PDF_Data_After_Order_Item;
 use PWP\adminPage\hookables\PWP_Register_Editor_Options;
 use PWP\adminPage\hookables\PWP_PIE_Editor_Control_Panel;
 use PWP\adminPage\hookables\PWP_Parent_Product_Custom_Fields;
+use PWP\adminPage\hookables\PWP_Register_Plugin_Options;
 use PWP\adminPage\hookables\PWP_Variable_Product_Custom_Fields;
 use PWP\adminPage\hookables\PWP_Save_Parent_Product_Custom_Fields;
 use PWP\adminPage\hookables\PWP_Save_Variable_Product_Custom_Fields;
@@ -40,6 +41,7 @@ use PWP\publicPage\hookables\PWP_Display_PDF_Data_In_Cart;
 use PWP\publicPage\hookables\PWP_Add_PDF_Prices_To_Cart;
 use PWP\publicPage\hookables\PWP_Add_PDF_Data_To_Cart_Item;
 use PWP\publicPage\hookables\PWP_Ajax_Upload_PDF;
+use PWP\publicPage\hookables\PWP_Change_Add_To_Cart_Archive_Button;
 use PWP\publicPage\hookables\PWP_Order_Project;
 use PWP\publicPage\hookables\PWP_Remove_PDF_On_Cart_Deletion;
 use PWP\publicPage\hookables\PWP_Validate_PDF_Upload;
@@ -88,9 +90,11 @@ class PWP_Plugin
         $this->add_hookable($this->noticePoster);
         /** control panel hookables */
         $this->add_hookable(new PWP_Admin_Enqueue_Styles());
+        $this->add_hookable(new PWP_Register_Plugin_Options());
         $this->add_hookable(new PWP_Register_Editor_Options());
-        $this->add_hookable(new PWP_PIE_Editor_Control_Panel());
+
         $this->add_hookable(new PWP_Admin_Control_Panel());
+        $this->add_hookable(new PWP_PIE_Editor_Control_Panel());
 
         /* product page hookables */
         $this->add_hookable(new PWP_Parent_Product_Custom_Fields());
@@ -106,7 +110,7 @@ class PWP_Plugin
     private function public_hooks(): void
     {
         $this->add_hookable(new PWP_Enqueue_Public_Styles());
-        $this->add_hookable(new PWP_Change_Add_To_Cart_Label_For_Archive());
+        $this->add_hookable(new PWP_Change_Add_To_Cart_Archive_Button());
         $this->add_hookable(new PWP_Change_Add_To_Cart_Button_Label());
         $this->add_hookable(new PWP_Add_Fields_To_Add_To_Cart_Button());
 

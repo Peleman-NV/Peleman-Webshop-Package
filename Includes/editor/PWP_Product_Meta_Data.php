@@ -73,71 +73,83 @@ class PWP_Product_Meta_Data extends PWP_Product_Meta
         return $this->editorId;
     }
 
+    public function is_editable(): bool
+    {
+        switch ($this->editorId) {
+            case PWP_Product_PIE_Data::MY_EDITOR:
+                return !empty($this->pie_data()->get_template_id());
+            case PWP_Product_IMAXEL_Data::MY_EDITOR:
+                return !empty($this->imaxel_data()->get_template_id());
+            default:
+                return false;
+        }
+    }
+
     public function set_custom_add_to_cart_label(string $label): self
     {
         $this->customAddToCartLabel = $label;
         return $this;
     }
+
     public function get_custom_add_to_cart_label(): string
     {
         return $this->customAddToCartLabel;
     }
-
 
     public function set_pdf_width(int $width): self
     {
         $this->pdfWidth = $width;
         return $this;
     }
+
     public function get_pdf_width(): ?int
     {
         return $this->pdfWidth;
     }
-
 
     public function set_pdf_height(int $height): self
     {
         $this->pdfHeight = $height;
         return $this;
     }
+
     public function get_pdf_height(): ?int
     {
         return $this->pdfHeight;
     }
-
 
     public function set_pdf_min_pages(int $pages): self
     {
         $this->minPages = $pages;
         return $this;
     }
+
     public function get_pdf_min_pages(): ?int
     {
         return $this->minPages;
     }
-
 
     public function set_pdf_max_pages(int $pages): self
     {
         $this->maxPages = $pages;
         return $this;
     }
+
     public function get_pdf_max_pages(): ?int
     {
         return $this->maxPages;
     }
-
 
     public function set_price_per_page(float $pricePerPage): self
     {
         $this->pricePerPage = $pricePerPage;
         return $this;
     }
+
     public function get_price_per_page(): float
     {
         return $this->pricePerPage ?: 0.0;
     }
-
 
     public function imaxel_data(): PWP_Product_IMAXEL_Data
     {
@@ -154,7 +166,6 @@ class PWP_Product_Meta_Data extends PWP_Product_Meta
         }
         return $this->pieData;
     }
-
 
     public function update_meta_data(): void
     {

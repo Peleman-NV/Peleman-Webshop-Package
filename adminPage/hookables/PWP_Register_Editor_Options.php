@@ -11,10 +11,10 @@ class PWP_Register_Editor_Options extends PWP_Abstract_Action_Hookable
 {
     public function __construct()
     {
-        parent::__construct('admin_init', 'register_options');
+        parent::__construct('admin_init', 'register_editor_options');
     }
 
-    public function register_options()
+    public function register_editor_options()
     {
         register_setting('editorOptions-group', 'pie_domain', array(
             'type' => 'string',
