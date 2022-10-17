@@ -16,12 +16,13 @@ class PWP_Display_PDF_Data_After_Order_Item extends PWP_Abstract_Action_Hookable
 
     public function display_pdf_line(int $item_id, \WC_Order_Item $item): void
     {
+        $nonce = wp_create_nonce('wp_rest');
         if (!($item->get_meta('_pdf_data'))) return;
         $data = $item->get_meta('_pdf_data');
         $id = $data['id'];
         $name = $data['pdf_name'];
 
-        $download = home_url('wp-json/pwp/v1/pdf/' . $id);
+        $download = home_url('wp-json/pwp/v1/pdf/' . $id . "?_wpnonce={$nonce}");
 ?>
         <div><a download=<?= $name; ?> href=<?= $download ?>>download <?= $name ?></a></div>
 <?php

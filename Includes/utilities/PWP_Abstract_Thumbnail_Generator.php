@@ -34,7 +34,7 @@ abstract class PWP_Abstract_Thumbnail_Generator implements PWP_I_Thumbnail_Gener
      */
     protected function get_image(string $src)
     {
-        error_log($src);
+        // error_log($src);
         if (!file_exists($src)) {
             throw new PWP_Not_Found_Exception("Could not find image");
         }

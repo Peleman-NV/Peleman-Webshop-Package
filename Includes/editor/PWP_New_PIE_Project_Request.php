@@ -154,7 +154,7 @@ class PWP_New_PIE_Project_Request extends PWP_Abstract_Request
     {
         $url = $this->endpoint .= '?' . http_build_query($this->generate_request_array());
 
-        error_log($url);
+        // error_log($url);
         $curl = curl_init();
         curl_setopt_array($curl, array(
             CURLOPT_URL             => $url,
@@ -169,7 +169,7 @@ class PWP_New_PIE_Project_Request extends PWP_Abstract_Request
         $response = curl_exec($curl);
         curl_close($curl);
 
-        error_log('editor response: ' . print_r($response, true));
+        // error_log('editor response: ' . print_r($response, true));
         if (empty($response) || is_bool($response)) {
             throw new PWP_Invalid_Response_Exception('No valid response received. Likely an authentication issue. Try again later.');
         }
@@ -210,7 +210,7 @@ class PWP_New_PIE_Project_Request extends PWP_Abstract_Request
             // "PROJECTNAME : {$this->projectName}",
         );
 
-        error_log("header: " . print_r($header, true));
+        // error_log("header: " . print_r($header, true));
         return $header;
     }
 }

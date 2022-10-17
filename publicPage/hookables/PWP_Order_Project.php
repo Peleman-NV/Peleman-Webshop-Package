@@ -17,15 +17,13 @@ class PWP_Order_Project extends PWP_Abstract_Action_Hookable
     public function order_pdf_projects(\WC_Order_Item_Product $item, string $cartItemKey, array $values, \WC_Order $order): void
     {
         $key = '_pdf_data';
-        
+
         if (!isset($values[$key])) return;
         $meta = $values[$key];
 
         $project = PWP_Project::get_by_id($meta['id']);
         $project->set_ordered();
         $project->persist();
-
-        error_log("project ordered!");
 
         $item->add_meta_data($key, $meta);
     }

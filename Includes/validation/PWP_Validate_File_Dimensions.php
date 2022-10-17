@@ -22,8 +22,8 @@ class PWP_Validate_File_Dimensions extends PWP_Abstract_File_Handler
 
     public function handle(PWP_PDF_Upload $data, ?PWP_I_Notification $notification = null): bool
     {
-        error_log('height: ' . $data->get_height());
-        error_log('width: ' . $data->get_width());
+        // error_log('height: ' . $data->get_height());
+        // error_log('width: ' . $data->get_width());
         
         $heightFit = $this->value_is_in_range(
             $data->get_height(),

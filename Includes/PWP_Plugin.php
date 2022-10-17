@@ -115,7 +115,6 @@ class PWP_Plugin
         $this->add_hookable(new PWP_Add_Fields_To_Add_To_Cart_Button());
 
         /* PDF upload hookables */
-        // $this->add_hookable(new PWP_Display_PDF_Fields_On_Variations());
         $this->add_hookable(new PWP_Display_PDF_Upload_Form($this->templateEngine));
         $this->add_hookable(new PWP_Validate_PDF_Upload);
         $this->add_hookable(new PWP_Add_PDF_Data_To_Cart_Item());

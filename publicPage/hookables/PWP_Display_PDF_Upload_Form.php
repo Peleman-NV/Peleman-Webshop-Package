@@ -25,14 +25,24 @@ class PWP_Display_PDF_Upload_Form extends PWP_Abstract_Action_Hookable
     {
         //this will work for simple product.
         $product = wc_get_product();
-        $usesPdf = $product->get_meta(PWP_Keys::USE_PDF_CONTENT_KEY);
-        if (!$usesPdf) {
-            return;
+
+        switch ($product->get_type()) {
+            default:
+            case 'simple':
+                $this->display_pdf_data_form($product, (bool)$product->get_meta(PWP_Keys::USE_PDF_CONTENT_KEY));
+                return;
+            case 'variable':
+            case 'variant':
+                $this->display_pdf_data_form($product);
+                return;
         }
-        $isVariable = $product instanceof \WC_Product_Simple;
+    }
+
+    private function display_pdf_data_form(\WC_Product $product, bool $enabled = false): void
+    {
         $meta = new PWP_Product_Meta_Data($product);
         $params = array(
-            'enabled' => $isVariable || $usesPdf,
+            'enabled' => $enabled,
             'button_label' => esc_html__('Click here to upload your PDF file', PWP_TEXT_DOMAIN),
             'max_file_size' => '200 MB',
             'size' => (int)ini_get('upload_max_filesize') * PWP_Validate_File_Size::MB,

@@ -97,10 +97,8 @@
                             return;
                         }
                         if (response.data.requires_pdf_upload) {
-                            console.log("foo");
                             displayUploadElement(response.data);
                         } else {
-                            console.log("bar");
                             hideUploadElement(response.data);
                         }
                         enableAddToCartButton(buttonText);

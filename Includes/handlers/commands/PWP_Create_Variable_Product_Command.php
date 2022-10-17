@@ -71,9 +71,9 @@ class PWP_Create_Variable_Product_Command extends PWP_Create_Product_Command
                     continue;
             }
 
-            error_log(print_r($term_ids, true));
+            // error_log(print_r($term_ids, true));
             $taxonomy_id = wc_attribute_taxonomy_id_by_name($taxonomy); // Get taxonomy ID
-            error_log('taxonomy id: ' . $taxonomy_id);
+            // error_log('taxonomy id: ' . $taxonomy_id);
 
             $attribute->set_id($taxonomy_id);
             $attribute->set_name($name);

@@ -27,8 +27,6 @@ class PWP_Ajax_Show_Variation extends PWP_Abstract_Ajax_Hookable
         $meta = new PWP_Product_Meta_Data($variant);
         $parent = wc_get_product($variant->get_parent_id());
 
-        error_log('foo');
-
         $response = array(
             'variant'               => $variantId,
             'in_stock'              => $variant->is_in_stock(),

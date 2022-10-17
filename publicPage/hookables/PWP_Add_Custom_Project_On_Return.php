@@ -29,7 +29,7 @@ class PWP_Add_Custom_Project_On_Return extends PWP_Abstract_Action_Hookable
                 $data = $_SESSION[$sessionId];
                 unset($_SESSION[$sessionId]);
 
-                error_log("adding project to cart: " . print_r($data, true));
+                // error_log("adding project to cart: " . print_r($data, true));
 
                 $productId      = (int)$data['product_id'];
                 $variationId    = (int)$data['variation_id'] ?: null;
