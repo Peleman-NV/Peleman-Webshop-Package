@@ -12,20 +12,17 @@ use PWP\publicPage\hookables\PWP_Ajax_Add_To_Cart;
 use PWP\publicPage\hookables\PWP_Ajax_Show_Variation;
 use PWP\publicPage\hookables\PWP_Enqueue_Public_Styles;
 use PWP\publicPage\hookables\PWP_Display_PDF_Upload_Form;
-use PWP\publicPage\hookables\PWP_Display_PDF_Fields_On_Variations;
 use PWP\publicPage\hookables\PWP_Add_Custom_Project_On_Return;
 use PWP\publicPage\hookables\PWP_Change_Add_To_Cart_Button_Label;
 use PWP\publicPage\hookables\PWP_Display_Editor_Project_Button_In_Cart;
 use PWP\publicPage\hookables\PWP_Add_Fields_To_Add_To_Cart_Button;
-use PWP\publicPage\hookables\PWP_Change_Add_To_Cart_Label_For_Archive;
 use PWP\publicPage\hookables\PWP_Save_Cart_Item_Meta_To_Order_Item_Meta;
+use PWP\publicPage\hookables\PWP_Display_PDF_Data_After_Order_Item;
 
 use PWP\adminPage\hookables\PWP_Admin_Control_Panel;
-use PWP\adminPage\hookables\PWP_Admin_Enqueue_Scripts;
 use PWP\adminPage\hookables\PWP_Admin_Notice_Poster;
 use PWP\adminPage\hookables\PWP_Admin_Enqueue_Styles;
 use PWP\adminPage\hookables\PWP_Cleanup_Unordered_Projects;
-use PWP\adminPage\hookables\PWP_Display_PDF_Data_After_Order_Item;
 use PWP\adminPage\hookables\PWP_Register_Editor_Options;
 use PWP\adminPage\hookables\PWP_PIE_Editor_Control_Panel;
 use PWP\adminPage\hookables\PWP_Parent_Product_Custom_Fields;
@@ -40,7 +37,6 @@ use PWP\includes\hookables\abstracts\PWP_I_Hookable_Component;
 use PWP\publicPage\hookables\PWP_Display_PDF_Data_In_Cart;
 use PWP\publicPage\hookables\PWP_Add_PDF_Prices_To_Cart;
 use PWP\publicPage\hookables\PWP_Add_PDF_Data_To_Cart_Item;
-use PWP\publicPage\hookables\PWP_Ajax_Upload_PDF;
 use PWP\publicPage\hookables\PWP_Change_Add_To_Cart_Archive_Button;
 use PWP\publicPage\hookables\PWP_Order_Project;
 use PWP\publicPage\hookables\PWP_Remove_PDF_On_Cart_Deletion;
@@ -52,7 +48,7 @@ if (!function_exists('is_plugin_active')) {
 
 defined('ABSPATH') || exit;
 
-class PWP_Plugin
+final class PWP_Plugin
 {
     private PWP_Plugin_Loader $loader;
     private string $version;
@@ -149,10 +145,6 @@ class PWP_Plugin
         if (!\is_plugin_active('woocommerce/woocommerce.php')) {
             $this->noticePoster->new_warning_notice("{$this->plugin_name} needs Woocommerce to function properly!", true);
         }
-
-        // if (!\is_plugin_active('sitepress-multilingual-cms/sitepress.php')) {
-        //     $this->noticePoster->new_error_notice("{$this->plugin_name} needs WPML to function properly", true);
-        // }
 
         return true;
     }
