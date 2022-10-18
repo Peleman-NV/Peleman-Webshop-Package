@@ -28,6 +28,34 @@ class PWP_Admin_Control_Panel extends PWP_Abstract_Action_Hookable
 
     public function render_panel(): void
     {
+?>
+        <div class="wrap pwp_settings">
+            <h1> Webshop Settings </h1>
+            <hr>
+            <div>
+                <h2>Buttons & Labels</h2>
+                <form method="POST" action="options.php">
+                    <?php
+                    settings_fields('webshopOptions-group');
+                    do_settings_sections('webshopOptions-group');
+                    ?>
+                    <table class="form-table">
+                        <tr valign="top">
+                            <th scope="row">
+                                <label for="pwp_customize_label">Customizable product</label>
+                            </th>
+                            <td>
+                                <input id="pwp_customize_label" name="pwp_customize_label" value="<?= get_option('pwp_customize_label'); ?>" placeholder="customize me" type="text" class="regular-text" />
+                                <p class="description">label for products that require customization/user input</p>
+                            </td>
+                        </tr>
+
+                    </table>
+                    <?php submit_button(); ?>
+                </form>
+            </div>
+        </div>
+<?php
 
     }
 }

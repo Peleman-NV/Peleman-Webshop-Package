@@ -4,25 +4,26 @@ declare(strict_types=1);
 
 namespace PWP\includes\utilities\response;
 
-use Exception;
-use PWP\includes\utilities\notification\PWP_Notification;
-
-class PWP_Ajax_Response extends PWP_Notification
+abstract class PWP_Ajax_Response implements PWP_I_Response
 {
-    private array $payload;
-
-    public function set_payload(array $payload): void
-    {
-        $this->payload = $payload;
-    }
-
+    protected string $message;
+    protected int $code;
+    /**
+     * TODO: build class into proper AJAX response class
+     * 
+     */
     public function to_array(): array
     {
-        $response = self::to_array();
-        $response['status'] = $this->is_success() ? 'success' : 'failure';
-        $response['success'] = $this->is_success();
-        $response['payload'] = (array)$this->payload;
+        return [];
+    }
 
-        return $response;
+    public function get_code(): int
+    {
+        return $this->code;
+    }
+
+    public function get_message(): string
+    {
+        return $this->message;
     }
 }

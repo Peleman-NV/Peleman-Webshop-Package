@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace PWP\publicPage\hookables;
 
+use PWP\includes\editor\PWP_Product_Meta_Data;
 use PWP\includes\hookables\abstracts\PWP_Abstract_Filter_Hookable;
 
 class PWP_Change_Add_To_Cart_Label_For_Archive extends PWP_Abstract_Filter_Hookable
@@ -15,13 +16,15 @@ class PWP_Change_Add_To_Cart_Label_For_Archive extends PWP_Abstract_Filter_Hooka
 
     public function change_add_to_cart_text_for_archive(string $default, \WC_Product $product): string
     {
+
+        //TODO: make this an option in the wordpress control panel for easy modification
         switch ($product->get_type()) {
             case 'variable':
-                return "Customize me";
             case 'grouped':
-            case 'simple':
             case 'external':
             default:
+                return $default;
+            case 'simple':
                 return $default;
         }
     }

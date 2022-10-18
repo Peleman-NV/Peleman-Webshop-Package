@@ -25,8 +25,9 @@ abstract class PWP_Product_Meta implements PWP_I_Meta_Property
 
     abstract function update_meta_data(): void;
 
-    public function save(): void
+    public function save_meta_data(): void
     {
         $this->parent->save();
+        $this->parent->save_meta_data();
     }
 }

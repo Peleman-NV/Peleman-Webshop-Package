@@ -43,4 +43,9 @@ class PWP_Test_Endpoint extends PWP_Endpoint_Controller
     {
         return \WP_REST_Server::ALLMETHODS;
     }
+
+    public function get_schema(): array
+    {
+        return [];
+    }
 }

@@ -1,0 +1,7 @@
+{
+    "name": "example attribute",
+    "slug": "example_slug",
+    "type": "select",
+    "order_by": "menu_order",
+    "has_archives": false
+}

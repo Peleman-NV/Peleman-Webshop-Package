@@ -97,9 +97,9 @@
                             return;
                         }
                         if (response.data.requires_pdf_upload) {
-                            enableAddToCartButton(buttonText);
-                            displayUploadElements(response.data);
-                            return
+                            displayUploadElement(response.data);
+                        } else {
+                            hideUploadElement(response.data);
                         }
                         enableAddToCartButton(buttonText);
                         return;
@@ -131,7 +131,7 @@
             // display loading animation
             showElement($('#pwp-loading'));
             // clear any old upload information
-            $('#upload-info').html('');
+            // $('#pwp-file-upload').val('');
             // hide the ever present max upload file size
             hideElement($('#max-upload-size'));
             // disable add-to-cart btn
@@ -163,25 +163,32 @@
         /**
          * Function displays the necessary parameters, when present
          */
-        function displayUploadElements(response) {
+        function displayUploadElement(data) {
             enableUploadBtn();
             const { height, width, min_pages, max_pages, price_per_page } =
-                response;
-            hideElement($('#pwp-loading'));
+                data.pdf_data;
+            // height = data.pdf_data.height;
+            // width = data.pdf_data.width;
+            // min_pages = data.pdf_data.min_pages;
+            // max_pages = data.pdf_data.max_pages;
+            // price_per_page = data.pdf_data.price_per_page;
+
+            hideElement($('#ppi-loading'));
 
             showElement($('.pwp-upload-form'));
             showElement($('.upload-label'));
-
-            showElement($('.pwp-upload-form'));
             showElement($('#max-upload-size'));
+            $('#pwp-file-upload').prop('required', true);
+            // $('#pwp-file-upload').val();
+
             if (height != '') {
-                $('#content-height').html(height + 'mm');
+                $('#content-height').html(height);
                 showElement($('#content-height').parent());
             } else {
                 hideElement($('#content-height').parent());
             }
             if (width != '') {
-                $('#content-width').html(width + 'mm');
+                $('#content-width').html(width);
                 showElement($('#content-width').parent());
             } else {
                 hideElement($('#content-width').parent());
@@ -204,16 +211,19 @@
             } else {
                 hideElement($('#content-price-per-page').parent());
             }
-            showElement($('.pwp-upload-parameters'));
+            showElement($('.upload-parameters'));
+
         }
 
         /**
          * Function hides upload parameters,
          * because a  new variant may not have upload parameters
          */
-        function hideUploadElements() {
-            $('.upload-label').addClass('upload-disabled');
+        function hideUploadElement() {
+            hideElement($('.pwp-upload-form'));
             hideElement($('.upload-parameters'));
+            $('.upload-label').addClass('upload-disabled');
+            $('#pwp-file-upload').prop('required', false);
         }
 
         function setAddToCartLabel() {

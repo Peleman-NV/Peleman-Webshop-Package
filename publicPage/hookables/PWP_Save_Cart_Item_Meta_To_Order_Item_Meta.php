@@ -17,7 +17,6 @@ class PWP_Save_Cart_Item_Meta_To_Order_Item_Meta extends PWP_Abstract_Action_Hoo
 
     public function save_cart_item_meta_to_order_item_meta(\WC_Order_Item_Product $item, string $cartItemKey, array $values, \WC_Order $order): void
     {
-        //TODO: implements functionality from PPI
         if (isset($values['_editor_id']) && isset($values['_project_id'])) {
 
             $item->add_meta_data(
@@ -30,11 +29,6 @@ class PWP_Save_Cart_Item_Meta_To_Order_Item_Meta extends PWP_Abstract_Action_Hoo
                 $values['_project_id'],
                 true
             );
-            // $item->add_meta_data(
-            //     '_project_url',
-            //     $values['_project_url'],
-            //     true
-            // );
         }
     }
 }

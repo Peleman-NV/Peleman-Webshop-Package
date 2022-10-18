@@ -14,7 +14,7 @@ use PWP\includes\utilities\notification\PWP_Notification;
 use PWP\includes\validation\PWP_Validate_Term_Slug_Exists;
 use PWP\includes\utilities\notification\PWP_I_Notification;
 use PWP\includes\utilities\notification\PWP_Success_Notice;
-use PWP\includes\utilities\response\PWP_I_Response_Component;
+use PWP\includes\utilities\response\PWP_I_Response;
 
 final class PWP_Delete_Term_Command implements PWP_I_Command
 {
@@ -32,7 +32,7 @@ final class PWP_Delete_Term_Command implements PWP_I_Command
         $this->handler->set_next(new PWP_Validate_Term_Slug_Exists($this->service));
     }
 
-    public function do_action(): PWP_I_Response_Component
+    public function do_action(): PWP_I_Response
     {
         $notification = new PWP_Notification();
         $data = new PWP_Term_Data(['slug' => $this->slug]);
@@ -53,7 +53,7 @@ final class PWP_Delete_Term_Command implements PWP_I_Command
     }
 
 
-    public function undo_action(): PWP_I_Response_Component
+    public function undo_action(): PWP_I_Response
     {
         return new PWP_Error_Notice(
             "method not implemented",

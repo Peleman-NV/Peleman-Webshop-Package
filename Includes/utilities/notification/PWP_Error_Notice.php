@@ -4,9 +4,10 @@ declare(strict_types=1);
 
 namespace PWP\includes\utilities\notification;
 
-use PWP\includes\utilities\response\PWP_I_Response_Component;
+use PWP\includes\utilities\response\PWP_I_Response;
+use WP_REST_Response;
 
-class PWP_Error_Notice implements PWP_I_Notification_Message, PWP_I_Response_Component
+class PWP_Error_Notice implements PWP_I_Notice
 {
     private string $message;
     private string $description;
@@ -59,5 +60,24 @@ class PWP_Error_Notice implements PWP_I_Notification_Message, PWP_I_Response_Com
             );
         }
         return $response;
+    }
+
+    public function to_rest_response(): WP_REST_Response
+    {
+        return new WP_REST_Response($this->to_array(), 200);
+    }
+
+    public function add_response_component(PWP_I_Notice $response): void
+    {
+    }
+
+    public function is_success(): bool
+    {
+        return false;
+    }
+
+    public function __tostring(): string
+    {
+        return "{$this->message}: {$this->description}";
     }
 }

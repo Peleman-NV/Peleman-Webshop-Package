@@ -20,7 +20,7 @@
 
 .pwp-hidden {
     display: none !important;
-    cursor: not-allowed !important;
+    cursor: not allowed !important;
     pointer-events: none !important;
 }
 

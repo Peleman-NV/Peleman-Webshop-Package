@@ -17,4 +17,9 @@ abstract class PWP_Abstract_DELETE_Endpoint extends PWP_Endpoint_Controller
     {
         return \WP_REST_Server::DELETABLE;
     }
+
+    public function get_schema(): array
+    {
+        return [];
+    }
 }

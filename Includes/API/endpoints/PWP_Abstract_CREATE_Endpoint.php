@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 namespace PWP\includes\API\endpoints;
+
 /**
  * abstract endpoint class for POST requests
  */

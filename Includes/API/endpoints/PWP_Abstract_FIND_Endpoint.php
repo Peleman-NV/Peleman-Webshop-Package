@@ -20,4 +20,9 @@ abstract class PWP_Abstract_FIND_Endpoint extends PWP_Endpoint_Controller
     {
         return \WP_REST_Server::READABLE;
     }
+
+    public function get_schema(): array
+    {
+        return [];
+    }
 }

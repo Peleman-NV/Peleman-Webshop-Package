@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PWP\includes\validation;
 
-use PWP\includes\wrappers\PWP_File_Data;
+use PWP\includes\wrappers\PWP_PDF_Upload;
 use PWP\includes\validation\PWP_Abstract_File_Handler;
 use PWP\includes\utilities\notification\PWP_I_Notification;
 
@@ -30,8 +30,15 @@ final class PWP_Validate_File_Size extends PWP_Abstract_File_Handler
         $this->maxFileSize = $maxFileSize;
     }
 
-    public function handle(PWP_File_Data $file, PWP_I_Notification $notification): bool
+    public function handle(PWP_PDF_Upload $file, ?PWP_I_Notification $notification = null): bool
     {
-        return ($file->get_size() <= $this->maxFileSize) ? $this->handle_next($file, $notification) : false;
+        if ($file->get_size() <= $this->maxFileSize)
+            return $this->handle_next($file, $notification);
+
+        $notification->add_error(
+            'file too large',
+            __('The file is too large. Please upload a file smaller than the maximum upload size.', PWP_TEXT_DOMAIN)
+        );
+        return false;
     }
 }

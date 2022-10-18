@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace PWP\includes\API\endpoints;
 
 use PWP\includes\authentication\PWP_I_Api_Authenticator;
+use PWP\includes\exceptions\PWP_Invalid_Input_Exception;
 use PWP\includes\hookables\abstracts\PWP_I_Hookable_Component;
-use PWP\includes\loaders\PWP_Plugin_Loader;
+use WP_REST_Controller;
 
 abstract class PWP_Endpoint_Controller implements PWP_I_Endpoint, PWP_I_Hookable_Component
 {
-    protected string $namespace;
     protected string $path;
     protected string $title;
     protected PWP_I_Api_Authenticator $authenticator;
@@ -45,10 +45,6 @@ abstract class PWP_Endpoint_Controller implements PWP_I_Endpoint, PWP_I_Hookable
         return $this->authenticator;
     }
 
-    public function get_arguments(): array
-    {
-        return [];
-    }
 
     final public function register(): void
     {
@@ -56,12 +52,51 @@ abstract class PWP_Endpoint_Controller implements PWP_I_Endpoint, PWP_I_Hookable
             $this->namespace,
             $this->get_path(),
             array(
-                'args' => $this->get_arguments(),
-                'callback' => $this->get_callback(),
-                'methods' => $this->get_methods(),
-                'permission_callback' => $this->get_permission_callback(),
-            )
+                array(
+                    'methods' => $this->get_methods(),
+                    'callback' => $this->get_callback(),
+                    'permission_callback' => $this->get_permission_callback(),
+                    'args' => $this->get_arguments(),
+                ),
+                'schema' => array($this, 'get_schema'),
+            ),
         );
+    }
+
+    /**
+     * helper function for validing REST api requests with a json schema,
+     * combining the functionality of both the 
+     * `rest_validate_value_from_schema` and `rest_sanitize_value_from_schema` methods
+     *
+     * @param array $request request array body
+     * @param string $name name of the object to be used in error/validation messages
+     * @return array returns validated & sanitized request array
+     * @throws PWP_Invalid_Input_Exception thrown if validation fails due to missing or incorrect parameter(s)
+     */
+    final protected function validate_request_with_schema(array $request, string $name = ''): array
+    {
+        $schema = $this->get_schema();
+        $result = rest_validate_value_from_schema($request, $schema, $name);
+        if (is_wp_error($result)) {
+            throw new PWP_Invalid_Input_Exception($result->get_error_message());
+        }
+
+        $request = rest_sanitize_value_from_schema($request, $schema, $name);
+        if (is_wp_error($request)) {
+            throw new PWP_Invalid_Input_Exception($request->get_error_message());
+        }
+
+        return $request;
+    }
+
+    public function get_arguments(): array
+    {
+        return [];
+    }
+
+    public function get_schema(): array
+    {
+        return [];
     }
 
     public abstract function do_action(\WP_REST_Request $request): \WP_REST_Response;

@@ -13,7 +13,8 @@ use PWP\includes\validation\PWP_Abstract_Term_Handler;
 use PWP\includes\utilities\notification\PWP_Notification;
 use PWP\includes\validation\PWP_Validate_Term_Slug_Unique;
 use PWP\includes\utilities\notification\PWP_I_Notification;
-use PWP\includes\utilities\response\PWP_I_Response_Component;
+use PWP\includes\utilities\notification\PWP_I_Notice;
+use PWP\includes\utilities\response\PWP_I_Response;
 use PWP\includes\validation\PWP_Validate_Term_Parent_Exists;
 use PWP\includes\validation\PWP_Validate_Term_Slug_Characters;
 use PWP\includes\validation\PWP_Validate_Term_Translation_Data;
@@ -41,7 +42,7 @@ class PWP_Create_Term_Command implements PWP_I_Command
             ->set_next(new PWP_Validate_Term_Translation_Data($this->service));
     }
 
-    final public function do_action(): PWP_I_Response_Component
+    final public function do_action(): PWP_I_Notice
     {
         $notification = new PWP_Notification();
         if (!$this->validate_data($notification)) {
@@ -59,7 +60,7 @@ class PWP_Create_Term_Command implements PWP_I_Command
         );
     }
 
-    public function undo_action(): PWP_I_Response_Component
+    public function undo_action(): PWP_I_Notice
     {
         return new PWP_Error_Notice(
             "method not implemented",

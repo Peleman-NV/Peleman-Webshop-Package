@@ -150,7 +150,7 @@ class ImaxelService
         )), JSON_UNESCAPED_SLASHES);
 
         $now =  new DateTime('NOW');
-        error_log($now->format('c') . ": created Imaxel order for WC {$order_id}" . PHP_EOL, 3,  $this->logFile);
+        // error_log($now->format('c') . ": created Imaxel order for WC {$order_id}" . PHP_EOL, 3,  $this->logFile);
 
         return $this->get_response($url, 'POST', $create_project_json);
     }

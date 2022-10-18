@@ -94,4 +94,9 @@ class PWP_Categories_CREATE_Endpoint extends PWP_Abstract_CREATE_Endpoint
         return $schema->to_array();
         return [];
     }
+
+    public function get_schema(): array
+    {
+        return [];
+    }
 }

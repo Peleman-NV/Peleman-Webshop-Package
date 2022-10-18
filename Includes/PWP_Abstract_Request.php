@@ -21,5 +21,5 @@ abstract class PWP_Abstract_Request
         $this->timeout = $seconds;
         return $this;
     }
-    public abstract function make_request(): PWP_I_Response;
+    public abstract function make_request(): object;
 }

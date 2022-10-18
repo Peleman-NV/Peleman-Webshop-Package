@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace PWP\publicPage\hookables;
 
-use Error;
-use Exception;
 use PWP\includes\editor\PWP_Product_Meta_Data;
 use pwp\includes\editor\PWP_Editor_Project;
 use PWP\includes\editor\PWP_Product_IMAXEL_Data;
@@ -16,7 +14,7 @@ use PWP\includes\editor\PWP_PIE_Editor_Instructions;
 use PWP\includes\editor\PWP_Product_PIE_Data;
 use PWP\includes\editor\PWP_PIE_Project;
 use PWP\includes\hookables\abstracts\PWP_Abstract_Ajax_Hookable;
-use WC_Product_Variation;
+use WC_AJAX;
 
 class PWP_Ajax_Add_To_Cart extends PWP_Abstract_Ajax_Hookable
 {
@@ -31,46 +29,43 @@ class PWP_Ajax_Add_To_Cart extends PWP_Abstract_Ajax_Hookable
 
     public function callback(): void
     {
-        if (!$this->verify_nonce($_REQUEST['nonce'])) {
-            error_log("add to cart request received with incorrect nonce value: aborting");
-            wp_send_json_error('incorrect nonce', 401);
-        }
+        ob_start();
+        // $this->log_upload();
+
+        if (!$this->verify_nonce($_REQUEST['nonce']))
+            wp_send_json_error(
+                array('message' => __('session timed out', PWP_TEXT_DOMAIN)),
+                401
+            );
+
+
+        if (!isset($_REQUEST['product_id']))
+            return;
 
         try {
-            if (!isset($_REQUEST['product'])) {
-                //we can safely assume that the product is a simple product that does not require special handling
-                wp_send_json_success(array(
-                    'message' => "continue as you were",
-                    'destination_url' => '',
-                ), 200);
-            }
-            error_log("incoming add to cart request: " . print_r($_REQUEST, true));
-
             //find and store all relevant variables
             //first, read and interpret data from request
-            $productId      = apply_filters('woocommerce_add_to_cart_product_id', absint($_REQUEST['product']));
-            $variationId    = apply_filters('woocommerce_add_to_cart_product_id', absint($_REQUEST['variant']));
-            $product = wc_get_product($variationId ?: $productId);
-            $editorData     = new PWP_Product_Meta_Data($product);
+            $productId      = apply_filters('woocommerce_add_to_cart_product_id', absint($_REQUEST['product_id']));
+            $variationId    = apply_filters('woocommerce_add_to_cart_product_id', absint($_REQUEST['variation_id']));
+            $product        = wc_get_product($variationId ?: $productId);
+            $productMeta     = new PWP_Product_Meta_Data($product);
             $quantity       = wc_stock_amount($_REQUEST['quantity'] ?: 1);
 
             if (apply_filters('woocommerce_add_to_cart_validation', true, $productId, $quantity, $variationId)) {
+                wc_clear_notices();
+                if ($productMeta->is_customizable()) {
 
-                if ($editorData->is_customizable()) {
-                    //BEGIN CUSTOM PROJECT REDIRECT FLOW
-                    error_log("product is customizable. generating project files...");
+                    // error_log("product is customizable. generating project files...");
                     session_start();
 
-                    //create custom id for a session variable to store the order data
-                    //TODO: should any given user only be able to edit a single order/product at a time? look into it.
                     $sessionId = uniqid('ord');
 
-                    //generate return url which, when called, will add the cached order to the cart.
-                    $returnUrl = wc_get_cart_url() . "?CustProj={$sessionId}";
-                    $projectData = $this->generate_new_project($editorData, $returnUrl);
+                    $continueUrl = wc_get_cart_url() . "?CustProj={$sessionId}";
+                    $cancelUrl = get_permalink($product->get_id());
 
-                    //store relevant data in session
-                    $_SESSION[$sessionId] = array(
+                    $projectData = $this->generate_new_project($productMeta, $continueUrl, $cancelUrl);
+
+                    $itemData = array(
                         'product_id'    => $productId,
                         'quantity'      => $quantity,
                         'variation_id'  => $variationId,
@@ -80,35 +75,72 @@ class PWP_Ajax_Add_To_Cart extends PWP_Abstract_Ajax_Hookable
                         )
                     );
 
+                    //store relevant data in session
+                    /**
+                     * @var array $itemData array of data to be stored in the session until user returns
+                     * @var \WC_Product $product product which is to be stored
+                     * @var PWP_Product_Meta_Data $productMeta product meta data object
+                     */
+                    $itemData['item_meta'] = apply_filters(
+                        'pwp_add_cart_item_data',
+                        $itemData['item_meta'],
+                        $product,
+                        $productMeta,
+                    );
+
+                    $_SESSION[$sessionId] = $itemData;
+
                     wp_send_json_success(
                         array(
-                            'message' => 'external project created, redirecting user to editor for customization...',
+                            'message' => __('external project created, redirecting user to editor for customization...', PWP_TEXT_DOMAIN),
                             'destination_url' => $projectData->get_project_editor_url(false),
                         ),
                         201
                     );
                     return;
                 }
-                error_log("product is not customizable. returning to regular flow...");
 
-                $destination = '';
-                // if ('yes' === get_option('woocommerce_cart_redirect_after_add')) {
-                //     wc_add_to_cart_message(array($variationId ?? $productId => $quantity), true);
-                //     $destination = wc_get_cart_url();
-                // }
-                wp_send_json_success(array(
-                    'message' => 'standard product, using default functionality',
-                    'destination_url' => '',
-                ), 200);
+                //store relevant data in session
+                /**
+                 * @var array $itemData array of data to be stored in the session until user returns
+                 * @var \WC_Product $product product which is to be stored
+                 * @var PWP_Product_Meta_Data $productMeta product meta data object
+                 */
+                $meta = apply_filters(
+                    'pwp_add_cart_item_data',
+                    array(),
+                    $product,
+                    $productMeta,
+                );
+
+                if (WC()->cart->add_to_cart($productId, $quantity, $variationId, array(), $meta)) {
+                    do_action('woocommerce_ajax_added_to_cart', $productId);
+
+                    if (boolval(get_option('woocommerce_cart_redirect_after_add'))) {
+                        wc_add_to_cart_message(array($productId => $quantity), true);
+                        $redirectUrl = wc_get_cart_url();
+                    }
+                    // wc_ajax::get_refreshed_fragments();
+
+                    wp_send_json_success(array(
+                        'message' => __('standard product, using default functionality', PWP_TEXT_DOMAIN),
+                        'destination_url' => $redirectUrl ?: '',
+                    ), 200);
+                }
             }
-            throw new Exception("something unexpected went wrong", 500);
-        } catch (Error $err) {
+            $notices = wc_get_notices('error');
+            $message = $notices[count($notices) - 1]['notice'];
+            wp_send_json_error(
+                array('message' => $message),
+                200
+            );
+        } catch (\Exception $err) {
             error_log(sprintf("PHP Error: %s in %s on line %s", $err->getMessage(), $err->getFile(), $err->getLine()));
             error_log($err->getTraceAsString());
 
             wp_send_json_error(
                 array(
-                    'message' => 'an unexpected error has occurred',
+                    'message' => __('an unexpected error has occurred', PWP_TEXT_DOMAIN),
                 ),
                 500
             );
@@ -126,11 +158,12 @@ class PWP_Ajax_Add_To_Cart extends PWP_Abstract_Ajax_Hookable
      * @param integer $productId id of the product we are trying to edit
      * @param string $templateId template Id of the product. Needed to deterime the appropriate Editor
      * @param string $returnURL url to which the editor will return the user after saving their project, if blank, refer to editor.
+     * @param string $cancelURL url to which the editor will return the user if the user cancels their project.
      * @return PWP_Editor_Project|null wil return a PWP_Editor_Project object if successful. if the method can not determine a valid editor, will return null.
      */
-    public function generate_new_project(PWP_Product_Meta_Data $data, string $returnURL = ''): PWP_Editor_Project
+    public function generate_new_project(PWP_Product_Meta_Data $data, string $returnURL = '', string $cancelURL = ''): PWP_Editor_Project
     {
-        error_log($data->get_editor_id());
+        // error_log($data->get_editor_id());
         switch ($data->get_editor_id()) {
             case PWP_Product_PIE_Data::MY_EDITOR:
                 return $this->new_PIE_Project($data->pie_data(), $returnURL ?: site_url());
@@ -144,10 +177,10 @@ class PWP_Ajax_Add_To_Cart extends PWP_Abstract_Ajax_Hookable
      * generate a new project for the Peleman Image Editor
      *
      * @param integer $variant_id product or variant id of the product
-     * @param string $returnUrl when the user has completed their project, they will be redirected to this URL
+     * @param string $continueUrl when the user has completed their project, they will be redirected to this URL
      * @return PWP_PIE_Project project object
      */
-    private function new_PIE_Project(PWP_Product_PIE_Data $data, string $returnUrl): PWP_PIE_Project
+    private function new_PIE_Project(PWP_Product_PIE_Data $data, string $continueUrl): PWP_PIE_Project
     {
         $instructions = new PWP_PIE_Editor_Instructions($data->get_parent());
         return
@@ -157,7 +190,7 @@ class PWP_Ajax_Add_To_Cart extends PWP_Abstract_Ajax_Hookable
                 get_option('pie_api_key', ''),
             )->initialize_from_pie_data($data)
             ->set_timeout(10)
-            ->set_return_url($returnUrl)
+            ->set_return_url($continueUrl)
             ->set_user_id(get_current_user_id())
             ->set_language($this->get_site_language())
             ->set_project_name($data->get_parent()->get_name())
@@ -170,13 +203,13 @@ class PWP_Ajax_Add_To_Cart extends PWP_Abstract_Ajax_Hookable
             ->make_request();
     }
 
-    private function new_IMAXEL_Project(PWP_Product_IMAXEL_Data $data, string $returnUrl): PWP_IMAXEL_Project
+    private function new_IMAXEL_Project(PWP_Product_IMAXEL_Data $data, string $continueUrl): PWP_IMAXEL_Project
     {
         return
             PWP_New_IMAXEL_Project_Request::new()
             ->initialize_from_imaxel_data($data)
             ->set_back_url(wc_get_cart_url())
-            ->set_add_to_cart_url($returnUrl)
+            ->set_add_to_cart_url($continueUrl)
             ->make_request();
     }
 
@@ -186,5 +219,13 @@ class PWP_Ajax_Add_To_Cart extends PWP_Abstract_Ajax_Hookable
             return ICL_LANGUAGE_CODE;
         }
         return explode("_", get_locale())[0];
+    }
+
+    private function log_upload()
+    {
+        error_log(__CLASS__ . "\r\nincoming request : " . print_r($_REQUEST, true));
+        if (!empty($_FILES)) {
+            error_log(__CLASS__ . "\r\nuploaded files : " . print_r($_FILES, true));
+        }
     }
 }

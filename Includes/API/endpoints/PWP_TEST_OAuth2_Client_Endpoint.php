@@ -100,4 +100,9 @@ class PWP_TEST_OAuth2_Client_Endpoint extends PWP_Abstract_READ_Endpoint
             exit($e->getMessage());
         }
     }
+
+    public function get_schema(): array
+    {
+        return [];
+    }
 }

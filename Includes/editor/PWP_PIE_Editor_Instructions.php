@@ -12,19 +12,17 @@ use WC_Product;
  */
 class PWP_PIE_Editor_Instructions extends PWP_Product_Meta
 {
-    public const EDITOR_INSTRUCTIONS_KEY = 'pie_editor_instructions';
-    public const INSTRUCTION_PREFIX = 'pie_instruct_';
+
 
     private array $instructions;
 
     public function __construct(WC_Product $parent)
     {
         $this->parent = $parent;
-        $meta = $this->parent->get_meta(self::EDITOR_INSTRUCTIONS_KEY);
-        $this->instructions = explode(' ', $meta) ?: [];
-        // $this->instructions = (array)unserialize($meta) ?? ['foo'];
-        // $this->instructions = ['foo'];
-        error_log("editor instructions for product with id {$parent->get_id()} : " . print_r($this->instructions, true));
+        $meta = $this->parent->get_meta(PWP_Keys::EDITOR_INSTRUCTIONS_KEY);
+        $this->instructions = explode(' ', $meta);
+        // $this->instructions = (array)unserialize($meta) ?? [];
+        // error_log("editor instructions for product with id {$parent->get_id()} : " . print_r($this->instructions, true));
     }
 
     public function add_instruction(string $instruction): self
@@ -56,7 +54,7 @@ class PWP_PIE_Editor_Instructions extends PWP_Product_Meta
     public function update_meta_data(): void
     {
         $this->parent->update_meta_data(
-            $this::EDITOR_INSTRUCTIONS_KEY,
+            PWP_Keys::EDITOR_INSTRUCTIONS_KEY,
             (implode(' ', $this->instructions))
         );
 

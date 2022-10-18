@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace PWP\includes\utilities\notification;
 
-use PWP\includes\utilities\response\PWP_I_Response_Component;
+use PWP\includes\utilities\response\PWP_I_Response;
 
-class PWP_Notification implements PWP_I_Notification, PWP_I_Response_Component
+class PWP_Notification implements PWP_I_Notification
 {
     private array $errors;
     private bool $isSuccess;
@@ -26,6 +26,11 @@ class PWP_Notification implements PWP_I_Notification, PWP_I_Response_Component
         return $this;
     }
 
+    /**
+     * Undocumented function
+     *
+     * @return PWP_Error_Notice[]
+     */
     final public function get_errors(): array
     {
         return $this->errors;
@@ -50,5 +55,10 @@ class PWP_Notification implements PWP_I_Notification, PWP_I_Response_Component
         }
 
         return $response;
+    }
+
+    public function add_response_component(PWP_I_Response $response): void
+    {
+        //FIXME: add functionality
     }
 }

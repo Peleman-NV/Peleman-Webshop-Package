@@ -46,9 +46,4 @@ class PWP_F2D_Product
     public function to_array()
     {
     }
-
-    private function add_meta_property(string $key)
-    {
-        $this->metaProperties[$key] = PWP_Product_Meta_Property::new_text($this->product, $key);
-    }
 }

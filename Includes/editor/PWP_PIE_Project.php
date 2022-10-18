@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace PWP\includes\editor;
 
 use PWP\includes\editor\PWP_Editor_Project;
+use PWP\includes\utilities\response\PWP_I_Response;
 
 class PWP_PIE_Project extends PWP_Editor_Project
 {
@@ -25,7 +26,6 @@ class PWP_PIE_Project extends PWP_Editor_Project
             $params['skip'] = 'true';
 
         $params = array_merge($params, $this->editorData->get_editor_params());
-        $params['templateid'] = $this->editorData->get_template_id();
         $params['customerapikey'] = get_option('pie_api_key');
 
         $url = get_option('pie_domain') . "/editor/upload";

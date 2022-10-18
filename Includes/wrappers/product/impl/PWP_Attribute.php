@@ -8,4 +8,6 @@ use PWP\includes\wrappers\PWP_Component;
 
 class PWP_Attribute extends PWP_Component
 {
+    private string $taxonomy;
+    private array $attributes;
 }

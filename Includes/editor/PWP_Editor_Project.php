@@ -4,11 +4,7 @@ declare(strict_types=1);
 
 namespace pwp\includes\editor;
 
-use PWP\includes\utilities\notification\PWP_I_Notification;
-use PWP\includes\utilities\response\PWP_I_Response;
-use PWP\includes\utilities\response\PWP_I_Response_Component;
-
-abstract class PWP_Editor_Project implements PWP_I_Response, PWP_I_Response_Component
+abstract class PWP_Editor_Project
 {
     private string $editorId;
     private string $projectId;

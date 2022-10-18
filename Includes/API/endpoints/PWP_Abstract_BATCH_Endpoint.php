@@ -21,4 +21,9 @@ abstract class PWP_Abstract_BATCH_Endpoint extends PWP_Endpoint_Controller
     {
         return \WP_REST_Server::EDITABLE;
     }
+
+    public function get_schema(): array
+    {
+        return [];
+    }
 }
