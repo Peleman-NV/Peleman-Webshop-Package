@@ -63,7 +63,7 @@ class PWP_Project implements PWP_I_Entity, JsonSerializable
         return self::create_new_from_row($row);
     }
 
-    private static function create_new_from_row(stdClass $row): self
+    private static function create_new_from_row(object $row): self
     {
         $product = new self(
             (int)$row->user_id,

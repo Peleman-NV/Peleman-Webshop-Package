@@ -58,7 +58,7 @@ final class PWP_Plugin
 
     private function __construct()
     {
-        $this->version = defined('PWP_VERSION') ? PWP_VERSION : '1.0.0';
+        $this->version = defined('PWP_VERSION') ? PWP_VERSION : '1.0.00';
         $this->plugin_name = 'Peleman Webshop Package';
         $this->loader = new PWP_Plugin_Loader();
         $this->noticePoster = new PWP_Admin_Notice_Poster();

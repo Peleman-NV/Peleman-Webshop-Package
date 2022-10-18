@@ -24,7 +24,8 @@ class PWP_Display_PDF_Data_After_Order_Item extends PWP_Abstract_Action_Hookable
 
         $download = home_url('wp-json/pwp/v1/pdf/' . $id . "?_wpnonce={$nonce}");
 ?>
-        <div><a download=<?= $name; ?> href=<?= $download ?>>download <?= $name ?></a></div>
+        <div><a download=<?= $name; ?> target="_blank" href=<?= $download ?>>download <?= $name ?></a></div>
+        <!-- <div><a target="_blank" href=<?= $download; ?>>download <?= $name ?></a></div> -->
 <?php
     }
 }

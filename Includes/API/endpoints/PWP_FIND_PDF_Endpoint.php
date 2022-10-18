@@ -47,7 +47,7 @@ class PWP_FIND_PDF_Endpoint extends PWP_Abstract_FIND_Endpoint
         ob_start();
         header('Content-Type: application/pdf');
         header('Content-Length: ' . filesize($filePath));
-        header("Content-disposition: attachment; filename=\"{$name}\"");
+        header("Content-disposition: inline; filename=\"{$name}\"");
         header('Pragma: public');
         ob_clean();
         flush();

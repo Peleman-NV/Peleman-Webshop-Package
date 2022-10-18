@@ -2,10 +2,9 @@
 
 declare(strict_types=1);
 
-namespace PWP\adminPage;
+namespace PWP\adminPage\hookables;
 
 use WP_Post;
-use PWP\includes\utilities\PWP_Input_Fields;
 use PWP\includes\hookables\abstracts\PWP_Abstract_Action_hookable;
 
 class PWP_Parent_Custom_Fields extends PWP_Abstract_Action_hookable

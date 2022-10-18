@@ -31,17 +31,6 @@ class PWP_Ajax_Upload_PDF extends PWP_Abstract_Ajax_Hookable
 
     public function callback(): void
     {
-        /**
-         * //TODO: implement full functionality of PPI content uploader
-         * STEPS:
-         * 1) check ajax nonce - using check ajax_referer method
-         * 2) check if file upload is successful (should work with the error code from the $FILES global)
-         * 3) check if PDF is valid
-         * 4) Save PDF
-         *  - how do we save pdfs and avoid file conflicts without ending up with tons of uploads cluttering the uploads folder?
-         * 5) Generate success response with PDF details
-         */
-
         /** 1) */
         $this->validate_request_nonce($_REQUEST['nonce']);
 
