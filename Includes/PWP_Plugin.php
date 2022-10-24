@@ -38,6 +38,7 @@ use PWP\publicPage\hookables\PWP_Display_PDF_Data_In_Cart;
 use PWP\publicPage\hookables\PWP_Add_PDF_Prices_To_Cart;
 use PWP\publicPage\hookables\PWP_Add_PDF_Data_To_Cart_Item;
 use PWP\publicPage\hookables\PWP_Change_Add_To_Cart_Archive_Button;
+use PWP\publicPage\hookables\PWP_Download_PIE_Printfile;
 use PWP\publicPage\hookables\PWP_Order_Project;
 use PWP\publicPage\hookables\PWP_Remove_PDF_On_Cart_Deletion;
 use PWP\publicPage\hookables\PWP_Validate_PDF_Upload;
@@ -126,6 +127,7 @@ final class PWP_Plugin
         $this->add_hookable(new PWP_Display_Editor_Project_Button_In_Cart());
         $this->add_hookable(new PWP_Add_Custom_Project_On_Return());
         $this->add_hookable(new PWP_Save_Cart_Item_Meta_To_Order_Item_Meta());
+        $this->add_hookable(new PWP_Download_PIE_Printfile());
     }
 
     private function api_endpoints(): void
