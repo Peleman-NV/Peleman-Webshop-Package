@@ -2,11 +2,10 @@
 
 declare(strict_types=1);
 
-namespace PWP\includes\API\endpoints\Products;
+namespace PWP\includes\API\endpoints\products;
 
 use PWP\includes\API\PWP_Abstract_API_Channel;
 use PWP\includes\API\endpoints\PWP_I_Endpoint;
-use PWP\includes\API\endpoints\PWP_Test_Endpoint;
 use PWP\includes\authentication\PWP_Authenticator;
 use PWP\includes\authentication\PWP_I_Api_Authenticator;
 

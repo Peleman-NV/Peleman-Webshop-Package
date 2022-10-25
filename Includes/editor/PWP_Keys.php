@@ -9,7 +9,7 @@ namespace PWP\includes\editor;
  */
 class PWP_Keys
 {
-    public const USE_PDF_CONTENT_KEY = 'pwp_use_pdf_content';
+    public const USE_PDF_CONTENT_KEY = 'pdf_upload_required';
     public const PDF_HEIGHT_KEY = 'pdf_height_mm';
     public const PDF_WIDTH_KEY = 'pdf_width_mm';
     public const PDF_MAX_PAGES_KEY = 'pdf_max_pages';

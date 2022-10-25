@@ -5,8 +5,6 @@ declare(strict_types=1);
 namespace PWP\includes\API\endpoints\attributes\terms;
 
 use PWP\includes\API\endpoints\PWP_Abstract_CREATE_Endpoint;
-use PWP\includes\API\PWP_Channel_Definition;
-use PWP\includes\authentication\PWP_I_Api_Authenticator;
 use PWP\includes\handlers\commands\PWP_Create_Term_Command;
 use PWP\includes\handlers\services\PWP_Term_SVC;
 use PWP\includes\utilities\response\PWP_Response;
@@ -14,7 +12,7 @@ use PWP\includes\wrappers\PWP_Term_Data;
 use WP_REST_Request;
 use WP_REST_Response;
 
-class PWP_Attribute_Terms_Create_Endpoint extends PWP_Abstract_CREATE_Endpoint
+class PWP_Attribute_Terms_CREATE_Endpoint extends PWP_Abstract_CREATE_Endpoint
 {
     private string $prefix = 'pa_';
 

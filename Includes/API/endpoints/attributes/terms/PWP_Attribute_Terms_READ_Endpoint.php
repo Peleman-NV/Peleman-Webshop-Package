@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace PWP\includes\API\endpoints\attributes\terms;
 
 use PWP\includes\API\endpoints\PWP_Abstract_READ_Endpoint;
-use PWP\includes\authentication\PWP_I_Api_Authenticator;
 use WP_REST_Request;
 use WP_REST_Response;
 

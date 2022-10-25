@@ -13,7 +13,6 @@ use PWP\includes\handlers\commands\PWP_Create_Variable_Product_Command;
 use PWP\includes\handlers\commands\PWP_Create_Variation_Product_Command;
 use PWP\includes\utilities\notification\PWP_I_Notice;
 use PWP\includes\utilities\response\PWP_Error_Response;
-use PWP\includes\utilities\response\PWP_I_Response;
 use PWP\includes\utilities\response\PWP_Response;
 use WP_REST_Request;
 use WP_REST_Response;

@@ -35,7 +35,8 @@ class PWP_API_V1_Plugin implements PWP_I_Hookable_Component
 
         $this->add_hookable(new PWP_API_Categories_Channel($this->namespace, '', $authenticator));
         $this->add_hookable(new PWP_API_Attributes_Channel($this->namespace, '', $authenticator));
-        $this->add_hookable(new PWP_API_Products_Channel($this->namespace, '', $authenticator));
+        //temporarily disabled: under development
+        // $this->add_hookable(new PWP_API_Products_Channel($this->namespace, '', $authenticator));
     }
 
     public function register(): void
