@@ -33,7 +33,7 @@
 
         // Event: when a new variation is chosen
         $(document).on('hide_variation', e => {
-            hideUploadElements();
+            hideUploadElement();
             disableAddToCartButton(buttonText);
             resetUnitPrice();
             hideArticleCodeElement();

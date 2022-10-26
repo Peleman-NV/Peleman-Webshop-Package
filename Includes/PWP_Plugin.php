@@ -132,9 +132,9 @@ final class PWP_Plugin
 
     private function api_endpoints(): void
     {
-        $this->loader->add_API_endpoint(new PWP_TEST_OAuth2_Client_Endpoint());
+        // $this->loader->add_API_endpoint(new PWP_TEST_OAuth2_Client_Endpoint());
 
-        $this->add_hookable(new PWP_API_V1_Plugin('pwp/v1'));
+        // $this->add_hookable(new PWP_API_V1_Plugin('pwp/v1'));
     }
 
     private function register_components()
