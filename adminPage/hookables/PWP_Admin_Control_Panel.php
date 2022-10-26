@@ -39,17 +39,26 @@ class PWP_Admin_Control_Panel extends PWP_Abstract_Action_Hookable
                     settings_fields('webshopOptions-group');
                     do_settings_sections('webshopOptions-group');
                     ?>
+                    <h3>Archive Labels</h3>
                     <table class="form-table">
                         <tr valign="top">
                             <th scope="row">
-                                <label for="pwp_customize_label">Customizable product</label>
+                                <label for="pwp_customize_label">Simple product - customizable</label>
                             </th>
                             <td>
                                 <input id="pwp_customize_label" name="pwp_customize_label" value="<?= get_option('pwp_customize_label'); ?>" placeholder="customize me" type="text" class="regular-text" />
                                 <p class="description">label for products that require customization/user input</p>
                             </td>
                         </tr>
-
+                        <tr valign="top">
+                            <th scope="row">
+                                <label for="pwp_archive_var_label">Variable product - Customizable</label>
+                            </th>
+                            <td>
+                                <input id="pwp_archive_var_label" name="pwp_archive_var_label" value="<?= get_option('pwp_archive_var_label'); ?>" placeholder="customize me" type="text" class="regular-text" />
+                                <p class="description">label for customizable variable products</p>
+                            </td>
+                        </tr>
                     </table>
                     <?php submit_button(); ?>
                 </form>
