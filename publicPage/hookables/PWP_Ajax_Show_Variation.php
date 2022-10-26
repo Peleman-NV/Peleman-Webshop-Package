@@ -38,7 +38,7 @@ class PWP_Ajax_Show_Variation extends PWP_Abstract_Ajax_Hookable
                 'height'                => $meta->get_pdf_height() ? $meta->get_pdf_height() . ' mm' : '',
                 'min_pages'             => $meta->get_pdf_min_pages() ? $meta->get_pdf_min_pages() : '',
                 'max_pages'             => $meta->get_pdf_max_pages() ? $meta->get_pdf_max_pages() : '',
-                'price_per_page'        => $meta->get_price_per_page() ? $meta->get_price_per_page() : '',
+                'price_per_page'        => $meta->get_price_per_page() ? wc_price($meta->get_price_per_page()) : '',
             ),
         );
 

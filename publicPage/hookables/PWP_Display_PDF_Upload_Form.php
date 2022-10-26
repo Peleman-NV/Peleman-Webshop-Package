@@ -50,6 +50,7 @@ class PWP_Display_PDF_Upload_Form extends PWP_Abstract_Action_Hookable
             'pdf_min_pages' => $meta->get_pdf_min_pages() ? $meta->get_pdf_min_pages() : '',
             'pdf_max_pages' => $meta->get_pdf_max_pages() ?: '',
             'price_per_page' => $meta->get_price_per_page() ?: '',
+            'pdf_label' => esc_html__('upload your pdf here', PWP_TEXT_DOMAIN),
         );
 
         echo $this->template->render('PWP_File_Upload_Form_Template', $params);
