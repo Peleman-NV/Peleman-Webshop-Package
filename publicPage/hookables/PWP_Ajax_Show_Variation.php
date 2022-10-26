@@ -14,7 +14,7 @@ class PWP_Ajax_Show_Variation extends PWP_Abstract_Ajax_Hookable
     {
         parent::__construct(
             'PWP_Ajax_Show_Variation',
-            plugins_url('Peleman-Webshop-Package/publicPage/js/show-variation.js'),
+            plugins_url('Peleman-Webshop-Package/publicPage/js/pwp-show-variation.js'),
             5
 
         );

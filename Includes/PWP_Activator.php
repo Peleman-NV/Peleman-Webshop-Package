@@ -23,6 +23,7 @@ class PWP_Activator
     {
         $this->init_settings();
         $this->init_database_tables();
+        $this->init_directories();
         $this->run_upgrades();
     }
 
@@ -91,5 +92,12 @@ class PWP_Activator
     {
         $versionController = new PWP_VersionController(PWP_VERSION, get_option('pwp-version'));
         $versionController->try_update();
+    }
+
+    public function init_directories()
+    {
+        if (!is_dir(PWP_UPLOAD_DIR)) {
+            mkdir(PWP_UPLOAD_DIR, 0755, true);
+        }
     }
 }

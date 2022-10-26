@@ -22,7 +22,7 @@ class PWP_Ajax_Add_To_Cart extends PWP_Abstract_Ajax_Hookable
     {
         parent::__construct(
             'PWP_Ajax_Add_To_Cart',
-            plugins_url('Peleman-Webshop-Package/publicPage/js/add-to-cart.js'),
+            plugins_url('Peleman-Webshop-Package/publicPage/js/pwp-add-to-cart.js'),
             5
         );
     }
