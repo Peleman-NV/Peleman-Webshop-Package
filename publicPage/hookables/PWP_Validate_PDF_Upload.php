@@ -19,7 +19,7 @@ class PWP_Validate_PDF_Upload extends PWP_Abstract_Filter_Hookable
 {
     public function __construct()
     {
-        parent::__construct('woocommerce_add_to_cart_validation', 'validate_pdf_upload', 1, 5);
+        parent::__construct('woocommerce_add_to_cart_validation', 'validate_pdf_upload', 10, 5);
     }
 
     public function validate_pdf_upload(bool $passed, int $product_id, int $quantity, int $variation_id = 0, array $variations = [])

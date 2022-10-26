@@ -22,7 +22,7 @@ use PWP\includes\versionControl\PWP_VersionController;
  * requires PHP:      7.4
  * requires at least: 5.9.0
  * Description:       In-development umbrella project of the Peleman Product Uploader and Print Partner Integrator.
- * Version:           1.0.02
+ * Version:           1.0.03
  * Author:            Kai Helsen
  * Author URI:        https://github.com/KaiHelsen
  * License:           GPL-2.0+
@@ -34,7 +34,7 @@ use PWP\includes\versionControl\PWP_VersionController;
 defined('WPINC') || die;
 
 //define PWP constant values
-define('PWP_VERSION', '1.0.02');
+define('PWP_VERSION', '1.0.03');
 !defined('PWP_OPTION_GROUP')        ? define('PWP_OPTION_GROUP', 'PWP_OPTIONS') : null;
 !defined('PWP_TEXT_DOMAIN')         ? define('PWP_TEXT_DOMAIN', 'PelemanWebshopPackage') : null;
 !defined('PWP_THUMBNAIL_DIR')       ? define('PWP_THUMBNAIL_DIR', WP_CONTENT_DIR . '/uploads/pwp/thumbnails') : null;
@@ -60,6 +60,6 @@ register_deactivation_hook(__FILE__, function () {
     $deactivator->deactivate();
 });
 
-add_action('plugins_loaded', function () {
+// add_action('plugins_loaded', function () {
     PWP_Plugin::run();
-}, 3, 0);
+// }, 12, 0);

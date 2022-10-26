@@ -51,8 +51,8 @@ class PWP_Ajax_Upload_PDF extends PWP_Abstract_Ajax_Hookable
         }
 
         $notification = new PWP_Notification();
-        error_log(print_r($_REQUEST, true));
-        error_log(print_r($file, true));
+        // error_log(print_r($_REQUEST, true));
+        // error_log(print_r($file, true));
 
         /** 3) */
         try {

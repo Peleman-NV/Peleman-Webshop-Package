@@ -38,8 +38,6 @@ class PWP_Ajax_Add_To_Cart extends PWP_Abstract_Ajax_Hookable
                 401
             );
 
-
-        // error_log(print_r($_REQUEST, true));
         if (!isset($_REQUEST['product_id']))
             return;
 
@@ -51,6 +49,9 @@ class PWP_Ajax_Add_To_Cart extends PWP_Abstract_Ajax_Hookable
             $product        = wc_get_product($variationId ?: $productId);
             $productMeta     = new PWP_Product_Meta_Data($product);
             $quantity       = wc_stock_amount($_REQUEST['quantity'] ?: 1);
+
+            error_log(print_r($_REQUEST, true));
+            error_log('product id: ' . $productId . ", variation id : " . $variationId);
 
             if (apply_filters('woocommerce_add_to_cart_validation', true, $productId, $quantity, $variationId)) {
                 wc_clear_notices();
@@ -131,8 +132,13 @@ class PWP_Ajax_Add_To_Cart extends PWP_Abstract_Ajax_Hookable
             }
             $notices = wc_get_notices('error');
             $message = $notices[count($notices) - 1]['notice'];
+
+            wc_clear_notices();
             wp_send_json_error(
-                array('message' => $message),
+                array(
+                    'message'   => $message,
+                    'data'      => 'data validation error has occurred',
+                ),
                 200
             );
         } catch (\Exception $err) {

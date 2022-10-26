@@ -37,9 +37,9 @@ if (!defined('ABSPATH')) {
                 </tr>
             <tbody>
         </table>
-        <div id='upload-info'>
+        <div id='pwp-upload-info'>
             <label class='pwp-upload-label' for='pwp-file-upload'><?= esc_html__('upload .pdf file', PWP_TEXT_DOMAIN); ?></label>
-            <input class='pwp-upload-field' id='pwp-file-upload' type='file' accept='application/pdf' name='pdf_upload' size='<?= $size; ?>' required />
+            <input class='pwp-upload-field' id='pwp-file-upload' type='file' accept='application/pdf' name='pdf-upload' size='<?= $size; ?>' required />
         </div>
     </div>
 </div>

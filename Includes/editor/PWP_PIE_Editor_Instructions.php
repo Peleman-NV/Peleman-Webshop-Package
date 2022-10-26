@@ -12,15 +12,18 @@ use WC_Product;
  */
 class PWP_PIE_Editor_Instructions extends PWP_Product_Meta
 {
-
-
     private array $instructions;
 
     public function __construct(WC_Product $parent)
     {
         $this->parent = $parent;
         $meta = $this->parent->get_meta(PWP_Keys::EDITOR_INSTRUCTIONS_KEY);
-        $this->instructions = explode(' ', $meta);
+        if ($meta) {
+            $this->instructions = explode(' ', $meta);
+            return;
+        }
+        $this->instructions = [];
+
         // $this->instructions = (array)unserialize($meta) ?? [];
         // error_log("editor instructions for product with id {$parent->get_id()} : " . print_r($this->instructions, true));
     }
