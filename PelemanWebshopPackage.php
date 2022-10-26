@@ -22,7 +22,7 @@ use PWP\includes\versionControl\PWP_VersionController;
  * requires PHP:      7.4
  * requires at least: 5.9.0
  * Description:       In-development umbrella project of the Peleman Product Uploader and Print Partner Integrator.
- * Version:           1.0.00
+ * Version:           1.0.01
  * Author:            Kai Helsen
  * Author URI:        https://github.com/KaiHelsen
  * License:           GPL-2.0+
@@ -60,4 +60,6 @@ register_deactivation_hook(__FILE__, function () {
     $deactivator->deactivate();
 });
 
-PWP_Plugin::run();
+add_action('plugins_loaded', function () {
+    PWP_Plugin::run();
+}, 3, 0);
