@@ -39,6 +39,7 @@ class PWP_Ajax_Add_To_Cart extends PWP_Abstract_Ajax_Hookable
             );
 
 
+        // error_log(print_r($_REQUEST, true));
         if (!isset($_REQUEST['product_id']))
             return;
 

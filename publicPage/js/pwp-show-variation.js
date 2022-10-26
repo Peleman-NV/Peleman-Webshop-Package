@@ -174,7 +174,7 @@
             // price_per_page = data.pdf_data.price_per_page;
 
             hideElement($('#ppi-loading'));
-
+            showElement($('.pwp-upload-parameters'));
             showElement($('.pwp-upload-form'));
             showElement($('.upload-label'));
             showElement($('#max-upload-size'));
@@ -211,7 +211,6 @@
             } else {
                 hideElement($('#content-price-per-page').parent());
             }
-            showElement($('.upload-parameters'));
 
         }
 
@@ -221,7 +220,7 @@
          */
         function hideUploadElement() {
             hideElement($('.pwp-upload-form'));
-            hideElement($('.upload-parameters'));
+            hideElement($('.pwp-upload-parameters'));
             $('.upload-label').addClass('upload-disabled');
             $('#pwp-file-upload').prop('required', false);
         }

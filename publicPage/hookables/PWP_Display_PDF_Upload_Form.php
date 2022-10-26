@@ -9,7 +9,6 @@ use PWP\includes\editor\PWP_Product_Meta_Data;
 use PWP\includes\hookables\abstracts\PWP_Abstract_Action_Hookable;
 use PWP\includes\validation\PWP_Validate_File_Size;
 use PWP\templates\PWP_Template;
-use WC_Product_Simple;
 
 class PWP_Display_PDF_Upload_Form extends PWP_Abstract_Action_Hookable
 
