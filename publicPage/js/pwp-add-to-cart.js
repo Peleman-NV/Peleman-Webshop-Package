@@ -32,18 +32,18 @@
             var file = $form.find('input[id="pwp-file-upload"]')[0].files[0];
 
             var formData = new FormData();
-            formData.append('action', 'PWP_Ajax_Add_To_Cart');
+            formData.append('action', 'Ajax_Add_To_Cart');
             formData.append('product_id', product_id);
             formData.append('product_sku', '');
             formData.append('quantity', product_qty);
             formData.append('variation_id', variation_id);
             formData.append('upload', file);
-            formData.append('nonce', PWP_Ajax_Add_To_Cart_object.nonce);
+            formData.append('nonce', Ajax_Add_To_Cart_object.nonce);
 
             $(document.body).trigger('adding_to_cart', [$thisButton, formData]);
 
             $.ajax({
-                url: PWP_Ajax_Add_To_Cart_object.ajax_url,
+                url: Ajax_Add_To_Cart_object.ajax_url,
                 method: 'POST',
                 type: 'POST',
                 data: formData,

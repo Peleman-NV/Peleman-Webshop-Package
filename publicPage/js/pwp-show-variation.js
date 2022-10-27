@@ -60,13 +60,13 @@
         function getProductVariationData(variationId) {
             const data = {
                 variant: variationId,
-                action: 'PWP_Ajax_Show_Variation',
+                action: 'Ajax_Show_Variation',
                 //_ajax_nonce: pwp_product_variation_information_object.nonce,
             };
             let fallbackAddToCartLabel = setAddToCartLabel();
 
             $.ajax({
-                url: PWP_Ajax_Show_Variation_object.ajax_url,
+                url: Ajax_Show_Variation_object.ajax_url,
                 method: 'GET',
                 data: data,
                 cache: false,

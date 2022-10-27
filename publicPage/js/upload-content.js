@@ -33,7 +33,7 @@
 
             $.ajax({
                 //ajax setup
-                url: PWP_Upload_PDF_object.ajax_url,
+                url: Upload_PDF_object.ajax_url,
                 method: 'POST',
                 data: formData,
                 processData: false,
@@ -129,11 +129,11 @@
         function constructFormData(productID, variationId) {
             const formData = new FormData();
 
-            formData.append('action', 'PWP_Upload_PDF');
+            formData.append('action', 'Upload_PDF');
             formData.append('file', document.getElementById('file-upload').files[0]);
             formData.append('product_id', productID || 0)
             formData.append('variant_id', variationId || 0);
-            formData.append('nonce', PWP_Upload_PDF_object.nonce);
+            formData.append('nonce', Upload_PDF_object.nonce);
             return formData;
         }
 

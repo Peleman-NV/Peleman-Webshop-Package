@@ -5,15 +5,15 @@ declare(strict_types=1);
 namespace PWP\tests;
 
 use PHPUnit\Framework\TestCase;
-use PWP\includes\exceptions\PWP_Not_Found_Exception;
-use PWP\includes\utilities\PWP_Thumbnail_Generator_JPG;
-use PWP\includes\utilities\PWP_Thumbnail_Generator_PNG;
+use PWP\includes\exceptions\Not_Found_Exception;
+use PWP\includes\utilities\Thumbnail_Generator_JPG;
+use PWP\includes\utilities\Thumbnail_Generator_PNG;
 
 class Thumbnail_Generator_Test extends TestCase
 {
     public function test_class_construction(): void
     {
-        $generator = new PWP_Thumbnail_Generator_PNG();
+        $generator = new Thumbnail_Generator_PNG();
 
         $this->assertIsObject($generator, "outcome is not an object!");
     }
@@ -70,7 +70,7 @@ class Thumbnail_Generator_Test extends TestCase
         ?int $height,
         ?int $quality
     ): void {
-        $generator = new PWP_Thumbnail_Generator_PNG(0);
+        $generator = new Thumbnail_Generator_PNG(0);
         $filePath = $generator->generate($src, $dest, $fiairplaneme, $width, $height, $quality);
 
         $this->assertFileExists($filePath);
@@ -99,7 +99,7 @@ class Thumbnail_Generator_Test extends TestCase
         ?int $height,
         ?int $quality
     ): void {
-        $generator = new PWP_Thumbnail_Generator_JPG();
+        $generator = new Thumbnail_Generator_JPG();
         $filePath = $generator->generate($src, $dest, $fiairplaneme, $width, $height, $quality);
 
         $img = imagecreatefromjpeg($filePath);
@@ -113,7 +113,7 @@ class Thumbnail_Generator_Test extends TestCase
         return array(
             array(
                 $resourceFolder . 'Frank.png',
-                $resourceFolder, 'Frank2', new PWP_Not_Found_Exception()
+                $resourceFolder, 'Frank2', new Not_Found_Exception()
             ),
         );
     }
@@ -128,7 +128,7 @@ class Thumbnail_Generator_Test extends TestCase
     public function test_exceptions_png(string $src, string $dest, string $name, \Exception $expected): void
     {
         $this->expectException(get_class($expected));
-        $generator = new PWP_Thumbnail_Generator_PNG(0);
+        $generator = new Thumbnail_Generator_PNG(0);
         $image = $generator->generate($src, $dest, $name, 0, 50);
     }
 
@@ -142,7 +142,7 @@ class Thumbnail_Generator_Test extends TestCase
     public function test_exceptions_jpg(string $src, string $dest, string $name, \Exception $expected): void
     {
         $this->expectException(get_class($expected));
-        $generator = new PWP_Thumbnail_Generator_JPG(0);
+        $generator = new Thumbnail_Generator_JPG(0);
         $image = $generator->generate($src, $dest, $name, 0, 50);
     }
 }
