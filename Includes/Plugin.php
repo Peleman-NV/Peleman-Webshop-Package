@@ -34,12 +34,14 @@ use PWP\adminPage\hookables\Save_Variable_Product_Custom_Fields;
 use PWP\includes\API\API_V1_Plugin;
 use PWP\includes\API\endpoints\TEST_OAuth2_Client_Endpoint;
 use PWP\includes\hookables\abstracts\I_Hookable_Component;
+use PWP\publicPage\hookables\Add_Class_To_Add_To_Cart_Button;
 use PWP\publicPage\hookables\Display_PDF_Data_In_Cart;
 use PWP\publicPage\hookables\Add_PDF_Prices_To_Cart;
 use PWP\publicPage\hookables\Add_PDF_Data_To_Cart_Item;
 use PWP\publicPage\hookables\Change_Add_To_Cart_Archive_Button;
 use PWP\publicPage\hookables\Download_PIE_Printfile;
 use PWP\publicPage\hookables\Order_Project;
+use PWP\publicPage\hookables\Override_WC_Templates;
 use PWP\publicPage\hookables\Remove_PDF_On_Cart_Deletion;
 use PWP\publicPage\hookables\Validate_PDF_Upload;
 
@@ -107,6 +109,7 @@ final class Plugin
     private function public_hooks(): void
     {
         $this->add_hookable(new Enqueue_Public_Styles());
+        $this->add_hookable(new Add_Class_To_Add_To_Cart_Button());
         $this->add_hookable(new Change_Add_To_Cart_Archive_Button());
         $this->add_hookable(new Change_Add_To_Cart_Button_Label());
         $this->add_hookable(new Add_Fields_To_Add_To_Cart_Button());
@@ -128,6 +131,7 @@ final class Plugin
         $this->add_hookable(new Add_Custom_Project_On_Return());
         $this->add_hookable(new Save_Cart_Item_Meta_To_Order_Item_Meta());
         $this->add_hookable(new Download_PIE_Printfile());
+        $this->add_hookable(new Override_WC_Templates());
     }
 
     private function api_endpoints(): void

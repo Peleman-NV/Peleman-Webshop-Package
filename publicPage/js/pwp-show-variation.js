@@ -101,6 +101,13 @@
                         } else {
                             hideUploadElement(response.data);
                         }
+
+                        if (response.data.is_customizable) {
+                            AddButtonIconClass();
+                        } else {
+                            RemoveButtonIconClass();
+                        }
+
                         enableAddToCartButton(buttonText);
                         return;
 
@@ -363,6 +370,14 @@
 
         function hideArticleCodeElement() {
             hideElement($('span.article-code-container'));
+        }
+
+        function AddButtonIconClass() {
+            $('.single_add_to_cart_button').addClass('pwp_customizable');
+        }
+
+        function RemoveButtonIconClass() {
+            $('.single_add_to_cart_button').removeClass('pwp_customizable');
         }
     });
 })(jQuery);
