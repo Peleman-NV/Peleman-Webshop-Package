@@ -109,6 +109,8 @@ final class Plugin
 
     private function public_hooks(): void
     {
+        $this->add_hookable(new Override_WC_Templates());
+
         $this->add_hookable(new Enqueue_Public_Styles());
         $this->add_hookable(new Add_Class_To_Add_To_Cart_Button());
         $this->add_hookable(new Change_Add_To_Cart_Archive_Button());
@@ -134,7 +136,6 @@ final class Plugin
         $this->add_hookable(new Add_Custom_Project_On_Return());
         $this->add_hookable(new Save_Cart_Item_Meta_To_Order_Item_Meta());
         $this->add_hookable(new Download_PIE_Printfile());
-        $this->add_hookable(new Override_WC_Templates());
     }
 
     private function api_endpoints(): void

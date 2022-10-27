@@ -5,11 +5,10 @@ declare(strict_types=1);
 namespace PWP\includes\editor;
 
 use PWP\includes\F2D\I_Meta_Property;
-use WC_Product;
 
 abstract class Product_Meta implements I_Meta_Property
 {
-    protected WC_Product $parent;
+    protected \WC_Product $parent;
     protected array $data;
 
     public function __construct(\WC_Product $parent)

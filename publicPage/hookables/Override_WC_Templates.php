@@ -15,12 +15,12 @@ class Override_WC_Templates extends Abstract_Action_Hookable
 
     public function override_wc_template(string $template, string $templateName, string $templatePath): string
     {
-        switch (basename($template)) {
-            case 'simple.php':
-                return trailingslashit(plugin_dir_path(__FILE__)) . '../partials/Add_To_Cart_Button.php';
+        switch (basename($template, '.php')) {
+            case 'simple':
+                return trailingslashit(plugin_dir_path(__FILE__)) . '../../templates/woocommerce/simple.php';
+            case 'variation-add-to-cart-button':
+                return trailingslashit(plugin_dir_path(__FILE__)) . '../../templates/woocommerce/variation-add-to-cart-button.php';
                 //TODO: add more cases for other templates we override
-                case 'variation-add-to-cart-button.php':
-                    return trailingslashit(plugin_dir_path(__FILE__)) . '../../templates/woocommerce/variation-add-to-cart-button.php';
             default:
                 return $template;
         }

@@ -20,13 +20,11 @@ class Change_Add_To_Cart_Button_Label extends Abstract_Filter_Hookable
         $meta = new Product_Meta_Data($product);
         $customizable = $meta->is_customizable();
 
-        $icon = $customizable ? '<b>beep</b>' : '<b>boop</b>';
-
         // error_log("is product customizable: " . ($customizable ? "yes" : "no"));
         if ($customizable) {
-            return $icon . ($meta->get_custom_add_to_cart_label() ?: $default);
+            $default = $meta->get_custom_add_to_cart_label() ?: $default;
         }
 
-        return $icon . $default;
+        return $default;
     }
 }
