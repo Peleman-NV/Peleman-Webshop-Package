@@ -17,9 +17,8 @@ class Set_PIE_Project_As_Completed extends Abstract_Action_Hookable
     {
         $order = wc_get_order($orderId);
         $status = $order->get_status();
-        error_log($status);
 
-        if (!('completed' === $status || 'processing' === $status)) {
+        if ('completed' !== $status && 'processing' !== $status) {
             return;
         }
 
@@ -29,13 +28,13 @@ class Set_PIE_Project_As_Completed extends Abstract_Action_Hookable
         $apiKey = get_option('pie_api_key', '');
 
         foreach ($items as $item) {
-            error_log(print_r($items));
 
-            $meta = $item->get_meta('item_meta');
-            if (!$meta) continue;
+            $editorId = $item->get_meta('_editor_id');
+            $projectId = $item->get_meta('_project_id');
 
-            $editorId = $meta['_editor_id'];
-            $projectId = $meta['_project_id'];
+            if (!($editorId && $projectId)) {
+                continue;
+            }
 
             $this->editor_set_order_as_complete($customerId, $apiKey, $editorId, $projectId);
         }

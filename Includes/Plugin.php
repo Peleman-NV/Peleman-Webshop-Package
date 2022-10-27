@@ -43,6 +43,7 @@ use PWP\publicPage\hookables\Download_PIE_Printfile;
 use PWP\publicPage\hookables\Order_Project;
 use PWP\publicPage\hookables\Override_WC_Templates;
 use PWP\publicPage\hookables\Remove_PDF_On_Cart_Deletion;
+use PWP\publicPage\hookables\Set_PIE_Project_As_Completed;
 use PWP\publicPage\hookables\Validate_PDF_Upload;
 
 if (!function_exists('is_plugin_active')) {
@@ -111,8 +112,10 @@ final class Plugin
         $this->add_hookable(new Enqueue_Public_Styles());
         $this->add_hookable(new Add_Class_To_Add_To_Cart_Button());
         $this->add_hookable(new Change_Add_To_Cart_Archive_Button());
-        $this->add_hookable(new Change_Add_To_Cart_Button_Label());
+        // $this->add_hookable(new Change_Add_To_Cart_Button_Label());
         $this->add_hookable(new Add_Fields_To_Add_To_Cart_Button());
+
+        $this->add_hookable(new Set_PIE_Project_As_Completed());
 
         /* PDF upload hookables */
         $this->add_hookable(new Display_PDF_Upload_Form($this->templateEngine));

@@ -52,12 +52,13 @@ class Ajax_Show_Variation extends Abstract_Ajax_Hookable
 
     private function get_add_to_cart_label(Product_Meta_Data $meta, WC_Product $parent): string
     {
-        if ($meta->get_custom_add_to_cart_label())
-            return $meta->get_custom_add_to_cart_label();
-        if ($parent->get_meta('custom_add_to_cart_label'))
-            return $parent->get_meta('custom_add_to_cart_label');
-        if (get_option('pwp-custom-add-to-cart-label'))
-            return get_option('pwp-custom-add-to-cart-label');
+        // if ($meta->get_custom_add_to_cart_label())
+        //     return $meta->get_custom_add_to_cart_label();
+        // if ($parent->get_meta('custom_add_to_cart_label'))
+        //     return $parent->get_meta('custom_add_to_cart_label');
+        if ($meta->is_customizable()) {
+            return get_option('pwp_customize_label', __('customize product', PWP_TEXT_DOMAIN));
+        }
         return 'Add To Cart';
     }
 }
