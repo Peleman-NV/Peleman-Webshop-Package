@@ -20,7 +20,7 @@ class PWP_Download_PIE_Printfile extends PWP_Abstract_Action_Hookable
     public function create_file_download_link(int $item_id, \WC_Order_Item $item): void
     {
         $clientDomain = get_option('pie_domain', 'https://deveditor.peleman.com');
-        $endpoint = $clientDomain . '/editor/api/getFile.php';
+        $endpoint = $clientDomain . '/editor/api/getfile.php';
         $this->projectId = $item->get_meta('_project_id');
         $this->editorId = $item->get_meta('_editor_id');
 

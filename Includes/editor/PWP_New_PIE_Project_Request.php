@@ -184,7 +184,7 @@ class PWP_New_PIE_Project_Request extends PWP_Abstract_Request
 
     protected function generate_request_array(): array
     {
-        error_log(print_r($this->editorData->get_editor_instructions(),true));
+        // error_log(print_r($this->editorData->get_editor_instructions(),true));
         $request = array(
             'customerid'            => $this->customerId,
             'customerapikey'        => $this->apiKey,
@@ -200,7 +200,7 @@ class PWP_New_PIE_Project_Request extends PWP_Abstract_Request
             'returnurl'             => $this->returnUrl,
         );
 
-        error_log(print_r($request, true));
+        // error_log(print_r($request, true));
         // $request = array_filter($request);
         return $request;
     }
