@@ -16,7 +16,6 @@ class Ajax_Show_Variation extends Abstract_Ajax_Hookable
             'Ajax_Show_Variation',
             plugins_url('Peleman-Webshop-Package/publicPage/js/pwp-show-variation.js'),
             5
-
         );
     }
 
