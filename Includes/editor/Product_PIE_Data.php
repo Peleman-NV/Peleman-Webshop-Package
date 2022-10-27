@@ -1,0 +1,246 @@
+<?php
+
+declare(strict_types=1);
+
+namespace PWP\includes\editor;
+
+use WC_Product;
+
+class Product_PIE_Data extends Product_Meta
+{
+
+    
+    public const MY_EDITOR = 'PIE';
+
+    public string $templateId;
+    public string $designId;
+    public string $designProjectId;
+    public string $colorCode;
+    public string $backgroundId;
+    private PIE_Editor_Instructions $editorInstructions;
+
+    public bool $usesImageUpload;
+    public int $minImages;
+    public int $maxImages;
+
+    public int $numPages;
+    public bool $autofill;
+    public string $formatId;
+
+
+    public function __construct(WC_Product $parent)
+    {
+        parent::__construct($parent);
+
+        $this->templateId = $this->parent->get_meta(Keys::PIE_TEMPLATE_ID_KEY) ?? '';
+        $this->designId = $this->parent->get_meta(Keys::DESIGN_ID_KEY) ?? '';
+        $this->colorCode = $this->parent->get_meta(Keys::COLOR_CODE_KEY) ?? '';
+        $this->backgroundId =  $this->parent->get_meta(Keys::BACKGROUND_ID_KEY) ?? '';
+
+        $this->editorInstructions = new PIE_Editor_Instructions($this->parent);
+
+        $this->usesImageUpload = boolval($this->parent->get_meta(Keys::USE_IMAGE_UPLOAD_KEY));
+        $this->minImages = (int)$this->parent->get_meta(Keys::MIN_IMAGES_KEY) ?? 0;
+        //if max_images is 0, we can assume there is no limit to the amount of images.
+        $this->maxImages = (int)$this->parent->get_meta(Keys::MAX_IMAGES_KEY) ?? 0;
+
+        $this->numPages = (int)$this->parent->get_meta(Keys::NUM_PAGES_KEY) ?? -1;
+        $this->autofill = boolval($this->parent->get_meta(Keys::AUTOFILL_KEY));
+        $this->formatId = $this->parent->get_meta(Keys::FORMAT_ID_KEY ?? '');
+    }
+
+    public function get_num_pages(): int
+    {
+        return $this->numPages;
+    }
+
+    public function set_num_pages(int $count): self
+    {
+        $this->numPages = max($count, 0);
+        return $this;
+    }
+
+
+    public function get_autofill(): bool
+    {
+        return $this->autofill;
+    }
+
+    public function set_autofill(bool $autofill): self
+    {
+        $this->autofill = $autofill;
+        return $this;
+    }
+
+
+    public function get_format_id(): string
+    {
+        return $this->formatId;
+    }
+
+    public function set_format_id(string $id): self
+    {
+        $this->formatId = $id;
+        return $this;
+    }
+
+
+    public function get_editor_instructions(): array
+    {
+        return $this->editorInstructions->get_instructions();
+    }
+
+    public function set_editor_instructions(array $instructions): self
+    {
+        $this->editorInstructions->set_instructions($instructions);
+        return $this;
+    }
+
+    public function add_editor_instruction(string $instruction): self
+    {
+        $this->editorInstructions->add_instruction($instruction);
+        return $this;
+    }
+
+    public function remove_editor_instruction(string $instruction): self
+    {
+        $this->editorInstructions->remove_instruction($instruction);
+        return $this;
+    }
+
+
+    public function get_template_id(): string
+    {
+        return $this->templateId;
+    }
+
+    public function set_template_id(string $id): self
+    {
+        $this->templateId = $id;
+        return $this;
+    }
+
+    public function get_design_id(): string
+    {
+        return $this->designId;
+    }
+
+    public function set_design_id(string $code): self
+    {
+        $this->designId = $code;
+        return $this;
+    }
+
+    public function get_color_code(): string
+    {
+        return $this->colorCode;
+    }
+
+    public function set_color_code(string $code): self
+    {
+        $this->colorCode = $code;
+        return $this;
+    }
+
+    public function get_background_id(): string
+    {
+        return $this->backgroundId;
+    }
+
+    public function set_background_id(string $id): self
+    {
+        $this->backgroundId = $id;
+        return $this;
+    }
+
+    public function get_variant_id(): string
+    {
+        return $this->variantId;
+    }
+
+    public function set_variant_id(string $variantId): self
+    {
+        $this->variantId = $variantId;
+        return $this;
+    }
+
+    public function uses_image_upload(): bool
+    {
+        return $this->usesImageUpload;
+    }
+
+    public function set_uses_image_upload(bool $useUpload): self
+    {
+        $this->usesImageUpload = $useUpload;
+        return $this;
+    }
+
+    public function get_max_images(): int
+    {
+        return $this->maxImages;
+    }
+
+    public function set_max_images(int $count): self
+    {
+        $count = max(0, $count);
+        $this->maxImages = $count;
+        return $this;
+    }
+
+    public function get_min_images(): int
+    {
+        return $this->minImages;
+    }
+
+    public function set_min_images(int $count): self
+    {
+        $count = max(0, $count);
+        $this->minImages = $count;
+        return $this;
+    }
+
+    public function set_as_editor(): self
+    {
+        $this->editorId = "PIE";
+        return $this;
+    }
+
+    public function update_meta_data(): void
+    {
+
+        $this->parent->update_meta_data(Keys::PIE_TEMPLATE_ID_KEY, $this->templateId);
+        $this->parent->update_meta_data(Keys::BACKGROUND_ID_KEY, $this->backgroundId,);
+        $this->parent->update_meta_data(Keys::COLOR_CODE_KEY, $this->colorCode);
+        $this->parent->update_meta_data(Keys::DESIGN_ID_KEY, $this->designId);
+
+        $this->parent->update_meta_data(Keys::USE_IMAGE_UPLOAD_KEY, $this->usesImageUpload ? 1 : 0);
+        $this->parent->update_meta_data(Keys::MIN_IMAGES_KEY, $this->minImages);
+        $this->parent->update_meta_data(Keys::MAX_IMAGES_KEY, $this->maxImages);
+
+        $this->parent->update_meta_data(Keys::AUTOFILL_KEY, $this->autofill ? 1 : 0);
+        $this->parent->update_meta_data(Keys::FORMAT_ID_KEY, $this->formatId);
+        $this->parent->update_meta_data(Keys::NUM_PAGES_KEY, $this->numPages);
+
+        $this->editorInstructions->update_meta_data();
+        $this->parent->save_meta_data();
+    }
+
+    public function get_editor_params(): array
+    {
+        $params = array();
+        if ($this->designId)
+            $params['designprojectid'] =  $this->designId;
+        if ($this->get_max_images() > 0)
+            $params['maximages'] = $this->get_max_images();
+        if ($this->get_min_images() > 0)
+            $params['minimages'] = $this->get_min_images();
+        if ($this->autofill)
+            $params['autofill'] = $this->autofill;
+        if ($this->formatId)
+            $params['formatid'] = $this->formatId;
+        if ($this->numPages)
+            $params['numpages'] = $this->numPages;
+
+        return $params;
+    }
+}

@@ -6,10 +6,10 @@ namespace PWP;
 
 require plugin_dir_path(__FILE__) . '/vendor/autoload.php';
 
-use PWP\includes\PWP_Activator;
-use PWP\includes\PWP_Deactivator;
-use PWP\includes\PWP_Plugin;
-use PWP\includes\versionControl\PWP_VersionController;
+use PWP\includes\Activator;
+use PWP\includes\Deactivator;
+use PWP\includes\Plugin;
+use PWP\includes\versionControl\VersionController;
 
 /**
  * @link              https://www.peleman.com
@@ -22,7 +22,7 @@ use PWP\includes\versionControl\PWP_VersionController;
  * requires PHP:      7.4
  * requires at least: 5.9.0
  * Description:       In-development umbrella project of the Peleman Product Uploader and Print Partner Integrator.
- * Version:           1.0.05
+ * Version:           1.0.06
  * Author:            Kai Helsen
  * Author URI:        https://github.com/KaiHelsen
  * License:           GPL-2.0+
@@ -34,8 +34,8 @@ use PWP\includes\versionControl\PWP_VersionController;
 defined('WPINC') || die;
 
 //define PWP constant values
-define('PWP_VERSION', '1.0.05');
-!defined('PWP_OPTION_GROUP')        ? define('PWP_OPTION_GROUP', 'PWP_OPTIONS') : null;
+define('VERSION', '1.0.06');
+!defined('PWP_OPTION_GROUP')        ? define('PWP_OPTION_GROUP', 'OPTIONS') : null;
 !defined('PWP_TEXT_DOMAIN')         ? define('PWP_TEXT_DOMAIN', 'PelemanWebshopPackage') : null;
 !defined('PWP_THUMBNAIL_DIR')       ? define('PWP_THUMBNAIL_DIR', WP_CONTENT_DIR . '/uploads/pwp/thumbnails') : null;
 !defined('PWP_UPLOAD_DIR')          ? define('PWP_UPLOAD_DIR', WP_CONTENT_DIR . '/uploads/pwp/') : null;
@@ -47,19 +47,19 @@ define('PWP_VERSION', '1.0.05');
 
 //register activation hook. Is called when the plugin is activated in the Wordpress Admin panel
 register_activation_hook(__FILE__, function () {
-    $activator = new PWP_Activator();
+    $activator = new Activator();
     $activator->activate();
 
-    $versionController = new PWP_VersionController(PWP_VERSION, (string)get_option('pwp-version'));
+    $versionController = new VersionController(VERSION, (string)get_option('pwp-version'));
     $versionController->try_update();
 });
 
 //register deactivation hook. Is called when the plugin is deactivated in the Wordpress Admin panel
 register_deactivation_hook(__FILE__, function () {
-    $deactivator = new PWP_Deactivator();
+    $deactivator = new Deactivator();
     $deactivator->deactivate();
 });
 
 // add_action('plugins_loaded', function () {
-    PWP_Plugin::run();
+    Plugin::run();
 // }, 12, 0);
