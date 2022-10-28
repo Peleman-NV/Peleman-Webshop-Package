@@ -31,13 +31,17 @@ class FIND_PDF_Endpoint extends Abstract_FIND_Endpoint
         //we get the current user with the nonce, but this code is still needed
         //to determine if the user is the owner of the PDF in question.
         if (get_current_user_id() !== $project->get_user_id() || !current_user_can('edit_posts')) {
-            http_response_code(403);
-            die;
+            return new WP_REST_Response(array(
+                'message' => 'permission denied',
+                'code' => 403,
+            ), 403);
         }
 
         if (!$project) {
-            http_response_code(404);
-            die;
+            return new WP_REST_Response(array(
+                'message' => 'file not found',
+                'code' => 404,
+            ), 404);
         }
 
         //in order to allow a PDF download, we bypass the WP_REST_Response requirement
