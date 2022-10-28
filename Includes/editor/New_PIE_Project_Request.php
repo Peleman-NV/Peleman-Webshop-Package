@@ -154,8 +154,6 @@ class New_PIE_Project_Request extends Abstract_Request
     {
         $url = $this->endpoint .= '?' . http_build_query($this->generate_request_array());
 
-        error_log($url);
-        // error_log($url);
         $curl = curl_init();
         curl_setopt_array($curl, array(
             CURLOPT_URL             => $url,

@@ -142,7 +142,7 @@ final class Plugin
     {
         // $this->loader->add_API_endpoint(new TEST_OAuth2_Client_Endpoint());
 
-        // $this->add_hookable(new API_V1_Plugin('pwp/v1'));
+        $this->add_hookable(new API_V1_Plugin('pwp/v1'));
     }
 
     private function register_components()

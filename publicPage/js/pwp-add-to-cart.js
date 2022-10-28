@@ -52,10 +52,12 @@
                 beforeSend: function () {
                     $thisButton.removeClass('pwp-added')
                     $thisButton.addClass('pwp-loading');
+                    showElement($('#pwp-loading'));
                 },
                 complete: function (response) {
                     $thisButton.addClass('pwp-added')
                     $thisButton.removeClass('pwp-loading');
+                    hideElement($('#pwp-loading'));
                     console.log(response);
                 },
                 success: function (response) {
@@ -105,6 +107,14 @@
             textStatus +
             '\nError thrown: ' +
             errorThrown);
+    }
+
+    function hideElement(element) {
+        element.addClass('pwp-hidden');
+    }
+
+    function showElement(element) {
+        element.removeClass('pwp-hidden');
     }
 
 })(jQuery);

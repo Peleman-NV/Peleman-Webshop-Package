@@ -96,6 +96,7 @@ class Activator
 
     public function init_directories()
     {
+        error_log(PWP_UPLOAD_DIR);
         if (!is_dir(PWP_UPLOAD_DIR)) {
             mkdir(PWP_UPLOAD_DIR, 0755, true);
         }

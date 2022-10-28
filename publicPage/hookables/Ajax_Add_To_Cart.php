@@ -50,7 +50,7 @@ class Ajax_Add_To_Cart extends Abstract_Ajax_Hookable
             $productMeta     = new Product_Meta_Data($product);
             $quantity       = wc_stock_amount($_REQUEST['quantity'] ?: 1);
 
-            error_log(print_r($_REQUEST, true));
+            // error_log(print_r($_REQUEST, true));
             error_log('product id: ' . $productId . ", variation id : " . $variationId);
 
             if (apply_filters('woocommerce_add_to_cart_validation', true, $productId, $quantity, $variationId)) {

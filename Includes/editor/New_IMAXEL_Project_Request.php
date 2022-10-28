@@ -70,7 +70,7 @@ class New_IMAXEL_Project_Request extends Abstract_Request
         );
         $response_body = json_decode($response['body'], true);
         $response_code = $response['response']['code'];
-        error_log(print_r($response_body, true));
+        // error_log(print_r($response_body, true));
 
         $projectId = $response_body['id'];
 

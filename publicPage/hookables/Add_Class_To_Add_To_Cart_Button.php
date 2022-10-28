@@ -17,9 +17,7 @@ class Add_Class_To_Add_To_Cart_Button extends Abstract_Filter_Hookable
     public function pwp_add_icon_class_to_add_to_cart_button_args(string $classes, \WC_Product $product): string
     {
         $meta = new Product_Meta_Data($product);
-        error_log(print_r($meta, true));
         $classes .= ' ' . ($meta->is_customizable() ? 'pwp_customizable' : '');
-        error_log($classes);
         return $classes;
     }
 }
