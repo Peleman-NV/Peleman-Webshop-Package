@@ -40,6 +40,7 @@ use PWP\publicPage\hookables\Add_PDF_Prices_To_Cart;
 use PWP\publicPage\hookables\Add_PDF_Data_To_Cart_Item;
 use PWP\publicPage\hookables\Change_Add_To_Cart_Archive_Button;
 use PWP\publicPage\hookables\Download_PIE_Printfile;
+use PWP\publicPage\hookables\Enqueue_PDF_JS;
 use PWP\publicPage\hookables\Order_Project;
 use PWP\publicPage\hookables\Override_WC_Templates;
 use PWP\publicPage\hookables\Remove_PDF_On_Cart_Deletion;
@@ -112,6 +113,8 @@ final class Plugin
         $this->add_hookable(new Override_WC_Templates());
 
         $this->add_hookable(new Enqueue_Public_Styles());
+        $this->add_hookable(new Enqueue_PDF_JS());
+
         $this->add_hookable(new Add_Class_To_Add_To_Cart_Button());
         $this->add_hookable(new Change_Add_To_Cart_Archive_Button());
         $this->add_hookable(new Change_Add_To_Cart_Button_Label());

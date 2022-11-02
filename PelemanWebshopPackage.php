@@ -37,6 +37,8 @@ defined('WPINC') || die;
 define('VERSION', '1.0.09');
 !defined('PWP_OPTION_GROUP')        ? define('PWP_OPTION_GROUP', 'OPTIONS') : null;
 !defined('PWP_TEXT_DOMAIN')         ? define('PWP_TEXT_DOMAIN', 'PelemanWebshopPackage') : null;
+
+!defined('PWP_DIRECTORY')           ? define('PWP_DIRECTORY', plugin_dir_path(__FILE__)) : null;
 !defined('PWP_THUMBNAIL_DIR')       ? define('PWP_THUMBNAIL_DIR', WP_CONTENT_DIR . '/uploads/pwp/thumbnails') : null;
 !defined('PWP_UPLOAD_DIR')          ? define('PWP_UPLOAD_DIR', WP_CONTENT_DIR . '/uploads/pwp/') : null;
 !defined('PWP_TEMPLATES_DIR')       ? define('PWP_TEMPLATES_DIR',  plugin_dir_path(__FILE__) . '/templates') : null;
@@ -61,5 +63,5 @@ register_deactivation_hook(__FILE__, function () {
 });
 
 // add_action('plugins_loaded', function () {
-    Plugin::run();
+Plugin::run();
 // }, 12, 0);

@@ -213,7 +213,7 @@
                 hideElement($('#content-max-pages').parent());
             }
             if (price_per_page != '') {
-                $('#content-price-per-page').html(price_per_page);
+                $('.price-per-page').html(price_per_page);
                 showElement($('#content-price-per-page').parent());
             } else {
                 hideElement($('#content-price-per-page').parent());

@@ -209,7 +209,7 @@ class Product_PIE_Data extends Product_Meta
     {
 
         $this->parent->update_meta_data(Keys::PIE_TEMPLATE_ID_KEY, $this->templateId);
-        $this->parent->update_meta_data(Keys::BACKGROUND_ID_KEY, $this->backgroundId,);
+        $this->parent->update_meta_data(Keys::BACKGROUND_ID_KEY, $this->backgroundId);
         $this->parent->update_meta_data(Keys::COLOR_CODE_KEY, $this->colorCode);
         $this->parent->update_meta_data(Keys::DESIGN_ID_KEY, $this->designId);
 
