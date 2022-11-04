@@ -121,6 +121,14 @@ class Parent_Product_Custom_Fields extends Abstract_Action_Hookable
             'which editor to use for this product. Ensure the template and variant IDs are valid for the editor.'
         );
 
+        Input_Fields::checkbox_input(
+            Keys::OVERRIDE_CART_THUMBNAIL,
+            'use project preview thumbnail in cart',
+            $meta_data->get_override_thumbnail(),
+            ['form-row', 'form-row-full'],
+            'wether to override the product thumbnail in the cart with a preview of the editor project, if available.'
+        );
+
         $this->render_PIE_product_settings($meta_data);
         $this->render_IMAXEL_product_settings($meta_data);
         $this->render_PDF_upload_settings($meta_data);

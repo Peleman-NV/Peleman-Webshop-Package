@@ -39,6 +39,8 @@ use PWP\publicPage\hookables\Display_PDF_Data_In_Cart;
 use PWP\publicPage\hookables\Add_PDF_Prices_To_Cart;
 use PWP\publicPage\hookables\Add_PDF_Data_To_Cart_Item;
 use PWP\publicPage\hookables\Change_Add_To_Cart_Archive_Button;
+use PWP\publicPage\hookables\Change_Cart_Item_Thumbnail;
+use PWP\publicPage\hookables\Change_Cart_Item_Thumnail;
 use PWP\publicPage\hookables\Download_PIE_Printfile;
 use PWP\publicPage\hookables\Enqueue_PDF_JS;
 use PWP\publicPage\hookables\Order_Project;
@@ -139,6 +141,8 @@ final class Plugin
         $this->add_hookable(new Add_Custom_Project_On_Return());
         $this->add_hookable(new Save_Cart_Item_Meta_To_Order_Item_Meta());
         $this->add_hookable(new Download_PIE_Printfile());
+
+        $this->add_hookable(new Change_Cart_Item_Thumbnail());
     }
 
     private function api_endpoints(): void

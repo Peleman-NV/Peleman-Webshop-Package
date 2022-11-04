@@ -190,7 +190,7 @@ class New_PIE_Project_Request extends Abstract_Request
             'language'              => $this->language,
             'templateid'            => $this->editorData->get_template_id(),
             'designid'              => $this->editorData->get_design_id(),
-            'backgroundId'          => $this->editorData->get_background_id(),
+            'backgroundid'          => $this->editorData->get_background_id(),
             'colorcode'             => $this->editorData->get_color_code(),
             'formatid'              => $this->editorData->get_format_id(),
             'editorinstructions'    => array_merge($this->editorData->get_editor_instructions(), $this->editorInstructions),

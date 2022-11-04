@@ -17,6 +17,7 @@ class Product_Meta_Data extends Product_Meta
     private int $maxPages;
     private int $minPages;
     private float $pricePerPage;
+    private bool $overrideThumb;
 
     public ?Product_PIE_Data $pieData;
     public ?Product_IMAXEL_Data $imaxelData;
@@ -36,6 +37,7 @@ class Product_Meta_Data extends Product_Meta
         $this->minPages             = (int)$this->parent->get_meta(Keys::PDF_MIN_PAGES_KEY) ?: 1;
         $this->pricePerPage         = (float)$this->parent->get_meta(Keys::PDF_PRICE_PER_PAGE_KEY) ?: 0;
 
+        $this->overrideThumb        = boolval($this->parent->get_meta(Keys::OVERRIDE_CART_THUMBNAIL)) ?: false;
         $this->pieData              = null;
         $this->imaxelData           = null;
     }
@@ -151,6 +153,16 @@ class Product_Meta_Data extends Product_Meta
         return $this->pricePerPage ?: 0.0;
     }
 
+    public function set_override_thumbnail(bool $override = true): void
+    {
+        $this->overrideThumb = $override;
+    }
+
+    public function get_override_thumbnail(): bool
+    {
+        return $this->overrideThumb;
+    }
+
     public function imaxel_data(): Product_IMAXEL_Data
     {
         if ($this->imaxelData === null) {
@@ -180,6 +192,7 @@ class Product_Meta_Data extends Product_Meta
         $this->parent->update_meta_data(Keys::PDF_MIN_PAGES_KEY, $this->minPages);
         $this->parent->update_meta_data(Keys::PDF_MAX_PAGES_KEY, $this->maxPages);
         $this->parent->update_meta_data(Keys::PDF_PRICE_PER_PAGE_KEY, $this->pricePerPage);
+        $this->parent->update_meta_data(Keys::OVERRIDE_CART_THUMBNAIL, $this->overrideThumb);
 
         $this->imaxel_data()->update_meta_data();
         $this->pie_data()->update_meta_data();

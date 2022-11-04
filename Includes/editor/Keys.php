@@ -37,4 +37,6 @@ class Keys
 
     public const EDITOR_INSTRUCTIONS_KEY = 'pie_editor_instructions';
     public const INSTRUCTION_PREFIX = 'pie_instruct_';
+
+    public const OVERRIDE_CART_THUMBNAIL = 'pwp_override_cart_thumb';
 }

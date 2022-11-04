@@ -48,7 +48,7 @@ class Save_Parent_Product_Custom_Fields extends Abstract_Action_hookable
             )
             ->set_editor(
                 esc_attr(sanitize_text_field($_POST[Keys::EDITOR_ID_KEY]))
-            );
+            )->set_override_thumbnail((bool)$_POST[Keys::OVERRIDE_CART_THUMBNAIL]);
 
         if ($product instanceof WC_Product_Simple) {
             $pieData = $editorMeta->pie_data();

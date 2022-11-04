@@ -92,6 +92,14 @@ class Variable_Product_Custom_Fields extends Abstract_Action_hookable
             ['form-row', 'form-row-full', 'pwp-editor-select'],
             'which editor to use for this product. Ensure the template and variant IDs are valid for the editor.'
         );
+
+        Input_Fields::checkbox_input(
+            Keys::OVERRIDE_CART_THUMBNAIL,
+            'use project preview thumbnail in cart',
+            $meta->get_override_thumbnail(),
+            ['form-row', 'form-row-full'],
+            'wether to override the product thumbnail in the cart with a preview of the editor project, if available.'
+        );
     }
     private function render_PIE_product_settings(Product_Meta_Data $meta): void
     {

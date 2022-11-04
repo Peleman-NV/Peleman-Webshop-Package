@@ -1,32 +1,32 @@
+/**
+ * This script is responsible for taking an uploaded .pdf file by a customer
+ * and displaying the 1st page of the file as a 'preview'.
+ * 
+ * Additionally, some file validation is handled by this script, but is repeated
+ * server-side to avoid bugs or tinkering.
+ * 
+ * The script relies on Mozilla's FireFox pdf.js to read and render the pdf page.
+ * 
+ */
 (function ($) {
     ('use strict');
     $(function () {
-        console.log('foo!');
-
         var _upload = $('#pwp-file-upload');
         var _preview = $('#pwp-pdf-canvas');
         var _name = $('#pwp-upload-filename')
         var _canvas = _preview[0];
 
         var _pdf_doc;
-        var _object_url;
 
         _upload.on('change', e => {
             var file = e.target.files[0];
-            var mime_types = ['application/pdf'];
-            if (mime_types.indexOf(file.type) == -1) {
-                alert('Error: Incorrect file type');
-                return;
-            }
 
-            if (file.size > 20000000) {
-                alert('Error: Exceeds size 20MB');
-                return;
-            }
+            if (!validateFile) return;
 
-            _object_url = URL.createObjectURL(file);
-            showPDF(_object_url);
+            object_url = URL.createObjectURL(file);
+            showPDF(object_url);
             _name.text(file.name);
+            URL.revokeObjectURL(object_url);
         });
 
         function showPDF(pdf_url) {
@@ -34,7 +34,6 @@
                 .then(function (pdf_doc) {
                     _pdf_doc = pdf_doc;
                     showPage(1);
-                    URL.revokeObjectURL(_object_url);
                 })
                 .catch(function (error) {
                     alert(error.message);
@@ -56,6 +55,21 @@
                         _preview.css("display", "");
                     });
                 });
+        }
+
+        function validateFile(file) {
+            var mime_types = ['application/pdf'];
+            if (mime_types.indexOf(file.type) == -1) {
+                alert('Error: Incorrect file type, PDF required');
+                return false;
+            }
+
+            if (file.size > 20000000) {
+                alert('Error: File size exceeds 20MB');
+                return false;
+            }
+
+            return true;
         }
 
     });

@@ -40,7 +40,7 @@ class Save_Variable_Product_Custom_Fields extends Abstract_Action_hookable
                 esc_attr(sanitize_text_field($_POST[Keys::EDITOR_ID_KEY][$loop]))
             )->set_custom_add_to_cart_label(
                 esc_attr(sanitize_text_field($_POST[Keys::CUSTOM_LABEL_KEY][$loop]))
-            );
+            )->set_override_thumbnail((bool)$_POST[Keys::OVERRIDE_CART_THUMBNAIL][$loop]);
 
         $pie_data->set_template_id(
             esc_attr(sanitize_text_field(
