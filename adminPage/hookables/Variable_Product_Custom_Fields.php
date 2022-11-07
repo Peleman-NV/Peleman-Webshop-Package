@@ -94,7 +94,7 @@ class Variable_Product_Custom_Fields extends Abstract_Action_hookable
         );
 
         Input_Fields::checkbox_input(
-            Keys::OVERRIDE_CART_THUMBNAIL,
+            Keys::OVERRIDE_CART_THUMBNAIL . $this->loopEnd,
             'use project preview thumbnail in cart',
             $meta->get_override_thumbnail(),
             ['form-row', 'form-row-full'],

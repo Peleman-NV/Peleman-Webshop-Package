@@ -141,6 +141,7 @@ final class Plugin
         $this->add_hookable(new Save_Cart_Item_Meta_To_Order_Item_Meta());
         $this->add_hookable(new Add_PIE_Printfile_Download_Button());
 
+        /* EDITOR front end display hookables */
         $this->add_hookable(new Change_Cart_Item_Thumbnail());
     }
 
