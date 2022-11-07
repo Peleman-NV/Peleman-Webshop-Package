@@ -41,7 +41,7 @@ class Download_PIE_Printfile extends Abstract_Action_Hookable
     {
         $request = array(
             'projectid' => $this->projectId,
-            'file' => 'printfile',
+            'file' => 'printfiles',
         );
 
         $request = array_filter($request);

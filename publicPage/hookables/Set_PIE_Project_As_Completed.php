@@ -36,14 +36,15 @@ class Set_PIE_Project_As_Completed extends Abstract_Action_Hookable
                 continue;
             }
 
-            $this->editor_set_order_as_complete($customerId, $apiKey, $editorId, $projectId);
+            $this->editor_set_order_as_complete($orderId, $customerId, $apiKey, $editorId, $projectId);
         }
     }
 
-    private function editor_set_order_as_complete(string $customerId, string $apiKey, string $editorId, string $projectId): bool
+    private function editor_set_order_as_complete(int $orderId, string $customerId, string $apiKey, string $editorId, string $projectId): bool
     {
-        $request = $this->generate_request_array($customerId, $apiKey, $projectId);
+        $request = $this->generate_request_array($orderId, $customerId, $apiKey, $projectId);
 
+        error_log(print_r($request, true));
         $ch = curl_init();
         curl_setopt_array($ch, array(
             CURLOPT_URL             => get_option('pie_domain') . '/editor/api/addtoqueueAPI.php',
@@ -55,17 +56,19 @@ class Set_PIE_Project_As_Completed extends Abstract_Action_Hookable
 
         $response = curl_exec($ch);
         curl_close($ch);
+        error_log("editor response: " . print_r($response, true));
 
         return !empty($response);
     }
 
-    private function generate_request_array(string $customerId, string $apiKey, string $projectId): array
+    private function generate_request_array(int $orderId, string $customerId, string $apiKey, string $projectId): array
     {
         $request = array(
             'customerid' => $customerId,
             'customerapikey' => $apiKey,
-            'project_id' => $projectId,
+            'projectid' => $projectId,
             'type' => 'default',
+            "orderid" => (string)$orderId,
             'outputtype' => 'print',
         );
 

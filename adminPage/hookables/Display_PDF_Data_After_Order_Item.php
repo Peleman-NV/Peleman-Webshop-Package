@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PWP\publicPage\hookables;
+namespace PWP\adminPage\hookables;
 
 use PWP\includes\hookables\abstracts\Abstract_Action_Hookable;
 
@@ -24,7 +24,7 @@ class Display_PDF_Data_After_Order_Item extends Abstract_Action_Hookable
 
         $download = home_url('wp-json/pwp/v1/pdf/' . $id . "?_wpnonce={$nonce}");
 ?>
-        <div><a download=<?= $name; ?> target="_blank" href=<?= $download ?>>download <?= $name ?></a></div>
+        <div><a download="<?= $name; ?>" target="_blank" href="<?= $download ?>">download <?= $name ?></a></div>
         <!-- <div><a target="_blank" href=<?= $download; ?>>download <?= $name ?></a></div> -->
 <?php
     }

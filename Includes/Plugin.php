@@ -17,7 +17,6 @@ use PWP\publicPage\hookables\Change_Add_To_Cart_Button_Label;
 use PWP\publicPage\hookables\Display_Editor_Project_Button_In_Cart;
 use PWP\publicPage\hookables\Add_Fields_To_Add_To_Cart_Button;
 use PWP\publicPage\hookables\Save_Cart_Item_Meta_To_Order_Item_Meta;
-use PWP\publicPage\hookables\Display_PDF_Data_After_Order_Item;
 
 use PWP\adminPage\hookables\Admin_Control_Panel;
 use PWP\adminPage\hookables\Admin_Notice_Poster;
@@ -30,6 +29,7 @@ use PWP\adminPage\hookables\Register_Plugin_Options;
 use PWP\adminPage\hookables\Variable_Product_Custom_Fields;
 use PWP\adminPage\hookables\Save_Parent_Product_Custom_Fields;
 use PWP\adminPage\hookables\Save_Variable_Product_Custom_Fields;
+use PWP\adminPage\hookables\Display_PDF_Data_After_Order_Item;
 
 use PWP\includes\API\API_V1_Plugin;
 use PWP\includes\API\endpoints\TEST_OAuth2_Client_Endpoint;
@@ -40,7 +40,6 @@ use PWP\publicPage\hookables\Add_PDF_Prices_To_Cart;
 use PWP\publicPage\hookables\Add_PDF_Data_To_Cart_Item;
 use PWP\publicPage\hookables\Change_Add_To_Cart_Archive_Button;
 use PWP\publicPage\hookables\Change_Cart_Item_Thumbnail;
-use PWP\publicPage\hookables\Change_Cart_Item_Thumnail;
 use PWP\publicPage\hookables\Download_PIE_Printfile;
 use PWP\publicPage\hookables\Enqueue_PDF_JS;
 use PWP\publicPage\hookables\Order_Project;
