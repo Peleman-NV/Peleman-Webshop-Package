@@ -6,18 +6,18 @@ namespace PWP\publicPage\hookables;
 
 use PWP\includes\hookables\abstracts\Abstract_Action_Hookable;
 
-class Download_PIE_Printfile extends Abstract_Action_Hookable
+class Add_PIE_Printfile_Download_Button extends Abstract_Action_Hookable
 {
     private ?string $projectId;
     private ?string $editorId;
 
     public function __construct()
     {
-        parent::__construct('pwp_download_project_files_link', 'create_file_download_link', 10, 2);
+        parent::__construct('pwp_download_project_files_link', 'pwp_create_printfile_download_link', 10, 2);
         $this->add_hook('woocommerce_after_order_itemmeta');
     }
 
-    public function create_file_download_link(int $item_id, \WC_Order_Item $item): void
+    public function pwp_create_printfile_download_link(int $item_id, \WC_Order_Item $item): void
     {
         $clientDomain = get_option('pie_domain', 'https://deveditor.peleman.com');
         $endpoint = $clientDomain . '/editor/api/getfile.php';
