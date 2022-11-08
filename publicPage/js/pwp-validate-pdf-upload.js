@@ -3,9 +3,10 @@
     $(function () {
         console.log('foo!');
 
+        var _clear = $('#pwp-file-clear');
         var _upload = $('#pwp-file-upload');
         var _preview = $('#pwp-pdf-canvas');
-        var _name = $('#pwp-upload-filename')
+        var _name = $('#pwp-upload-filename');
         var _canvas = _preview[0];
 
         var _pdf_doc;
@@ -57,6 +58,13 @@
                     });
                 });
         }
+
+        _clear.click(function () {
+            _upload.val('');
+            console.log("fee");
+            _name.text('');
+            _preview.css("display", "none");
+        })
 
     });
 })(jQuery);

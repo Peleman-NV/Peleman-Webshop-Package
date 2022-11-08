@@ -12,6 +12,7 @@ if (!defined('ABSPATH')) {
         </p>
         <div class='pwp-thumbnail-container'>
             <canvas id='pwp-pdf-canvas' width="150" style="display:none"></canvas>
+
         </div>
         <table class="pwp-pdf-table">
             <tbody>
@@ -47,6 +48,7 @@ if (!defined('ABSPATH')) {
                 <input class='pwp-upload-field' id='pwp-file-upload' type='file' accept='application/pdf' name='pdf-upload' size='<?= $size; ?>' required />
                 <br /><span id="pwp-upload-filename" style="color: green; margin-top: 20px; font-weight: 500; font-size: 16px;"></span>
             </label>
+            <button id="pwp-file-clear" width="150" type="button">remove .pdf</button>
         </div>
     </div>
 </div>
