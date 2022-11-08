@@ -47,7 +47,7 @@ if (!defined('ABSPATH')) {
             <div class='pwp-thumbnail-container'>
                 <canvas id='pwp-pdf-canvas' width="250" style="display:none"></canvas>
             </div>
-            <button id="pwp-file-clear" width="250" type="button" style="display:none">remove .pdf</button>
+            <button id="pwp-file-clear" type="button" style="display:none;"><?= esc_html__('Remove PDF', PWP_TEXT_DOMAIN); ?></button>
         </div>
     </div>
 </div>
