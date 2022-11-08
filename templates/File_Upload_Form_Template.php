@@ -10,10 +10,6 @@ if (!defined('ABSPATH')) {
             <?= esc_html__('Your full price will be calculated in the cart according to the number of pages of your content PDF.', PWP_TEXT_DOMAIN); ?>
             <?= esc_html__('The price per page for this product equals', PWP_TEXT_DOMAIN); ?> <span class="price-per-page"><?= wc_price($price_per_page) ?: '' ?></span>
         </p>
-        <div class='pwp-thumbnail-container'>
-            <canvas id='pwp-pdf-canvas' width="150" style="display:none"></canvas>
-
-        </div>
         <table class="pwp-pdf-table">
             <tbody>
                 <tr>
@@ -49,9 +45,9 @@ if (!defined('ABSPATH')) {
                 <br /><span id="pwp-upload-filename" style="color: green; margin-top: 20px; font-weight: 500; font-size: 16px;"></span>
             </label>
             <div class='pwp-thumbnail-container'>
-                <canvas id='pwp-pdf-canvas' width="150" style="display:none"></canvas>
+                <canvas id='pwp-pdf-canvas' width="250" style="display:none"></canvas>
             </div>
-            <button id="pwp-file-clear" width="150" type="button">remove .pdf</button>
+            <button id="pwp-file-clear" width="250" type="button">remove .pdf</button>
         </div>
     </div>
 </div>

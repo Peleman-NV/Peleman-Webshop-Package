@@ -40,7 +40,7 @@ class Display_Editor_Project_Button_In_Cart extends Abstract_Action_Hookable
 ?>
         <span>
             <p>
-                <a href="<?= $project_url ?>" class="pwp_editor_button"><?= esc_html__('edit'); ?></a>
+                <a href="<?= $project_url ?>" class="pwp_editor_button"><?= esc_html__('Edit your project'); ?></a>
             </p>
         </span>
 <?php
