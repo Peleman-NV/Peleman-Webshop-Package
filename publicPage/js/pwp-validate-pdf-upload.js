@@ -61,7 +61,6 @@
 
         _clear.click(function () {
             _upload.val('');
-            console.log("fee");
             _name.text('');
             _preview.css("display", "none");
         })
