@@ -47,7 +47,7 @@ if (!defined('ABSPATH')) {
             <div class='pwp-thumbnail-container'>
                 <canvas id='pwp-pdf-canvas' width="250" style="display:none"></canvas>
             </div>
-            <button id="pwp-file-clear" width="250" type="button">remove .pdf</button>
+            <button id="pwp-file-clear" width="250" type="button" style="display:none">remove .pdf</button>
         </div>
     </div>
 </div>

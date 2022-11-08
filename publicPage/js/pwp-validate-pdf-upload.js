@@ -55,6 +55,7 @@
                     };
                     page.render(rendercontext).then(function () {
                         _preview.css("display", "");
+                        _clear.css("display", "");
                     });
                 });
         }
@@ -63,6 +64,7 @@
             _upload.val('');
             _name.text('');
             _preview.css("display", "none");
+            _clear.css("display","none");
         })
 
     });
