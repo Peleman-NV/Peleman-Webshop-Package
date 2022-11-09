@@ -221,7 +221,7 @@ class Variable_Product_Custom_Fields extends Abstract_Action_hookable
     private function render_PDF_upload_settings(Product_Meta_Data $meta): void
     {
         Input_Fields::checkbox_input(
-            Keys::USE_PDF_CONTENT_KEY,
+            Keys::USE_PDF_CONTENT_KEY . $this->loopEnd,
             'Require PDF upload',
             $meta->uses_pdf_content(),
             ['form-row', 'form-row-first'],
@@ -239,7 +239,7 @@ class Variable_Product_Custom_Fields extends Abstract_Action_hookable
         );
 
         Input_Fields::number_input(
-            Keys::PDF_MIN_PAGES_KEY,
+            Keys::PDF_MIN_PAGES_KEY . $this->loopEnd,
             'pdf Min Pages',
             $meta->get_pdf_min_pages(),
             ['form-row', 'form-row-first'],

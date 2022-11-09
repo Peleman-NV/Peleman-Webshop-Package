@@ -19,12 +19,13 @@ class Save_Cart_Item_Meta_To_Order_Item_Meta extends Abstract_Action_Hookable
     {
         if (isset($values['_editor_id']) && isset($values['_project_id'])) {
 
+            // $item->add_meta_data(
+            //     'Editor Id',
+            //     $values['_editor_id'],
+            //     true
+            // );
             $item->add_meta_data(
-                '_editor_id',
-                $values['_editor_id'],
-                true
-            );
-            $item->add_meta_data(
+                // 'PIE Project ID',
                 '_project_id',
                 $values['_project_id'],
                 true

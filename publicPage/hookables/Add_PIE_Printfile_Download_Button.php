@@ -22,6 +22,7 @@ class Add_PIE_Printfile_Download_Button extends Abstract_Action_Hookable
         $clientDomain = get_option('pie_domain', 'https://deveditor.peleman.com');
         $endpoint = $clientDomain . '/editor/api/getfile.php';
         $this->projectId = $item->get_meta('_project_id');
+        // $this->projectId = $item->get_meta('PIE Project ID');
         $this->editorId = $item->get_meta('_editor_id');
 
         if (!$this->projectId || !$this->editorId) {
