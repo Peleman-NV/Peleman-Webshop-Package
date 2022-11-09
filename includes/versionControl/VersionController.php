@@ -46,6 +46,7 @@ class VersionController
         //this way we ensure we only load and register these objects when we are trying to upgrade the local version
 
         // $this->add_upgrade(new ExampleUpdate('0.0.3'));
+        $this->add_upgrade(new Update_1_0_16());
 
 
         //just to be sure, sort array of updates by version number (from oldest to newest);

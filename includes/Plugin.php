@@ -34,6 +34,7 @@ use PWP\adminPage\hookables\Display_PDF_Data_After_Order_Item;
 use PWP\includes\API\API_V1_Plugin;
 use PWP\includes\API\endpoints\TEST_OAuth2_Client_Endpoint;
 use PWP\includes\hookables\abstracts\I_Hookable_Component;
+use PWP\includes\versionControl\VersionController;
 use PWP\publicPage\hookables\Add_Class_To_Add_To_Cart_Button;
 use PWP\publicPage\hookables\Display_PDF_Data_In_Cart;
 use PWP\publicPage\hookables\Add_PDF_Prices_To_Cart;
@@ -76,6 +77,8 @@ final class Plugin
         }
 
         if (is_admin()) {
+            $versionController = new VersionController(VERSION, (string)get_option('pwp-version'));
+            $versionController->try_update();
             $this->admin_hooks();
         }
         $this->public_hooks();

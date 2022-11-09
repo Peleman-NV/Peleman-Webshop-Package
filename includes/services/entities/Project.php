@@ -232,7 +232,7 @@ class Project implements I_Entity, JsonSerializable
     public function save_file(PDF_Upload $pdf): void
     {
         $safeName = uniqid();
-        $this->path = "/{$safeName}.pdf";
+        $this->path = "{$safeName}.pdf";
         if (!move_uploaded_file($pdf->get_tmp_name(), $this->get_path(true))) {
             throw new \Exception("something went wrong trying to save the uploaded .pdf file.", 500);
         }

@@ -9,7 +9,6 @@ require plugin_dir_path(__FILE__) . '/vendor/autoload.php';
 use PWP\includes\Activator;
 use PWP\includes\Deactivator;
 use PWP\includes\Plugin;
-use PWP\includes\versionControl\VersionController;
 
 /**
  * @link              https://www.peleman.com
@@ -22,7 +21,7 @@ use PWP\includes\versionControl\VersionController;
  * requires PHP:      7.4
  * requires at least: 5.9.0
  * Description:       In-development umbrella project of the Peleman Product Uploader and Print Partner Integrator.
- * Version:           1.0.15
+ * Version:           1.0.16
  * Author:            Kai Helsen
  * Author URI:        https://github.com/KaiHelsen
  * License:           GPL-2.0+
@@ -34,7 +33,7 @@ use PWP\includes\versionControl\VersionController;
 defined('WPINC') || die;
 
 //define PWP constant values
-define('VERSION', '1.0.15');
+define('VERSION', '1.0.16');
 !defined('PWP_OPTION_GROUP')        ? define('PWP_OPTION_GROUP', 'OPTIONS') : null;
 !defined('PWP_TEXT_DOMAIN')         ? define('PWP_TEXT_DOMAIN', 'PelemanWebshopPackage') : null;
 
@@ -47,13 +46,11 @@ define('VERSION', '1.0.15');
 !defined('PWP_API_KEY_TABLE')       ? define('PWP_API_KEY_TABLE', 'pwp_api_keys') : null;
 !defined('PWP_PROJECTS_TABLE')      ? define('PWP_PROJECTS_TABLE', 'pwp_projects') : null;
 
+
 //register activation hook. Is called when the plugin is activated in the Wordpress Admin panel
 register_activation_hook(__FILE__, function () {
     $activator = new Activator();
     $activator->activate();
-
-    $versionController = new VersionController(VERSION, (string)get_option('pwp-version'));
-    $versionController->try_update();
 });
 
 //register deactivation hook. Is called when the plugin is deactivated in the Wordpress Admin panel
