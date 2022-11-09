@@ -24,6 +24,7 @@ class Activator
         $this->init_settings();
         $this->init_database_tables();
         $this->init_directories();
+        $this->init_roles();
         $this->run_upgrades();
     }
 
@@ -100,5 +101,10 @@ class Activator
         if (!is_dir(PWP_UPLOAD_DIR)) {
             mkdir(PWP_UPLOAD_DIR, 0755, true);
         }
+    }
+
+    public function init_roles()
+    {
+        //TODO::init roles using add_role();
     }
 }

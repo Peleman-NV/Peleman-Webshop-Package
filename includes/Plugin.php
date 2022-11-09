@@ -41,6 +41,7 @@ use PWP\publicPage\hookables\Add_PDF_Data_To_Cart_Item;
 use PWP\publicPage\hookables\Change_Add_To_Cart_Archive_Button;
 use PWP\publicPage\hookables\Change_Cart_Item_Thumbnail;
 use PWP\publicPage\hookables\Add_PIE_Printfile_Download_Button;
+use PWP\publicPage\hookables\Ajax_Load_Cart_Thumbnail;
 use PWP\publicPage\hookables\Enqueue_PDF_JS;
 use PWP\publicPage\hookables\Order_Project;
 use PWP\publicPage\hookables\Override_WC_Templates;
@@ -143,6 +144,7 @@ final class Plugin
 
         /* EDITOR front end display hookables */
         $this->add_hookable(new Change_Cart_Item_Thumbnail());
+        $this->add_hookable(new Ajax_Load_Cart_Thumbnail());
     }
 
     private function api_endpoints(): void
