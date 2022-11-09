@@ -45,7 +45,7 @@ class Change_Cart_Item_Thumbnail extends Abstract_Filter_Hookable
                 // $node->setAttribute("src", site_url() . "/wp-json/pwp/v1/thumb/{$projectId}");
             }
             $image = $this->dom->saveHTML();
-            return $image;
         }
+        return $image;
     }
 }
