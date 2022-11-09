@@ -144,7 +144,7 @@ final class Plugin
 
         /* EDITOR front end display hookables */
         $this->add_hookable(new Change_Cart_Item_Thumbnail());
-        $this->add_hookable(new Ajax_Load_Cart_Thumbnail());
+        // $this->add_hookable(new Ajax_Load_Cart_Thumbnail());
     }
 
     private function api_endpoints(): void

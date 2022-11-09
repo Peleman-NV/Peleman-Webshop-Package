@@ -37,50 +37,15 @@ class Change_Cart_Item_Thumbnail extends Abstract_Filter_Hookable
             foreach ($x->query("//img") as $node) {
 
                 $classes = $node->getAttribute("class");
+                $src = $node->getAttribute("src");
                 $node->setAttribute("class", "{$classes} pwp-fetch-thumb");
                 $node->setAttribute("projid", $projectId);
+                $node->setAttribute("srcset", site_url() . "/wp-json/pwp/v1/thumb/{$projectId}");
+                $node->setAttribute("onerror", "this.onerror='';this.src='{$src}';this.srcset='';");
+                // $node->setAttribute("src", site_url() . "/wp-json/pwp/v1/thumb/{$projectId}");
             }
             $image = $this->dom->saveHTML();
             return $image;
-
-            $url = $this->generate_thumbnail_request_url($projectId);
-
-            try {
-                //TODO:
-                //once the api returns a proper response when it cannot find a thumbnail,
-                //we can remove the error control operator
-                //right now we use it to simply suppress warnings in the error log
-                //avoiding clutter
-                //important to note that the error control operator doesn't ignore errors, it simply stops them from being logged.
-                //as such, the try/catch block still works as intended.
-
-                @$img = base64_encode(file_get_contents($url, true));
-
-                if (!$img || $img === false)  return $image;
-
-                $image = sprintf(
-                    '<img src="%s" alt="%s">',
-                    // '<img width="450" height="450" src="%s" class="woocommerce-placeholder wp-post-image" alt="%s" decoding="async" loading="lazy" sizes="(max-width: 450px) 100vw, 450px" />',
-                    'data:image/jpeg;base64, ' . $img,
-                    'project thumbnail'
-                );
-            } catch (\Throwable $error) {
-                // error_log((string)$error);
-                return $image;
-            }
         }
-        return $image;
-    }
-
-    private function generate_thumbnail_request_url(string $projectId): string
-    {
-        $domain = get_option('pie_domain');
-
-        $query = array(
-            'projectid' => $projectId,
-            'customerapikey' => get_option('pie_api_key'),
-        );
-
-        return $domain . "/editor/api/getprojectthumbnailAPI.php" . '?' . http_build_query($query);
     }
 }

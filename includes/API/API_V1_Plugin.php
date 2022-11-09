@@ -12,6 +12,7 @@ use PWP\includes\hookables\abstracts\I_Hookable_Component;
 use PWP\includes\API\endpoints\categories\API_Categories_Channel;
 use PWP\includes\API\endpoints\Products\API_Products_Channel;
 use PWP\includes\API\endpoints\FIND_PDF_Endpoint;
+use PWP\includes\API\endpoints\FIND_Project_Thumbnail;
 use PWP\includes\API\endpoints\Test_Endpoint;
 
 /**
@@ -32,10 +33,11 @@ class API_V1_Plugin implements I_Hookable_Component
         $authenticator = new Authenticator();
 
         $this->add_hookable(new FIND_PDF_Endpoint($this->namespace, $authenticator));
+        $this->add_hookable(new FIND_Project_Thumbnail($this->namespace, $authenticator));
 
+        //temporarily disabled: under development
         // $this->add_hookable(new API_Categories_Channel($this->namespace, '', $authenticator));
         // $this->add_hookable(new API_Attributes_Channel($this->namespace, '', $authenticator));
-        //temporarily disabled: under development
         // $this->add_hookable(new API_Products_Channel($this->namespace, '', $authenticator));
     }
 
