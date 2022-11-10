@@ -114,7 +114,7 @@ class Parent_Product_Custom_Fields extends Abstract_Action_Hookable
             array(
                 '' => 'no customization',
                 Product_PIE_Data::MY_EDITOR => "Peleman Image Editor",
-                Product_IMAXEL_Data::MY_EDITOR => "Imaxel"
+                // Product_IMAXEL_Data::MY_EDITOR => "Imaxel"
             ),
             $meta_data->get_editor_id(),
             ['form-row', 'form-row-full', 'pwp-editor-select'],
@@ -130,7 +130,7 @@ class Parent_Product_Custom_Fields extends Abstract_Action_Hookable
         );
 
         $this->render_PIE_product_settings($meta_data);
-        $this->render_IMAXEL_product_settings($meta_data);
+        // $this->render_IMAXEL_product_settings($meta_data);
         $this->render_PDF_upload_settings($meta_data);
     }
 

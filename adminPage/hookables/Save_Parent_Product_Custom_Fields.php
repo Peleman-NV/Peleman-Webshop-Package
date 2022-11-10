@@ -67,9 +67,9 @@ class Save_Parent_Product_Custom_Fields extends Abstract_Action_hookable
                 ->set_min_images((int)esc_attr(sanitize_text_field($_POST[Keys::MIN_IMAGES_KEY])))
                 ->set_editor_instructions(explode(' ', esc_attr($_POST[Keys::EDITOR_INSTRUCTIONS_KEY])));
 
-            $imaxelData
-                ->set_template_id(esc_attr(sanitize_text_field($_POST[Keys::IMAXEL_TEMPLATE_ID_KEY])))
-                ->set_variant_id(esc_attr(sanitize_text_field($_POST[Keys::IMAXEL_VARIANT_ID_KEY])));
+            // $imaxelData
+            //     ->set_template_id(esc_attr(sanitize_text_field($_POST[Keys::IMAXEL_TEMPLATE_ID_KEY])))
+            //     ->set_variant_id(esc_attr(sanitize_text_field($_POST[Keys::IMAXEL_VARIANT_ID_KEY])));
         }
 
         $product->save_meta_data();

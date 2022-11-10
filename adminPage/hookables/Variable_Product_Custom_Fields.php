@@ -46,7 +46,7 @@ class Variable_Product_Custom_Fields extends Abstract_Action_hookable
         $this->heading('Image Editor Settings', 2, ['pwp-options-group-title']);
         $this->open_div(['pwp-options-group']);
         $this->render_PIE_product_settings($meta_data);
-        $this->render_IMAXEL_product_settings($meta_data);
+        // $this->render_IMAXEL_product_settings($meta_data);
         $this->render_PDF_upload_settings($meta_data);
         $this->close_div();
     }
