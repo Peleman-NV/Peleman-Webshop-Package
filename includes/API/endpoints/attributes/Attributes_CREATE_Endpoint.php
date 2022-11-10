@@ -12,7 +12,7 @@ use PWP\includes\utilities\response\Response;
 use WP_REST_Request;
 use WP_REST_Response;
 
-class Attributes_Create_Endpoint extends Abstract_CREATE_Endpoint
+class Attributes_CREATE_Endpoint extends Abstract_CREATE_Endpoint
 {
     public function __construct(Channel_Definition $channel, I_Api_Authenticator $authenticator)
     {

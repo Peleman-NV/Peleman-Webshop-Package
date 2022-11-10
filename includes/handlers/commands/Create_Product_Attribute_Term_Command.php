@@ -8,7 +8,7 @@ use PWP\includes\utilities\notification\Success_Notice;
 use PWP\includes\utilities\response\I_Response;
 use PWP\includes\utilities\response\Response;
 
-class Create_Product_Attribute_term_Command implements I_Command
+class Create_Product_Attribute_Term_Command implements I_Command
 {
     private string $name;
     private string $slug;

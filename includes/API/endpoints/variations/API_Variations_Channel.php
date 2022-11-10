@@ -12,7 +12,7 @@ use PWP\includes\authentication\I_Api_Authenticator;
 
 defined('ABSPATH') || die;
 
-class API_Variantions_Channel extends Abstract_API_Channel
+class API_Variations_Channel extends Abstract_API_Channel
 {
     /**
      * @var I_Endpoint[]
