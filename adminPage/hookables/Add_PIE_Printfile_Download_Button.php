@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PWP\publicPage\hookables;
+namespace PWP\adminPage\hookables;
 
 use PWP\includes\hookables\abstracts\Abstract_Action_Hookable;
 
