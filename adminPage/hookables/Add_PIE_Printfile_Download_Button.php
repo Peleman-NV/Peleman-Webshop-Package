@@ -39,7 +39,6 @@ class Add_PIE_Printfile_Download_Button extends Abstract_Action_Hookable
                 ->set_output_type('print')
                 ->make_request()->data;
 
-            error_log(print_r($queue[0], true));
             $status = $queue[0]['status'];
         } catch (Invalid_Response_Exception $exception) {
             $status = 'error';
