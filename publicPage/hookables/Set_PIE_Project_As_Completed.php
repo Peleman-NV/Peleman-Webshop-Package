@@ -44,7 +44,6 @@ class Set_PIE_Project_As_Completed extends Abstract_Action_Hookable
     {
         $request = $this->generate_request_array($orderId, $customerId, $apiKey, $projectId);
 
-        error_log(print_r($request, true));
         $ch = curl_init();
         curl_setopt_array($ch, array(
             CURLOPT_URL             => get_option('pie_domain') . '/editor/api/addtoqueueAPI.php',

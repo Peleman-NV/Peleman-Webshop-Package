@@ -35,13 +35,9 @@ define('PIE_SHOW_STOCK_PHOTOS', 'useshowstockphotos');
 define('PIE_USE_TEXT', 'usetext');
 #endregion
 
-class New_PIE_Project_Request extends Abstract_Request
+class New_PIE_Project_Request extends Abstract_PIE_Request
 {
     #region CLASS VARIABLES
-    private string $endpoint;
-    private string $customerId;
-    private string $apiKey;
-
     private ?Product_PIE_Data $editorData;
 
     private int $userId;
@@ -55,9 +51,8 @@ class New_PIE_Project_Request extends Abstract_Request
 
     public function __construct(string $clientDomain,  string $customerId, string $apiKey)
     {
-        $this->endpoint = $clientDomain . '/editor/api/createprojectAPI.php';
-        $this->customerId = $customerId;
-        $this->apiKey = $apiKey;
+        $endpoint = '/editor/api/createprojectAPI.php';
+        parent::__construct($clientDomain, $endpoint, $apiKey, $customerId);
 
         $this->editorData = null;
 
@@ -152,7 +147,7 @@ class New_PIE_Project_Request extends Abstract_Request
 
     public function make_request(): PIE_Project
     {
-        $url = $this->endpoint .= '?' . http_build_query($this->generate_request_array());
+        $url = $this->get_endpoint_url() . '?' . http_build_query($this->generate_request_query_array());
 
         $curl = curl_init();
         curl_setopt_array($curl, array(
@@ -180,12 +175,12 @@ class New_PIE_Project_Request extends Abstract_Request
         return new PIE_Project($this->editorData, $response);
     }
 
-    protected function generate_request_array(): array
+    protected function generate_request_query_array(): array
     {
         // error_log(print_r($this->editorData->get_editor_instructions(),true));
         $request = array(
-            'customerid'            => $this->customerId,
-            'customerapikey'        => $this->apiKey,
+            'customerid'            => $this->get_customer_id(),
+            'customerapikey'        => $this->get_api_key(),
             'userid'                => $this->userId,
             'language'              => $this->language,
             'templateid'            => $this->editorData->get_template_id(),
