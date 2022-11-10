@@ -22,6 +22,7 @@ class Add_PIE_Printfile_Download_Button extends Abstract_Action_Hookable
     public function pwp_create_printfile_download_link(int $item_id, \WC_Order_Item $item): void
     {
         $clientDomain = get_option('pie_domain', 'https://deveditor.peleman.com');
+        $eta = '';
         $this->projectId = $item->get_meta('_project_id', true);
         $projectId = $this->projectId;
         // $this->projectId = $item->get_meta('PIE Project ID');
@@ -47,7 +48,8 @@ class Add_PIE_Printfile_Download_Button extends Abstract_Action_Hookable
         $this->render_printfile_message_html(
             $status,
             $projectId,
-            $this->generate_file_download_url($clientDomain)
+            $this->generate_file_download_url($clientDomain),
+            $eta
         );
     }
 
@@ -67,7 +69,7 @@ class Add_PIE_Printfile_Download_Button extends Abstract_Action_Hookable
         return $request;
     }
 
-    private function render_printfile_message_html(string $status, string $projectId, string $dl_url): void
+    private function render_printfile_message_html(string $status, string $projectId, string $dl_url, string $eta): void
     {
         switch ($status) {
         }
@@ -76,29 +78,40 @@ class Add_PIE_Printfile_Download_Button extends Abstract_Action_Hookable
             case ('ok'):
             case ('OK'):
 ?>
-                <strong>
+                <span>
+
                     <a href=<?= $dl_url; ?>>
-                        <?= esc_html__(" Download print file."); ?>
+                        <strong>
+                            <?= esc_html__(" Download print file.", PWP_TEXT_DOMAIN); ?>
+                        </strong>
                     </a>
-                </strong>
+                </span>
             <?php
                 break;
             case ('error'):
             case ('Error'):
             ?>
-                <strong>
+                <span>
                     <a role="link" aria-disabled="true">
-                        <?= esc_html__("Error connecting to editor server; try again later."); ?>
-                    </a></strong>
+                        <strong>
+                            <?= esc_html__("Error connecting to editor server; try again later.", PWP_TEXT_DOMAIN); ?>
+                        </strong>
+                    </a>
+                </span>
             <?php
                 break;
             default:
             ?>
-                <strong>
+                <span>
                     <a role="link" aria-disabled="true">
-                        <?= esc_html__("Print file processing; not currently available for download."); ?>
+                        <strong>
+                            <?= esc_html__("Print file processing; not currently available for download."); ?>
                     </a>
-                </strong>
+                    </strong>
+                </span>
+                <div>
+                    <i><?= sprintf(esc_html__("completion estimated at %s", PWP_TEXT_DOMAIN), $eta); ?></i>
+                </div>
 <?php
         }
         ob_end_flush();
