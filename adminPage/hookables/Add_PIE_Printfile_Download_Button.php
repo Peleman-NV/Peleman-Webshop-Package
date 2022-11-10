@@ -22,7 +22,6 @@ class Add_PIE_Printfile_Download_Button extends Abstract_Action_Hookable
     public function pwp_create_printfile_download_link(int $item_id, \WC_Order_Item $item): void
     {
         $clientDomain = get_option('pie_domain', 'https://deveditor.peleman.com');
-
         $this->projectId = $item->get_meta('_project_id', true);
         $projectId = $this->projectId;
         // $this->projectId = $item->get_meta('PIE Project ID');
@@ -40,6 +39,7 @@ class Add_PIE_Printfile_Download_Button extends Abstract_Action_Hookable
                 ->make_request()->data;
 
             $status = $queue[0]['status'];
+            $eta = $queue[0]['renderenddate'];
         } catch (Invalid_Response_Exception $exception) {
             $status = 'error';
         }
