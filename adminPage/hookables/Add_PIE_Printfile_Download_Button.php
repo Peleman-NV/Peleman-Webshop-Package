@@ -39,28 +39,17 @@ class Add_PIE_Printfile_Download_Button extends Abstract_Action_Hookable
                 ->set_output_type('print')
                 ->make_request()->data;
 
-            $results = array_filter((array)$queue, function ($instance) use ($projectId) {
-                return $instance['projectid'] === $projectId;
-            });
-
-            $results = array_values($results);
-            error_log(print_r($results[0], true));
+            error_log(print_r($queue[0], true));
+            $status = $queue[0]['status'];
         } catch (Invalid_Response_Exception $exception) {
-?>
-            <div>
-                <p>print file processing</p>
-            </div>
-        <?php
-            return;
+            $status = 'error';
         }
 
-        $url = $this->generate_file_download_url($clientDomain);
-
-        ?>
-        <div>
-            <a href=<?= $url; ?>><?= esc_html__(" download print file"); ?></a>
-        </div>
-<?php
+        $this->render_printfile_message_html(
+            $status,
+            $projectId,
+            $this->generate_file_download_url($clientDomain)
+        );
     }
 
     private function generate_file_download_url($domain): string
@@ -77,5 +66,42 @@ class Add_PIE_Printfile_Download_Button extends Abstract_Action_Hookable
 
         $request = array_filter($request);
         return $request;
+    }
+
+    private function render_printfile_message_html(string $status, string $projectId, string $dl_url): void
+    {
+        switch ($status) {
+        }
+        ob_start();
+        switch ($status) {
+            case ('ok'):
+            case ('OK'):
+?>
+                <strong>
+                    <a href=<?= $dl_url; ?>>
+                        <?= esc_html__(" Download print file."); ?>
+                    </a>
+                </strong>
+            <?php
+                break;
+            case ('error'):
+            case ('Error'):
+            ?>
+                <strong>
+                    <a role="link" aria-disabled="true">
+                        <?= esc_html__("Error connecting to editor server; try again later."); ?>
+                    </a></strong>
+            <?php
+                break;
+            default:
+            ?>
+                <strong>
+                    <a role="link" aria-disabled="true">
+                        <?= esc_html__("Print file processing; not currently available for download."); ?>
+                    </a>
+                </strong>
+<?php
+        }
+        ob_end_flush();
     }
 }
