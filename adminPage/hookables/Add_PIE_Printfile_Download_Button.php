@@ -81,10 +81,8 @@ class Add_PIE_Printfile_Download_Button extends Abstract_Action_Hookable
 ?>
                 <span>
 
-                    <a href=<?= $dl_url; ?>>
-                        <strong>
-                            <?= esc_html__(" Download print file.", PWP_TEXT_DOMAIN); ?>
-                        </strong>
+                    <a type="button" class="button" href=<?= $dl_url; ?>>
+                        <?= esc_html__(" Download print file.", PWP_TEXT_DOMAIN); ?>
                     </a>
                 </span>
             <?php
@@ -92,10 +90,8 @@ class Add_PIE_Printfile_Download_Button extends Abstract_Action_Hookable
             case ('error'):
             ?>
                 <span>
-                    <a role="link" aria-disabled="true">
-                        <strong>
-                            <?= esc_html__("Error connecting to editor server; try again later.", PWP_TEXT_DOMAIN); ?>
-                        </strong>
+                    <a role="link" type="button" class="button disabled" aria-disabled="true">
+                        <?= esc_html__("Error connecting to editor server; try again later.", PWP_TEXT_DOMAIN); ?>
                     </a>
                 </span>
             <?php
@@ -104,10 +100,8 @@ class Add_PIE_Printfile_Download_Button extends Abstract_Action_Hookable
             default:
             ?>
                 <span>
-                    <a role="link" aria-disabled="true">
-                        <strong>
-                            <?= esc_html__("Print file processing; not currently available for download."); ?>
-                        </strong>
+                    <a role="link" type="button" class="button disabled" aria-disabled="true">
+                        <?= esc_html__("Print file processing; not currently available for download."); ?>
                     </a>
                 </span>
         <?php
@@ -116,13 +110,13 @@ class Add_PIE_Printfile_Download_Button extends Abstract_Action_Hookable
 
     private function render_time_to_completion_html(string $status, string $eta): void
     {
-        if ($status == 'error') {
+        if (empty($eta) || !($status === 'ok' && $status === 'unset')) {
             return;
         }
         ?>
-        <div>
-            <i><?= sprintf(esc_html__("Estimated completion time: "), PWP_TEXT_DOMAIN); ?><strong><?= esc_html($eta); ?></strong></i>
-        </div>
+        <span>
+            <i><?= sprintf(esc_html__("Estimated completion time: UTC "), PWP_TEXT_DOMAIN); ?><strong><?= esc_html($eta); ?></strong></i>
+        </span>
 <?php
     }
 }
