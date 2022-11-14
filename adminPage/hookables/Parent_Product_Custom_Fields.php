@@ -76,27 +76,28 @@ class Parent_Product_Custom_Fields extends Abstract_Action_Hookable
         Input_Fields::number_input(
             'cart_price',
             'Unit Purchase Price',
-            (string)$product->get_meta('cart_price') ?: '',
+            (string)$product->get_meta('cart_price') ?: 0.0,
             ['short'],
-            'These items are sold as units, not individually'
+            'These items are sold as units, not individually',
+            array('step' => 0.1)
         );
 
         Input_Fields::number_input(
             'cart_units',
             'Unit amount',
-            (string)$product->get_meta('cart_units') ?: '',
+            (string)$product->get_meta('cart_units') ?: 1,
             ['short'],
-            'Number of items per unit'
+            'Amount of items per unit. ie. 1 box (unit) contains 20 cards (items).'
         );
 
-        Input_Fields::text_input(
-            'unit_code',
-            'Unit code',
-            $product->get_meta('unit_code'),
-            '',
-            ['short'],
-            'The unit code of this item'
-        );
+        // Input_Fields::text_input(
+        //     'unit_code',
+        //     'Unit code',
+        //     $product->get_meta('unit_code'),
+        //     '',
+        //     ['short'],
+        //     'The unit code of this item'
+        // );
 
         Input_Fields::text_input(
             'f2d_artcd',

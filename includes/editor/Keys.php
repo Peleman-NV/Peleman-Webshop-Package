@@ -16,6 +16,10 @@ class Keys
     public const PDF_MIN_PAGES_KEY = 'pdf_min_pages';
     public const PDF_PRICE_PER_PAGE_KEY = 'price_per_page';
 
+    public const UNIT_AMOUNT = 'cart_units';
+    public const UNIT_PRICE = 'cart_price';
+    public const UNIT_CODE = 'unit_code';
+
     public const EDITOR_ID_KEY = 'pwp_editor_id';
     public const CUSTOM_LABEL_KEY = 'custom_variation_add_to_cart_label';
 

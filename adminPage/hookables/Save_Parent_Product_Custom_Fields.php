@@ -35,9 +35,11 @@ class Save_Parent_Product_Custom_Fields extends Abstract_Action_hookable
             return;
         }
 
-        $editorMeta->set_uses_pdf_content(
-            isset($_POST[Keys::USE_PDF_CONTENT_KEY])
-        )
+        $editorMeta->set_cart_units((int)$_POST[Keys::UNIT_AMOUNT] ?: 1)
+            ->set_cart_price((float)$_POST[keys::UNIT_PRICE])
+            ->set_uses_pdf_content(
+                isset($_POST[Keys::USE_PDF_CONTENT_KEY])
+            )
             ->set_pdf_max_pages((int)$_POST[Keys::PDF_MAX_PAGES_KEY])
             ->set_pdf_min_pages((int)$_POST[Keys::PDF_MIN_PAGES_KEY])
             ->set_pdf_height((int)$_POST[Keys::PDF_HEIGHT_KEY])

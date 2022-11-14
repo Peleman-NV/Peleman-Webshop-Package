@@ -38,7 +38,7 @@ class Variable_Product_Custom_Fields extends Abstract_Action_hookable
 
         $this->loopEnd = "[{$loop}]";
 
-        $this->heading('Fly2Data properties - V2', 2, ['pwp-options-group-title']);
+        $this->heading('Peleman Webshop Properties', 2, ['pwp-options-group-title']);
         $this->open_div(['pwp-options-group']);
         $this->render_standard_product_settings($meta_data);
         $this->close_div();
@@ -70,6 +70,26 @@ class Variable_Product_Custom_Fields extends Abstract_Action_hookable
             ['form-row', 'form-row-last'],
             'F2D article code'
         );
+
+        Input_Fields::number_input(
+            KEYS::UNIT_PRICE . $this->loopEnd,
+            'Unit Purchase Price',
+            (string)$meta->get_cart_price() ?: 0,
+            ['form-row', 'form-row-first'],
+            'These items are sold as units, not individually',
+            array(
+                'step' => '0.1'
+            )
+        );
+
+        Input_Fields::number_input(
+            Keys::UNIT_AMOUNT . $this->loopEnd,
+            'Unit amount',
+            (string)$meta->get_cart_units() ?: 1,
+            ['form-row', 'form-row-last'],
+            'Amount of items per unit. ie. 1 box (unit) contains 20 cards (items).'
+        );
+
 
         Input_Fields::text_input(
             Keys::CUSTOM_LABEL_KEY . $this->loopEnd,

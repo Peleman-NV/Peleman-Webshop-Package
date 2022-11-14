@@ -28,9 +28,12 @@ class Save_Variable_Product_Custom_Fields extends Abstract_Action_hookable
         $pie_data = $editor_data->pie_data();
         $imaxel_data = $editor_data->imaxel_data();
 
-        $editor_data->set_uses_pdf_content(
-            isset($_POST[Keys::USE_PDF_CONTENT_KEY][$loop])
-        )
+        $editor_data
+            ->set_cart_units((int)$_POST[Keys::UNIT_AMOUNT][$loop] ?: 1)
+            ->set_cart_price((float)$_POST[keys::UNIT_PRICE][$loop])
+            ->set_uses_pdf_content(
+                isset($_POST[Keys::USE_PDF_CONTENT_KEY][$loop])
+            )
             ->set_pdf_max_pages((int)$_POST[Keys::PDF_MAX_PAGES_KEY][$loop])
             ->set_pdf_min_pages((int)$_POST[Keys::PDF_MIN_PAGES_KEY][$loop])
             ->set_pdf_height((int)$_POST[Keys::PDF_HEIGHT_KEY][$loop])
