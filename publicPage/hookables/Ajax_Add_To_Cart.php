@@ -13,6 +13,7 @@ use PWP\includes\editor\New_PIE_Project_Request;
 use PWP\includes\editor\PIE_Editor_Instructions;
 use PWP\includes\editor\Product_PIE_Data;
 use PWP\includes\editor\PIE_Project;
+use PWP\includes\exceptions\Invalid_Response_Exception;
 use PWP\includes\hookables\abstracts\Abstract_Ajax_Hookable;
 use WC_AJAX;
 
@@ -141,15 +142,20 @@ class Ajax_Add_To_Cart extends Abstract_Ajax_Hookable
                 ),
                 200
             );
+        } catch (Invalid_Response_Exception $err) {
+            error_log($err->getMessage());
+            wp_send_json_error(
+                array('message' => __('Could not connect to Peleman Image Editor. Please try again in a few moments.', PWP_TEXT_DOMAIN)),
+            );
         } catch (\Exception $err) {
             error_log(sprintf("PHP Error: %s in %s on line %s", $err->getMessage(), $err->getFile(), $err->getLine()));
             error_log($err->getTraceAsString());
 
             wp_send_json_error(
                 array(
-                    'message' => __('an unexpected error has occurred', PWP_TEXT_DOMAIN),
+                    'message' => __('The System has encountered an unexpected error. Please try again in a few moments.', PWP_TEXT_DOMAIN),
                 ),
-                500
+                200
             );
         }
     }

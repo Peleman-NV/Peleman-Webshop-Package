@@ -165,7 +165,7 @@ class New_PIE_Project_Request extends Abstract_PIE_Request
 
         // error_log('editor response: ' . print_r($response, true));
         if (empty($response) || is_bool($response)) {
-            throw new Invalid_Response_Exception('No valid response received. Likely an authentication issue. Try again later.');
+            throw new Invalid_Response_Exception('No valid response received. Likely an authentication issue. Please check the validity of your Peleman Editor credentials.');
         }
 
         //use this code when the api returns a json array, which right now it does not do
