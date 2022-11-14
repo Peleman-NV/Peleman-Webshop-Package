@@ -10,58 +10,62 @@ use PWP\includes\hookables\abstracts\Abstract_Action_Hookable;
 
 class Add_PIE_Printfile_Download_Button extends Abstract_Action_Hookable
 {
-    private ?string $projectId;
-    private ?string $editorId;
-
+    private string $clientDomain;
     public function __construct()
     {
         parent::__construct('pwp_download_project_files_link', 'pwp_create_printfile_download_link', 10, 2);
         $this->add_hook('woocommerce_after_order_itemmeta');
+
+        $this->clientDomain = get_option('pie_domain', '');
     }
 
     public function pwp_create_printfile_download_link(int $item_id, \WC_Order_Item $item): void
     {
-        $clientDomain = get_option('pie_domain', 'https://deveditor.peleman.com');
-        $eta = '';
-        $this->projectId = $item->get_meta('_project_id', true);
-        $projectId = $this->projectId;
-        // $this->projectId = $item->get_meta('PIE Project ID');
-
-        if (!$this->projectId) return;
-
         try {
+            if (empty($this->clientDomain)) {
+                return;
+            }
+            $eta = '';
+            $status = '';
+            $projectId = $item->get_meta('_project_id', true);
+            // $projectId = $item->get_meta('PIE Project ID');
+
+
+            if (!$projectId) return;
+
             $queue = PIE_GET_Queue_Request::new(
-                $clientDomain,
+                $this->clientDomain,
                 get_option('pie_api_key'),
                 get_option('pie_customer_id')
             )
-                ->set_project_id($this->projectId)
+                ->set_project_id($projectId)
                 ->set_output_type('print')
                 ->make_request()->data;
 
-            $status = $queue[0]['status'];
-            $eta = $queue[0]['renderenddate'];
+            $status = $queue[0]['status'] ?: "unset";
+            $eta = $queue[0]['renderenddate']  ?: __("unknown",);
         } catch (Invalid_Response_Exception $exception) {
             $status = 'error';
         }
 
+        ob_start();
         $this->render_printfile_message_html(
             $status,
-            $projectId,
-            $this->generate_file_download_url($clientDomain),
-            $eta
+            $this->generate_file_download_url($projectId),
         );
+        $this->render_time_to_completion_html($status, $eta);
+        ob_end_flush();
     }
 
-    private function generate_file_download_url($domain): string
+    private function generate_file_download_url(string $projectId): string
     {
-        $endpoint = $domain . '/editor/api/getfile.php';
-        return $endpoint . '?' . http_build_query($this->generate_request_array());
+        $endpoint = $this->clientDomain . '/editor/api/getfile.php';
+        return $endpoint . '?' . http_build_query($this->generate_request_array($projectId));
     }
-    private function generate_request_array(): array
+    private function generate_request_array(string $projectId): array
     {
         $request = array(
-            'projectid' => $this->projectId,
+            'projectid' => $projectId,
             'file' => 'printfiles',
         );
 
@@ -69,14 +73,11 @@ class Add_PIE_Printfile_Download_Button extends Abstract_Action_Hookable
         return $request;
     }
 
-    private function render_printfile_message_html(string $status, string $projectId, string $dl_url, string $eta): void
+    private function render_printfile_message_html(string $status, string $dl_url): void
     {
-        switch ($status) {
-        }
         ob_start();
         switch ($status) {
             case ('ok'):
-            case ('OK'):
 ?>
                 <span>
 
@@ -89,7 +90,6 @@ class Add_PIE_Printfile_Download_Button extends Abstract_Action_Hookable
             <?php
                 break;
             case ('error'):
-            case ('Error'):
             ?>
                 <span>
                     <a role="link" aria-disabled="true">
@@ -100,20 +100,29 @@ class Add_PIE_Printfile_Download_Button extends Abstract_Action_Hookable
                 </span>
             <?php
                 break;
+            case ("unset"):
             default:
             ?>
                 <span>
                     <a role="link" aria-disabled="true">
                         <strong>
                             <?= esc_html__("Print file processing; not currently available for download."); ?>
+                        </strong>
                     </a>
-                    </strong>
                 </span>
-                <div>
-                    <i><?= sprintf(esc_html__("completion estimated at %s", PWP_TEXT_DOMAIN), $eta); ?></i>
-                </div>
-<?php
+        <?php
         }
-        ob_end_flush();
+    }
+
+    private function render_time_to_completion_html(string $status, string $eta): void
+    {
+        if ($status == 'error') {
+            return;
+        }
+        ?>
+        <div>
+            <i><?= sprintf(esc_html__("Estimated completion time: "), PWP_TEXT_DOMAIN); ?><strong><?= esc_html($eta); ?></strong></i>
+        </div>
+<?php
     }
 }
