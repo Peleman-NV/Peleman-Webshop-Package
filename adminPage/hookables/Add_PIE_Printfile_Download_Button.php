@@ -42,7 +42,7 @@ class Add_PIE_Printfile_Download_Button extends Abstract_Action_Hookable
                 ->set_output_type('print')
                 ->make_request()->data;
 
-            $status = $queue[0]['status'] ?: "unset";
+            $status = $queue[0]['status'] ?: "";
             $eta = $queue[0]['renderenddate']  ?: __("unknown",);
         } catch (Invalid_Response_Exception $exception) {
             $status = 'error';
@@ -101,7 +101,7 @@ class Add_PIE_Printfile_Download_Button extends Abstract_Action_Hookable
             ?>
                 <span>
                     <a role="link" type="button" class="button disabled" aria-disabled="true">
-                        <?= esc_html__("Print file processing; not currently available for download."); ?>
+                        <?= esc_html__("Print file processing."); ?>
                     </a>
                 </span>
         <?php
@@ -110,7 +110,7 @@ class Add_PIE_Printfile_Download_Button extends Abstract_Action_Hookable
 
     private function render_time_to_completion_html(string $status, string $eta): void
     {
-        if (empty($eta) || !($status === 'ok' && $status === 'unset')) {
+        if (empty($eta) || ($status !== '')) {
             return;
         }
         ?>
