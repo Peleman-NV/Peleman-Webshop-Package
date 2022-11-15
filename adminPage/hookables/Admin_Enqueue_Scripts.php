@@ -16,6 +16,7 @@ class Admin_Enqueue_Scripts extends Abstract_Action_Hookable
     public function enqueue_scripts()
     {
         $randomVersionNumber = rand(0, 1000);
-        wp_enqueue_script('pwp_admin_product_page_script', plugins_url('Peleman-Webshop-Package/adminPage/js/admin-ui.js'), array(), $randomVersionNumber);
+        // wp_enqueue_script('pwp_admin_product_page_script', plugins_url('Peleman-Webshop-Package/adminPage/js/admin-ui.js'), array(), $randomVersionNumber);
+        wp_enqueue_script('pwp_reset_theme_colors', plugins_url('Peleman-Webshop-Package/adminPage/js/pwp_reset_theme_colors.js'), array(), $randomVersionNumber);
     }
 }

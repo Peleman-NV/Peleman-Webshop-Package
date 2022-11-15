@@ -14,6 +14,7 @@ use PWP\includes\versionControl\VersionController;
 use PWP\adminPage\hookables\Add_Cron_Schedules;
 use PWP\adminPage\hookables\Add_PIE_Printfile_Download_Button;
 use PWP\adminPage\hookables\Admin_Control_Panel;
+use PWP\adminPage\hookables\Admin_Enqueue_Scripts;
 use PWP\adminPage\hookables\Admin_Notice_Poster;
 use PWP\adminPage\hookables\Admin_Enqueue_Styles;
 use PWP\adminPage\hookables\Cleanup_Unordered_Projects;
@@ -95,6 +96,7 @@ final class Plugin
         $this->add_hookable($this->noticePoster);
         /** control panel hookables */
         $this->add_hookable(new Admin_Enqueue_Styles());
+        $this->add_hookable(new Admin_Enqueue_Scripts());
         $this->add_hookable(new Register_Plugin_Options());
         $this->add_hookable(new Register_Editor_Options());
 

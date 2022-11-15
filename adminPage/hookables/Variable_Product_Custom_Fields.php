@@ -38,12 +38,20 @@ class Variable_Product_Custom_Fields extends Abstract_Action_hookable
 
         $this->loopEnd = "[{$loop}]";
 
-        $this->heading('Peleman Webshop Properties', 2, ['pwp-options-group-title']);
+        $this->heading(
+            __('Peleman Webshop Properties', PWP_TEXT_DOMAIN),
+            2,
+            ['pwp-options-group-title']
+        );
         $this->open_div(['pwp-options-group']);
         $this->render_standard_product_settings($meta_data);
         $this->close_div();
 
-        $this->heading('Image Editor Settings', 2, ['pwp-options-group-title']);
+        $this->heading(
+            __('Image Editor Settings', PWP_TEXT_DOMAIN),
+            2,
+            ['pwp-options-group-title']
+        );
         $this->open_div(['pwp-options-group']);
         $this->render_PIE_product_settings($meta_data);
         // $this->render_IMAXEL_product_settings($meta_data);
@@ -55,28 +63,28 @@ class Variable_Product_Custom_Fields extends Abstract_Action_hookable
     {
         INPUT_FIELDS::text_input(
             "f2d_sku_components" . $this->loopEnd,
-            'Fly2Data SKU',
+            __('Fly2Data SKU', PWP_TEXT_DOMAIN),
             $meta->get_parent()->get_meta('f2d_sku_components'),
             '',
             ['form-row', 'form-row-first'],
-            'F2D components that make up a variation'
+            __('F2D components that make up a variation', PWP_TEXT_DOMAIN)
         );
 
         INPUT_FIELDS::text_input(
             "f2d_artcd" . $this->loopEnd,
-            'Fly2Data article code',
+            __('Fly2Data article code', PWP_TEXT_DOMAIN),
             $meta->get_parent()->get_meta('f2d_artcd'),
             '',
             ['form-row', 'form-row-last'],
-            'F2D article code'
+            __('F2D article code', PWP_TEXT_DOMAIN)
         );
 
         Input_Fields::number_input(
             KEYS::UNIT_PRICE . $this->loopEnd,
-            'Unit Purchase Price',
+            __('Unit Purchase Price', PWP_TEXT_DOMAIN),
             (string)$meta->get_cart_price() ?: 0,
             ['form-row', 'form-row-first'],
-            'These items are sold as units, not individually',
+            __('These items are sold as units, not individually', PWP_TEXT_DOMAIN),
             array(
                 'step' => '0.1'
             )
@@ -84,48 +92,49 @@ class Variable_Product_Custom_Fields extends Abstract_Action_hookable
 
         Input_Fields::number_input(
             Keys::UNIT_AMOUNT . $this->loopEnd,
-            'Unit amount',
+            __('Unit amount', PWP_TEXT_DOMAIN),
             (string)$meta->get_cart_units() ?: 1,
             ['form-row', 'form-row-last'],
-            'Amount of items per unit. ie. 1 box (unit) contains 20 cards (items).'
+            __('Amount of items per unit. ie. 1 box (unit) contains 20 cards (items).', PWP_TEXT_DOMAIN),
+            array('min' => 1)
         );
 
 
         Input_Fields::text_input(
             Keys::CUSTOM_LABEL_KEY . $this->loopEnd,
-            'Custom add to cart label',
+            __('Custom add to cart label', PWP_TEXT_DOMAIN),
             $meta->get_custom_add_to_cart_label() ?: '',
             'add to cart',
             ['form-row', 'form-row-full'],
-            'custom add to cart button label for this variation'
+            __('custom add to cart button label for this variation', PWP_TEXT_DOMAIN)
         );
 
         Input_Fields::dropdown_input(
             Keys::EDITOR_ID_KEY . $this->loopEnd,
-            "editor",
+            __("editor", PWP_TEXT_DOMAIN),
             array(
-                '' => 'no customization',
+                '' => __('no customization', PWP_TEXT_DOMAIN),
                 Product_PIE_Data::MY_EDITOR => "Peleman Image Editor",
-                Product_IMAXEL_Data::MY_EDITOR => "Imaxel"
+                // Product_IMAXEL_Data::MY_EDITOR => "Imaxel"
             ),
             $meta->get_editor_id(),
             ['form-row', 'form-row-full', 'pwp-editor-select'],
-            'which editor to use for this product. Ensure the template and variant IDs are valid for the editor.'
+            __('Which editor to use for this product. Ensure the template and variant IDs are valid for the editor.', PWP_TEXT_DOMAIN)
         );
 
         Input_Fields::checkbox_input(
             Keys::OVERRIDE_CART_THUMBNAIL . $this->loopEnd,
-            'use project preview thumbnail in cart',
+            __('use project preview thumbnail in cart', PWP_TEXT_DOMAIN),
             $meta->get_override_thumbnail(),
             ['form-row', 'form-row-full'],
-            'wether to override the product thumbnail in the cart with a preview of the editor project, if available.'
+            __('Whether to override the product thumbnail in the cart with a preview of the editor project, if available.', PWP_TEXT_DOMAIN)
         );
     }
     private function render_PIE_product_settings(Product_Meta_Data $meta): void
     {
         INPUT_FIELDS::create_field(
             Keys::PIE_TEMPLATE_ID_KEY . $this->loopEnd,
-            'PIE Template ID',
+            __('PIE Template ID', PWP_TEXT_DOMAIN),
             'text',
             $meta->pie_data()->get_template_id(),
             ['form-row', 'form-row-first'],
@@ -133,7 +142,7 @@ class Variable_Product_Custom_Fields extends Abstract_Action_hookable
 
         INPUT_FIELDS::create_field(
             Keys::DESIGN_ID_KEY . $this->loopEnd,
-            'Design ID',
+            __('Design ID', PWP_TEXT_DOMAIN),
             'text',
             $meta->pie_data()->get_design_id(),
             ['form-row', 'form-row-last'],
@@ -141,18 +150,18 @@ class Variable_Product_Custom_Fields extends Abstract_Action_hookable
 
         $instructions = $meta->pie_data()->get_editor_instructions();
         woocommerce_wp_textarea_input(array(
-            'label' => 'editor instructions',
+            'label' => __('editor instructions', PWP_TEXT_DOMAIN),
             'name' => Keys::EDITOR_INSTRUCTIONS_KEY . $this->loopEnd,
             'id' => Keys::EDITOR_INSTRUCTIONS_KEY . $this->loopEnd,
             'value' => implode(" ", $instructions),
             'desc_tip' => true,
-            'description' => 'editor instruction values. for reference, see the PIE editor documentation. enter values separated by a space.',
+            'description' => __('editor instruction values. for reference, see the PIE editor documentation. enter values separated by a space.', PWP_TEXT_DOMAIN),
             'wrapper_class' => implode(' ', ['form-row', 'form-row-full']),
         ));
 
         INPUT_FIELDS::create_field(
             Keys::COLOR_CODE_KEY . $this->loopEnd,
-            'Color Code',
+            __('Color Code', PWP_TEXT_DOMAIN),
             'text',
             $meta->pie_data()->get_color_code(),
             ['form-row', 'form-row-first'],
@@ -160,7 +169,7 @@ class Variable_Product_Custom_Fields extends Abstract_Action_hookable
 
         INPUT_FIELDS::create_field(
             Keys::BACKGROUND_ID_KEY . $this->loopEnd,
-            'PIE background ID',
+            __('PIE background ID', PWP_TEXT_DOMAIN),
             'text',
             $meta->pie_data()->get_background_id(),
             ['form-row', 'form-row-last'],
@@ -168,30 +177,30 @@ class Variable_Product_Custom_Fields extends Abstract_Action_hookable
 
         INPUT_FIELDS::checkbox_input(
             Keys::USE_IMAGE_UPLOAD_KEY . $this->loopEnd,
-            'Use Image Uploads',
+            __('Use Image Uploads', PWP_TEXT_DOMAIN),
             $meta->pie_data()->uses_image_upload(),
             ['form-row', 'form-row-full'],
         );
 
         INPUT_FIELDS::checkbox_input(
             Keys::AUTOFILL_KEY . $this->loopEnd,
-            'autofill templage pages in editor',
+            __('autofill templage pages in editor', PWP_TEXT_DOMAIN),
             $meta->pie_data()->get_autofill(),
             ['form-row', 'form-row-full'],
         );
 
         INPUT_FIELDS::text_input(
             Keys::FORMAT_ID_KEY . $this->loopEnd,
-            'format id',
+            __('format id', PWP_TEXT_DOMAIN),
             $meta->pie_data()->get_format_id(),
             '',
             ['form-row', 'form-row-first'],
-            'format id for the template to be filled out'
+            __('format id for the template to be filled out', PWP_TEXT_DOMAIN)
         );
 
         INPUT_FIELDS::number_input(
             Keys::NUM_PAGES_KEY . $this->loopEnd,
-            'Pages to Fill',
+            __('Pages to Fill', PWP_TEXT_DOMAIN),
             $meta->pie_data()->get_num_pages(),
             ['form-row', 'form-row-last'],
             '',
@@ -200,7 +209,7 @@ class Variable_Product_Custom_Fields extends Abstract_Action_hookable
 
         INPUT_FIELDS::number_input(
             Keys::MIN_IMAGES_KEY . $this->loopEnd,
-            'Min Images for upload',
+            __('Min Images for upload', PWP_TEXT_DOMAIN),
             $meta->pie_data()->get_min_images(),
             ['form-row', 'form-row-first'],
             '',
@@ -209,7 +218,7 @@ class Variable_Product_Custom_Fields extends Abstract_Action_hookable
 
         INPUT_FIELDS::number_input(
             Keys::MAX_IMAGES_KEY . $this->loopEnd,
-            'Max Images for upload',
+            __('Max Images for upload', PWP_TEXT_DOMAIN),
             $meta->pie_data()->get_max_images(),
             ['form-row', 'form-row-last'],
             '',
@@ -221,20 +230,20 @@ class Variable_Product_Custom_Fields extends Abstract_Action_hookable
     {
         INPUT_FIELDS::text_input(
             Keys::IMAXEL_TEMPLATE_ID_KEY . $this->loopEnd,
-            'IMAXEL template ID',
+            __('IMAXEL template ID', PWP_TEXT_DOMAIN),
             $meta->imaxel_data()->get_template_id(),
             '',
             ['form-row', 'form-row-first'],
-            'IMAXEL specific template ID'
+            __('IMAXEL specific template ID', PWP_TEXT_DOMAIN)
         );
 
         INPUT_FIELDS::text_input(
             Keys::IMAXEL_VARIANT_ID_KEY . $this->loopEnd,
-            'IMAXEL Variant ID',
+            __('IMAXEL Variant ID', PWP_TEXT_DOMAIN),
             $meta->imaxel_data()->get_variant_id(),
             '',
             ['form-row', 'form-row-last'],
-            'IMAXEL specific variant ID'
+            __('IMAXEL specific variant ID', PWP_TEXT_DOMAIN)
         );
     }
 
@@ -242,52 +251,52 @@ class Variable_Product_Custom_Fields extends Abstract_Action_hookable
     {
         Input_Fields::checkbox_input(
             Keys::USE_PDF_CONTENT_KEY . $this->loopEnd,
-            'Require PDF upload',
+            __('Require PDF upload', PWP_TEXT_DOMAIN),
             $meta->uses_pdf_content(),
             ['form-row', 'form-row-first'],
-            'wether this product requires customers to upload a pdf file for contents.'
+            __('Whether this product requires customers to upload a pdf file for contents.', PWP_TEXT_DOMAIN)
         );
 
         //pdf price per additional page field. precision up to 3 decimal places
         Input_Fields::number_input(
             Keys::PDF_PRICE_PER_PAGE_KEY . $this->loopEnd,
-            'pdf price per page',
+            __('pdf price per page', PWP_TEXT_DOMAIN),
             $meta->get_price_per_page(),
             ['form-row', 'form-row-last'],
-            'additional price per page',
+            __('additional price per page', PWP_TEXT_DOMAIN),
             array('step' => 0.001)
         );
 
         Input_Fields::number_input(
             Keys::PDF_MIN_PAGES_KEY . $this->loopEnd,
-            'pdf Min Pages',
+            __('pdf Min Pages', PWP_TEXT_DOMAIN),
             $meta->get_pdf_min_pages(),
             ['form-row', 'form-row-first'],
-            'min pages allowed per PDF upload'
+            __('min pages allowed per PDF upload', PWP_TEXT_DOMAIN)
         );
 
         Input_Fields::number_input(
             Keys::PDF_MAX_PAGES_KEY . $this->loopEnd,
-            'pdf Max Pages',
+            __('pdf Max Pages', PWP_TEXT_DOMAIN),
             $meta->get_pdf_max_pages(),
             ['form-row', 'form-row-last'],
-            'max pages allowed per PDF upload'
+            __('max pages allowed per PDF upload', PWP_TEXT_DOMAIN)
         );
 
         Input_Fields::number_input(
             Keys::PDF_WIDTH_KEY . $this->loopEnd,
-            'pdf Format Width',
+            __('pdf Format Width', PWP_TEXT_DOMAIN),
             $meta->get_pdf_width(),
             ['form-row', 'form-row-first'],
-            'permitted width of PDF uploads'
+            __('permitted width of PDF uploads', PWP_TEXT_DOMAIN)
         );
 
         Input_Fields::number_input(
             Keys::PDF_HEIGHT_KEY . $this->loopEnd,
-            'pdf Format Height',
+            __('pdf Format Height', PWP_TEXT_DOMAIN),
             $meta->get_pdf_height(),
             ['form-row', 'form-row-last'],
-            'permitted height of PDF uploads'
+            __('permitted height of PDF uploads', PWP_TEXT_DOMAIN)
         );
     }
 
