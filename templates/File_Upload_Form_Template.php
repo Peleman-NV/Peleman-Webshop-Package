@@ -33,10 +33,10 @@ if (!defined('ABSPATH')) {
                     <td class='param-value' id='content-max-pages'><?= $pdf_max_pages ?: ''; ?></td>
                 </tr>
                 <tr>
-                    <td><?= esc_html__('Price Per Page', PWP_TEXT_DOMAIN); ?></td>
+                    <td><?= esc_html__('Price per page', PWP_TEXT_DOMAIN); ?></td>
                     <td class='param-value price-per-page' id='content-price-per-page'><?= wc_price($price_per_page) ?: '' ?></td>
                 </tr>
-            <tbody>
+            </tbody>
         </table>
         <div id='pwp-upload-info'>
             <label class='pwp-upload-label' for='pwp-file-upload'>
@@ -48,6 +48,19 @@ if (!defined('ABSPATH')) {
                 <canvas id='pwp-pdf-canvas' width="250" style="display:none"></canvas>
             </div>
             <button id="pwp-file-clear" type="button" style="display:none;"><?= esc_html__('Remove PDF', PWP_TEXT_DOMAIN); ?></button>
+        </div>
+        <div>
+            <table class="pwp-pdf-pages-price" <tbody>
+                <tr>
+                    <td><?= esc_html__('PDF pages: ', PWP_TEXT_DOMAIN); ?></td>
+                    <td id="pwp-pdf-pages"></td>
+                </tr>
+                <tr>
+                    <td><?= esc_html__('Added cost: ', PWP_TEXT_DOMAIN); ?></td>
+                    <td id="pwp-pdf-price"><?= wc_price(0); ?></td>
+                </tr>
+                </tbody>
+            </table>
         </div>
     </div>
 </div>

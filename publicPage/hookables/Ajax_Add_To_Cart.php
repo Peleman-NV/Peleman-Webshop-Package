@@ -30,9 +30,6 @@ class Ajax_Add_To_Cart extends Abstract_Ajax_Hookable
 
     public function callback(): void
     {
-        ob_start();
-        // $this->log_upload();
-
         if (!$this->verify_nonce($_REQUEST['nonce']))
             wp_send_json_error(
                 array('message' => __('session timed out', PWP_TEXT_DOMAIN)),
