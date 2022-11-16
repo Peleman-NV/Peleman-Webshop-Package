@@ -63,7 +63,7 @@ if (!defined('ABSPATH')) {
                         </td>
                     </tr>
                     <tr>
-                        <td><?= esc_html__('Estimated Total cost: ', PWP_TEXT_DOMAIN); ?></td>
+                        <td><?= esc_html__('Estimated total cost: ', PWP_TEXT_DOMAIN); ?></td>
                         <td>
                             <strong id="pwp-pdf-total" class="param-value"><?= wc_price(0); ?></strong>
                         </td>

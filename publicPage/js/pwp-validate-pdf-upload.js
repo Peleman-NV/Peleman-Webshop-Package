@@ -67,13 +67,14 @@
         }
 
         function showPageCount() {
+            var pageCount = _pdf_doc.numPages;
             var variantPrice = $('.woocommerce-Price-amount').text();
             variantPrice = parseFloat(variantPrice.substr(1));
-            var pageCount = _pdf_doc.numPages;
+
             var pageCost = $('#content-price-per-page').text();
             var symbol = pageCost.substr(0, 1);
-            pageCost = pageCost.substr(1);
-            var price = parseFloat(pageCost) * pageCount;
+            var price = parseFloat(pageCost.substr(1)) * pageCount;
+
             var totalPrice = price + variantPrice;
 
             _pages.text(pageCount);
