@@ -50,15 +50,24 @@ if (!defined('ABSPATH')) {
             <button id="pwp-file-clear" type="button" style="display:none;"><?= esc_html__('Remove PDF', PWP_TEXT_DOMAIN); ?></button>
         </div>
         <div>
-            <table class="pwp-pdf-pages-price" <tbody>
-                <tr>
-                    <td><?= esc_html__('PDF pages: ', PWP_TEXT_DOMAIN); ?></td>
-                    <td id="pwp-pdf-pages"></td>
-                </tr>
-                <tr>
-                    <td><?= esc_html__('Added cost: ', PWP_TEXT_DOMAIN); ?></td>
-                    <td id="pwp-pdf-price" class="param-value"><?= wc_price(0); ?></td>
-                </tr>
+            <table id="pwp-pdf-pages-pricing" style="display: none">
+                <tbody>
+                    <tr>
+                        <td><?= esc_html__('PDF pages: ', PWP_TEXT_DOMAIN); ?></td>
+                        <td id="pwp-pdf-pages"></td>
+                    </tr>
+                    <tr>
+                        <td><?= esc_html__('Added cost (excl. VAT): ', PWP_TEXT_DOMAIN); ?></td>
+                        <td>
+                            <strong id="pwp-pdf-price" class="param-value"><?= wc_price(0); ?></strong>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><?= esc_html__('Estimated Total cost: ', PWP_TEXT_DOMAIN); ?></td>
+                        <td>
+                            <strong id="pwp-pdf-total" class="param-value"><?= wc_price(0); ?></strong>
+                        </td>
+                    </tr>
                 </tbody>
             </table>
         </div>

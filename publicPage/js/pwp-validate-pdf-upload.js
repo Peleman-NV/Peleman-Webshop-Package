@@ -8,8 +8,10 @@
         const _preview = $('#pwp-pdf-canvas');
         const _name = $('#pwp-upload-filename');
 
+        const _pdfPricing = $("#pwp-pdf-pages-pricing")
         const _pages = $('#pwp-pdf-pages');
         const _pagePricing = $('#pwp-pdf-price');
+        const _totalPrice = $('#pwp-pdf-total');
         const _canvas = _preview[0];
 
         var _pdf_doc;
@@ -65,14 +67,19 @@
         }
 
         function showPageCount() {
+            var variantPrice = $('.woocommerce-Price-amount').text();
+            variantPrice = parseFloat(variantPrice.substr(1));
             var pageCount = _pdf_doc.numPages;
             var pageCost = $('#content-price-per-page').text();
             var symbol = pageCost.substr(0, 1);
             pageCost = pageCost.substr(1);
             var price = parseFloat(pageCost) * pageCount;
+            var totalPrice = price + variantPrice;
 
             _pages.text(pageCount);
             _pagePricing.text(symbol + " " + price.toFixed(2));
+            _totalPrice.text(symbol + " " + (totalPrice.toFixed(2)));
+            _pdfPricing.css("display", '');
         }
 
         _clear.click(function () {
@@ -80,6 +87,7 @@
             _name.text('');
             _preview.css("display", "none");
             _clear.css("display", "none");
+            _pdfPricing.css("display", "none");
         })
     });
 })(jQuery);
