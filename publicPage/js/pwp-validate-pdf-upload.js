@@ -70,7 +70,6 @@
             var symbol = pageCost.substr(0, 1);
             pageCost = pageCost.substr(1);
             var price = parseFloat(pageCost) * pageCount;
-            console.log(pageCount + " for the price of " + price);
 
             _pages.text(pageCount);
             _pagePricing.text(symbol + " " + price.toFixed(2));

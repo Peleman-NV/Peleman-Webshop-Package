@@ -57,7 +57,7 @@ if (!defined('ABSPATH')) {
                 </tr>
                 <tr>
                     <td><?= esc_html__('Added cost: ', PWP_TEXT_DOMAIN); ?></td>
-                    <td id="pwp-pdf-price"><?= wc_price(0); ?></td>
+                    <td id="pwp-pdf-price" class="param-value"><?= wc_price(0); ?></td>
                 </tr>
                 </tbody>
             </table>
