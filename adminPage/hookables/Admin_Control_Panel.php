@@ -46,7 +46,7 @@ class Admin_Control_Panel extends Abstract_Action_Hookable
                                 <label for="pwp_customize_label">Simple product - customizable</label>
                             </th>
                             <td>
-                                <input id="pwp_customize_label" name="pwp_customize_label" value="<?= get_option('pwp_customize_label'); ?>" placeholder="customize me" type="text" class="regular-text" />
+                                <input id="pwp_customize_label" name="pwp_customize_label" value="<?php echo get_option('pwp_customize_label'); ?>" placeholder="customize me" type="text" class="regular-text" />
                                 <p class="description">label for products that require customization/user input</p>
                             </td>
                         </tr>
@@ -55,7 +55,7 @@ class Admin_Control_Panel extends Abstract_Action_Hookable
                                 <label for="pwp_archive_var_label">Variable product - Customizable</label>
                             </th>
                             <td>
-                                <input id="pwp_archive_var_label" name="pwp_archive_var_label" value="<?= get_option('pwp_archive_var_label'); ?>" placeholder="customize me" type="text" class="regular-text" />
+                                <input id="pwp_archive_var_label" name="pwp_archive_var_label" value="<?php echo get_option('pwp_archive_var_label'); ?>" placeholder="customize me" type="text" class="regular-text" />
                                 <p class="description">label for customizable variable products</p>
                             </td>
                         </tr>

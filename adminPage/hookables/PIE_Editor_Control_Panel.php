@@ -55,7 +55,7 @@ class PIE_Editor_Control_Panel extends Abstract_Action_Hookable
                             <label for="pie_domain">PIE Domain (URL)</label>
                         </th>
                         <td>
-                            <input id="pie_domain" name="pie_domain" type="text" value="<?= get_option('pie_domain') ?>" placeholder="https://deveditor.peleman.com" class="regular-text code" />
+                            <input id="pie_domain" name="pie_domain" type="text" value="<?php echo get_option('pie_domain') ?>" placeholder="https://deveditor.peleman.com" class="regular-text code" />
                             <p class="description" id="tagline-description">base Site Address of the PIE editor</p>
                         </td>
                     </tr>
@@ -64,7 +64,7 @@ class PIE_Editor_Control_Panel extends Abstract_Action_Hookable
                             <label for="pie_customer_id">PIE Customer ID</label>
                         </th>
                         <td>
-                            <input id=" pie_customer_id" name="pie_customer_id" type="text" value="<?= get_option('pie_customer_id'); ?>" class="regular-text" />
+                            <input id=" pie_customer_id" name="pie_customer_id" type="text" value="<?php echo get_option('pie_customer_id'); ?>" class="regular-text" />
                         </td>
                     </tr>
 
@@ -73,7 +73,7 @@ class PIE_Editor_Control_Panel extends Abstract_Action_Hookable
                             <label for="pie_api_key">PIE api key</label>
                         </th>
                         <td>
-                            <input id="pie_api_key" name="pie_api_key" type="text" value="<?= get_option('pie_api_key'); ?>" class="regular-text" />
+                            <input id="pie_api_key" name="pie_api_key" type="text" value="<?php echo get_option('pie_api_key'); ?>" class="regular-text" />
                         </td>
                     </tr>
 
@@ -82,7 +82,7 @@ class PIE_Editor_Control_Panel extends Abstract_Action_Hookable
                             <label for="pwp_imaxel_private_key">IMAXEL Private Key</label>
                         </th>
                         <td>
-                            <input id=" pwp_imaxel_private_key" name="pwp_imaxel_private_key" type="text" value="<?= get_option('pwp_imaxel_private_key'); ?>" class="regular-text" />
+                            <input id=" pwp_imaxel_private_key" name="pwp_imaxel_private_key" type="text" placeholder="support deprecated" value="<?php echo get_option('pwp_imaxel_private_key'); ?>" class="regular-text" disabled />
                         </td>
                     </tr>
 
@@ -91,7 +91,7 @@ class PIE_Editor_Control_Panel extends Abstract_Action_Hookable
                             <label for="pwp_imaxel_public_key">IMAXEL Public Key</label>
                         </th>
                         <td>
-                            <input id="pwp_imaxel_public_key" name="pwp_imaxel_public_key" type="text" value="<?= get_option('pwp_imaxel_public_key'); ?>" class="regular-text" />
+                            <input id="pwp_imaxel_public_key" name="pwp_imaxel_public_key" type="text" placeholder="support deprecated" value="<?php echo get_option('pwp_imaxel_public_key'); ?>" class="regular-text" disabled />
                         </td>
                     </tr>
 
@@ -100,7 +100,7 @@ class PIE_Editor_Control_Panel extends Abstract_Action_Hookable
                             <label for="pwp_imaxel_shop_code">IMAXEL Shop Code</label>
                         </th>
                         <td>
-                            <input id="pwp_imaxel_shop_code" name="pwp_imaxel_shop_code" type="text" value="<?= get_option('pwp_imaxel_shop_code'); ?>" class="regular-text" />
+                            <input id="pwp_imaxel_shop_code" name="pwp_imaxel_shop_code" type="text" placeholder="support deprecated" value="<?php echo get_option('pwp_imaxel_shop_code'); ?>" class="regular-text" disabled />
                         </td>
                     </tr>
 

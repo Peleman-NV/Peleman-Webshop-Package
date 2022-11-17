@@ -17,43 +17,39 @@ use PWP\includes\validation\Validate_File_Type_Is_PDF;
 
 class Validate_PDF_Upload extends Abstract_Filter_Hookable
 {
+    private string $key;
     public function __construct()
     {
         parent::__construct('woocommerce_add_to_cart_validation', 'validate_pdf_upload', 10, 5);
+        $this->key = "upload";
     }
 
     public function validate_pdf_upload(bool $passed, int $product_id, int $quantity, int $variation_id = 0, array $variations = [])
     {
-        // error_log("product: {$product_id}");
-        // error_log("variation: {$variation_id}");
-        // error_log("files: " . print_r($_FILES, true));
-
         $product = new Product_Meta_Data(wc_get_product($variation_id ?: $product_id));
-        if (!$product->uses_pdf_content()) {
-            // error_log("product does not require pdf upload. skipping...");
-            return $passed;
-        }
-        if (!isset($_FILES['upload'])) {
+
+        if (!$product->uses_pdf_content()) return $passed;
+
+        if (!isset($_FILES[$this->key])) {
             wc_add_notice(
-                __('product requires pdf upload.', PWP_TEXT_DOMAIN),
+                __('product requires PDF upload.', PWP_TEXT_DOMAIN),
                 'error'
             );
             return false;
         }
-        if (
-            !isset($_FILES['upload']['error']) ||
-            is_array($_FILES['upload']['error'])
-        ) {
+
+        if (!isset($_FILES[$this->key]['error']) || is_array($_FILES[$this->key]['error'])) {
             wc_add_notice(
                 __('invalid file upload parameters. Try again with a different file.', PWP_TEXT_DOMAIN),
                 'error'
             );
             return false;
         }
+
         try {
 
             $pdfFactory = new PDF_Factory();
-            $pdf = $pdfFactory->generate_from_upload($_FILES['upload']);
+            $pdf = $pdfFactory->generate_from_upload($_FILES[$this->key]);
 
             $notification = new Notification();
             $this->validation_chain($product,)->handle($pdf, $notification);

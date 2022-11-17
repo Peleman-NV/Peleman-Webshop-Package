@@ -100,14 +100,14 @@ class Input_Fields
     {
 ?>
         <p class="form-field form-row form-row-full">
-            <label for="<?= $id; ?>"><?= $label; ?></label>
-            <select style id="<?= $id; ?>" name="<?= $id; ?>" class="<?= implode(' ', $classes); ?> ">
+            <label for="<?php echo $id; ?>"><?php echo $label; ?></label>
+            <select style id="<?php echo $id; ?>" name="<?php echo $id; ?>" class="<?php echo implode(' ', $classes); ?> ">
                 <?php foreach ($options as $key => $option) : ?>
-                    <option value="<?= $key; ?>" <?= $key === $selectedOption ? "selected" : ''; ?>><?= $option; ?></option>
+                    <option value="<?php echo $key; ?>" <?php echo $key === $selectedOption ? "selected" : ''; ?>><?php echo $option; ?></option>
                 <?php endforeach; ?>
             </select>
             <?php if (!empty($description)) : ?>
-                <span><?= $description; ?></span>
+                <span><?php echo $description; ?></span>
             <?php endif; ?>
         </p>
 <?php

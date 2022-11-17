@@ -81,8 +81,8 @@ class Add_PIE_Printfile_Download_Button extends Abstract_Action_Hookable
 ?>
                 <span>
 
-                    <a type="button" class="button" href=<?= $dl_url; ?>>
-                        <?= esc_html__(" Download print file.", PWP_TEXT_DOMAIN); ?>
+                    <a type="button" class="button" href=<?php echo $dl_url; ?>>
+                        <?php echo esc_html__(" Download print file.", PWP_TEXT_DOMAIN); ?>
                     </a>
                 </span>
             <?php
@@ -91,7 +91,7 @@ class Add_PIE_Printfile_Download_Button extends Abstract_Action_Hookable
             ?>
                 <span>
                     <a role="link" type="button" class="button disabled" aria-disabled="true">
-                        <?= esc_html__("Error connecting to editor server; try again later.", PWP_TEXT_DOMAIN); ?>
+                        <?php echo esc_html__("Error connecting to editor server; try again later.", PWP_TEXT_DOMAIN); ?>
                     </a>
                 </span>
             <?php
@@ -101,7 +101,7 @@ class Add_PIE_Printfile_Download_Button extends Abstract_Action_Hookable
             ?>
                 <span>
                     <a role="link" type="button" class="button disabled" aria-disabled="true">
-                        <?= esc_html__("Print file processing."); ?>
+                        <?php echo esc_html__("Print file processing."); ?>
                     </a>
                 </span>
         <?php
@@ -115,7 +115,7 @@ class Add_PIE_Printfile_Download_Button extends Abstract_Action_Hookable
         }
         ?>
         <span>
-            <i><?= sprintf(esc_html__("Estimated completion time: UTC "), PWP_TEXT_DOMAIN); ?><strong><?= esc_html($eta); ?></strong></i>
+            <i><?php echo sprintf(esc_html__("Estimated completion time: UTC "), PWP_TEXT_DOMAIN); ?><strong><?php echo esc_html($eta); ?></strong></i>
         </span>
 <?php
     }
