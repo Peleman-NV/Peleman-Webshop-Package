@@ -86,40 +86,34 @@ class New_PIE_Project_Request extends Abstract_PIE_Request
         return $this;
     }
 
-    public function set_user_id(int $userId): self
+    public function set_user_id(int $userId): void
     {
         $this->userId = $userId;
-        return $this;
     }
 
-    public function set_return_url(string $returnURL): self
+    public function set_return_url(string $returnURL): void
     {
         $this->returnUrl = $returnURL;
-        return $this;
     }
 
-    public function set_editor_instructions(string ...$args): self
+    public function set_editor_instructions(string ...$args): void
     {
         $this->editorInstructions = $args;
-        return $this;
     }
 
-    public function set_language(string $lang): self
+    public function set_language(string $lang): void
     {
         $this->language = $lang;
-        return $this;
     }
 
-    public function set_project_name(string $name): self
+    public function set_project_name(string $name): void
     {
         $this->projectName = $name;
-        return $this;
     }
 
-    public function set_format_id(string $id): self
+    public function set_format_id(string $id): void
     {
         $this->formatId = $id;
-        return $this;
     }
 
     #endregion

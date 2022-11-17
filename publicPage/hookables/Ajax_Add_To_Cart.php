@@ -193,19 +193,20 @@ class Ajax_Add_To_Cart extends Abstract_Ajax_Hookable
     private function new_PIE_Project(Product_PIE_Data $data, string $continueUrl): PIE_Project
     {
         $instructions = new PIE_Editor_Instructions($data->get_parent());
-        return
-            New_PIE_Project_Request::new(
-                get_option('pie_domain', 'https://deveditor.peleman.com'),
-                get_option('pie_customer_id', ''),
-                get_option('pie_api_key', ''),
-            )->initialize_from_pie_data($data)
-            ->set_return_url($continueUrl)
-            ->set_user_id(get_current_user_id())
-            ->set_language($this->get_site_language())
-            ->set_project_name($data->get_parent()->get_name())
-            ->set_timeout(10)
-            ->make_request();
+        $request = new New_PIE_Project_Request(
+            get_option('pie_domain', 'https://deveditor.peleman.com'),
+            get_option('pie_customer_id', ''),
+            get_option('pie_api_key', ''),
+        );
+        $request->initialize_from_pie_data($data);
+        $request->set_return_url($continueUrl);
+        $request->set_user_id(get_current_user_id());
+        $request->set_language($this->get_site_language());
+        $request->set_project_name($data->get_parent()->get_name());
+        $request->set_timeout(10);
+        return $request->make_request();
     }
+
 
     private function new_IMAXEL_Project(Product_IMAXEL_Data $data, string $continueUrl): IMAXEL_Project
     {

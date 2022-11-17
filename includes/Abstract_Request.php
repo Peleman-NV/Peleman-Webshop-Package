@@ -12,20 +12,17 @@ abstract class Abstract_Request
     protected int $timeout = 30;
     protected int $redirects = 5;
 
-    final public function set_secure(bool $secure = true): self
+    final public function set_secure(bool $secure = true): void
     {
         $this->secure = $secure;
-        return $this;
     }
-    final public function set_timeout(int $seconds): self
+    final public function set_timeout(int $seconds): void
     {
         $this->timeout = $seconds;
-        return $this;
     }
-    final public function set_redirects(int $redirects): self
+    final public function set_redirects(int $redirects): void
     {
         $this->redirects = $redirects;
-        return $this;
     }
     public abstract function make_request(): object;
 }
