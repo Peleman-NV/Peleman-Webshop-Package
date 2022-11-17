@@ -63,6 +63,8 @@ class New_PIE_Project_Request extends Abstract_PIE_Request
         $this->returnUrl = '';
 
         $this->formatId = '';
+
+        $this->set_GET();
     }
 
     #region BUILDER METHODS
@@ -147,35 +149,30 @@ class New_PIE_Project_Request extends Abstract_PIE_Request
 
     public function make_request(): PIE_Project
     {
-        $url = $this->get_endpoint_url() . '?' . http_build_query($this->generate_request_query_array());
-
-        $curl = curl_init();
-        curl_setopt_array($curl, array(
-            CURLOPT_URL             => $url,
-            CURLOPT_TIMEOUT         => $this->timeout,
-            CURLOPT_CONNECTTIMEOUT  => $this->timeout,
-            CURLOPT_SSL_VERIFYPEER  => $this->secure ? 1 : 0,
-            CURLOPT_SSL_VERIFYHOST  => $this->secure ? 2 : 0,
-            CURLOPT_RETURNTRANSFER  => 1,
-            CURLOPT_HTTPHEADER      => $this->generate_request_header(),
+        $response = wp_remote_get($this->get_endpoint_url(), array(
+            'method' => $this->method,
+            'timeout' => $this->timeout,
+            'header' => $this->generate_request_header(),
+            'body' => $this->generate_request_body(),
         ));
 
-        $response = curl_exec($curl);
-        curl_close($curl);
-
-        // error_log('editor response: ' . print_r($response, true));
-        if (empty($response) || is_bool($response)) {
-            throw new Invalid_Response_Exception('No valid response received. Likely an authentication issue. Please check the validity of your Peleman Editor credentials.');
+        //TODO: use improved request feedback to bolster error response system
+        error_log(print_r($response, true));
+        if (is_wp_error($response)) {
+            throw new Invalid_Response_Exception(__('Could not connect to Peleman Image Editor. Please try again later.', PWP_TEXT_DOMAIN));
         }
 
-        //use this code when the api returns a json array, which right now it does not do
-        // $response = json_decode($response, true, 512, 0);
-        // return new PIE_Project($response['project_id']);
+        $responseBody = sanitize_key($response['body']);
+        $responseArr = $response['response'];
+        // error_log('editor response: ' . print_r($response, true));
+        if (empty($responseBody) || is_bool($responseBody)) {
+            throw new Invalid_Response_Exception(__('No valid response received. Likely an authentication issue. Please check the validity of your Peleman Editor credentials.', PWP_TEXT_DOMAIN));
+        }
 
-        return new PIE_Project($this->editorData, $response);
+        return new PIE_Project($this->editorData, $responseBody);
     }
 
-    protected function generate_request_query_array(): array
+    protected function generate_request_body(): array
     {
         // error_log(print_r($this->editorData->get_editor_instructions(),true));
         $request = array(
@@ -192,21 +189,6 @@ class New_PIE_Project_Request extends Abstract_PIE_Request
             'projectname'           => $this->projectName,
             'returnurl'             => $this->returnUrl,
         );
-
-        // error_log(print_r($request, true));
-        // $request = array_filter($request);
         return $request;
-    }
-
-    protected function generate_request_header(): array
-    {
-        $referer = get_site_url();
-        $header = array(
-            // "PIEAPIKEY : {$this->apiKey}",
-            // "PROJECTNAME : {$this->projectName}",
-        );
-
-        // error_log("header: " . print_r($header, true));
-        return $header;
     }
 }

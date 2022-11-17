@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace PWP\publicPage\hookables;
 
+use PWP\includes\editor\Complete_PIE_Project_Request;
+use PWP\includes\exceptions\Invalid_Response_Exception;
 use PWP\includes\hookables\abstracts\Abstract_Action_Hookable;
 
 class Set_PIE_Project_As_Completed extends Abstract_Action_Hookable
@@ -29,48 +31,31 @@ class Set_PIE_Project_As_Completed extends Abstract_Action_Hookable
 
         foreach ($items as $item) {
 
-            $editorId = $item->get_meta('_editor_id');
             $projectId = $item->get_meta('_project_id');
 
-            if (!($editorId && $projectId)) {
+            if (!($projectId)) {
                 continue;
             }
 
-            $this->editor_set_order_as_complete($orderId, $customerId, $apiKey, $editorId, $projectId);
+            $this->editor_set_order_as_complete($orderId, $customerId, $apiKey, $projectId);
         }
     }
 
-    private function editor_set_order_as_complete(int $orderId, string $customerId, string $apiKey, string $editorId, string $projectId): bool
+    private function editor_set_order_as_complete(int $orderId, string $customerId, string $apiKey, string $projectId): bool
     {
-        $request = $this->generate_request_array($orderId, $customerId, $apiKey, $projectId);
+        try {
+            $request = new Complete_PIE_Project_Request(get_option('pie_domain'), $apiKey, $customerId);
+            $request
+                ->set_order_id((string)$orderId)
+                ->set_output_type('print');
 
-        $ch = curl_init();
-        curl_setopt_array($ch, array(
-            CURLOPT_URL             => get_option('pie_domain') . '/editor/api/addtoqueueAPI.php',
-            CURLOPT_RETURNTRANSFER  => 1,
-            CURLOPT_HEADER          => 0,
-            CURLOPT_CUSTOMREQUEST   => 'GET',
-            CURLOPT_POSTFIELDS      => http_build_query($request),
-        ));
+            $response = $request->make_request();
 
-        $response = curl_exec($ch);
-        curl_close($ch);
-        error_log("editor response: " . print_r($response, true));
+            error_log("editor response: " . print_r($response, true));
 
-        return !empty($response);
-    }
-
-    private function generate_request_array(int $orderId, string $customerId, string $apiKey, string $projectId): array
-    {
-        $request = array(
-            'customerid' => $customerId,
-            'customerapikey' => $apiKey,
-            'projectid' => $projectId,
-            'type' => 'default',
-            "orderid" => (string)$orderId,
-            'outputtype' => 'print',
-        );
-
-        return $request;
+            return !empty($response);
+        } catch (Invalid_Response_Exception $exception) {
+            error_log(__("an error occurred trying to complete order {$orderId}; project id {$projectId}", PWP_TEXT_DOMAIN));
+        }
     }
 }

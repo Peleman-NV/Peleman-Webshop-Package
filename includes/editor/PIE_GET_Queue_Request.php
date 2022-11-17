@@ -85,7 +85,7 @@ class PIE_GET_Queue_Request extends Abstract_PIE_Request
         $this->projectId = $projectId;
         return $this;
     }
-    protected function generate_request_query_array(): array
+    protected function generate_request_body(): array
     {
         $query = array(
             'customerapikey'    => $this->get_api_key(),
@@ -120,7 +120,7 @@ class PIE_GET_Queue_Request extends Abstract_PIE_Request
 
     public function request_url(): string
     {
-        $query = '?' . http_build_query($this->generate_request_query_array());
+        $query = '?' . http_build_query($this->generate_request_body());
         return $this->get_endpoint_url() . $query;
     }
 }

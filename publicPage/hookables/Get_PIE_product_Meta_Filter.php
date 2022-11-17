@@ -6,7 +6,7 @@ namespace PWP\publicPage\hookables;
 
 use PWP\includes\hookables\abstracts\Abstract_Filter_Hookable;
 
-class Get_PIE_product_Meta_filter extends Abstract_Filter_Hookable
+class Get_PIE_Product_Meta_Filter extends Abstract_Filter_Hookable
 {
     public function __construct()
     {
