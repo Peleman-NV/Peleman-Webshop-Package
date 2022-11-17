@@ -199,17 +199,11 @@ class Ajax_Add_To_Cart extends Abstract_Ajax_Hookable
                 get_option('pie_customer_id', ''),
                 get_option('pie_api_key', ''),
             )->initialize_from_pie_data($data)
-            ->set_timeout(10)
             ->set_return_url($continueUrl)
             ->set_user_id(get_current_user_id())
             ->set_language($this->get_site_language())
             ->set_project_name($data->get_parent()->get_name())
-            // ->set_editor_instructions(
-            //     PIE_USE_BACKGROUNDS,
-            //     PIE_USE_TEXT,
-            //     PIE_USE_ELEMENTS,
-            //     PIE_USE_IMAGE_UPLOAD,
-            // )
+            ->set_timeout(10)
             ->make_request();
     }
 

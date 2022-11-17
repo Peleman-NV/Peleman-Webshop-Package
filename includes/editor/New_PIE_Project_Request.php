@@ -57,7 +57,7 @@ class New_PIE_Project_Request extends Abstract_PIE_Request
         $this->editorData = null;
 
         $this->userId = 0;
-        $this->language = 'en';
+        $this->language = substr(get_locale(), 0, 2) ?: 'en';
         $this->editorInstructions = [];
         $this->projectName = '';
         $this->returnUrl = '';
@@ -72,18 +72,6 @@ class New_PIE_Project_Request extends Abstract_PIE_Request
     public static function new(string $clientDomain, string $customerId, string $apiKey): self
     {
         return new New_PIE_Project_Request($clientDomain, $customerId, $apiKey);
-    }
-
-    public function set_secure(bool $secure = true): self
-    {
-        parent::set_secure($secure);
-        return $this;
-    }
-
-    public function set_timeout(int $seconds): self
-    {
-        parent::set_timeout(($seconds));
-        return $this;
     }
 
     public function initialize_from_product(\WC_Product $product): self
@@ -149,22 +137,21 @@ class New_PIE_Project_Request extends Abstract_PIE_Request
 
     public function make_request(): PIE_Project
     {
-        $response = wp_remote_get($this->get_endpoint_url(), array(
-            'method' => $this->method,
-            'timeout' => $this->timeout,
-            'header' => $this->generate_request_header(),
-            'body' => $this->generate_request_body(),
+        $response = wp_remote_request($this->get_endpoint_url(), array(
+            'method'    => $this->get_method(),
+            'timeout'   => $this->timeout,
+            'header'    => $this->generate_request_header(),
+            'body'      => $this->generate_request_body(),
         ));
 
         //TODO: use improved request feedback to bolster error response system
-        error_log(print_r($response, true));
         if (is_wp_error($response)) {
             throw new Invalid_Response_Exception(__('Could not connect to Peleman Image Editor. Please try again later.', PWP_TEXT_DOMAIN));
         }
 
         $responseBody = sanitize_key($response['body']);
         $responseArr = $response['response'];
-        // error_log('editor response: ' . print_r($response, true));
+        error_log('editor response: ' . print_r($responseBody, true));
         if (empty($responseBody) || is_bool($responseBody)) {
             throw new Invalid_Response_Exception(__('No valid response received. Likely an authentication issue. Please check the validity of your Peleman Editor credentials.', PWP_TEXT_DOMAIN));
         }
@@ -174,7 +161,6 @@ class New_PIE_Project_Request extends Abstract_PIE_Request
 
     protected function generate_request_body(): array
     {
-        // error_log(print_r($this->editorData->get_editor_instructions(),true));
         $request = array(
             'customerid'            => $this->get_customer_id(),
             'customerapikey'        => $this->get_api_key(),
