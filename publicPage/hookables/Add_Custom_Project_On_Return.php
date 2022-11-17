@@ -22,11 +22,11 @@ class Add_Custom_Project_On_Return extends Abstract_Action_Hookable
     {
         if (isset($_REQUEST['CustProj'])) {
             session_start();
-            $sessionId = $_REQUEST['CustProj'];
+            $sessionId = sanitize_key($_REQUEST['CustProj']);
 
             if (isset($_SESSION[$sessionId])) {
 
-                $data = $_SESSION[$sessionId];
+                $data = sanitize_key($_SESSION[$sessionId]);
                 unset($_SESSION[$sessionId]);
 
                 // error_log("adding project to cart: " . print_r($data, true));

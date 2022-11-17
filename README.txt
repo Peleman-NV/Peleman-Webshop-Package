@@ -4,7 +4,7 @@ Tags: Peleman,
 Requires at least: 5.9.0
 Tested up to: 6.0.2
 Requires PHP: 7.4
-Stable tag: 1.0.0
+Stable tag: 1.1.10
 License: GPL-2.0+
 License URI: http://www.gnu.org/licenses/gpl-2.0.txt
 
@@ -15,4 +15,10 @@ This plugin allows a WordPress/WooCommerce webshop to show and sell Peleman prod
 
 
 == Changelog ==
+
+= 1.1.10: =
+* updating system based on feedback by the Wordpress Foundation upon review
+* Fix - Readme.txt formatting and contents
+* Update - replacing Curl with WP HTTP API.
+
 1.0.00: first public release of the plugin

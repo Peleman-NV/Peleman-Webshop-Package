@@ -42,11 +42,11 @@ class Ajax_Add_To_Cart extends Abstract_Ajax_Hookable
         try {
             //find and store all relevant variables
             //first, read and interpret data from request
-            $productId      = apply_filters('woocommerce_add_to_cart_product_id', absint($_REQUEST['product_id']));
-            $variationId    = apply_filters('woocommerce_add_to_cart_product_id', absint($_REQUEST['variation_id']));
+            $productId      = apply_filters('woocommerce_add_to_cart_product_id', sanitize_key($_REQUEST['product_id']));
+            $variationId    = apply_filters('woocommerce_add_to_cart_product_id', sanitize_key($_REQUEST['variation_id']));
             $product        = wc_get_product($variationId ?: $productId);
             $productMeta     = new Product_Meta_Data($product);
-            $quantity       = wc_stock_amount($_REQUEST['quantity'] ?: 1);
+            $quantity       = wc_stock_amount((float)$_REQUEST['quantity'] ?: 1);
 
             // error_log(print_r($_REQUEST, true));
             // error_log('product id: ' . $productId . ", variation id : " . $variationId);

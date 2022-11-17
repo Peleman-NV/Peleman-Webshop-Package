@@ -19,7 +19,7 @@ class Ajax_Load_Cart_Thumbnail extends Abstract_Ajax_Hookable
 
     public function callback(): void
     {
-        $projectId = $_REQUEST['id'];
+        $projectId = sanitize_key($_REQUEST['id']);
 
         $url = $this->generate_thumbnail_request_url($projectId);
 
@@ -33,7 +33,7 @@ class Ajax_Load_Cart_Thumbnail extends Abstract_Ajax_Hookable
             //as such, the try/catch block still works as intended.
 
             @$img = base64_encode(file_get_contents($url, true));
-            
+
             if (!$img || $img === false) wp_send_json_error();
         } catch (\Throwable $error) {
             wp_send_json_error();

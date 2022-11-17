@@ -32,11 +32,11 @@ class Ajax_Upload_PDF extends Abstract_Ajax_Hookable
     public function callback(): void
     {
         /** 1) */
-        $this->validate_request_nonce($_REQUEST['nonce']);
+        $this->validate_request_nonce(sanitize_key($_REQUEST['nonce']));
 
         /** 2) */
         $file = new PDF_Upload($_FILES['file']);
-        $productId = (int)sanitize_text_field($_REQUEST['variant_id'] ?: $_REQUEST['product_id']);
+        $productId = (int)sanitize_key($_REQUEST['variant_id'] ?: $_REQUEST['product_id']);
         $product = wc_get_product($productId);
         $productMeta = new Product_Meta_Data($product);
 
