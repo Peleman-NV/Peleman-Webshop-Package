@@ -12,11 +12,23 @@
         }
     }
 
+    class CheckBoxResetter {
+        constructor(element, value) {
+            this.value = value;
+            this.element = $(element);
+        }
+
+        resetValue() {
+            this.element.prop('checked', this.value);
+        }
+    }
+
     $(function () {
 
         var _resetColors = $('#reset_colors');
         var _resetDetails = $('#reset_details');
         var _resetLogo = $('#reset_logos');
+        var _resetSlider = $('#reset_slider');
         var _submit = $("#submit");
 
         const _colorResetters = [
@@ -30,6 +42,25 @@
             new valueResetter('#h4_text', 17),
             new valueResetter('#h5_text', 17),
             new valueResetter('#h6_text', 17),
+        ];
+
+        const _sliderResetters = [
+            new valueResetter("#upload_three", "https://demowebshop.peleman.com/copyshop/wp-content/uploads/2022/09/david-pisnoy-46juD4zY1XA-unsplash-scaled-e1663161505365.jpg"),
+            new CheckBoxResetter("#slider_1_checkbox", true),
+            new valueResetter("#slider_1_subtext", "17 years of excellence in"),
+            new valueResetter("#slider_1_maintext", "Print on demand"),
+            new valueResetter("#slider_1_button_1", "Our products"),
+            new valueResetter("#slider_1_button_url", "/copyshop/shop"),
+            new valueResetter("#slider_1_button_2", "Contact us"),
+            new valueResetter("#slider_1_button_2_url", "copyshop/contact"),
+            new valueResetter("#upload_four", ""),
+            new CheckBoxResetter("#slider_2_checkbox", true),
+            new valueResetter("#slider_2_subtext", ""),
+            new valueResetter("#slider_2_maintext", "Print on demand"),
+            new valueResetter("#slider_2_button_1", "Our products"),
+            new valueResetter("#slider_2_button_url", "/products"),
+            new valueResetter("#slider_2_button_2", ""),
+            new valueResetter("#slider_2_button_2_url", ""),
         ];
 
         const _detailResetters = [
@@ -159,7 +190,7 @@
                 _detailResetters.forEach(function (resetter) {
                     resetter.resetValue()
                 });
-                _submit.click();
+                // _submit.click();
             }
         });
 
@@ -173,7 +204,18 @@
                 _submit.click();
             }
         });
-    })
+
+        _resetSlider.on("click", function () {
+            console.log("resetting sliders...");
+
+            if (confirm("Are you sure you want to reset the sliders to the defaults?")) {
+                _sliderResetters.forEach(function (resetter) {
+                    resetter.resetValue()
+                });
+                // _submit.click();
+            }
+        });
+    });
 
 })(jQuery);
 
