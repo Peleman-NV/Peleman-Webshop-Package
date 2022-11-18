@@ -12,7 +12,7 @@ class Ajax_Load_Cart_Thumbnail extends Abstract_Ajax_Hookable
     {
         parent::__construct(
             'Ajax_Load_Cart_Thumbnail',
-            plugins_url('Peleman-Webshop-Package/publicPage/js/pwp-load-cart-thumbnail.js'),
+            plugins_url('../js/pwp-load-cart-thumbnail.js', __FILE__),
             10
         );
     }

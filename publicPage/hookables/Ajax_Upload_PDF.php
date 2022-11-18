@@ -24,7 +24,7 @@ class Ajax_Upload_PDF extends Abstract_Ajax_Hookable
     {
         parent::__construct(
             'Upload_PDF',
-            plugins_url('Peleman-Webshop-Package/publicPage/js/upload-content.js'),
+            plugins_url('../js/upload-content.js', __FILE__),
             6,
         );
     }

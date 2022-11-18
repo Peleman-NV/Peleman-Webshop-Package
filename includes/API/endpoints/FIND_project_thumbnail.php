@@ -28,15 +28,9 @@ class FIND_Project_Thumbnail extends Abstract_FIND_Endpoint
         $url = $this->generate_thumbnail_request_url($projectId);
 
         try {
-            //TODO:
-            //once the api returns a proper response when it cannot find a thumbnail,
-            //we can remove the error control operator
-            //right now we use it to simply suppress warnings in the error log
-            //avoiding clutter
-            //important to note that the error control operator doesn't ignore errors, it simply stops them from being logged.
-            //as such, the try/catch block still works as intended.
-
-            @$img = file_get_contents($url, true);
+            $img = wp_remote_get($url);
+            //TODO: error handling in case of invalid response.
+            $img = $img['body'];
 
             if (!$img || $img === false)  return rest_ensure_response('');
             $src = $img;

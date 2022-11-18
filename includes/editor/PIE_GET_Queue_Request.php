@@ -32,6 +32,8 @@ class PIE_GET_Queue_Request extends Abstract_PIE_Request
         $this->scheduleDate = '';
 
         $this->projectId = '';
+
+        $this->set_GET();
     }
 
     public static function new(string $domain, string $apiKey, string $customerId): self
@@ -109,7 +111,8 @@ class PIE_GET_Queue_Request extends Abstract_PIE_Request
 
     public function make_request(): object
     {
-        $response = @file_get_contents($this->request_url());
+        $response = wp_remote_get($this->request_url());
+        $response = $response['body'];
 
         if (empty($response) || is_bool($response)) {
             throw new Invalid_Response_Exception('No valid response received. Likely an authentication issue. Try again later.');

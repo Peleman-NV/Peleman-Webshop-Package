@@ -17,7 +17,7 @@ class Enqueue_Public_Styles extends Abstract_Action_Hookable
     {
         wp_enqueue_style(
             'pwp-products',
-            plugins_url('Peleman-Webshop-Package/publicPage/css/product-page-style.css'),
+            plugins_url('../css/product-page-style.css', __FILE__),
             array(),
             (string)rand(0, 2000),
             'all'

@@ -18,6 +18,12 @@ class Admin_Enqueue_Styles extends Abstract_Action_Hookable
     public function enqueue_styles(): void
     {
         $randomVersionNumber = rand(0, 1000);
-        wp_enqueue_style('pwp_admin_stylesheet', plugins_url('Peleman-Webshop-Package/adminPage/css/style.css'), array(), $randomVersionNumber, 'all');
+        wp_enqueue_style(
+            'pwp_admin_stylesheet',
+            plugins_url('../css/style.css', __FILE__),
+            array(),
+            $randomVersionNumber,
+            'all'
+        );
     }
 }
