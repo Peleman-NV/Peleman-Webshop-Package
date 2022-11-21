@@ -66,7 +66,7 @@ final class Plugin
 
     private function __construct()
     {
-        $this->version = defined('VERSION') ? VERSION : '1.0.00';
+        $this->version = defined('PWP_VERSION') ? PWP_VERSION : '1.0.00';
         $this->plugin_name = 'Peleman Webshop Package';
         $this->loader = new Plugin_Loader();
         $this->noticePoster = new Admin_Notice_Poster();
@@ -77,7 +77,7 @@ final class Plugin
         }
 
         if (is_admin()) {
-            $versionController = new VersionController(VERSION, (string)get_option('pwp-version'));
+            $versionController = new VersionController(PWP_VERSION, (string)get_option('pwp-version'));
             $versionController->try_update();
             $this->admin_hooks();
         }

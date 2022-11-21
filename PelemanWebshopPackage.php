@@ -33,7 +33,7 @@ use PWP\includes\Plugin;
 defined('WPINC') || die;
 
 //define PWP constant values
-define('VERSION', '1.1.10');
+define('PWP_VERSION', '1.1.10');
 !defined('PWP_OPTION_GROUP')        ? define('PWP_OPTION_GROUP', 'OPTIONS') : null;
 !defined('PWP_TEXT_DOMAIN')         ? define('PWP_TEXT_DOMAIN', 'PelemanWebshopPackage') : null;
 

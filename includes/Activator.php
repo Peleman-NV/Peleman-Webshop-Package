@@ -91,7 +91,7 @@ class Activator
 
     public function run_upgrades()
     {
-        $versionController = new VersionController(VERSION, get_option('pwp-version'));
+        $versionController = new VersionController(PWP_VERSION, get_option('pwp-version'));
         $versionController->try_update();
     }
 
