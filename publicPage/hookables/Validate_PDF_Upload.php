@@ -63,6 +63,7 @@ class Validate_PDF_Upload extends Abstract_Filter_Hookable
 
             return $notification->is_success() ? $passed : false;
         } catch (\Exception $e) {
+            Error_log((string)$e);
             wc_add_notice(
                 __('could not process PDF upload. try again with a different file.', PWP_TEXT_DOMAIN),
                 'error'

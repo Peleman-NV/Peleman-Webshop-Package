@@ -14,22 +14,25 @@
     * Quick working fix implemented. need to bring the request in line with the `Abstract_PIE_request` it inherits from.
 * [x] **Calling core files directly**
   * *offending file removed.*
-* [ ] **Data sanitization**
-  * [ ] `Ajax_Add_To_Cart.php`
-  * [ ] `Ajax_Load_Cart_Thumbnail.php`
-  * [ ] `Ajax_Show_Variation.php`
-  * [ ] `Ajax_Upload_PDF.php`
-  * [ ] `TEST_OAuth2_Client_Endpoint.php`
+* [x] **Data sanitization**
+  * [x] `Ajax_Add_To_Cart.php`
+  * [x] `Ajax_Load_Cart_Thumbnail.php`
+  * [x] `Ajax_Show_Variation.php`
+  * [x] `Ajax_Upload_PDF.php`
+  * [x] `TEST_OAuth2_Client_Endpoint.php`
+    * simply removed file, it has served its purpose.
   * [x] `Add_Custom_Project_On_Return.php`
-  * [ ] `Add_PDF_Contents_To_Cart.php`
-  * [ ] `Save_Parent_Product_Custom_Fields.php`
-  * [ ] `Save_Variable_Product_Custom_Fields.php`
-  * [ ] `PWP_Add_To_Cart_Button.php`
-  * [ ] `variation-add-to-cart-button.php`
-  * [ ] `New_PIE_Project_Request.php`
-  * [ ] `Set_PIE_Project_As_Completed.php`
-  * [ ] `FIND_Project_Thumbnail.php`
-  * [ ] `PIE_GET_Queue_Request.php`
+  * [x] `Add_PDF_Contents_To_Cart.php`
+  * [x] `Save_Parent_Product_Custom_Fields.php`
+  * [x] `Save_Variable_Product_Custom_Fields.php`
+  * [x] `PWP_Add_To_Cart_Button.php`
+    * obsolete file. removed.
+  * [x] `variation-add-to-cart-button.php`
+  * [x] `New_PIE_Project_Request.php`
+  * [x] `Set_PIE_Project_As_Completed.php`
+    * [x] rework to move logic to an `abstract_PIE_request.php` inheritor class
+  * [x] `FIND_Project_Thumbnail.php`
+  * [x] `PIE_GET_Queue_Request.php`
 * [x] **Out of Date libraries**
   * [x] `mustache`
 * [x] **Calling file locations poorly**

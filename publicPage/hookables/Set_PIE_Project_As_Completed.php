@@ -55,7 +55,12 @@ class Set_PIE_Project_As_Completed extends Abstract_Action_Hookable
 
             return !empty($response);
         } catch (Invalid_Response_Exception $exception) {
-            error_log(__("an error occurred trying to complete order {$orderId}; project id {$projectId}", PWP_TEXT_DOMAIN));
+            error_log((string)$exception);
+            error_log(sprintf(
+                __("an error occurred trying to complete order %d; project id %s", PWP_TEXT_DOMAIN),
+                $orderId,
+                $projectId
+            ));
         }
     }
 }

@@ -26,7 +26,7 @@ class PDF_Upload extends Component
     }
     public function get_name(): string
     {
-        return $this->data->name;
+        return sanitize_file_name($this->data->name);
     }
 
     public function get_type(): string
@@ -36,7 +36,7 @@ class PDF_Upload extends Component
 
     public function get_tmp_name(): string
     {
-        return $this->data->tmp_name;
+        return ($this->data->tmp_name);
     }
 
     public function get_error(): int

@@ -36,7 +36,6 @@ class FIND_Project_Thumbnail extends Abstract_FIND_Endpoint
             $src = $img;
             ob_start();
             header('Content-Type: image/jpeg');
-            // header('Content-Length: ' . filesize($img));
             ob_clean();
             flush();
             echo $img;
@@ -44,7 +43,6 @@ class FIND_Project_Thumbnail extends Abstract_FIND_Endpoint
         } catch (\Throwable $error) {
             error_log((string)$error);
         } finally {
-            // return rest_ensure_response($src);
             exit;
         }
     }
