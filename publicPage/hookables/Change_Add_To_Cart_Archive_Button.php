@@ -32,14 +32,14 @@ class Change_Add_To_Cart_Archive_Button extends Abstract_Filter_Hookable
     {
         switch ($product->get_type()) {
             case 'simple':
-                return  get_option('pwp_customize_label', 'add to cart');
+                return  get_option('pwp_customize_label', __('add to cart', PWP_TEXT_DOMAIN));
             case 'variant':
             case 'variable':
-                return get_option('pwp_archive_var_label', 'read more');
+                return get_option('pwp_archive_var_label', __('read more', PWP_TEXT_DOMAIN));
             case 'external':
             case 'grouped':
             case 'default':
-                return 'add to cart';
+                return __('add to cart', PWP_TEXT_DOMAIN);
         }
     }
 }

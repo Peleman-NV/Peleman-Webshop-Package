@@ -4,12 +4,13 @@ declare(strict_types=1);
 
 namespace PWP\includes;
 
+#region includes
+
 use PWP\templates\Template;
 use PWP\includes\loadables\Plugin_Loader;
 use PWP\includes\API\API_V1_Plugin;
 use PWP\includes\hookables\abstracts\I_Hookable_Component;
 use PWP\includes\versionControl\VersionController;
-
 
 use PWP\adminPage\hookables\Add_Cron_Schedules;
 use PWP\adminPage\hookables\Add_PIE_Printfile_Download_Button;
@@ -42,13 +43,14 @@ use PWP\publicPage\hookables\Add_PDF_Prices_To_Cart;
 use PWP\publicPage\hookables\Add_PDF_Data_To_Cart_Item;
 use PWP\publicPage\hookables\Change_Add_To_Cart_Archive_Button;
 use PWP\publicPage\hookables\Change_Cart_Item_Thumbnail;
-use PWP\publicPage\hookables\Ajax_Load_Cart_Thumbnail;
 use PWP\publicPage\hookables\Enqueue_PDF_JS;
 use PWP\publicPage\hookables\Order_Project;
 use PWP\publicPage\hookables\Override_WC_Templates;
 use PWP\publicPage\hookables\Remove_PDF_On_Cart_Deletion;
 use PWP\publicPage\hookables\Set_PIE_Project_As_Completed;
 use PWP\publicPage\hookables\Validate_PDF_Upload;
+
+#endregion
 
 if (!function_exists('is_plugin_active')) {
     include_once(ABSPATH . '/wp-admin/includes/plugin.php');
@@ -63,6 +65,13 @@ final class Plugin
     private string $plugin_name;
     private Admin_Notice_Poster $noticePoster;
     private Template $templateEngine;
+
+    final public static function run()
+    {
+        $instance = new Plugin();
+        $instance->register_components();
+        do_action('pwp_plugin_loaded');
+    }
 
     private function __construct()
     {
@@ -85,12 +94,6 @@ final class Plugin
         $this->api_endpoints();
     }
 
-    final public static function run()
-    {
-        $instance = new Plugin();
-        $instance->register_components();
-        do_action('pwp_plugin_loaded');
-    }
     private function admin_hooks(): void
     {
         $this->add_hookable($this->noticePoster);

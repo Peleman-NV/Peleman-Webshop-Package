@@ -49,6 +49,13 @@ class New_PIE_Project_Request extends Abstract_PIE_Request
     private string $formatId;
     #endregion
 
+    /**
+     * class for requesting a new PIE project via the api
+     *
+     * @param string $clientDomain online domain of the editor
+     * @param string $customerId id of the customer for reference within the editor
+     * @param string $apiKey api key
+     */
     public function __construct(string $clientDomain,  string $customerId, string $apiKey)
     {
         $endpoint = '/editor/api/createprojectAPI.php';
