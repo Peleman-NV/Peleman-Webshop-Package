@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace pwp\includes\editor;
+namespace PWP\includes\editor;
 
 abstract class Editor_Project
 {

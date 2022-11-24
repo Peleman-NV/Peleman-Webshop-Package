@@ -9,6 +9,9 @@ use DOMXPath;
 use PWP\includes\editor\Keys;
 use PWP\includes\hookables\abstracts\Abstract_Filter_Hookable;
 
+/**
+ * Overrides item thumbnail in cart for customizable products
+ */
 class Change_Cart_Item_Thumbnail extends Abstract_Filter_Hookable
 {
     private ?DOMDocument $dom;

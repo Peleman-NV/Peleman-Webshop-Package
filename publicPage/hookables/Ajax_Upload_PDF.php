@@ -18,6 +18,9 @@ use PWP\includes\validation\Validate_File_PageCount;
 use PWP\includes\validation\Validate_File_Size;
 use PWP\includes\validation\Validate_File_Type_Is_PDF;
 
+/**
+ * Ajax hookable for handling and validating a pdf upload from the webshop.
+ */
 class Ajax_Upload_PDF extends Abstract_Ajax_Hookable
 {
     public function __construct()

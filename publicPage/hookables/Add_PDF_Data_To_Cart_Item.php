@@ -11,8 +11,9 @@ use PWP\includes\utilities\PDF_Factory;
 
 /**
  * Filter hookable class for handling PDF uploads when adding an item to the cart. If the product
- * a) requires a pdf file and b) a pdf file is uploaded,
- * this class will generate a new record of the PDF in the database and add a reference
+ * - requires a pdf file and  
+ * -  a pdf file is uploaded
+ * - this class will generate a new record of the PDF in the database and add a reference
  * to the specific item in the cart.
  */
 class Add_PDF_Data_To_Cart_Item extends Abstract_Filter_Hookable

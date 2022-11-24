@@ -7,6 +7,10 @@ namespace PWP\publicPage\hookables;
 use PWP\includes\editor\Product_Meta_Data;
 use PWP\includes\hookables\abstracts\Abstract_Filter_Hookable;
 
+/**
+ * change archive button text and button for products which are either customizable or require PDF uploads before
+ * they can be added to cart.
+ */
 class Change_Add_To_Cart_Archive_Button extends Abstract_Filter_Hookable
 {
     public function __construct()

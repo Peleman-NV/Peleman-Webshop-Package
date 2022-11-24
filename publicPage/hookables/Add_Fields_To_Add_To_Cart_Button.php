@@ -7,6 +7,9 @@ namespace PWP\publicPage\hookables;
 use PWP\includes\hookables\abstracts\Abstract_Action_Hookable;
 use WC_Product_Simple;
 
+/**
+ * Adds an additional hidden field to the add to cart button form, for easy access to the product ID value
+ */
 class Add_Fields_To_Add_To_Cart_Button extends Abstract_Action_Hookable
 {
     public function __construct()

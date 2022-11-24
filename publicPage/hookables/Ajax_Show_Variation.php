@@ -8,6 +8,10 @@ use PWP\includes\editor\Product_Meta_Data;
 use PWP\includes\hookables\abstracts\Abstract_Ajax_Hookable;
 use WC_Product;
 
+/**
+ * Ajax hookables which updates the woocommerce product page of a variable product
+ * whenever a customer chooses a different variation.
+ */
 class Ajax_Show_Variation extends Abstract_Ajax_Hookable
 {
     public function __construct()

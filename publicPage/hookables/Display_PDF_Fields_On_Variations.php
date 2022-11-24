@@ -7,6 +7,9 @@ namespace PWP\publicPage\hookables;
 use PWP\includes\editor\Keys;
 use PWP\includes\hookables\abstracts\Abstract_Filter_Hookable;
 
+/**
+ * makes PDF form in product page visible or invisible on variations.
+ */
 class Display_PDF_Fields_On_Variations extends Abstract_Filter_Hookable
 {
     public function __construct()

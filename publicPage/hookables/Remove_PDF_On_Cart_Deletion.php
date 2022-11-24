@@ -7,6 +7,10 @@ namespace PWP\publicPage\hookables;
 use PWP\includes\hookables\abstracts\Abstract_Action_Hookable;
 use PWP\includes\services\entities\Project;
 
+/**
+ * When an item with a PDF upload is deleted from the cart,
+ * this hook will remove the PDf from the projects table and the upload directory
+ */
 class Remove_PDF_On_Cart_Deletion extends Abstract_Action_Hookable
 {
     public function __construct()

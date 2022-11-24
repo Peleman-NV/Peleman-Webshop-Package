@@ -8,6 +8,10 @@ use PWP\includes\editor\Product_Meta_Data;
 use PWP\includes\hookables\abstracts\Abstract_Filter_Hookable;
 use WC_Product;
 
+/**
+ * Change add to cart button label based on whether the product is customizable or has a custom label set
+ * in the product page.
+ */
 class Change_Add_To_Cart_Button_Label extends Abstract_Filter_Hookable
 {
     public function __construct()

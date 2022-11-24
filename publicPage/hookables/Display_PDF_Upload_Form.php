@@ -10,6 +10,9 @@ use PWP\includes\hookables\abstracts\Abstract_Action_Hookable;
 use PWP\includes\validation\Validate_File_Size;
 use PWP\templates\Template;
 
+/**
+ * Displays and initialized a PDF form on the product page.
+ */
 class Display_PDF_Upload_Form extends Abstract_Action_Hookable
 
 {

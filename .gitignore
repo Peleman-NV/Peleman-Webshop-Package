@@ -21,6 +21,8 @@ node_modules/
 *.log
 *.sql
 *.sqlite
+*.phar
+*.dist.xml
 
 # additional ignores
 /vendor
@@ -28,3 +30,6 @@ node_modules/
 Config.php
 /.testingData
 /resources
+/docs
+/.phpdoc
+/build

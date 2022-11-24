@@ -7,6 +7,10 @@ namespace PWP\publicPage\hookables;
 use PWP\includes\hookables\abstracts\Abstract_Action_Hookable;
 use PWP\includes\services\entities\Project;
 
+/**
+ * Hookable is called when a project is ordered; if the project has pdf data, it will
+ * mark the pdf project as 'ordered' in the system, protecting it from cleanup.
+ */
 class Order_Project extends Abstract_Action_Hookable
 {
     public function __construct()

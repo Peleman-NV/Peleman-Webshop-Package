@@ -8,6 +8,9 @@ use PWP\includes\editor\Product_Meta_Data;
 use PWP\includes\hookables\abstracts\Abstract_Action_Hookable;
 use WC_Product;
 
+/** 
+ * Calculates the total price of a PDF product based on pages, and sets the price in the cart.
+*/
 class Add_PDF_Prices_To_Cart extends Abstract_Action_Hookable
 {
     public function __construct()

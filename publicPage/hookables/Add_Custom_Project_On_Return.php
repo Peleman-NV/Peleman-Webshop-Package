@@ -8,6 +8,11 @@ use PWP\includes\hookables\abstracts\Abstract_Action_Hookable;
 use WC_Cart;
 use WC_Product_Variation;
 
+/**
+ * Hook to capture a customer returning from the PIE editor via return Url.
+ * If the `CustProj` parameter is set in the request, this hook will add a product stored in
+ * session to the cart.
+ */
 class Add_Custom_Project_On_Return extends Abstract_Action_Hookable
 {
     //this is a rather obscure hook, which is called even after wp_loaded.

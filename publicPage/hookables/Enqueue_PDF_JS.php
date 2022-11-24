@@ -6,6 +6,9 @@ namespace PWP\publicPage\hookables;
 
 use PWP\includes\hookables\abstracts\Abstract_Action_Hookable;
 
+/**
+ * Enqueues the required PDF.js files for in-browser previewing of pdf uploads.
+ */
 class Enqueue_PDF_JS extends Abstract_Action_Hookable
 {
     public function __construct()

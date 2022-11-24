@@ -6,6 +6,7 @@ namespace PWP\publicPage\hookables;
 
 use PWP\includes\hookables\abstracts\Abstract_Action_Hookable;
 
+/** overrides standard Woocommerce templates with PWP versions */
 class Override_WC_Templates extends Abstract_Action_Hookable
 {
     public function __construct()

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace PWP\includes\editor;
 
-use PTP\includes\sureTax\responses\PTP_I_Response;
 use PWP\includes\Abstract_Request;
 use PWP\includes\exceptions\Invalid_Response_Exception;
 

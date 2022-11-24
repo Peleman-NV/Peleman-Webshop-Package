@@ -8,6 +8,11 @@ use PWP\includes\editor\Complete_PIE_Project_Request;
 use PWP\includes\exceptions\Invalid_Response_Exception;
 use PWP\includes\hookables\abstracts\Abstract_Action_Hookable;
 
+/**
+ * Hook is called when a project is ordered. If the project has a PIE project attached to it, 
+ * this hook will send an API request to the editor API to mark it for rendering.
+ */
+ 
 class Set_PIE_Project_As_Completed extends Abstract_Action_Hookable
 {
     public function __construct()

@@ -7,6 +7,10 @@ namespace PWP\publicPage\hookables;
 use PWP\includes\editor\Product_Meta_Data;
 use PWP\includes\hookables\abstracts\Abstract_Filter_Hookable;
 
+/**
+ * Filter hook to add extra classes to an add to cart button in Woocommerce.
+ * This only works with a custom add to cart button template which calls the filter
+ */
 class Add_Class_To_Add_To_Cart_Button extends Abstract_Filter_Hookable
 {
     public function __construct()

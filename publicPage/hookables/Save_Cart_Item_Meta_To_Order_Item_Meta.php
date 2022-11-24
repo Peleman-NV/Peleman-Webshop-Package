@@ -8,6 +8,9 @@ use pwp\includes\editor\Editor_Project;
 use PWP\includes\hookables\abstracts\Abstract_Action_Hookable;
 use WC_Order_Item_Product;
 
+/**
+ * Saves PDF meta from cart item to order item
+ */
 class Save_Cart_Item_Meta_To_Order_Item_Meta extends Abstract_Action_Hookable
 {
     public function __construct()

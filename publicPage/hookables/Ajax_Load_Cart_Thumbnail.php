@@ -6,8 +6,14 @@ namespace PWP\publicPage\hookables;
 
 use PWP\includes\hookables\abstracts\Abstract_Ajax_Hookable;
 
+    /**
+     * @deprecated 1.0.0
+     * hook for loading cart thumbnails through an AJAX call; replaced by a more
+     * native solution based on Wordpress's lazy loading system.
+     */
 class Ajax_Load_Cart_Thumbnail extends Abstract_Ajax_Hookable
 {
+
     public function __construct()
     {
         parent::__construct(

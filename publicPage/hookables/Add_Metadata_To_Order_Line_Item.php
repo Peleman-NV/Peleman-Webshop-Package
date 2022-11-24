@@ -6,6 +6,9 @@ namespace PWP\publicPage\hookables;
 
 use PWP\includes\hookables\abstracts\Abstract_Action_Hookable;
 
+/**
+ * takes meta data from a cart item and pushes it into its order item
+ */
 class Add_Metadata_To_Order_Line_Item extends Abstract_Action_Hookable
 {
     public function __construct()

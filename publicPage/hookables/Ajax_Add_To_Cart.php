@@ -17,6 +17,11 @@ use PWP\includes\exceptions\Invalid_Response_Exception;
 use PWP\includes\hookables\abstracts\Abstract_Ajax_Hookable;
 use WC_AJAX;
 
+/**
+ * AJAX method which handles add to cart requests. If the product being added to the cart requires customization,
+ * this hook will also generate a new project entry, store the product temporarily in a session, and redirect the user to the
+ * appropriate editor.
+ */
 class Ajax_Add_To_Cart extends Abstract_Ajax_Hookable
 {
     public function __construct()
@@ -87,6 +92,7 @@ class Ajax_Add_To_Cart extends Abstract_Ajax_Hookable
 
                     $_SESSION[$sessionId] = $itemData;
 
+                    error_log( print_r($projectData->get_project_editor_url(false),true));
                     wp_send_json_success(
                         array(
                             'message' => __('external project created, redirecting user to editor for customization...', PWP_TEXT_DOMAIN),

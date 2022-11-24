@@ -7,6 +7,9 @@ namespace PWP\publicPage\hookables;
 use PWP\includes\hookables\abstracts\Abstract_Action_Hookable;
 use PWP\includes\services\entities\Project;
 
+/**
+ * Deletes .pdf projects when an order is cancelled
+ */
 class Delete_Projects_On_Order_Cancelled extends Abstract_Action_Hookable
 {
     public function __construct()

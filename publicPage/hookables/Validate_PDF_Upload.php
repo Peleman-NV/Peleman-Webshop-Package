@@ -15,6 +15,9 @@ use PWP\includes\validation\Validate_File_PageCount;
 use PWP\includes\validation\Validate_File_Size;
 use PWP\includes\validation\Validate_File_Type_Is_PDF;
 
+/**
+ * Validates pdf upload by customer in the woocommerce product validation chain
+ */
 class Validate_PDF_Upload extends Abstract_Filter_Hookable
 {
     private string $key;

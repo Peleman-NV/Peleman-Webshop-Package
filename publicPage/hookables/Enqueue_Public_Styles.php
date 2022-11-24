@@ -6,6 +6,9 @@ namespace PWP\publicPage\hookables;
 
 use PWP\includes\hookables\abstracts\Abstract_Action_Hookable;
 
+/**
+ * Enqueus public style sheets
+ */
 class Enqueue_Public_Styles extends Abstract_Action_Hookable
 {
     public function __construct()

@@ -10,6 +10,9 @@ use PWP\includes\editor\Product_PIE_Data;
 use PWP\includes\hookables\abstracts\Abstract_Action_Hookable;
 use PWP\includes\services\ImaxelService;
 
+/**
+ * Adds a button in the cart menu for users to return to the image editor to revise or make adjustments
+ */
 class Display_Editor_Project_Button_In_Cart extends Abstract_Action_Hookable
 {
     public function __construct()

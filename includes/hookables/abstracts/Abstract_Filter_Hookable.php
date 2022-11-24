@@ -9,9 +9,25 @@ use PWP\includes\loadables\Plugin_Loader;
 
 abstract class Abstract_Filter_Hookable implements I_Hookable_Component
 {
+    /**
+     * Hook to which the filter hookable is attached
+     * @var string
+     */
     protected string $hook;
+    /**
+     * name of the method which this object will call when the hook is called
+     * @var string
+     */
     protected string $callback;
+    /**
+     * Priority of this hook when it is called
+     * @var integer
+     */
     protected int $priority;
+    /**
+     * Amount of arguments the callback can accept when called.
+     * @var integer
+     */
     protected int $accepted_args;
 
     public function __construct(string $hook, string $callback, int $priority = 10, $accepted_args = 1)

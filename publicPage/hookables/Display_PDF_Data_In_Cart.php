@@ -6,6 +6,7 @@ namespace PWP\publicPage\hookables;
 
 use PWP\includes\hookables\abstracts\Abstract_Action_Hookable;
 
+/**displays the name of the uploaded PDF in the cart */
 class Display_PDF_Data_In_Cart extends Abstract_Action_Hookable
 {
     public function __construct()
