@@ -4,9 +4,6 @@ declare(strict_types=1);
 
 namespace PWP\includes\hookables\abstracts;
 
-use PWP\includes\hookables\abstracts\I_Hookable_Component;
-use PWP\includes\loadables\Plugin_Loader;
-
 /**
  * Abstract observer class for implementing WP filter hooks in an OOP fashion. 
  */

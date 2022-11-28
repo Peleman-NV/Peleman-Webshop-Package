@@ -6,6 +6,9 @@ namespace PWP\adminPage\hookables;
 
 use PWP\includes\hookables\abstracts\Abstract_Action_Hookable;
 
+/**
+ * Saves/Updates the settings from the PWP main control panel.
+ */
 class Register_Plugin_Options extends Abstract_Action_Hookable
 {
     public function __construct()

@@ -4,10 +4,6 @@ declare(strict_types=1);
 
 namespace PWP\includes\hookables\abstracts;
 
-use PWP\includes\hookables\abstracts\I_Hookable_Component;
-use PWP\includes\loaders\ILoader;
-use PWP\includes\loaders\Plugin_Loader;
-
 /**
  * Abstract observer class for implementing WP action hooks in an OOP fashion. 
  */

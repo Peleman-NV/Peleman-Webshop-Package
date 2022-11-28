@@ -12,6 +12,9 @@ use PWP\includes\hookables\abstracts\Abstract_Action_Hookable;
 use PWP\includes\utilities\Input_Fields;
 use WC_Product_Simple;
 
+/**
+ * Ads PWP/PIE specific fields to a WC simple/parent product
+ */
 class Parent_Product_Custom_Fields extends Abstract_Action_Hookable
 {
     public function __construct()
@@ -36,14 +39,6 @@ class Parent_Product_Custom_Fields extends Abstract_Action_Hookable
 
     private function render_standard_product_settings(\WC_Product $product): void
     {
-        // Input_Fields::checkbox_input(
-        //     'customizable_product',
-        //     'Customizable Product',
-        //     boolval($product->get_meta('customizable_product')),
-        //     ['short'],
-        //     'Check if this product can be personalized with the editor'
-        // );
-
         Input_Fields::text_input(
             Keys::CUSTOM_LABEL_KEY,
             'Custom add to cart label',

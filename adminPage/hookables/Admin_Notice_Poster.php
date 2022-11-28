@@ -7,6 +7,9 @@ namespace PWP\adminPage\hookables;
 use PWP\includes\hookables\abstracts\Abstract_Action_Hookable;
 use PWP\includes\utilities\Admin_Notice;
 
+/**
+ * Hookable for adding and displaying notices in the admin menu
+ */
 class Admin_Notice_Poster extends Abstract_Action_Hookable
 {
     /**

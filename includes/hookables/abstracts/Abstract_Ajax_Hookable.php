@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace PWP\includes\hookables\abstracts;
 
-use PWP\includes\loaders\Plugin_Loader;
 use PWP\includes\hookables\abstracts\I_Hookable_Component;
 
 /**
@@ -26,32 +25,49 @@ abstract class Abstract_Ajax_Hookable implements I_Hookable_Component
      * @var string
      */
     private string $scriptHandle;
+
+    /**
+     * name of the Ajax object to be used by the script
+     *
+     * @var string
+     */
     protected string $objectName;
+
+    /**
+     * absolute path of the Javascript file.
+     *
+     * @var string
+     */
     private string $jsFilePath;
 
+    /**
+     * execution priority
+     *
+     * @var integer
+     */
     private int $priority;
-    private int $accepted_args;
 
     private const CALLBACK = 'callback';
     private const CALLBACK_NOPRIV = 'callback_nopriv';
 
+    private const OBJECT_SUFFIX = '_object';
+    private const NONCE_SUFFIX = '_nonce';
+
     /**
-     * Undocumented function
+     * Abstract Ajax hookable class. Facilitates AJAX calls between wordpress and the plugin with an OOP hookable object
      *
-     * @param string $handle script handle to which data will be attached. hookable will automatically prefix the handle with `wp_ajax_` and `wp_ajax_nopriv_`
-     * @param string $jsFilePath path of the Javascript file relative to the component file location.
+     * @param string $handle script handle to which data will be attached and unique ID of this ajax function. Will be used for all unique internal naming.
+     * @param string $jsFilePath absolute path of the Javascript file.
      * @param integer $priority when executing, the priority of this hook. default `10`
-     * @param integer $accepted_args amount of arguments this hook accepts. default `1`
      */
-    public function __construct(string $handle, string $jsFilePath, int $priority = 10, int $accepted_args = 1)
+    public function __construct(string $handle, string $jsFilePath, int $priority = 10)
     {
         $this->scriptHandle = $handle;
-        $this->objectName = $handle . '_object';
-        $this->nonceName = $handle . '_nonce';
+        $this->objectName = $handle . self::OBJECT_SUFFIX;
+        $this->nonceName = $handle . self::NONCE_SUFFIX;
         $this->jsFilePath = $jsFilePath;
 
         $this->priority = $priority;
-        $this->accepted_args = $accepted_args;
     }
 
     final public function register(): void
@@ -63,7 +79,7 @@ abstract class Abstract_Ajax_Hookable implements I_Hookable_Component
                 'enqueue_ajax'
             ),
         );
-        \add_action(
+        add_action(
             "wp_ajax_{$this->scriptHandle}",
             array(
                 $this,
@@ -72,7 +88,7 @@ abstract class Abstract_Ajax_Hookable implements I_Hookable_Component
             $this->priority,
             $this->accepted_args
         );
-        \add_action(
+        add_action(
             "wp_ajax_nopriv_{$this->scriptHandle}",
             array(
                 $this,
@@ -83,6 +99,11 @@ abstract class Abstract_Ajax_Hookable implements I_Hookable_Component
         );
     }
 
+    /**
+     * helper method to enqueue related Ajax scripts
+     *
+     * @return void
+     */
     final public function enqueue_ajax(): void
     {
         wp_enqueue_script(

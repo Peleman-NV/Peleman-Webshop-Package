@@ -8,6 +8,9 @@ use PWP\includes\editor\Keys;
 use PWP\includes\editor\Product_Meta_Data;
 use PWP\includes\hookables\abstracts\Abstract_Action_Hookable;
 
+/**
+ * Save child product custom variables added by the plugin
+ */
 class Save_Variable_Product_Custom_Fields extends Abstract_Action_Hookable
 {
     public function __construct()

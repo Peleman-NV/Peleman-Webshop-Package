@@ -7,6 +7,11 @@ namespace PWP\adminPage\hookables;
 use PWP\includes\hookables\abstracts\Abstract_Action_Hookable;
 use PWP\includes\services\entities\Project;
 
+/**
+ * Cron job hookable for cleaning up old and unorderdered projects.
+ * Will try to clean up abandoned and unordered projects files from the system.
+ * Default cutoff date for abandoned projects is 15 days, but can also be configured with the `pwp_project_cleanup_cutoff_days` WP option
+ */
 class Cleanup_Unordered_Projects extends Abstract_Action_Hookable
 {
     public function __construct()

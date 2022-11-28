@@ -12,6 +12,10 @@ use PWP\includes\hookables\abstracts\Abstract_Action_Hookable;
 use PWP\includes\utilities\Input_Fields;
 use WP_Post;
 
+
+/**
+ * Ads PWP/PIE specific fields to a WC Variant product
+ */
 class Variable_Product_Custom_Fields extends Abstract_Action_Hookable
 {
     private string $loopEnd = '';

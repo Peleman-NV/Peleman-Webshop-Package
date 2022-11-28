@@ -8,6 +8,9 @@ use PWP\includes\hookables\abstracts\Abstract_Action_Hookable;
 use PWP\includes\hookables\abstracts\I_Hookable_Component;
 use PWP\includes\loaders\Plugin_Loader;
 
+/**
+ * Adds admin only control panel for editor settings: necessary for connecting to and authenticating with the Peleman Image Editor.
+ */
 class PIE_Editor_Control_Panel extends Abstract_Action_Hookable
 {
     public function __construct()

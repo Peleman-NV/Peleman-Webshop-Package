@@ -6,6 +6,9 @@ namespace PWP\adminPage\hookables;
 
 use PWP\includes\hookables\abstracts\Abstract_Action_Hookable;
 
+/**
+ * Add PDF data + download button to an order line item containing a PDF upload.
+ */
 class Display_PDF_Data_After_Order_Item extends Abstract_Action_Hookable
 {
     public function __construct()

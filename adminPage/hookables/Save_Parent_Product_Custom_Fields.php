@@ -5,14 +5,14 @@ declare(strict_types=1);
 namespace PWP\adminPage\hookables;
 
 use PWP\includes\editor\Keys;
-use PWP\includes\editor\PIE_Editor_Instructions;
 use PWP\includes\editor\Product_Meta_Data;
-use PWP\includes\editor\Product_IMAXEL_Data;
-use PWP\includes\editor\Product_PIE_Data;
 use PWP\includes\hookables\abstracts\Abstract_Action_Hookable;
 use WC_Product_Simple;
 use WP_Post;
 
+/**
+ * Save parent product custom data added by the plugin.
+ */
 class Save_Parent_Product_Custom_Fields extends Abstract_Action_Hookable
 {
     public function __construct()

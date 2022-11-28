@@ -6,6 +6,9 @@ namespace PWP\adminPage\hookables;
 
 use PWP\includes\hookables\abstracts\Abstract_Action_Hookable;
 
+/**
+ * Adds the primary control panel to the Admin Control panel. Other control panels should be children of the one defined here.
+ */
 class Admin_Control_Panel extends Abstract_Action_Hookable
 {
     public function __construct()

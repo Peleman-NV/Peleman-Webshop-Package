@@ -6,8 +6,9 @@ namespace PWP\adminPage\hookables;
 
 use PWP\includes\hookables\abstracts\Abstract_Action_Hookable;
 
-use function WP_CLI\Utils\get_plugin_name;
-
+/**
+ * Enqueue Admin control panel specific .css files
+ */
 class Admin_Enqueue_Styles extends Abstract_Action_Hookable
 {
     public function __construct()

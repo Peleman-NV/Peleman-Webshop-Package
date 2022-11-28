@@ -6,6 +6,9 @@ namespace PWP\adminPage\hookables;
 
 use PWP\includes\hookables\abstracts\Abstract_Action_Hookable;
 
+/**
+ * saves/updates editor options from the PIE editor control panel
+ */
 class Register_Editor_Options extends Abstract_Action_Hookable
 
 {

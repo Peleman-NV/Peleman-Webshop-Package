@@ -6,6 +6,9 @@ namespace PWP\adminPage\hookables;
 
 use PWP\includes\hookables\abstracts\Abstract_Action_Hookable;
 
+/**
+ * Enqueue Admin control panel specific .js scripts
+ */
 class Admin_Enqueue_Scripts extends Abstract_Action_Hookable
 {
     public function __construct()

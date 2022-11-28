@@ -6,6 +6,9 @@ namespace PWP\adminPage\hookables;
 
 use PWP\includes\hookables\abstracts\Abstract_Filter_Hookable;
 
+/** Hookable to add new cron schedules to WP.
+ * additional cron schedules allow cron jobs to run at custom intervals
+ */
 class Add_Cron_Schedules extends Abstract_Filter_Hookable
 {
     public const DAY = 86400;

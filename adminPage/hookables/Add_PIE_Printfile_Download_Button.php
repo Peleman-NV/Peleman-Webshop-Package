@@ -8,6 +8,10 @@ use PWP\includes\editor\PIE_GET_Queue_Request;
 use PWP\includes\exceptions\Invalid_Response_Exception;
 use PWP\includes\hookables\abstracts\Abstract_Action_Hookable;
 
+/**
+ * Add download button for Peleman Image Editor print files to a Woocommerce Order view.
+ * Button will be displayed differently depending on the status/accessibility of the order in question.
+ */
 class Add_PIE_Printfile_Download_Button extends Abstract_Action_Hookable
 {
     private string $clientDomain;
@@ -62,6 +66,7 @@ class Add_PIE_Printfile_Download_Button extends Abstract_Action_Hookable
         $endpoint = $this->clientDomain . '/editor/api/getfile.php';
         return $endpoint . '?' . http_build_query($this->generate_request_array($projectId));
     }
+
     private function generate_request_array(string $projectId): array
     {
         $request = array(
