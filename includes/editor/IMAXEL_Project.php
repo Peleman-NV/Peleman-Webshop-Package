@@ -6,6 +6,10 @@ namespace PWP\includes\editor;
 
 use PWP\includes\services\ImaxelService;
 
+/**
+ * Editor container object for Imaxel projects
+ * @deprecated 1.0.0 PWP no longer supports IMAXEL
+ */
 class IMAXEL_Project extends Editor_Project
 {
     private ImaxelService $service;

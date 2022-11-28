@@ -6,9 +6,23 @@ namespace PWP\includes\editor;
 
 class Product_Meta_Data extends Product_Meta
 {
+    public const EDITOR_ID_KEY          = 'pwp_editor_id';
+    public const CUSTOM_LABEL_KEY       = 'custom_variation_add_to_cart_label';
+
+    public const UNIT_AMOUNT            = 'cart_units';
+    public const UNIT_PRICE             = 'cart_price';
+    public const UNIT_CODE              = 'unit_code';
+
+    public const USE_PDF_CONTENT_KEY    = 'pdf_upload_required';
+    public const PDF_HEIGHT_KEY         = 'pdf_height_mm';
+    public const PDF_WIDTH_KEY          = 'pdf_width_mm';
+    public const PDF_MAX_PAGES_KEY      = 'pdf_max_pages';
+    public const PDF_MIN_PAGES_KEY      = 'pdf_min_pages';
+    public const PDF_PRICE_PER_PAGE_KEY = 'price_per_page';
+
+    public const OVERRIDE_CART_THUMB    = 'pwp_override_cart_thumb';
 
     private bool $customizable;
-    private bool $usePDFContent;
     private string $editorId;
     private string $customAddToCartLabel;
 
@@ -16,36 +30,41 @@ class Product_Meta_Data extends Product_Meta
     private float $cartPrice;
     private string $unitCode;
 
+    private bool $usePDFContent;
     private int $pdfHeight;
     private int $pdfWidth;
     private int $maxPages;
     private int $minPages;
     private float $pricePerPage;
+
     private bool $overrideThumb;
 
     public ?Product_PIE_Data $pieData;
+    /**
+     * @deprecated 1.0.0 PWP no longers supports IMAXEL
+     */
     public ?Product_IMAXEL_Data $imaxelData;
 
     public function __construct(\WC_Product $product)
     {
         parent::__construct($product);
 
-        $this->editorId             = $this->parent->get_meta(Keys::EDITOR_ID_KEY) ?: '';
+        $this->editorId             = $this->parent->get_meta(self::EDITOR_ID_KEY) ?: '';
         $this->customizable         = !empty($this->editorId);
-        $this->usePDFContent        = boolval($this->parent->get_meta(Keys::USE_PDF_CONTENT_KEY)) ?: false;
-        $this->customAddToCartLabel = $this->parent->get_meta(Keys::CUSTOM_LABEL_KEY) ?: '';
+        $this->usePDFContent        = boolval($this->parent->get_meta(self::USE_PDF_CONTENT_KEY)) ?: false;
+        $this->customAddToCartLabel = $this->parent->get_meta(self::CUSTOM_LABEL_KEY) ?: '';
 
-        $this->cartUnits            = (int)$this->parent->get_meta(Keys::UNIT_AMOUNT) ?: 0;
-        $this->cartPrice            = (float)$this->parent->get_meta(Keys::UNIT_PRICE) ?: 0;
-        $this->unitCode             = $this->parent->get_meta(Keys::UNIT_CODE) ?: '';
+        $this->cartUnits            = (int)$this->parent->get_meta(self::UNIT_AMOUNT) ?: 0;
+        $this->cartPrice            = (float)$this->parent->get_meta(self::UNIT_PRICE) ?: 0;
+        $this->unitCode             = $this->parent->get_meta(self::UNIT_CODE) ?: '';
 
-        $this->pdfHeight            = (int)$this->parent->get_meta(Keys::PDF_HEIGHT_KEY) ?: 0;
-        $this->pdfWidth             = (int)$this->parent->get_meta(Keys::PDF_WIDTH_KEY) ?: 0;
-        $this->maxPages             = (int)$this->parent->get_meta(Keys::PDF_MAX_PAGES_KEY) ?: -1;
-        $this->minPages             = (int)$this->parent->get_meta(Keys::PDF_MIN_PAGES_KEY) ?: 1;
-        $this->pricePerPage         = (float)$this->parent->get_meta(Keys::PDF_PRICE_PER_PAGE_KEY) ?: 0;
+        $this->pdfHeight            = (int)$this->parent->get_meta(self::PDF_HEIGHT_KEY) ?: 0;
+        $this->pdfWidth             = (int)$this->parent->get_meta(self::PDF_WIDTH_KEY) ?: 0;
+        $this->maxPages             = (int)$this->parent->get_meta(self::PDF_MAX_PAGES_KEY) ?: -1;
+        $this->minPages             = (int)$this->parent->get_meta(self::PDF_MIN_PAGES_KEY) ?: 1;
+        $this->pricePerPage         = (float)$this->parent->get_meta(self::PDF_PRICE_PER_PAGE_KEY) ?: 0;
 
-        $this->overrideThumb        = boolval($this->parent->get_meta(Keys::OVERRIDE_CART_THUMBNAIL)) ?: false;
+        $this->overrideThumb        = boolval($this->parent->get_meta(self::OVERRIDE_CART_THUMB)) ?: false;
         $this->pieData              = null;
         $this->imaxelData           = null;
     }
@@ -66,18 +85,13 @@ class Product_Meta_Data extends Product_Meta
         return $this->customizable;
     }
 
-    /**
-     * set editor ID for product.
-     *
-     * @param string $editorId
-     * @return self
-     */
     public function set_editor(string $editorId): self
     {
         $this->editorId = $editorId;
         $this->customizable = !empty($editorId);
         return $this;
     }
+
     public function get_editor_id(): string
     {
         return $this->editorId;
@@ -85,14 +99,8 @@ class Product_Meta_Data extends Product_Meta
 
     public function is_editable(): bool
     {
-        switch ($this->editorId) {
-            case Product_PIE_Data::MY_EDITOR:
-                return !empty($this->pie_data()->get_template_id());
-            case Product_IMAXEL_Data::MY_EDITOR:
-                return !empty($this->imaxel_data()->get_template_id());
-            default:
-                return false;
-        }
+
+        return !empty($this->pie_data()->get_template_id());
     }
 
     public function set_custom_add_to_cart_label(string $label): self
@@ -200,6 +208,10 @@ class Product_Meta_Data extends Product_Meta
         return $this->overrideThumb;
     }
 
+    /**
+     * @return Product_IMAXEL_Data
+     * @deprecated 1.0.0 PWP no longers supports IMAXEL
+     */
     public function imaxel_data(): Product_IMAXEL_Data
     {
         if ($this->imaxelData === null) {
@@ -218,22 +230,22 @@ class Product_Meta_Data extends Product_Meta
 
     public function update_meta_data(): void
     {
-        $this->parent->update_meta_data(Keys::USE_PDF_CONTENT_KEY, $this->usePDFContent ? 1 : 0);
-        $this->parent->update_meta_data(Keys::EDITOR_ID_KEY, $this->editorId);
-        $this->parent->update_meta_data(Keys::CUSTOM_LABEL_KEY, $this->customAddToCartLabel);
+        $this->parent->update_meta_data(self::USE_PDF_CONTENT_KEY, $this->usePDFContent ? 1 : 0);
+        $this->parent->update_meta_data(self::EDITOR_ID_KEY, $this->editorId);
+        $this->parent->update_meta_data(self::CUSTOM_LABEL_KEY, $this->customAddToCartLabel);
 
-        $this->parent->update_meta_data(Keys::UNIT_AMOUNT, $this->cartUnits);
-        $this->parent->update_meta_data(Keys::UNIT_PRICE, $this->cartPrice);
-        $this->parent->update_meta_data(Keys::UNIT_CODE, $this->unitCode);
+        $this->parent->update_meta_data(self::UNIT_AMOUNT, $this->cartUnits);
+        $this->parent->update_meta_data(self::UNIT_PRICE, $this->cartPrice);
+        $this->parent->update_meta_data(self::UNIT_CODE, $this->unitCode);
 
         //TODO: make PDF editor data its own object
         //but this will do for now
-        $this->parent->update_meta_data(Keys::PDF_HEIGHT_KEY, $this->pdfHeight);
-        $this->parent->update_meta_data(Keys::PDF_WIDTH_KEY, $this->pdfWidth);
-        $this->parent->update_meta_data(Keys::PDF_MIN_PAGES_KEY, $this->minPages);
-        $this->parent->update_meta_data(Keys::PDF_MAX_PAGES_KEY, $this->maxPages);
-        $this->parent->update_meta_data(Keys::PDF_PRICE_PER_PAGE_KEY, $this->pricePerPage);
-        $this->parent->update_meta_data(Keys::OVERRIDE_CART_THUMBNAIL, $this->overrideThumb);
+        $this->parent->update_meta_data(self::PDF_HEIGHT_KEY, $this->pdfHeight);
+        $this->parent->update_meta_data(self::PDF_WIDTH_KEY, $this->pdfWidth);
+        $this->parent->update_meta_data(self::PDF_MIN_PAGES_KEY, $this->minPages);
+        $this->parent->update_meta_data(self::PDF_MAX_PAGES_KEY, $this->maxPages);
+        $this->parent->update_meta_data(self::PDF_PRICE_PER_PAGE_KEY, $this->pricePerPage);
+        $this->parent->update_meta_data(self::OVERRIDE_CART_THUMB, $this->overrideThumb);
 
         $this->imaxel_data()->update_meta_data();
         $this->pie_data()->update_meta_data();

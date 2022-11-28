@@ -6,8 +6,10 @@ namespace PWP\includes\editor;
 
 use PWP\includes\Abstract_Request;
 use PWP\includes\services\ImaxelService;
-use PWP\includes\utilities\response\I_Response;
 
+/**
+ * @deprecated 1.0.0 PWP no longer supports IMAXEL
+ */
 class New_IMAXEL_Project_Request extends Abstract_Request
 {
     private ImaxelService $service;

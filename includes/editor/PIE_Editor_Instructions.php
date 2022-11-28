@@ -8,24 +8,25 @@ use WC_Product;
 
 /**
  * wrapper class for PIE Editor Instruction metadata on products and product variations, and handling wordpress
- * metadata serialization of arrays
+ * metadata serialization of arrays.
+ * PIE Editor Instructions are stored as a string of instructions separated by spaces.
  */
 class PIE_Editor_Instructions extends Product_Meta
 {
+    public const EDITOR_INSTRUCTIONS_KEY    = 'pie_editor_instructions';
+    public const INSTRUCTION_PREFIX         = 'pie_instruct_';
+
     private array $instructions;
 
     public function __construct(WC_Product $parent)
     {
         $this->parent = $parent;
-        $meta = $this->parent->get_meta(Keys::EDITOR_INSTRUCTIONS_KEY);
+        $meta = $this->parent->get_meta(self::EDITOR_INSTRUCTIONS_KEY);
         if ($meta) {
             $this->instructions = explode(' ', $meta);
             return;
         }
         $this->instructions = [];
-
-        // $this->instructions = (array)unserialize($meta) ?? [];
-        // error_log("editor instructions for product with id {$parent->get_id()} : " . print_r($this->instructions, true));
     }
 
     public function add_instruction(string $instruction): self
@@ -57,14 +58,9 @@ class PIE_Editor_Instructions extends Product_Meta
     public function update_meta_data(): void
     {
         $this->parent->update_meta_data(
-            Keys::EDITOR_INSTRUCTIONS_KEY,
+            self::EDITOR_INSTRUCTIONS_KEY,
             (implode(' ', $this->instructions))
         );
-
-        // $this->parent->update_meta_data(
-        //     $this::EDITOR_INSTRUCTIONS_KEY,
-        //     ($this->instructions)
-        // );
         $this->parent->save_meta_data();
     }
 }

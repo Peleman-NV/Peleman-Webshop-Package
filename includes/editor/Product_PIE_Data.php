@@ -7,8 +7,21 @@ namespace PWP\includes\editor;
 use WC_Product;
 
 class Product_PIE_Data extends Product_Meta
-{    
-    public const MY_EDITOR = 'PIE';
+{
+    public const MY_EDITOR              = 'PIE';
+
+    public const PIE_TEMPLATE_ID_KEY    = 'pie_template_id';
+    public const DESIGN_ID_KEY          = 'pie_design_project_id';
+    public const COLOR_CODE_KEY         = 'pie_color_code';
+    public const BACKGROUND_ID_KEY      = 'pie_background_id';
+
+    public const USE_IMAGE_UPLOAD_KEY   = 'pie_image_upload';
+    public const MAX_IMAGES_KEY         = 'pie_max_images';
+    public const MIN_IMAGES_KEY         = 'pie_min_images';
+
+    public const NUM_PAGES_KEY          = 'pie_num_pages';
+    public const AUTOFILL_KEY           = 'pie_autofill';
+    public const FORMAT_ID_KEY          = 'pie_format_id';
 
     public string $templateId;
     public string $designId;
@@ -34,21 +47,21 @@ class Product_PIE_Data extends Product_Meta
     {
         parent::__construct($parent);
 
-        $this->templateId = $this->parent->get_meta(Keys::PIE_TEMPLATE_ID_KEY) ?? '';
-        $this->designId = $this->parent->get_meta(Keys::DESIGN_ID_KEY) ?? '';
-        $this->colorCode = $this->parent->get_meta(Keys::COLOR_CODE_KEY) ?? '';
-        $this->backgroundId =  $this->parent->get_meta(Keys::BACKGROUND_ID_KEY) ?? '';
+        $this->templateId = $this->parent->get_meta(self::PIE_TEMPLATE_ID_KEY) ?? '';
+        $this->designId = $this->parent->get_meta(self::DESIGN_ID_KEY) ?? '';
+        $this->colorCode = $this->parent->get_meta(self::COLOR_CODE_KEY) ?? '';
+        $this->backgroundId =  $this->parent->get_meta(self::BACKGROUND_ID_KEY) ?? '';
 
         $this->editorInstructions = new PIE_Editor_Instructions($this->parent);
 
-        $this->usesImageUpload = boolval($this->parent->get_meta(Keys::USE_IMAGE_UPLOAD_KEY));
-        $this->minImages = (int)$this->parent->get_meta(Keys::MIN_IMAGES_KEY) ?? 0;
+        $this->usesImageUpload = boolval($this->parent->get_meta(self::USE_IMAGE_UPLOAD_KEY));
+        $this->minImages = (int)$this->parent->get_meta(self::MIN_IMAGES_KEY) ?? 0;
         //if max_images is 0, we can assume there is no limit to the amount of images.
-        $this->maxImages = (int)$this->parent->get_meta(Keys::MAX_IMAGES_KEY) ?? 0;
+        $this->maxImages = (int)$this->parent->get_meta(self::MAX_IMAGES_KEY) ?? 0;
 
-        $this->numPages = (int)$this->parent->get_meta(Keys::NUM_PAGES_KEY) ?? -1;
-        $this->autofill = boolval($this->parent->get_meta(Keys::AUTOFILL_KEY));
-        $this->formatId = $this->parent->get_meta(Keys::FORMAT_ID_KEY ?? '');
+        $this->numPages = (int)$this->parent->get_meta(self::NUM_PAGES_KEY) ?? -1;
+        $this->autofill = boolval($this->parent->get_meta(self::AUTOFILL_KEY));
+        $this->formatId = $this->parent->get_meta(self::FORMAT_ID_KEY ?? '');
     }
 
     public function get_num_pages(): int
@@ -210,18 +223,18 @@ class Product_PIE_Data extends Product_Meta
     public function update_meta_data(): void
     {
 
-        $this->parent->update_meta_data(Keys::PIE_TEMPLATE_ID_KEY, $this->templateId);
-        $this->parent->update_meta_data(Keys::BACKGROUND_ID_KEY, $this->backgroundId);
-        $this->parent->update_meta_data(Keys::COLOR_CODE_KEY, $this->colorCode);
-        $this->parent->update_meta_data(Keys::DESIGN_ID_KEY, $this->designId);
+        $this->parent->update_meta_data(self::PIE_TEMPLATE_ID_KEY, $this->templateId);
+        $this->parent->update_meta_data(self::BACKGROUND_ID_KEY, $this->backgroundId);
+        $this->parent->update_meta_data(self::COLOR_CODE_KEY, $this->colorCode);
+        $this->parent->update_meta_data(self::DESIGN_ID_KEY, $this->designId);
 
-        $this->parent->update_meta_data(Keys::USE_IMAGE_UPLOAD_KEY, $this->usesImageUpload ? 1 : 0);
-        $this->parent->update_meta_data(Keys::MIN_IMAGES_KEY, $this->minImages);
-        $this->parent->update_meta_data(Keys::MAX_IMAGES_KEY, $this->maxImages);
+        $this->parent->update_meta_data(self::USE_IMAGE_UPLOAD_KEY, $this->usesImageUpload ? 1 : 0);
+        $this->parent->update_meta_data(self::MIN_IMAGES_KEY, $this->minImages);
+        $this->parent->update_meta_data(self::MAX_IMAGES_KEY, $this->maxImages);
 
-        $this->parent->update_meta_data(Keys::AUTOFILL_KEY, $this->autofill ? 1 : 0);
-        $this->parent->update_meta_data(Keys::FORMAT_ID_KEY, $this->formatId);
-        $this->parent->update_meta_data(Keys::NUM_PAGES_KEY, $this->numPages);
+        $this->parent->update_meta_data(self::AUTOFILL_KEY, $this->autofill ? 1 : 0);
+        $this->parent->update_meta_data(self::FORMAT_ID_KEY, $this->formatId);
+        $this->parent->update_meta_data(self::NUM_PAGES_KEY, $this->numPages);
 
         $this->editorInstructions->update_meta_data();
         $this->parent->save_meta_data();

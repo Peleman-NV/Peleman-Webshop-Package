@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace PWP\includes\editor;
 
+/**
+ *  base class for editor projects
+ */
 abstract class Editor_Project
 {
     private string $editorId;

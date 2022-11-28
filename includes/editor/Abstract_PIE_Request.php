@@ -7,6 +7,9 @@ namespace PWP\includes\editor;
 use PWP\includes\Abstract_Request;
 use PWP\includes\exceptions\Invalid_Response_Exception;
 
+/**
+ * Abstract base class for any request to the PIE editor
+ */
 abstract class Abstract_PIE_Request extends Abstract_Request
 {
     private string $endpoint;
@@ -15,6 +18,14 @@ abstract class Abstract_PIE_Request extends Abstract_Request
     private string $method;
     private int $timeouts;
 
+    /**
+     * base class for any request to the PIE editor
+     *
+     * @param string $domain base PIE domain
+     * @param string $endpoint API endpoint, relative to the domain
+     * @param string $apiKey 
+     * @param string $customerId
+     */
     public function __construct(string $domain, string $endpoint, string $apiKey, string $customerId = '')
     {
         $this->endpoint = $domain . $endpoint;
@@ -26,6 +37,11 @@ abstract class Abstract_PIE_Request extends Abstract_Request
         $this->set_GET();
     }
 
+    /**
+     * Get full URL of the API endpoint this class calls
+     *
+     * @return string
+     */
     final protected function get_endpoint_url(): string
     {
         return $this->endpoint;
@@ -56,6 +72,12 @@ abstract class Abstract_PIE_Request extends Abstract_Request
         return $this->method;
     }
 
+    /**
+     * Make request to endpoint
+     *
+     * @return object decoded response body object
+     * @throws Invalid_Response_Exception on a `wp_error`/`null`/`false` response
+     */
     public function make_request(): object
     {
         $response = wp_remote_get($this->endpoint, array(
@@ -72,8 +94,14 @@ abstract class Abstract_PIE_Request extends Abstract_Request
 
         return (object)$response['body'];
     }
-    protected abstract function generate_request_body();
 
+    protected abstract function generate_request_body(): array;
+
+    /**
+     * Generates basic request header with authentication
+     *
+     * @return array
+     */
     protected function generate_request_header(): array
     {
         $referer = get_site_url();

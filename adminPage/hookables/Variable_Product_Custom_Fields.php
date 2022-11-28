@@ -6,15 +6,16 @@ namespace PWP\adminPage\hookables;
 
 use PWP\includes\editor\Keys;
 use PWP\includes\editor\Product_Meta_Data;
-use PWP\includes\editor\Product_IMAXEL_Data;
 use PWP\includes\editor\Product_PIE_Data;
+use PWP\includes\editor\PIE_Editor_Instructions;
+use PWP\includes\editor\Product_IMAXEL_Data;
 use PWP\includes\hookables\abstracts\Abstract_Action_Hookable;
 use PWP\includes\utilities\Input_Fields;
 use WP_Post;
 
 
 /**
- * Ads PWP/PIE specific fields to a WC Variant product
+ * Adss PWP/PIE specific fields to a WC Variant product
  */
 class Variable_Product_Custom_Fields extends Abstract_Action_Hookable
 {
@@ -84,7 +85,7 @@ class Variable_Product_Custom_Fields extends Abstract_Action_Hookable
         );
 
         Input_Fields::number_input(
-            KEYS::UNIT_PRICE . $this->loopEnd,
+            Product_Meta_Data::UNIT_PRICE . $this->loopEnd,
             __('Unit Purchase Price', PWP_TEXT_DOMAIN),
             (string)$meta->get_cart_price() ?: 0,
             ['form-row', 'form-row-first'],
@@ -95,7 +96,7 @@ class Variable_Product_Custom_Fields extends Abstract_Action_Hookable
         );
 
         Input_Fields::number_input(
-            Keys::UNIT_AMOUNT . $this->loopEnd,
+            Product_Meta_Data::UNIT_AMOUNT . $this->loopEnd,
             __('Unit amount', PWP_TEXT_DOMAIN),
             (string)$meta->get_cart_units() ?: 1,
             ['form-row', 'form-row-last'],
@@ -105,7 +106,7 @@ class Variable_Product_Custom_Fields extends Abstract_Action_Hookable
 
 
         Input_Fields::text_input(
-            Keys::CUSTOM_LABEL_KEY . $this->loopEnd,
+            Product_Meta_Data::CUSTOM_LABEL_KEY . $this->loopEnd,
             __('Custom add to cart label', PWP_TEXT_DOMAIN),
             $meta->get_custom_add_to_cart_label() ?: '',
             'add to cart',
@@ -114,7 +115,7 @@ class Variable_Product_Custom_Fields extends Abstract_Action_Hookable
         );
 
         Input_Fields::dropdown_input(
-            Keys::EDITOR_ID_KEY . $this->loopEnd,
+            Product_Meta_Data::EDITOR_ID_KEY . $this->loopEnd,
             __("editor", PWP_TEXT_DOMAIN),
             array(
                 '' => __('no customization', PWP_TEXT_DOMAIN),
@@ -127,7 +128,7 @@ class Variable_Product_Custom_Fields extends Abstract_Action_Hookable
         );
 
         Input_Fields::checkbox_input(
-            Keys::OVERRIDE_CART_THUMBNAIL . $this->loopEnd,
+            Product_Meta_Data::OVERRIDE_CART_THUMB . $this->loopEnd,
             __('use project preview thumbnail in cart', PWP_TEXT_DOMAIN),
             $meta->get_override_thumbnail(),
             ['form-row', 'form-row-full'],
@@ -137,7 +138,7 @@ class Variable_Product_Custom_Fields extends Abstract_Action_Hookable
     private function render_PIE_product_settings(Product_Meta_Data $meta): void
     {
         INPUT_FIELDS::create_field(
-            Keys::PIE_TEMPLATE_ID_KEY . $this->loopEnd,
+            Product_PIE_Data::PIE_TEMPLATE_ID_KEY . $this->loopEnd,
             __('PIE Template ID', PWP_TEXT_DOMAIN),
             'text',
             $meta->pie_data()->get_template_id(),
@@ -145,7 +146,7 @@ class Variable_Product_Custom_Fields extends Abstract_Action_Hookable
         );
 
         INPUT_FIELDS::create_field(
-            Keys::DESIGN_ID_KEY . $this->loopEnd,
+            Product_PIE_Data::DESIGN_ID_KEY . $this->loopEnd,
             __('Design ID', PWP_TEXT_DOMAIN),
             'text',
             $meta->pie_data()->get_design_id(),
@@ -155,8 +156,8 @@ class Variable_Product_Custom_Fields extends Abstract_Action_Hookable
         $instructions = $meta->pie_data()->get_editor_instructions();
         woocommerce_wp_textarea_input(array(
             'label' => __('editor instructions', PWP_TEXT_DOMAIN),
-            'name' => Keys::EDITOR_INSTRUCTIONS_KEY . $this->loopEnd,
-            'id' => Keys::EDITOR_INSTRUCTIONS_KEY . $this->loopEnd,
+            'name' => PIE_Editor_Instructions::EDITOR_INSTRUCTIONS_KEY . $this->loopEnd,
+            'id' => PIE_Editor_Instructions::EDITOR_INSTRUCTIONS_KEY . $this->loopEnd,
             'value' => implode(" ", $instructions),
             'desc_tip' => true,
             'description' => __('editor instruction values. for reference, see the PIE editor documentation. enter values separated by a space.', PWP_TEXT_DOMAIN),
@@ -164,7 +165,7 @@ class Variable_Product_Custom_Fields extends Abstract_Action_Hookable
         ));
 
         INPUT_FIELDS::create_field(
-            Keys::COLOR_CODE_KEY . $this->loopEnd,
+            Product_PIE_Data::COLOR_CODE_KEY . $this->loopEnd,
             __('Color Code', PWP_TEXT_DOMAIN),
             'text',
             $meta->pie_data()->get_color_code(),
@@ -172,7 +173,7 @@ class Variable_Product_Custom_Fields extends Abstract_Action_Hookable
         );
 
         INPUT_FIELDS::create_field(
-            Keys::BACKGROUND_ID_KEY . $this->loopEnd,
+            Product_PIE_Data::BACKGROUND_ID_KEY . $this->loopEnd,
             __('PIE background ID', PWP_TEXT_DOMAIN),
             'text',
             $meta->pie_data()->get_background_id(),
@@ -180,21 +181,21 @@ class Variable_Product_Custom_Fields extends Abstract_Action_Hookable
         );
 
         INPUT_FIELDS::checkbox_input(
-            Keys::USE_IMAGE_UPLOAD_KEY . $this->loopEnd,
+            Product_PIE_Data::USE_IMAGE_UPLOAD_KEY . $this->loopEnd,
             __('Use Image Uploads', PWP_TEXT_DOMAIN),
             $meta->pie_data()->uses_image_upload(),
             ['form-row', 'form-row-full'],
         );
 
         INPUT_FIELDS::checkbox_input(
-            Keys::AUTOFILL_KEY . $this->loopEnd,
+            Product_PIE_Data::AUTOFILL_KEY . $this->loopEnd,
             __('autofill templage pages in editor', PWP_TEXT_DOMAIN),
             $meta->pie_data()->get_autofill(),
             ['form-row', 'form-row-full'],
         );
 
         INPUT_FIELDS::text_input(
-            Keys::FORMAT_ID_KEY . $this->loopEnd,
+            Product_PIE_Data::FORMAT_ID_KEY . $this->loopEnd,
             __('format id', PWP_TEXT_DOMAIN),
             $meta->pie_data()->get_format_id(),
             '',
@@ -203,7 +204,7 @@ class Variable_Product_Custom_Fields extends Abstract_Action_Hookable
         );
 
         INPUT_FIELDS::number_input(
-            Keys::NUM_PAGES_KEY . $this->loopEnd,
+            Product_PIE_Data::NUM_PAGES_KEY . $this->loopEnd,
             __('Pages to Fill', PWP_TEXT_DOMAIN),
             $meta->pie_data()->get_num_pages(),
             ['form-row', 'form-row-last'],
@@ -212,7 +213,7 @@ class Variable_Product_Custom_Fields extends Abstract_Action_Hookable
         );
 
         INPUT_FIELDS::number_input(
-            Keys::MIN_IMAGES_KEY . $this->loopEnd,
+            Product_PIE_Data::MIN_IMAGES_KEY . $this->loopEnd,
             __('Min Images for upload', PWP_TEXT_DOMAIN),
             $meta->pie_data()->get_min_images(),
             ['form-row', 'form-row-first'],
@@ -221,7 +222,7 @@ class Variable_Product_Custom_Fields extends Abstract_Action_Hookable
         );
 
         INPUT_FIELDS::number_input(
-            Keys::MAX_IMAGES_KEY . $this->loopEnd,
+            Product_PIE_Data::MAX_IMAGES_KEY . $this->loopEnd,
             __('Max Images for upload', PWP_TEXT_DOMAIN),
             $meta->pie_data()->get_max_images(),
             ['form-row', 'form-row-last'],
@@ -233,7 +234,7 @@ class Variable_Product_Custom_Fields extends Abstract_Action_Hookable
     private function render_IMAXEL_product_settings(Product_Meta_Data $meta): void
     {
         INPUT_FIELDS::text_input(
-            Keys::IMAXEL_TEMPLATE_ID_KEY . $this->loopEnd,
+            Product_IMAXEL_Data::IMAXEL_TEMPLATE_ID_KEY . $this->loopEnd,
             __('IMAXEL template ID', PWP_TEXT_DOMAIN),
             $meta->imaxel_data()->get_template_id(),
             '',
@@ -242,7 +243,7 @@ class Variable_Product_Custom_Fields extends Abstract_Action_Hookable
         );
 
         INPUT_FIELDS::text_input(
-            Keys::IMAXEL_VARIANT_ID_KEY . $this->loopEnd,
+            Product_IMAXEL_Data::IMAXEL_VARIANT_ID_KEY . $this->loopEnd,
             __('IMAXEL Variant ID', PWP_TEXT_DOMAIN),
             $meta->imaxel_data()->get_variant_id(),
             '',
@@ -254,7 +255,7 @@ class Variable_Product_Custom_Fields extends Abstract_Action_Hookable
     private function render_PDF_upload_settings(Product_Meta_Data $meta): void
     {
         Input_Fields::checkbox_input(
-            Keys::USE_PDF_CONTENT_KEY . $this->loopEnd,
+            Product_Meta_Data::USE_PDF_CONTENT_KEY . $this->loopEnd,
             __('Require PDF upload', PWP_TEXT_DOMAIN),
             $meta->uses_pdf_content(),
             ['form-row', 'form-row-first'],
@@ -263,7 +264,7 @@ class Variable_Product_Custom_Fields extends Abstract_Action_Hookable
 
         //pdf price per additional page field. precision up to 3 decimal places
         Input_Fields::number_input(
-            Keys::PDF_PRICE_PER_PAGE_KEY . $this->loopEnd,
+            Product_Meta_Data::PDF_PRICE_PER_PAGE_KEY . $this->loopEnd,
             __('pdf price per page', PWP_TEXT_DOMAIN),
             $meta->get_price_per_page(),
             ['form-row', 'form-row-last'],
@@ -272,7 +273,7 @@ class Variable_Product_Custom_Fields extends Abstract_Action_Hookable
         );
 
         Input_Fields::number_input(
-            Keys::PDF_MIN_PAGES_KEY . $this->loopEnd,
+            Product_Meta_Data::PDF_MIN_PAGES_KEY . $this->loopEnd,
             __('pdf Min Pages', PWP_TEXT_DOMAIN),
             $meta->get_pdf_min_pages(),
             ['form-row', 'form-row-first'],
@@ -280,7 +281,7 @@ class Variable_Product_Custom_Fields extends Abstract_Action_Hookable
         );
 
         Input_Fields::number_input(
-            Keys::PDF_MAX_PAGES_KEY . $this->loopEnd,
+            Product_Meta_Data::PDF_MAX_PAGES_KEY . $this->loopEnd,
             __('pdf Max Pages', PWP_TEXT_DOMAIN),
             $meta->get_pdf_max_pages(),
             ['form-row', 'form-row-last'],
@@ -288,7 +289,7 @@ class Variable_Product_Custom_Fields extends Abstract_Action_Hookable
         );
 
         Input_Fields::number_input(
-            Keys::PDF_WIDTH_KEY . $this->loopEnd,
+            Product_Meta_Data::PDF_WIDTH_KEY . $this->loopEnd,
             __('pdf Format Width', PWP_TEXT_DOMAIN),
             $meta->get_pdf_width(),
             ['form-row', 'form-row-first'],
@@ -296,7 +297,7 @@ class Variable_Product_Custom_Fields extends Abstract_Action_Hookable
         );
 
         Input_Fields::number_input(
-            Keys::PDF_HEIGHT_KEY . $this->loopEnd,
+            Product_Meta_Data::PDF_HEIGHT_KEY . $this->loopEnd,
             __('pdf Format Height', PWP_TEXT_DOMAIN),
             $meta->get_pdf_height(),
             ['form-row', 'form-row-last'],

@@ -28,7 +28,7 @@ class Change_Cart_Item_Thumbnail extends Abstract_Filter_Hookable
         // $projectId = '22110222b2c-4a9b';
         $product = $cart_item['data'];
 
-        if (boolval($product->get_meta(Keys::OVERRIDE_CART_THUMBNAIL))) {
+        if (boolval($product->get_meta(Keys::OVERRIDE_CART_THUMB))) {
 
             if (!$this->dom) {
                 $this->dom = new DOMDocument();

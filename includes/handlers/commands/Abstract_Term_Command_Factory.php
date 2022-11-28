@@ -7,6 +7,9 @@ namespace PWP\includes\handlers\commands;
 use PWP\includes\handlers\services\Term_SVC;
 use PWP\includes\wrappers\Term_Data;
 
+/**
+ * Abstract base class for Term Command factories.
+ */
 abstract class Abstract_Term_Command_Factory
 {
     protected Term_SVC $service;

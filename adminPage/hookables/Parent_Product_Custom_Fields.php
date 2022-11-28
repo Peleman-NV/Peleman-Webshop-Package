@@ -8,6 +8,7 @@ use PWP\includes\editor\Keys;
 use PWP\includes\editor\Product_IMAXEL_Data;
 use PWP\includes\editor\Product_PIE_Data;
 use PWP\includes\editor\Product_Meta_Data;
+use PWP\includes\editor\PIE_Editor_Instructions;
 use PWP\includes\hookables\abstracts\Abstract_Action_Hookable;
 use PWP\includes\utilities\Input_Fields;
 use WC_Product_Simple;
@@ -40,9 +41,9 @@ class Parent_Product_Custom_Fields extends Abstract_Action_Hookable
     private function render_standard_product_settings(\WC_Product $product): void
     {
         Input_Fields::text_input(
-            Keys::CUSTOM_LABEL_KEY,
+            Product_Meta_Data::CUSTOM_LABEL_KEY,
             'Custom add to cart label',
-            $product->get_meta(Keys::CUSTOM_LABEL_KEY) ?: '',
+            $product->get_meta(Product_Meta_Data::CUSTOM_LABEL_KEY) ?: '',
             'eg. Design Project',
             ['short'],
             'Define a custom Add to Cart label. will be the backup label for variable products'
@@ -105,7 +106,7 @@ class Parent_Product_Custom_Fields extends Abstract_Action_Hookable
 
         /* Editor settings */
         Input_Fields::dropdown_input(
-            Keys::EDITOR_ID_KEY,
+            Product_Meta_Data::EDITOR_ID_KEY,
             "editor",
             array(
                 '' => 'no customization',
@@ -118,7 +119,7 @@ class Parent_Product_Custom_Fields extends Abstract_Action_Hookable
         );
 
         Input_Fields::checkbox_input(
-            Keys::OVERRIDE_CART_THUMBNAIL,
+            Product_Meta_Data::OVERRIDE_CART_THUMB,
             'use project preview thumbnail in cart',
             $meta_data->get_override_thumbnail(),
             ['form-row', 'form-row-full'],
@@ -134,7 +135,7 @@ class Parent_Product_Custom_Fields extends Abstract_Action_Hookable
     {
         $this->open_form_div();
         INPUT_FIELDS::text_input(
-            Keys::PIE_TEMPLATE_ID_KEY,
+            Product_PIE_Data::PIE_TEMPLATE_ID_KEY,
             'PIE Template ID',
             $meta_data->pie_data()->get_template_id(),
             '',
@@ -142,7 +143,7 @@ class Parent_Product_Custom_Fields extends Abstract_Action_Hookable
         );
 
         INPUT_FIELDS::text_input(
-            Keys::DESIGN_ID_KEY,
+            Product_PIE_Data::DESIGN_ID_KEY,
             'Design ID',
             $meta_data->pie_data()->get_design_id(),
             '',
@@ -155,8 +156,8 @@ class Parent_Product_Custom_Fields extends Abstract_Action_Hookable
         $instructions = $meta_data->pie_data()->get_editor_instructions();
         woocommerce_wp_textarea_input(array(
             'label' => 'instructions',
-            'name' => Keys::EDITOR_INSTRUCTIONS_KEY,
-            'id' => Keys::EDITOR_INSTRUCTIONS_KEY,
+            'name' => PIE_Editor_Instructions::EDITOR_INSTRUCTIONS_KEY,
+            'id' => PIE_Editor_Instructions::EDITOR_INSTRUCTIONS_KEY,
             'value' => implode(" ", $instructions),
             'desc_tip' => true,
             'description' => 'editor instruction values. for reference, see the PIE editor documentation. enter values separated by a space.',
@@ -166,7 +167,7 @@ class Parent_Product_Custom_Fields extends Abstract_Action_Hookable
         $this->open_form_div();
 
         INPUT_FIELDS::text_input(
-            Keys::COLOR_CODE_KEY,
+            Product_PIE_Data::COLOR_CODE_KEY,
             'Color Code',
             $meta_data->pie_data()->get_color_code(),
             '',
@@ -174,7 +175,7 @@ class Parent_Product_Custom_Fields extends Abstract_Action_Hookable
         );
 
         INPUT_FIELDS::text_input(
-            Keys::BACKGROUND_ID_KEY,
+            Product_PIE_Data::BACKGROUND_ID_KEY,
             'PIE background ID',
             $meta_data->pie_data()->get_background_id(),
             '',
@@ -184,21 +185,21 @@ class Parent_Product_Custom_Fields extends Abstract_Action_Hookable
         $this->open_form_div();
 
         INPUT_FIELDS::checkbox_input(
-            Keys::USE_IMAGE_UPLOAD_KEY,
+            Product_PIE_Data::USE_IMAGE_UPLOAD_KEY,
             'Use Image Uploads',
             $meta_data->pie_data()->uses_image_upload(),
             [],
         );
 
         INPUT_FIELDS::checkbox_input(
-            Keys::AUTOFILL_KEY,
+            Product_PIE_Data::AUTOFILL_KEY,
             'autofill templage pages in editor',
             $meta_data->pie_data()->get_autofill(),
             [],
         );
 
         INPUT_FIELDS::text_input(
-            Keys::FORMAT_ID_KEY,
+            Product_PIE_Data::FORMAT_ID_KEY,
             'format id',
             $meta_data->pie_data()->get_format_id(),
             '',
@@ -206,7 +207,7 @@ class Parent_Product_Custom_Fields extends Abstract_Action_Hookable
         );
 
         INPUT_FIELDS::number_input(
-            Keys::NUM_PAGES_KEY,
+            Product_PIE_Data::NUM_PAGES_KEY,
             'Pages to Fill',
             $meta_data->pie_data()->get_num_pages(),
             [],
@@ -215,7 +216,7 @@ class Parent_Product_Custom_Fields extends Abstract_Action_Hookable
         );
 
         INPUT_FIELDS::number_input(
-            Keys::MIN_IMAGES_KEY,
+            Product_PIE_Data::MIN_IMAGES_KEY,
             'Min Images for upload',
             $meta_data->pie_data()->get_min_images(),
             ['input-text'],
@@ -224,7 +225,7 @@ class Parent_Product_Custom_Fields extends Abstract_Action_Hookable
         );
 
         INPUT_FIELDS::number_input(
-            Keys::MAX_IMAGES_KEY,
+            Product_PIE_Data::MAX_IMAGES_KEY,
             'Max Images for upload',
             $meta_data->pie_data()->get_max_images(),
             ['input-text'],
@@ -238,7 +239,7 @@ class Parent_Product_Custom_Fields extends Abstract_Action_Hookable
     private function render_IMAXEL_product_settings(Product_Meta_Data $meta_data): void
     {
         INPUT_FIELDS::text_input(
-            Keys::IMAXEL_TEMPLATE_ID_KEY,
+            Product_IMAXEL_Data::IMAXEL_TEMPLATE_ID_KEY,
             'IMAXEL template ID',
             $meta_data->imaxel_data()->get_template_id(),
             '',
@@ -247,7 +248,7 @@ class Parent_Product_Custom_Fields extends Abstract_Action_Hookable
         );
 
         INPUT_FIELDS::text_input(
-            Keys::IMAXEL_VARIANT_ID_KEY,
+            Product_IMAXEL_Data::IMAXEL_VARIANT_ID_KEY,
             'IMAXEL Variant ID',
             $meta_data->imaxel_data()->get_variant_id(),
             '',
@@ -259,7 +260,7 @@ class Parent_Product_Custom_Fields extends Abstract_Action_Hookable
     private function render_PDF_upload_settings(Product_Meta_Data $meta_data): void
     {
         Input_Fields::checkbox_input(
-            Keys::USE_PDF_CONTENT_KEY,
+            Product_Meta_Data::USE_PDF_CONTENT_KEY,
             'Require PDF upload',
             $meta_data->uses_pdf_content(),
             [],
@@ -267,7 +268,7 @@ class Parent_Product_Custom_Fields extends Abstract_Action_Hookable
         );
 
         Input_Fields::number_input(
-            Keys::PDF_MIN_PAGES_KEY,
+            Product_Meta_Data::PDF_MIN_PAGES_KEY,
             'pdf Min Pages',
             $meta_data->get_pdf_min_pages(),
             [],
@@ -275,7 +276,7 @@ class Parent_Product_Custom_Fields extends Abstract_Action_Hookable
         );
 
         Input_Fields::number_input(
-            Keys::PDF_MAX_PAGES_KEY,
+            Product_Meta_Data::PDF_MAX_PAGES_KEY,
             'pdf Max Pages',
             $meta_data->get_pdf_max_pages(),
             [],
@@ -283,7 +284,7 @@ class Parent_Product_Custom_Fields extends Abstract_Action_Hookable
         );
 
         Input_Fields::number_input(
-            Keys::PDF_WIDTH_KEY,
+            Product_Meta_Data::PDF_WIDTH_KEY,
             'pdf Format Width',
             $meta_data->get_pdf_width(),
             [],
@@ -291,7 +292,7 @@ class Parent_Product_Custom_Fields extends Abstract_Action_Hookable
         );
 
         Input_Fields::number_input(
-            Keys::PDF_HEIGHT_KEY,
+            Product_Meta_Data::PDF_HEIGHT_KEY,
             'pdf Format Height',
             $meta_data->get_pdf_height(),
             [],
@@ -300,7 +301,7 @@ class Parent_Product_Custom_Fields extends Abstract_Action_Hookable
 
         //pdf price per additional page field. precision up to 3 decimal places
         Input_Fields::number_input(
-            Keys::PDF_PRICE_PER_PAGE_KEY,
+            Product_Meta_Data::PDF_PRICE_PER_PAGE_KEY,
             'pdf price per page',
             $meta_data->get_price_per_page(),
             [],

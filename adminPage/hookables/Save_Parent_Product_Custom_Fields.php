@@ -6,6 +6,8 @@ namespace PWP\adminPage\hookables;
 
 use PWP\includes\editor\Keys;
 use PWP\includes\editor\Product_Meta_Data;
+use PWP\includes\editor\Product_PIE_Data;
+use PWP\includes\editor\PIE_Editor_Instructions;
 use PWP\includes\hookables\abstracts\Abstract_Action_Hookable;
 use WC_Product_Simple;
 use WP_Post;
@@ -35,39 +37,39 @@ class Save_Parent_Product_Custom_Fields extends Abstract_Action_Hookable
             return;
         }
 
-        $editorMeta->set_cart_units((int)$_POST[Keys::UNIT_AMOUNT] ?: 1)
-            ->set_cart_price((float)$_POST[keys::UNIT_PRICE])
+        $editorMeta->set_cart_units((int)$_POST[Product_Meta_Data::UNIT_AMOUNT] ?: 1)
+            ->set_cart_price((float)$_POST[Product_Meta_Data::UNIT_PRICE])
             ->set_uses_pdf_content(
-                isset($_POST[Keys::USE_PDF_CONTENT_KEY])
+                isset($_POST[Product_Meta_Data::USE_PDF_CONTENT_KEY])
             )
-            ->set_pdf_max_pages((int)$_POST[Keys::PDF_MAX_PAGES_KEY])
-            ->set_pdf_min_pages((int)$_POST[Keys::PDF_MIN_PAGES_KEY])
-            ->set_pdf_height((int)$_POST[Keys::PDF_HEIGHT_KEY])
-            ->set_pdf_width((int)$_POST[Keys::PDF_WIDTH_KEY])
-            ->set_price_per_page((float)$_POST[Keys::PDF_PRICE_PER_PAGE_KEY])
+            ->set_pdf_max_pages((int)$_POST[Product_Meta_Data::PDF_MAX_PAGES_KEY])
+            ->set_pdf_min_pages((int)$_POST[Product_Meta_Data::PDF_MIN_PAGES_KEY])
+            ->set_pdf_height((int)$_POST[Product_Meta_Data::PDF_HEIGHT_KEY])
+            ->set_pdf_width((int)$_POST[Product_Meta_Data::PDF_WIDTH_KEY])
+            ->set_price_per_page((float)$_POST[Product_Meta_Data::PDF_PRICE_PER_PAGE_KEY])
             ->set_custom_add_to_cart_label(
-                esc_attr(sanitize_text_field($_POST[Keys::CUSTOM_LABEL_KEY]))
+                esc_attr(sanitize_text_field($_POST[Product_Meta_Data::CUSTOM_LABEL_KEY]))
             )
             ->set_editor(
-                esc_attr(sanitize_text_field($_POST[Keys::EDITOR_ID_KEY]))
-            )->set_override_thumbnail(isset($_POST[Keys::OVERRIDE_CART_THUMBNAIL]));
+                esc_attr(sanitize_text_field($_POST[Product_Meta_Data::EDITOR_ID_KEY]))
+            )->set_override_thumbnail(isset($_POST[Product_Meta_Data::OVERRIDE_CART_THUMB]));
 
         if ($product instanceof WC_Product_Simple) {
             $pieData = $editorMeta->pie_data();
             $imaxelData = $editorMeta->imaxel_data();
 
             $pieData
-                ->set_template_id(esc_attr(sanitize_text_field($_POST[Keys::PIE_TEMPLATE_ID_KEY])))
-                ->set_design_id(esc_attr(sanitize_text_field($_POST[Keys::DESIGN_ID_KEY])))
-                ->set_color_code(esc_attr(sanitize_text_field($_POST[Keys::COLOR_CODE_KEY])))
-                ->set_background_id(esc_attr(sanitize_text_field($_POST[Keys::BACKGROUND_ID_KEY])))
-                ->set_uses_image_upload(isset($_POST[Keys::USE_IMAGE_UPLOAD_KEY]))
-                ->set_autofill(isset($_POST[Keys::AUTOFILL_KEY]))
-                ->set_num_pages((int)esc_attr(sanitize_text_field($_POST[Keys::NUM_PAGES_KEY])))
-                ->set_format_id(esc_attr(sanitize_text_field($_POST[Keys::FORMAT_ID_KEY])))
-                ->set_max_images((int)esc_attr(sanitize_text_field($_POST[Keys::MAX_IMAGES_KEY])))
-                ->set_min_images((int)esc_attr(sanitize_text_field($_POST[Keys::MIN_IMAGES_KEY])))
-                ->set_editor_instructions(explode(' ', esc_attr(sanitize_text_field($_POST[Keys::EDITOR_INSTRUCTIONS_KEY]))));
+                ->set_template_id(esc_attr(sanitize_text_field($_POST[Product_PIE_Data::PIE_TEMPLATE_ID_KEY])))
+                ->set_design_id(esc_attr(sanitize_text_field($_POST[Product_PIE_Data::DESIGN_ID_KEY])))
+                ->set_color_code(esc_attr(sanitize_text_field($_POST[Product_PIE_Data::COLOR_CODE_KEY])))
+                ->set_background_id(esc_attr(sanitize_text_field($_POST[Product_PIE_Data::BACKGROUND_ID_KEY])))
+                ->set_uses_image_upload(isset($_POST[Product_PIE_Data::USE_IMAGE_UPLOAD_KEY]))
+                ->set_autofill(isset($_POST[Product_PIE_Data::AUTOFILL_KEY]))
+                ->set_num_pages((int)esc_attr(sanitize_text_field($_POST[Product_PIE_Data::NUM_PAGES_KEY])))
+                ->set_format_id(esc_attr(sanitize_text_field($_POST[Product_PIE_Data::FORMAT_ID_KEY])))
+                ->set_max_images((int)esc_attr(sanitize_text_field($_POST[Product_PIE_Data::MAX_IMAGES_KEY])))
+                ->set_min_images((int)esc_attr(sanitize_text_field($_POST[Product_PIE_Data::MIN_IMAGES_KEY])))
+                ->set_editor_instructions(explode(' ', esc_attr(sanitize_text_field($_POST[PIE_Editor_Instructions::EDITOR_INSTRUCTIONS_KEY]))));
 
             // $imaxelData
             //     ->set_template_id(esc_attr(sanitize_text_field($_POST[Keys::IMAXEL_TEMPLATE_ID_KEY])))

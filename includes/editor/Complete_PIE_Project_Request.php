@@ -26,12 +26,6 @@ class Complete_PIE_Project_Request extends Abstract_PIE_Request
         return $this;
     }
 
-    /**
-     * sets order id value
-     *
-     * @param string $id
-     * @return self
-     */
     public function set_order_id(string $id): self
     {
         $this->orderId = $id;

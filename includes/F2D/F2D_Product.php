@@ -23,6 +23,9 @@ const META_PDF_HEIGHT_MM = 'pdf_height_mm';
 const META_PDF_MIN_PAGES = 'pdf_min_pages';
 const META_PDF_MAX_PAGES = 'pdf_max_pages';
 
+/**
+ * F2D data handler, decorates a standard `WC_Product` and adds F2D specific data
+ */
 class F2D_Product
 {
     private \WC_Product $product;
