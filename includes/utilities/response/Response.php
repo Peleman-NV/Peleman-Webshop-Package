@@ -62,7 +62,7 @@ class Response implements I_Response, I_Notice
 
     final public function get_message(): string
     {
-        return $this->get_message;
+        return $this->message;
     }
 
     final public function get_description(): string

@@ -6,8 +6,9 @@ namespace PWP\includes\API\endpoints\products;
 
 use PWP\includes\utilities\schemas\Schema;
 
-class Product_Schema extends Schema
+class Product_Schema
 {
+    private array $schema;
     public function __construct()
     {
         $this->schema = array(
@@ -343,5 +344,10 @@ class Product_Schema extends Schema
                 'regular_price'
             ),
         );
+    }
+
+    public function get_schema(): array
+    {
+        return $this->schema;
     }
 }

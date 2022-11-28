@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PWP\includes\API\endpoints\attributes;
 
-use PWP\includes\API\endpoints\attributes\terms\Attribute_Terms_Create_Endpoint;
+use PWP\includes\API\endpoints\attributes\terms\Attribute_Terms_CREATE_Endpoint;
 use PWP\includes\API\endpoints\attributes\terms\Attribute_Terms_READ_Endpoint;
 use PWP\includes\API\Abstract_API_Channel;
 use PWP\includes\API\endpoints\I_Endpoint;
@@ -45,7 +45,7 @@ class API_Attributes_Channel extends Abstract_API_Channel
             'attribute terms',
             $this->authenticator
         ));
-        $this->register_endpoint(new Attribute_Terms_Create_Endpoint(
+        $this->register_endpoint(new Attribute_Terms_CREATE_Endpoint(
             $namespace,
             $rest_base . "/attributes/(?P<slug>\w+)/",
             'attribute terms',

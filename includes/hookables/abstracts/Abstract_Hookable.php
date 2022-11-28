@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PWP\includes\hookables\abstracts;
 
-abstract class Abstract_hookable implements I_Hookable_Component
+abstract class Abstract_Hookable implements I_Hookable_Component
 {
     /**
      * Array of hooks to which this object subscribes/listens, along with the priority value of each hook.

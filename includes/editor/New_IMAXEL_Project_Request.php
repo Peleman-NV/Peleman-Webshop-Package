@@ -16,6 +16,7 @@ class New_IMAXEL_Project_Request extends Abstract_Request
     private Product_IMAXEL_Data $editorData;
     private string $backUrl;
     private string $addToCartUrl;
+    private string $userId;
 
     public function __construct()
     {
@@ -27,7 +28,7 @@ class New_IMAXEL_Project_Request extends Abstract_Request
     {
         return new New_IMAXEL_Project_Request();
     }
-    
+
     public function initialize_from_imaxel_data(Product_IMAXEL_Data $data): self
     {
         $this->editorData = $data;

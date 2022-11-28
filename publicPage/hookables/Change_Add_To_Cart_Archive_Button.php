@@ -43,6 +43,7 @@ class Change_Add_To_Cart_Archive_Button extends Abstract_Filter_Hookable
             case 'external':
             case 'grouped':
             case 'default':
+            default:
                 return __('add to cart', PWP_TEXT_DOMAIN);
         }
     }

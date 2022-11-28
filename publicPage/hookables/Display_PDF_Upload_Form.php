@@ -31,7 +31,7 @@ class Display_PDF_Upload_Form extends Abstract_Action_Hookable
         switch ($product->get_type()) {
             default:
             case 'simple':
-                $this->display_pdf_data_form($product, (bool)$product->get_meta(Keys::USE_PDF_CONTENT_KEY));
+                $this->display_pdf_data_form($product, (bool)$product->get_meta(Product_Meta_Data::USE_PDF_CONTENT_KEY));
                 return;
             case 'variable':
             case 'variant':

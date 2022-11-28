@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PWP\publicPage\hookables;
 
-use pwp\includes\editor\Editor_Project;
+use PWP\includes\editor\Editor_Project;
 use PWP\includes\hookables\abstracts\Abstract_Action_Hookable;
 use WC_Order_Item_Product;
 

@@ -9,6 +9,9 @@ use PWP\includes\utilities\notification\I_Notification;
 
 class Validate_File_PageCount extends Abstract_File_Handler
 {
+    private int $minPages;
+    private int $maxPages;
+    
     public function __construct(int $minPages, int $maxPages)
     {
         parent::__construct();

@@ -10,10 +10,11 @@ class Notification implements I_Notification
 {
     private array $errors;
     private bool $isSuccess;
+    private array $warnings;
 
     public function __construct()
     {
-        $this->success = null;
+        $this->isSuccess = null;
         $this->errors = array();
         $this->warnings = array();
         $this->isSuccess = true;

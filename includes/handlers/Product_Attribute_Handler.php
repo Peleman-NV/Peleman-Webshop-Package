@@ -16,6 +16,8 @@ class Product_Attribute_Handler
 {
 
     private array $taxonomyIds;
+    private ILogger $logger;
+    
     public function __construct(ILogger $logger)
     {
         $this->logger = $logger;

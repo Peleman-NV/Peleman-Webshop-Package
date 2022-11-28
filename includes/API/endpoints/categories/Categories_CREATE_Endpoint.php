@@ -40,58 +40,6 @@ class Categories_CREATE_Endpoint extends Abstract_CREATE_Endpoint
         $sitepress = new SitePress_Wrapper();
         $activeLanguages = $sitepress->get_active_languages();
 
-        $schema = new Argument_Schema(new Schema_Factory(PWP_TEXT_DOMAIN));
-        $schema->add_string_property(
-            'name',
-            'name of the category'
-        )->required();
-        $schema->add_string_property(
-            'slug',
-            "slug of the category. If not given, will create a new slug from the name. should not contain spaces"
-        )->required();
-        $schema->add_int_property(
-            'parent_id',
-            'id of the parent category, if applicable. will precede the parent_slug if present'
-        );
-        $schema->add_string_property(
-            'parent',
-            'slug of the parent category, if applicable. will supercede the parent_id if present'
-        );
-        $schema->add_string_property(
-            'english_slug',
-            'slug of the default language category, used for uploading translated categories'
-        );
-        $schema->add_enum_property(
-            'language_code',
-            'language code of a translated category. should match the suffix of the slug if present',
-            $activeLanguages
-        )->default('en');
-        $schema->add_string_property(
-            'description',
-            'description of the category'
-        );
-        $schema->add_enum_property(
-            'display',
-            'how the category is displayed in the archive',
-            array(
-                'default',
-                'products',
-                'subcategories',
-                'both'
-            )
-        )->default('default');
-        $schema->add_int_property(
-            'image_id',
-            'id of the image to be used with this category in displaying categories'
-        );
-        $seoData = $schema->add_array_property(
-            'seo',
-            'search engine optimization properties'
-        );
-        $seoData->add_string_property('focus_keyword', 'focus keyword for YOAST SEO');
-        $seoData->add_string_property('description', 'description of the SEO data for YOAST SEO');;
-
-        return $schema->to_array();
         return [];
     }
 

@@ -11,7 +11,7 @@ use PWP\includes\exceptions\Invalid_Input_Exception;
 use PWP\includes\utilities\SitePress_Wrapper;
 use WP_Term;
 
-final class Term_SVC
+class Term_SVC
 {
     private string $taxonomy;
     private string $taxonomyType;
@@ -196,7 +196,7 @@ final class Term_SVC
 
     public function unparent_children(WP_Term $term): void
     {
-        $children = $this->service->get_children($term);
+        $children = $this->get_children($term);
 
         foreach ($children as $child) {
             if ($child->parent === $term->term_id) {

@@ -86,7 +86,6 @@ abstract class Abstract_Ajax_Hookable implements I_Hookable_Component
                 self::CALLBACK
             ),
             $this->priority,
-            $this->accepted_args
         );
         add_action(
             "wp_ajax_nopriv_{$this->scriptHandle}",
@@ -95,7 +94,6 @@ abstract class Abstract_Ajax_Hookable implements I_Hookable_Component
                 self::CALLBACK_NOPRIV
             ),
             $this->priority,
-            $this->accepted_args
         );
     }
 

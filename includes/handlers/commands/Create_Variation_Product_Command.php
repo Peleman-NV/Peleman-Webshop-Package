@@ -9,6 +9,7 @@ use PWP\includes\utilities\response\Response;
 
 class Create_Variation_Product_Command extends Create_Product_Command
 {
+    private \WC_Product $parent;
     public function __construct(\WC_Product_Variable $parent, array $data)
     {
         $this->parent = $parent;

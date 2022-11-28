@@ -7,7 +7,7 @@ namespace PWP\includes\hookables\abstracts;
 /**
  * Abstract observer class for implementing WP filter hooks in an OOP fashion. 
  */
-abstract class Abstract_Filter_Hookable extends Abstract_hookable
+abstract class Abstract_Filter_Hookable extends Abstract_Hookable
 {
     final public function register(): void
     {

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace PWP\publicPage\hookables;
 
 use PWP\includes\editor\Product_Meta_Data;
-use pwp\includes\editor\Editor_Project;
+use PWP\includes\editor\Editor_Project;
 use PWP\includes\editor\Product_IMAXEL_Data;
 use PWP\includes\editor\IMAXEL_Project;
 use PWP\includes\editor\New_IMAXEL_Project_Request;

@@ -315,8 +315,8 @@ class Project implements I_Entity, JsonSerializable
             'pages'             => $this->pages,
             'price_vat_excl'    => $this->price_vat_excl,
             'created'           => $this->created,
-            'updated'           => $this->ordered,
-            'ordered'           => $this->orderered,
+            'updated'           => $this->updated,
+            'ordered'           => $this->ordered,
         );
     }
 

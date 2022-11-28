@@ -7,6 +7,7 @@ namespace PWP\publicPage\hookables;
 use DOMDocument;
 use DOMXPath;
 use PWP\includes\editor\Keys;
+use PWP\includes\editor\Product_Meta_Data;
 use PWP\includes\hookables\abstracts\Abstract_Filter_Hookable;
 
 /**
@@ -28,7 +29,7 @@ class Change_Cart_Item_Thumbnail extends Abstract_Filter_Hookable
         // $projectId = '22110222b2c-4a9b';
         $product = $cart_item['data'];
 
-        if (boolval($product->get_meta(Keys::OVERRIDE_CART_THUMB))) {
+        if (boolval($product->get_meta(Product_Meta_Data::OVERRIDE_CART_THUMB))) {
 
             if (!$this->dom) {
                 $this->dom = new DOMDocument();
