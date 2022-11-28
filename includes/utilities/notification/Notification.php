@@ -14,7 +14,7 @@ class Notification implements I_Notification
 
     public function __construct()
     {
-        $this->isSuccess = null;
+        $this->isSuccess = false;
         $this->errors = array();
         $this->warnings = array();
         $this->isSuccess = true;
