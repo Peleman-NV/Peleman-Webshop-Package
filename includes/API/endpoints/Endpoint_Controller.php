@@ -11,6 +11,7 @@ use WP_REST_Controller;
 
 abstract class Endpoint_Controller implements I_Endpoint, I_Hookable_Component
 {
+    private string $namespace;
     protected string $path;
     protected string $title;
     protected I_Api_Authenticator $authenticator;

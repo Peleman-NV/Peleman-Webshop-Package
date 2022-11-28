@@ -6,7 +6,7 @@ namespace PWP\includes\API\endpoints\categories;
 
 use WP_REST_Response;
 use PWP\includes\API\Channel_Definition;
-use PWP\includes\authentication\I_API_Authenticator;
+use PWP\includes\authentication\I_Api_Authenticator;
 use PWP\includes\API\endpoints\Abstract_DELETE_Endpoint;
 use PWP\includes\handlers\commands\Category_Command_Factory;
 

@@ -36,8 +36,8 @@ class Product_Meta_Data extends Product_Meta
         $this->customAddToCartLabel = $this->parent->get_meta(Keys::CUSTOM_LABEL_KEY) ?: '';
 
         $this->cartUnits            = (int)$this->parent->get_meta(Keys::UNIT_AMOUNT) ?: 0;
-        $this->cartPrice            = (float)$this->parent->get_meta(keys::UNIT_PRICE) ?: 0;
-        $this->unitCode             = $this->parent->get_meta(keys::UNIT_CODE) ?: '';
+        $this->cartPrice            = (float)$this->parent->get_meta(Keys::UNIT_PRICE) ?: 0;
+        $this->unitCode             = $this->parent->get_meta(Keys::UNIT_CODE) ?: '';
 
         $this->pdfHeight            = (int)$this->parent->get_meta(Keys::PDF_HEIGHT_KEY) ?: 0;
         $this->pdfWidth             = (int)$this->parent->get_meta(Keys::PDF_WIDTH_KEY) ?: 0;
@@ -222,9 +222,9 @@ class Product_Meta_Data extends Product_Meta
         $this->parent->update_meta_data(Keys::EDITOR_ID_KEY, $this->editorId);
         $this->parent->update_meta_data(Keys::CUSTOM_LABEL_KEY, $this->customAddToCartLabel);
 
-        $this->parent->update_meta_data(keys::UNIT_AMOUNT, $this->cartUnits);
-        $this->parent->update_meta_data(keys::UNIT_PRICE, $this->cartPrice);
-        $this->parent->update_meta_data(keys::UNIT_CODE, $this->unitCode);
+        $this->parent->update_meta_data(Keys::UNIT_AMOUNT, $this->cartUnits);
+        $this->parent->update_meta_data(Keys::UNIT_PRICE, $this->cartPrice);
+        $this->parent->update_meta_data(Keys::UNIT_CODE, $this->unitCode);
 
         //TODO: make PDF editor data its own object
         //but this will do for now

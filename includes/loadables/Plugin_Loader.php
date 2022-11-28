@@ -132,6 +132,14 @@ class Plugin_Loader
         $this->loadables[] = new Shortcode_Loadable($tag, $component, $callback);
     }
 
+    /**
+     * Add hookable component to list of functions to register.
+     * The main purpose of this functionality is to allow the plugin loader to properly time the loading of all hookables,
+     * as loading at the wrong time in the wordpress initialization process can cause hooks & hookables to not function properly.
+     *
+     * @param I_Hookable_Component $hookable
+     * @return void
+     */
     public function add_hookable(I_Hookable_Component $hookable)
     {
         $this->loadables[] = $hookable;

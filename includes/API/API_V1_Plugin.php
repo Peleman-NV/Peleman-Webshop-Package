@@ -10,7 +10,7 @@ use PWP\includes\traits\Hookable_Parent_Trait;
 use PWP\includes\hookables\abstracts\I_Hookable_Component;
 
 use PWP\includes\API\endpoints\categories\API_Categories_Channel;
-use PWP\includes\API\endpoints\Products\API_Products_Channel;
+use PWP\includes\API\endpoints\products\API_Products_Channel;
 use PWP\includes\API\endpoints\FIND_PDF_Endpoint;
 use PWP\includes\API\endpoints\FIND_Project_Thumbnail;
 use PWP\includes\API\endpoints\Test_Endpoint;

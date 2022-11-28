@@ -13,6 +13,7 @@ abstract class Abstract_PIE_Request extends Abstract_Request
     private string $apiKey;
     private string $customerId;
     private string $method;
+    private int $timeouts;
 
     public function __construct(string $domain, string $endpoint, string $apiKey, string $customerId = '')
     {

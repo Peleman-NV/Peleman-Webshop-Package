@@ -25,19 +25,7 @@ class New_IMAXEL_Project_Request extends Abstract_Request
     {
         return new New_IMAXEL_Project_Request();
     }
-
-    public function set_secure(bool $secure = true): self
-    {
-        parent::set_secure($secure);
-        return $this;
-    }
-
-    public function set_timeout(int $seconds): self
-    {
-        parent::set_timeout(($seconds));
-        return $this;
-    }
-
+    
     public function initialize_from_imaxel_data(Product_IMAXEL_Data $data): self
     {
         $this->editorData = $data;

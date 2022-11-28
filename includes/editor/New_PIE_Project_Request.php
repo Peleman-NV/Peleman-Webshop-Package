@@ -133,7 +133,7 @@ class New_PIE_Project_Request extends Abstract_PIE_Request
     public function is_customizable(): bool
     {
         //project is only customizable if it is set to customizable AND it has a template Id.
-        return $this->customizable && $this->templateId;
+        return ($this->editorData != null) && ($this->editorData->get_template_id());
     }
 
     public function make_request(): PIE_Project

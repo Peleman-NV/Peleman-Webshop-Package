@@ -8,11 +8,11 @@ use PWP\includes\editor\Keys;
 use PWP\includes\editor\Product_Meta_Data;
 use PWP\includes\editor\Product_IMAXEL_Data;
 use PWP\includes\editor\Product_PIE_Data;
-use PWP\includes\hookables\abstracts\Abstract_Action_hookable;
+use PWP\includes\hookables\abstracts\Abstract_Action_Hookable;
 use PWP\includes\utilities\Input_Fields;
 use WP_Post;
 
-class Variable_Product_Custom_Fields extends Abstract_Action_hookable
+class Variable_Product_Custom_Fields extends Abstract_Action_Hookable
 {
     private string $loopEnd = '';
 

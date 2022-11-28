@@ -12,7 +12,7 @@ use PWP\includes\hookables\abstracts\Abstract_Action_Hookable;
  * Hook is called when a project is ordered. If the project has a PIE project attached to it, 
  * this hook will send an API request to the editor API to mark it for rendering.
  */
- 
+
 class Set_PIE_Project_As_Completed extends Abstract_Action_Hookable
 {
     public function __construct()
@@ -20,7 +20,7 @@ class Set_PIE_Project_As_Completed extends Abstract_Action_Hookable
         parent::__construct('woocommerce_order_status_changed', 'pwp_set_pie_order_as_completed');
     }
 
-    public function pwp_set_pie_order_as_completed(int $orderId)
+    public function pwp_set_pie_order_as_completed(int $orderId): void
     {
         $order = wc_get_order($orderId);
         $status = $order->get_status();
@@ -66,6 +66,7 @@ class Set_PIE_Project_As_Completed extends Abstract_Action_Hookable
                 $orderId,
                 $projectId
             ));
+            return false;
         }
     }
 }

@@ -7,9 +7,7 @@ namespace PWP\includes\editor;
 use WC_Product;
 
 class Product_PIE_Data extends Product_Meta
-{
-
-    
+{    
     public const MY_EDITOR = 'PIE';
 
     public string $templateId;
@@ -26,6 +24,10 @@ class Product_PIE_Data extends Product_Meta
     public int $numPages;
     public bool $autofill;
     public string $formatId;
+
+    private string $variantId;
+    private string $editorId;
+
 
 
     public function __construct(WC_Product $parent)
@@ -199,11 +201,11 @@ class Product_PIE_Data extends Product_Meta
         return $this;
     }
 
-    public function set_as_editor(): self
-    {
-        $this->editorId = "PIE";
-        return $this;
-    }
+    // public function set_as_editor(): self
+    // {
+    //     $this->editorId = "PIE";
+    //     return $this;
+    // }
 
     public function update_meta_data(): void
     {

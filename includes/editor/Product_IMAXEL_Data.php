@@ -10,6 +10,9 @@ class Product_IMAXEL_Data extends Product_Meta
 {
     public const MY_EDITOR = 'IMAXEL';
 
+    private string $templateId;
+    private string $variantId;
+
     public function __construct(WC_Product $parent)
     {
         parent::__construct($parent);

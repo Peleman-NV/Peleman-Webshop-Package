@@ -7,10 +7,24 @@ namespace PWP\includes\hookables\abstracts;
 use PWP\includes\loaders\Plugin_Loader;
 use PWP\includes\hookables\abstracts\I_Hookable_Component;
 
+/**
+ * Abstract Ajax hookable class. Facilitates AJAX calls between wordpress and the plugin with an OOP hookable object
+ */
 abstract class Abstract_Ajax_Hookable implements I_Hookable_Component
 {
 
+    /**
+     * name of the AJAX nonce used by this hookable
+     *
+     * @var string
+     */
     protected string $nonceName;
+
+    /**
+     * Script handle of the Ajax method. 
+     *
+     * @var string
+     */
     private string $scriptHandle;
     protected string $objectName;
     private string $jsFilePath;
@@ -24,12 +38,12 @@ abstract class Abstract_Ajax_Hookable implements I_Hookable_Component
     /**
      * Undocumented function
      *
-     * @param string $handle script handle to which data will be attached.
+     * @param string $handle script handle to which data will be attached. hookable will automatically prefix the handle with `wp_ajax_` and `wp_ajax_nopriv_`
      * @param string $jsFilePath path of the Javascript file relative to the component file location.
      * @param integer $priority when executing, the priority of this hook. default `10`
      * @param integer $accepted_args amount of arguments this hook accepts. default `1`
      */
-    public function __construct(string $handle,  string $jsFilePath, int $priority = 10, int $accepted_args = 1)
+    public function __construct(string $handle, string $jsFilePath, int $priority = 10, int $accepted_args = 1)
     {
         $this->scriptHandle = $handle;
         $this->objectName = $handle . '_object';

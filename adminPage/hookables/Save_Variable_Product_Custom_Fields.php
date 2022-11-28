@@ -6,9 +6,9 @@ namespace PWP\adminPage\hookables;
 
 use PWP\includes\editor\Keys;
 use PWP\includes\editor\Product_Meta_Data;
-use PWP\includes\hookables\abstracts\Abstract_Action_hookable;
+use PWP\includes\hookables\abstracts\Abstract_Action_Hookable;
 
-class Save_Variable_Product_Custom_Fields extends Abstract_Action_hookable
+class Save_Variable_Product_Custom_Fields extends Abstract_Action_Hookable
 {
     public function __construct()
     {
