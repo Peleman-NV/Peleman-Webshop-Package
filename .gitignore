@@ -30,6 +30,5 @@ node_modules/
 Config.php
 /.testingData
 /resources
-/docs
 /.phpdoc
 /build
