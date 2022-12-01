@@ -38,6 +38,7 @@ abstract class Abstract_Hookable implements I_Hookable_Component
     }
 
     abstract public function register(): void;
+    abstract public function deregister(): void;
 
     /**
      * Utility method to add additional hooks to listen for. 

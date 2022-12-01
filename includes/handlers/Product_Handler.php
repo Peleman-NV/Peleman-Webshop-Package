@@ -9,16 +9,14 @@ use PWP\includes\exceptions\Not_Found_Exception;
 use PWP\includes\exceptions\Not_Implemented_Exception;
 use PWP\includes\handlers\services\Product_Category_SVC;
 use PWP\includes\handlers\services\Term_SVC;
-use PWP\includes\utilities\ILogger;
 
 
 class Product_Handler implements I_Handler
 {
     protected $logger;
 
-    public function __construct(ILogger $logger)
+    public function __construct()
     {
-        $this->logger = $logger;
     }
 
     public function create_item(array $createData, array $args = []): object

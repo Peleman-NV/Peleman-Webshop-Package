@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace PWP\includes\API\endpoints;
 
 use PWP\includes\authentication\I_Api_Authenticator;
+use PWP\includes\exceptions\WP_Error_Exception;
+use WP_Error;
 use WP_REST_Response;
 
 defined('ABSPATH') || die;
@@ -29,7 +31,9 @@ class FIND_Project_Thumbnail extends Abstract_FIND_Endpoint
 
         try {
             $img = wp_remote_get($url);
-            //TODO: error handling in case of invalid response.
+            if (is_wp_error($img)) {
+                throw new WP_Error_Exception($img);
+            }
             $img = $img['body'];
 
             if (!$img || $img === false)  return rest_ensure_response('');
@@ -39,7 +43,8 @@ class FIND_Project_Thumbnail extends Abstract_FIND_Endpoint
             ob_clean();
             flush();
             echo $img;
-            exit;
+        } catch (WP_Error_Exception $error) {
+            error_Log((string)$error);
         } catch (\Throwable $error) {
             error_log((string)$error);
         } finally {

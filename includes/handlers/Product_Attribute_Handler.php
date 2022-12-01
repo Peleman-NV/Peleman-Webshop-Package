@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace PWP\includes\handlers;
 
 use PWP\includes\exceptions\Not_Implemented_Exception;
-use PWP\includes\utilities\ILogger;
 
 /**
  * Undocumented class
@@ -16,12 +15,6 @@ class Product_Attribute_Handler
 {
 
     private array $taxonomyIds;
-    private ILogger $logger;
-    
-    public function __construct(ILogger $logger)
-    {
-        $this->logger = $logger;
-    }
 
     public function get_item(int $id, array $args = []): object
     {
@@ -30,7 +23,7 @@ class Product_Attribute_Handler
 
     public function get_items(array $args = []): array
     {
-        if ($this->taxonomyIds = null) {
+        if (empty($this->taxonomyIds)) {
             //retrieve and cache woocommerce attribute taxonomy taxonomyIds
             $this->taxonomyIds = wc_get_attribute_taxonomy_ids();
         }

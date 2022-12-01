@@ -20,4 +20,15 @@ abstract class Abstract_Action_Hookable extends Abstract_Hookable
             );
         }
     }
+
+    final public function deregister(): void
+    {
+        foreach ($this->hooks as $hook) {
+            remove_action(
+                $hook->hook,
+                array($this, $this->callback),
+                $hook->priority
+            );
+        }
+    }
 }
