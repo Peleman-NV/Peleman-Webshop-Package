@@ -115,11 +115,11 @@ final class Plugin
 
         /** cron jobs */
         $this->add_hookable(new Add_Cron_Schedules());
-        $this->add_hookable(new Cleanup_Unordered_Projects());
     }
-
+    
     private function public_hooks(): void
     {
+        $this->add_hookable(new Cleanup_Unordered_Projects());
         $this->add_hookable(new Override_WC_Templates());
 
         $this->add_hookable(new Enqueue_Public_Styles());

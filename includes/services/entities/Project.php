@@ -334,10 +334,7 @@ class Project implements I_Entity, JsonSerializable
         WHERE ordered = '0000-0-0 00:00-00' 
         OR ordered IS NULL";
 
-        $results = $wpdb->get_results(
-            $wpdb->prepare($sql),
-            OBJECT_K
-        );
+        $results = $wpdb->get_results($sql, OBJECT_K);
 
         $projects = array();
         foreach ($results as $id => $project) {

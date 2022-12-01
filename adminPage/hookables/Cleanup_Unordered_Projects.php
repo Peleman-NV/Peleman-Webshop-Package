@@ -26,6 +26,7 @@ class Cleanup_Unordered_Projects extends Abstract_Action_Hookable
 
     public function clean(): void
     {
+        error_log("project cleanup job running...");
         $days = (int)(get_option('pwp_project_cleanup_cutoff_days') ?: 15);
         $cutoffDate = wp_date('Y-m-d H:i:s', time() - ($days * 86400));
 
@@ -43,6 +44,7 @@ class Cleanup_Unordered_Projects extends Abstract_Action_Hookable
 
         if (0 < $counter) {
             error_log("deleted {$counter} projects from system.");
+            return;
         }
         error_log("no projects deleted.");
     }
