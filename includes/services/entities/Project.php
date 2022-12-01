@@ -280,9 +280,9 @@ class Project implements I_Entity, JsonSerializable
     public function delete_files(): void
     {
         $path = $this->get_path(true);
-        // array_map('unlink', array_filter((array) glob($path) ?: []));
+        array_map('unlink', array_filter((array) glob($path) ?: []));
         // rmdir($path);
-        unlink($path,);
+        // unlink($path,);
     }
 
     private function db_data_array(): array
