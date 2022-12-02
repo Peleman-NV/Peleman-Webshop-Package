@@ -35,5 +35,13 @@ class Register_Plugin_Options extends Abstract_Action_Hookable
             'show_in_rest' => true,
             'default' => 'Choose Options',
         ));
+
+        register_setting($group, 'pwp_project_cleanup_cutoff_days', array(
+            'type' => 'string',
+            'description' => 'amount of days before an uploaded pdf project is removed. Only pdfs which have not been ordered will be deleted.',
+            'sanitize_callback' => 'sanitize_key',
+            'show_in_rest' => false,
+            'default' => 15,
+        ));
     }
 }

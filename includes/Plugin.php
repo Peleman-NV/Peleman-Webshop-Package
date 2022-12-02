@@ -18,7 +18,6 @@ use PWP\adminPage\hookables\Admin_Control_Panel;
 use PWP\adminPage\hookables\Admin_Enqueue_Scripts;
 use PWP\adminPage\hookables\Admin_Notice_Poster;
 use PWP\adminPage\hookables\Admin_Enqueue_Styles;
-use PWP\adminPage\hookables\Cleanup_Unordered_Projects;
 use PWP\adminPage\hookables\Register_Editor_Options;
 use PWP\adminPage\hookables\PIE_Editor_Control_Panel;
 use PWP\adminPage\hookables\Parent_Product_Custom_Fields;
@@ -49,6 +48,7 @@ use PWP\publicPage\hookables\Override_WC_Templates;
 use PWP\publicPage\hookables\Remove_PDF_On_Cart_Deletion;
 use PWP\publicPage\hookables\Set_PIE_Project_As_Completed;
 use PWP\publicPage\hookables\Validate_PDF_Upload;
+use PWP\publicPage\hookables\Cleanup_Unordered_Projects;
 
 #endregion
 

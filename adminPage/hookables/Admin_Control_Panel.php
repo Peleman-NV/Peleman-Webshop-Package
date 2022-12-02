@@ -46,20 +46,29 @@ class Admin_Control_Panel extends Abstract_Action_Hookable
                     <table class="form-table">
                         <tr valign="top">
                             <th scope="row">
-                                <label for="pwp_customize_label">Simple product - customizable</label>
+                                <label for="pwp_customize_label"><?php echo __("Simple product - customizable", PWP_TEXT_DOMAIN); ?></label>
                             </th>
                             <td>
                                 <input id="pwp_customize_label" name="pwp_customize_label" value="<?php echo get_option('pwp_customize_label'); ?>" placeholder="customize me" type="text" class="regular-text" />
-                                <p class="description">label for products that require customization/user input</p>
+                                <p class="description"><?php echo __("label for products that require customization/user input", PWP_TEXT_DOMAIN); ?></p>
                             </td>
                         </tr>
                         <tr valign="top">
                             <th scope="row">
-                                <label for="pwp_archive_var_label">Variable product - Customizable</label>
+                                <label for="pwp_archive_var_label"><?php echo __("Variable product - Customizable", PWP_TEXT_DOMAIN); ?></label>
                             </th>
                             <td>
                                 <input id="pwp_archive_var_label" name="pwp_archive_var_label" value="<?php echo get_option('pwp_archive_var_label'); ?>" placeholder="customize me" type="text" class="regular-text" />
-                                <p class="description">label for customizable variable products</p>
+                                <p class="description"><?php echo __("label for customizable variable products", PWP_TEXT_DOMAIN); ?></p>
+                            </td>
+                        </tr>
+                        <tr valign="top">
+                            <th scope="row">
+                                <label for="pwp_cleanup_cutoff_date"><?php echo __("PDF cleanup cutoff date", PWP_TEXT_DOMAIN); ?></label>
+                            </th>
+                            <td>
+                                <input id="pwp_project_cleanup_cutoff_days" name="pwp_project_cleanup_cutoff_days" placeholder="15" value="<?php echo get_option('pwp_project_cleanup_cutoff_days'); ?>" type=number min=0 max=366 />
+                                <p class="description"><?php echo __("amount of days before an uploaded pdf project is removed. Only pdfs which have not been ordered will be deleted.", PWP_TEXT_DOMAIN); ?></p>
                             </td>
                         </tr>
                     </table>

@@ -7,9 +7,6 @@ namespace PWP\publicPage\hookables;
 use PWP\includes\editor\Product_Meta_Data;
 use PWP\includes\hookables\abstracts\Abstract_Filter_Hookable;
 
-/**
- * Changes standard add to cart button text in the archive
- */
 class Change_Add_To_Cart_Label_For_Archive extends Abstract_Filter_Hookable
 {
     public function __construct()

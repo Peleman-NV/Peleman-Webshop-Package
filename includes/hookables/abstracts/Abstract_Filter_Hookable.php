@@ -9,10 +9,7 @@ namespace PWP\includes\hookables\abstracts;
  */
 abstract class Abstract_Filter_Hookable extends Abstract_Hookable
 {
-    /**
-     * register hookable
-     * @return void
-     */
+
     final public function register(): void
     {
         foreach ($this->hooks as $hook) {
@@ -25,10 +22,7 @@ abstract class Abstract_Filter_Hookable extends Abstract_Hookable
         }
     }
 
-    /**
-     * deregister hookable
-     * @return void
-     */
+
     final public function deregister(): void
     {
         foreach ($this->hooks as $hook) {
