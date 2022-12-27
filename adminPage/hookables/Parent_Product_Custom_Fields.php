@@ -42,11 +42,11 @@ class Parent_Product_Custom_Fields extends Abstract_Action_Hookable
     {
         Input_Fields::text_input(
             Product_Meta_Data::CUSTOM_LABEL_KEY,
-            'Custom add to cart label',
+            __('Custom add to cart label', PWP_TEXT_DOMAIN),
             $product->get_meta(Product_Meta_Data::CUSTOM_LABEL_KEY) ?: '',
             'eg. Design Project',
             ['short'],
-            'Define a custom Add to Cart label. will be the backup label for variable products'
+            __('Define a custom Add to Cart label. will be the backup label for variable products', PWP_TEXT_DOMAIN)
         );
     }
 
@@ -71,43 +71,34 @@ class Parent_Product_Custom_Fields extends Abstract_Action_Hookable
 
         Input_Fields::number_input(
             'cart_price',
-            'Unit Purchase Price',
+            __('Unit Purchase Price', PWP_TEXT_DOMAIN),
             (string)$product->get_meta('cart_price') ?: 0.0,
             ['short'],
-            'These items are sold as units, not individually',
+            __('These items are sold as units, not individually', PWP_TEXT_DOMAIN),
             array('step' => 0.1)
         );
 
         Input_Fields::number_input(
             'cart_units',
-            'Unit amount',
+            __('Unit amount', PWP_TEXT_DOMAIN),
             (string)$product->get_meta('cart_units') ?: 1,
             ['short'],
-            'Amount of items per unit. ie. 1 box (unit) contains 20 cards (items).'
+            __('Amount of items per unit. ie. 1 box (unit) contains 20 cards (items).', PWP_TEXT_DOMAIN)
         );
-
-        // Input_Fields::text_input(
-        //     'unit_code',
-        //     'Unit code',
-        //     $product->get_meta('unit_code'),
-        //     '',
-        //     ['short'],
-        //     'The unit code of this item'
-        // );
 
         Input_Fields::text_input(
             'f2d_artcd',
-            'F2D Article Code',
+            __('F2D Article Code', PWP_TEXT_DOMAIN),
             $product->get_meta('f2d_artcd'),
             '',
             ['short'],
-            'F2D article code'
+            __('F2D article code', PWP_TEXT_DOMAIN)
         );
 
         /* Editor settings */
         Input_Fields::dropdown_input(
             Product_Meta_Data::EDITOR_ID_KEY,
-            "editor",
+            __("editor", PWP_TEXT_DOMAIN),
             array(
                 '' => 'no customization',
                 Product_PIE_Data::MY_EDITOR => "Peleman Image Editor",
@@ -115,15 +106,15 @@ class Parent_Product_Custom_Fields extends Abstract_Action_Hookable
             ),
             $meta_data->get_editor_id(),
             ['form-row', 'form-row-full', 'pwp-editor-select'],
-            'which editor to use for this product. Ensure the template and variant IDs are valid for the editor.'
+            __('which editor to use for this product. Ensure the template and variant IDs are valid for the editor.', PWP_TEXT_DOMAIN)
         );
 
         Input_Fields::checkbox_input(
             Product_Meta_Data::OVERRIDE_CART_THUMB,
-            'use project preview thumbnail in cart',
+            __('use project preview thumbnail in cart', PWP_TEXT_DOMAIN),
             $meta_data->get_override_thumbnail(),
             ['form-row', 'form-row-full'],
-            'wether to override the product thumbnail in the cart with a preview of the editor project, if available.'
+            __('wether to override the product thumbnail in the cart with a preview of the editor project, if available.', PWP_TEXT_DOMAIN)
         );
 
         $this->render_PIE_product_settings($meta_data);
@@ -136,7 +127,7 @@ class Parent_Product_Custom_Fields extends Abstract_Action_Hookable
         $this->open_form_div();
         INPUT_FIELDS::text_input(
             Product_PIE_Data::PIE_TEMPLATE_ID_KEY,
-            'PIE Template ID',
+            __('PIE Template ID', PWP_TEXT_DOMAIN),
             $meta_data->pie_data()->get_template_id(),
             '',
             [],
@@ -144,7 +135,7 @@ class Parent_Product_Custom_Fields extends Abstract_Action_Hookable
 
         INPUT_FIELDS::text_input(
             Product_PIE_Data::DESIGN_ID_KEY,
-            'Design ID',
+            __('Design ID', PWP_TEXT_DOMAIN),
             $meta_data->pie_data()->get_design_id(),
             '',
             [],
@@ -155,12 +146,12 @@ class Parent_Product_Custom_Fields extends Abstract_Action_Hookable
 
         $instructions = $meta_data->pie_data()->get_editor_instructions();
         woocommerce_wp_textarea_input(array(
-            'label' => 'instructions',
+            'label' => __('instructions', PWP_TEXT_DOMAIN),
             'name' => PIE_Editor_Instructions::EDITOR_INSTRUCTIONS_KEY,
             'id' => PIE_Editor_Instructions::EDITOR_INSTRUCTIONS_KEY,
             'value' => implode(" ", $instructions),
             'desc_tip' => true,
-            'description' => 'editor instruction values. for reference, see the PIE editor documentation. enter values separated by a space.',
+            'description' => __('editor instruction values. for reference, see the PIE editor documentation. enter values separated by a space.', PWP_TEXT_DOMAIN),
             'wrapper_class' => implode(" ", []),
         ));
         $this->close_form_div();
@@ -168,7 +159,7 @@ class Parent_Product_Custom_Fields extends Abstract_Action_Hookable
 
         INPUT_FIELDS::text_input(
             Product_PIE_Data::COLOR_CODE_KEY,
-            'Color Code',
+            __('Color Code', PWP_TEXT_DOMAIN),
             $meta_data->pie_data()->get_color_code(),
             '',
             [],
@@ -176,7 +167,7 @@ class Parent_Product_Custom_Fields extends Abstract_Action_Hookable
 
         INPUT_FIELDS::text_input(
             Product_PIE_Data::BACKGROUND_ID_KEY,
-            'PIE background ID',
+            __('PIE background ID', PWP_TEXT_DOMAIN),
             $meta_data->pie_data()->get_background_id(),
             '',
             [],
@@ -186,21 +177,21 @@ class Parent_Product_Custom_Fields extends Abstract_Action_Hookable
 
         INPUT_FIELDS::checkbox_input(
             Product_PIE_Data::USE_IMAGE_UPLOAD_KEY,
-            'Use Image Uploads',
+            __('Use Image Uploads', PWP_TEXT_DOMAIN),
             $meta_data->pie_data()->uses_image_upload(),
             [],
         );
 
         INPUT_FIELDS::checkbox_input(
             Product_PIE_Data::AUTOFILL_KEY,
-            'autofill templage pages in editor',
+            __('autofill templage pages in editor', PWP_TEXT_DOMAIN),
             $meta_data->pie_data()->get_autofill(),
             [],
         );
 
         INPUT_FIELDS::text_input(
             Product_PIE_Data::FORMAT_ID_KEY,
-            'format id',
+            __('format id', PWP_TEXT_DOMAIN),
             $meta_data->pie_data()->get_format_id(),
             '',
             [],
@@ -208,7 +199,7 @@ class Parent_Product_Custom_Fields extends Abstract_Action_Hookable
 
         INPUT_FIELDS::number_input(
             Product_PIE_Data::NUM_PAGES_KEY,
-            'Pages to Fill',
+            __('Pages to Fill', PWP_TEXT_DOMAIN),
             $meta_data->pie_data()->get_num_pages(),
             [],
             '',
@@ -217,7 +208,7 @@ class Parent_Product_Custom_Fields extends Abstract_Action_Hookable
 
         INPUT_FIELDS::number_input(
             Product_PIE_Data::MIN_IMAGES_KEY,
-            'Min Images for upload',
+            __('Min Images for upload', PWP_TEXT_DOMAIN),
             $meta_data->pie_data()->get_min_images(),
             ['input-text'],
             '',
@@ -226,7 +217,7 @@ class Parent_Product_Custom_Fields extends Abstract_Action_Hookable
 
         INPUT_FIELDS::number_input(
             Product_PIE_Data::MAX_IMAGES_KEY,
-            'Max Images for upload',
+            __('Max Images for upload', PWP_TEXT_DOMAIN),
             $meta_data->pie_data()->get_max_images(),
             ['input-text'],
             '',
@@ -261,51 +252,51 @@ class Parent_Product_Custom_Fields extends Abstract_Action_Hookable
     {
         Input_Fields::checkbox_input(
             Product_Meta_Data::USE_PDF_CONTENT_KEY,
-            'Require PDF upload',
+            __('Require PDF upload', PWP_TEXT_DOMAIN),
             $meta_data->uses_pdf_content(),
             [],
-            'wether this product requires customers to upload a pdf file for contents.'
+            __('wether this product requires customers to upload a pdf file for contents.', PWP_TEXT_DOMAIN)
         );
 
         Input_Fields::number_input(
             Product_Meta_Data::PDF_MIN_PAGES_KEY,
-            'pdf Min Pages',
+            __('pdf Min Pages', PWP_TEXT_DOMAIN),
             $meta_data->get_pdf_min_pages(),
             [],
-            'min pages allowed per PDF upload'
+            __('min pages allowed per PDF upload', PWP_TEXT_DOMAIN)
         );
 
         Input_Fields::number_input(
             Product_Meta_Data::PDF_MAX_PAGES_KEY,
-            'pdf Max Pages',
+            __('pdf Max Pages', PWP_TEXT_DOMAIN),
             $meta_data->get_pdf_max_pages(),
             [],
-            'max pages allowed per PDF upload'
+            __('max pages allowed per PDF upload', PWP_TEXT_DOMAIN)
         );
 
         Input_Fields::number_input(
             Product_Meta_Data::PDF_WIDTH_KEY,
-            'pdf Format Width',
+            __('pdf Format Width', PWP_TEXT_DOMAIN),
             $meta_data->get_pdf_width(),
             [],
-            'permitted width of PDF uploads'
+            __('permitted width of PDF uploads in mm', PWP_TEXT_DOMAIN)
         );
 
         Input_Fields::number_input(
             Product_Meta_Data::PDF_HEIGHT_KEY,
-            'pdf Format Height',
+            __('pdf Format Height', PWP_TEXT_DOMAIN),
             $meta_data->get_pdf_height(),
             [],
-            'permitted height of PDF uploads'
+            __('permitted height of PDF uploads in mm', PWP_TEXT_DOMAIN)
         );
 
         //pdf price per additional page field. precision up to 3 decimal places
         Input_Fields::number_input(
             Product_Meta_Data::PDF_PRICE_PER_PAGE_KEY,
-            'pdf price per page',
+            __('pdf price per page', PWP_TEXT_DOMAIN),
             $meta_data->get_price_per_page(),
             [],
-            'additional price per page',
+            __('additional price per page', PWP_TEXT_DOMAIN),
             array('step' => 0.001)
         );
     }

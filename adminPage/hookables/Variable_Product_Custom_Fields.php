@@ -293,7 +293,7 @@ class Variable_Product_Custom_Fields extends Abstract_Action_Hookable
             __('pdf Format Width', PWP_TEXT_DOMAIN),
             $meta->get_pdf_width(),
             ['form-row', 'form-row-first'],
-            __('permitted width of PDF uploads', PWP_TEXT_DOMAIN)
+            __('permitted width of PDF uploads in mm', PWP_TEXT_DOMAIN)
         );
 
         Input_Fields::number_input(
@@ -301,7 +301,7 @@ class Variable_Product_Custom_Fields extends Abstract_Action_Hookable
             __('pdf Format Height', PWP_TEXT_DOMAIN),
             $meta->get_pdf_height(),
             ['form-row', 'form-row-last'],
-            __('permitted height of PDF uploads', PWP_TEXT_DOMAIN)
+            __('permitted height of PDF uploads in mm', PWP_TEXT_DOMAIN)
         );
     }
 
