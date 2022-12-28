@@ -40,7 +40,7 @@ the default cutoff count is **15 days**. It is recommended to never make this am
 
 
 ### product definitions
-The PWP plugin adds a lot of new parameters to the standard WooCommerce product pages. These variables are essentially the same for simple products and variant products. For more information about different product types, please see the WooCommerce documentation.
+The PWP plugin adds many new parameters to the standard WooCommerce product pages for the correct integration of Peleman Products. These variables are essentially the same for simple products and variant products. For more information about different product types, please see the WooCommerce documentation.
 
 under **General**/**Variations**, there are the following PWP specific fields:
 * **Custom Add To Cart Label** - custom add to cart label for the product. If left empty, the label will be the default for the webshop. In variable products, this label can be set for all variations here, and each variant has the option to have a custom label for itself, allowing for a great amount of flexibility in picking and customizing Add to Cart labels.
