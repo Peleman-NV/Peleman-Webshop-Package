@@ -39,6 +39,10 @@ class Ajax_Show_Variation extends Abstract_Ajax_Hookable
             'is_customizable'       => $meta->is_customizable(),
             'requires_pdf_upload'   => $meta->uses_pdf_content(),
             'button_text'           => $this->get_add_to_cart_label($meta, $parent),
+            'is_bundle'             => $meta->get_unit_amount() > 1,
+            'unit_amount'           => $meta->get_unit_amount() . ' ' . __('pieces', PWP_TEXT_DOMAIN),
+            'unit_price'            => get_woocommerce_currency_symbol() . number_format($meta->get_unit_price(), 2),
+            'item_price'            => get_woocommerce_currency_symbol() . number_format((float)$parent->get_price(), 2),
             'pdf_data'              => array(
                 'width'             => $meta->get_pdf_width() ? $meta->get_pdf_width() . ' mm' : '',
                 'height'            => $meta->get_pdf_height() ? $meta->get_pdf_height() . ' mm' : '',

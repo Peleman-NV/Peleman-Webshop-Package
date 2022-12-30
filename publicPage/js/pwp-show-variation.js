@@ -107,6 +107,7 @@
                         } else {
                             RemoveButtonIconClass();
                         }
+                        DisplayBundlePricing(response.data);
 
                         enableAddToCartButton(buttonText);
                         return;
@@ -219,6 +220,19 @@
                 hideElement($('#content-price-per-page').parent());
             }
 
+        }
+
+        function DisplayBundlePricing(data) {
+            if (data.is_bundle) {
+                $('.individual-price').removeClass('pwp-hidden');
+                $('.individual-price-amount').html(data.item_price);
+                $('.bundle-price-amount').html(data.unit_price);
+                $('.bundle-suffix').removeClass('pwp-hidden');
+                $('.bundle-suffix').html(data.unit_amount)
+                return;
+            }
+            $('.individual-price').addClass('pwp-hidden');
+            $('.bundle-suffix').addClass('pwp-hidden');
         }
 
         /**

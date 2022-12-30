@@ -22,17 +22,17 @@ class Add_PDF_Prices_To_Cart extends Abstract_Action_Hookable
     {
         foreach ($cart->get_cart() as $key => $cartItem) {
             $product = $cartItem['data'];
-            if (isset($cartItem['_pdf_data']))
-                continue;
-
-            $pdfData = $cartItem['_pdf_data'];
             $meta = new Product_Meta_Data($product);
+            if (isset($cartItem['_pdf_data'])) {
+
+                $pdfData = $cartItem['_pdf_data'];
 
 
-            //update product price with pdf price if applicable
-            if ($product instanceof WC_Product && $pdfData) {
-                $basePrice = $product->get_price();
-                $product->set_price($basePrice + $pdfData['pages'] * $meta->get_price_per_page());
+                //update product price with pdf price if applicable
+                if ($product instanceof WC_Product && $pdfData) {
+                    $basePrice = $product->get_price();
+                    $product->set_price($basePrice + $pdfData['pages'] * $meta->get_price_per_page());
+                }
             }
 
             //override price with cart unit price
