@@ -39,9 +39,6 @@ class Adjust_Mini_Cart_Item_Price extends Abstract_Action_Hookable
             $output = ob_get_clean();
         }
 
-        error_log("foo!");
-        error_log($output);
-
         return $output;
     }
 }
