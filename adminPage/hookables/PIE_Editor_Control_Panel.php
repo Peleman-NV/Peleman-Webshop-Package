@@ -79,34 +79,6 @@ class PIE_Editor_Control_Panel extends Abstract_Action_Hookable
                             <input id="pie_api_key" name="pie_api_key" type="text" value="<?php echo get_option('pie_api_key'); ?>" class="regular-text" />
                         </td>
                     </tr>
-
-                    <tr valign="top">
-                        <th scope="row">
-                            <label for="pwp_imaxel_private_key">IMAXEL Private Key</label>
-                        </th>
-                        <td>
-                            <input id=" pwp_imaxel_private_key" name="pwp_imaxel_private_key" type="text" placeholder="<?php echo __("No longer supported", PWP_TEXT_DOMAIN); ?>" value="<?php echo get_option('pwp_imaxel_private_key'); ?>" class="regular-text" disabled />
-                        </td>
-                    </tr>
-
-                    <tr valign="top">
-                        <th scope="row">
-                            <label for="pwp_imaxel_public_key">IMAXEL Public Key</label>
-                        </th>
-                        <td>
-                            <input id="pwp_imaxel_public_key" name="pwp_imaxel_public_key" type="text" placeholder="<?php echo __("No longer supported", PWP_TEXT_DOMAIN); ?>" value="<?php echo get_option('pwp_imaxel_public_key'); ?>" class="regular-text" disabled />
-                        </td>
-                    </tr>
-
-                    <tr valign="top">
-                        <th scope="row">
-                            <label for="pwp_imaxel_shop_code">IMAXEL Shop Code</label>
-                        </th>
-                        <td>
-                            <input id="pwp_imaxel_shop_code" name="pwp_imaxel_shop_code" type="text" placeholder="<?php echo __("No longer supported", PWP_TEXT_DOMAIN); ?>" value="<?php echo get_option('pwp_imaxel_shop_code'); ?>" class="regular-text" disabled />
-                        </td>
-                    </tr>
-
                 </table>
                 <?php submit_button(); ?>
             </form>

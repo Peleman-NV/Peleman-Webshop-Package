@@ -37,8 +37,9 @@ class Save_Parent_Product_Custom_Fields extends Abstract_Action_Hookable
             return;
         }
 
-        $editorMeta->set_cart_units((int)$_POST[Product_Meta_Data::UNIT_AMOUNT] ?: 1)
-            ->set_cart_price((float)$_POST[Product_Meta_Data::UNIT_PRICE])
+        $editorMeta->set_unit_amount((int)$_POST[Product_Meta_Data::UNIT_AMOUNT] ?: 1)
+            ->set_unit_price((float)$_POST[Product_Meta_Data::UNIT_PRICE])
+            ->set_unit_code($_POST[Product_Meta_Data::UNIT_CODE])
             ->set_uses_pdf_content(
                 isset($_POST[Product_Meta_Data::USE_PDF_CONTENT_KEY])
             )
@@ -56,7 +57,6 @@ class Save_Parent_Product_Custom_Fields extends Abstract_Action_Hookable
 
         if ($product instanceof WC_Product_Simple) {
             $pieData = $editorMeta->pie_data();
-            $imaxelData = $editorMeta->imaxel_data();
 
             $pieData
                 ->set_template_id(esc_attr(sanitize_text_field($_POST[Product_PIE_Data::PIE_TEMPLATE_ID_KEY])))
@@ -70,10 +70,6 @@ class Save_Parent_Product_Custom_Fields extends Abstract_Action_Hookable
                 ->set_max_images((int)esc_attr(sanitize_text_field($_POST[Product_PIE_Data::MAX_IMAGES_KEY])))
                 ->set_min_images((int)esc_attr(sanitize_text_field($_POST[Product_PIE_Data::MIN_IMAGES_KEY])))
                 ->set_editor_instructions(explode(' ', esc_attr(sanitize_text_field($_POST[PIE_Editor_Instructions::EDITOR_INSTRUCTIONS_KEY]))));
-
-            // $imaxelData
-            //     ->set_template_id(esc_attr(sanitize_text_field($_POST[Keys::IMAXEL_TEMPLATE_ID_KEY])))
-            //     ->set_variant_id(esc_attr(sanitize_text_field($_POST[Keys::IMAXEL_VARIANT_ID_KEY])));
         }
 
         $product->save_meta_data();

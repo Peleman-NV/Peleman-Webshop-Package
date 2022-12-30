@@ -60,7 +60,7 @@ class Product_Meta_Data extends Product_Meta
 
         $this->pdfHeight            = (int)$this->parent->get_meta(self::PDF_HEIGHT_KEY) ?: 0;
         $this->pdfWidth             = (int)$this->parent->get_meta(self::PDF_WIDTH_KEY) ?: 0;
-        $this->maxPages             = (int)$this->parent->get_meta(self::PDF_MAX_PAGES_KEY) ?: -1;
+        $this->maxPages             = (int)$this->parent->get_meta(self::PDF_MAX_PAGES_KEY) ?: 0;
         $this->minPages             = (int)$this->parent->get_meta(self::PDF_MIN_PAGES_KEY) ?: 1;
         $this->pricePerPage         = (float)$this->parent->get_meta(self::PDF_PRICE_PER_PAGE_KEY) ?: 0;
 
@@ -114,22 +114,22 @@ class Product_Meta_Data extends Product_Meta
         return $this->customAddToCartLabel;
     }
 
-    public function set_cart_units(int $units): self
+    public function set_unit_amount(int $units): self
     {
         $this->cartUnits = max(1, $units);
         return $this;
     }
-    public function get_cart_units(): int
+    public function get_unit_amount(): int
     {
         return $this->cartUnits;
     }
 
-    public function set_cart_price(float $price): self
+    public function set_unit_price(float $price): self
     {
         $this->cartPrice = $price;
         return $this;
     }
-    public function get_cart_price(): float
+    public function get_unit_price(): float
     {
         return $this->cartPrice;
     }

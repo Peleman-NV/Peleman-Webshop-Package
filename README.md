@@ -38,7 +38,6 @@ the default cutoff count is **15 days**. It is recommended to never make this am
 
     Note: PDF files which are ordered are never automatically deleted by the plugin.
 
-
 ### product definitions
 The PWP plugin adds many new parameters to the standard WooCommerce product pages for the correct integration of Peleman Products. These variables are essentially the same for simple products and variant products. For more information about different product types, please see the WooCommerce documentation.
 
@@ -46,10 +45,9 @@ under **General**/**Variations**, there are the following PWP specific fields:
 * **Custom Add To Cart Label** - custom add to cart label for the product. If left empty, the label will be the default for the webshop. In variable products, this label can be set for all variations here, and each variant has the option to have a custom label for itself, allowing for a great amount of flexibility in picking and customizing Add to Cart labels.
 * **Unit Purchase Price** - purchase price of a singular unit of this item. Only useful if this item is not sold as an individual item, but as a batch of units (ie. a box of 20 units)
 * **Unit amount** - amount of item units in an item (an item being 1 box, containing 20 units). This has no functional purpose within the plugin, only serves to clarify the product to the customer.
-* **F2D Article Code** - Fly2Data specific SKU of the product. Contact Peleman for more information about this.
 * **editor** - which editor to use for the customization of Peleman Products. By default, the plugin only supports the use of the PIE editor.
 * **use project preview thumbnail in cart** - If checked, the webshop will attempt to retrieve a thumbnail of the product from the image editor and replace the default item preview in the cart.
-* **PIE template ID** - which PIE template ID will be used for this product in the PIE editor.
+* **PIE template ID** `required`- which PIE template ID will be used for this product in the PIE editor.
 * **Design ID** - which design ID will be used for this product in the PIE editor.
 * **instructions** - a series of PIE editor instructions, separated by spaces. Check the PIE editor documentation for a list of accepted instructions.
 * **Color code** - color code for use in the PIE editor. Will color the background of the editor to this color, simulating colored paper or a cover. This color will not be present in the final print file, but will be present in any previews of the finished project.
@@ -63,8 +61,8 @@ under **General**/**Variations**, there are the following PWP specific fields:
 *  **require PDF upload** - check this if the product requires a PDF upload. this is useful for products such as the thesis, where a customer can create their own book.
 *  **pdf min pages** - minimum amount of pages the PDF must contain. by default should be 1.
 *  **pdf max pages** - maximum amount of pages the PDF must contain. Leave at 0 for no maximum. If the PDF has to have a set amount of pages, set this to be the same as `PDF min pages`.
-*  **pdf format width** - maximum width of the pdf file for print, in mm
-*  **pdf format height** - maximum height of the pdf file for print, in mm
+*  **pdf format width**- maximum width of the pdf file for print, in mm. If left at 0, there is no restriction on the width.
+*  **pdf format height** - maximum height of the pdf file for print, in mm. If left at 0, there is no restriction on the height.
 *  **pdf price per page** - how much each pdf page will cost, added to the default price of the product.
 
 ### user notes

@@ -24,7 +24,7 @@ class Validate_File_Dimensions extends Abstract_File_Handler
     {
         // error_log('height: ' . $data->get_height());
         // error_log('width: ' . $data->get_width());
-        
+
         $heightFit = $this->value_is_in_range(
             $data->get_height(),
             $this->heightRange,
@@ -48,6 +48,7 @@ class Validate_File_Dimensions extends Abstract_File_Handler
 
     private function value_is_in_range(float $value, float $range, float $precision): bool
     {
+        if ($range === 0) return true;
         return $precision >= abs($value - $range);
     }
 }

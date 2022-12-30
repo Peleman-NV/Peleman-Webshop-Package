@@ -40,11 +40,11 @@ class Ajax_Show_Variation extends Abstract_Ajax_Hookable
             'requires_pdf_upload'   => $meta->uses_pdf_content(),
             'button_text'           => $this->get_add_to_cart_label($meta, $parent),
             'pdf_data'              => array(
-                'width'                 => $meta->get_pdf_width() ? $meta->get_pdf_width() . ' mm' : '',
-                'height'                => $meta->get_pdf_height() ? $meta->get_pdf_height() . ' mm' : '',
-                'min_pages'             => $meta->get_pdf_min_pages() ? $meta->get_pdf_min_pages() : '',
-                'max_pages'             => $meta->get_pdf_max_pages() ? $meta->get_pdf_max_pages() : '',
-                'price_per_page'        => $meta->get_price_per_page() ? wc_price($meta->get_price_per_page()) : '',
+                'width'             => $meta->get_pdf_width() ? $meta->get_pdf_width() . ' mm' : '',
+                'height'            => $meta->get_pdf_height() ? $meta->get_pdf_height() . ' mm' : '',
+                'min_pages'         => $meta->get_pdf_min_pages() ? $meta->get_pdf_min_pages() : '',
+                'max_pages'         => $meta->get_pdf_max_pages() ? $meta->get_pdf_max_pages() : '',
+                'price_per_page'    => $meta->get_price_per_page() ? wc_price($meta->get_price_per_page()) : '',
             ),
         );
 

@@ -34,8 +34,9 @@ class Save_Variable_Product_Custom_Fields extends Abstract_Action_Hookable
         $imaxel_data = $editor_data->imaxel_data();
 
         $editor_data
-            ->set_cart_units((int)$_POST[Product_Meta_Data::UNIT_AMOUNT][$loop] ?: 1)
-            ->set_cart_price((float)$_POST[Product_Meta_Data::UNIT_PRICE][$loop])
+            ->set_unit_amount((int)$_POST[Product_Meta_Data::UNIT_AMOUNT][$loop] ?: 1)
+            ->set_unit_price((float)$_POST[Product_Meta_Data::UNIT_PRICE][$loop])
+            ->set_unit_code($_POST[Product_Meta_Data::UNIT_CODE][$loop])
             ->set_uses_pdf_content(
                 isset($_POST[Product_Meta_Data::USE_PDF_CONTENT_KEY][$loop])
             )

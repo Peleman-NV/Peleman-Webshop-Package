@@ -60,45 +60,35 @@ class Parent_Product_Custom_Fields extends Abstract_Action_Hookable
     {
         $meta_data = new Product_Meta_Data($product);
 
-        /* F2D settings */
-        // Input_Fields::checkbox_input(
-        //     'call_to_order',
-        //     'Call us to order',
-        //     boolval($product->get_meta('call_to_order')),
-        //     ['short'],
-        //     'Remove Add to Cart button and display "call us to order" instead'
-        // );
-
         Input_Fields::number_input(
-            'cart_price',
+            $meta_data::UNIT_PRICE,
             __('Unit Purchase Price', PWP_TEXT_DOMAIN),
-            (string)$product->get_meta('cart_price') ?: 0.0,
+            (string)$meta_data->get_unit_price() ?: 0.0,
             ['short'],
-            __('These items are sold as units, not individually', PWP_TEXT_DOMAIN),
+            __('Total price of a unit. a unit is composed of multiple individual items.', PWP_TEXT_DOMAIN),
             array('step' => 0.1)
         );
 
         Input_Fields::number_input(
-            'cart_units',
+            $meta_data::UNIT_AMOUNT,
             __('Unit amount', PWP_TEXT_DOMAIN),
-            (string)$product->get_meta('cart_units') ?: 1,
+            (string)$meta_data->get_unit_amount() ?: 1,
             ['short'],
             __('Amount of items per unit. ie. 1 box (unit) contains 20 cards (items).', PWP_TEXT_DOMAIN)
         );
 
         Input_Fields::text_input(
-            'f2d_artcd',
-            __('F2D Article Code', PWP_TEXT_DOMAIN),
-            $product->get_meta('f2d_artcd'),
+            $meta_data::UNIT_CODE,
+            __('Unit code', PWP_TEXT_DOMAIN),
+            $meta_data->get_unit_code(),
             '',
             ['short'],
-            __('F2D article code', PWP_TEXT_DOMAIN)
         );
 
         /* Editor settings */
         Input_Fields::dropdown_input(
             Product_Meta_Data::EDITOR_ID_KEY,
-            __("editor", PWP_TEXT_DOMAIN),
+            __("Editor", PWP_TEXT_DOMAIN),
             array(
                 '' => 'no customization',
                 Product_PIE_Data::MY_EDITOR => "Peleman Image Editor",
@@ -111,7 +101,7 @@ class Parent_Product_Custom_Fields extends Abstract_Action_Hookable
 
         Input_Fields::checkbox_input(
             Product_Meta_Data::OVERRIDE_CART_THUMB,
-            __('use project preview thumbnail in cart', PWP_TEXT_DOMAIN),
+            __('Use project preview thumbnail in cart', PWP_TEXT_DOMAIN),
             $meta_data->get_override_thumbnail(),
             ['form-row', 'form-row-full'],
             __('wether to override the product thumbnail in the cart with a preview of the editor project, if available.', PWP_TEXT_DOMAIN)
@@ -146,7 +136,7 @@ class Parent_Product_Custom_Fields extends Abstract_Action_Hookable
 
         $instructions = $meta_data->pie_data()->get_editor_instructions();
         woocommerce_wp_textarea_input(array(
-            'label' => __('instructions', PWP_TEXT_DOMAIN),
+            'label' => __('Instructions', PWP_TEXT_DOMAIN),
             'name' => PIE_Editor_Instructions::EDITOR_INSTRUCTIONS_KEY,
             'id' => PIE_Editor_Instructions::EDITOR_INSTRUCTIONS_KEY,
             'value' => implode(" ", $instructions),
@@ -184,14 +174,14 @@ class Parent_Product_Custom_Fields extends Abstract_Action_Hookable
 
         INPUT_FIELDS::checkbox_input(
             Product_PIE_Data::AUTOFILL_KEY,
-            __('autofill templage pages in editor', PWP_TEXT_DOMAIN),
+            __('Autofill templage pages in editor', PWP_TEXT_DOMAIN),
             $meta_data->pie_data()->get_autofill(),
             [],
         );
 
         INPUT_FIELDS::text_input(
             Product_PIE_Data::FORMAT_ID_KEY,
-            __('format id', PWP_TEXT_DOMAIN),
+            __('Format id', PWP_TEXT_DOMAIN),
             $meta_data->pie_data()->get_format_id(),
             '',
             [],
@@ -227,27 +217,6 @@ class Parent_Product_Custom_Fields extends Abstract_Action_Hookable
         $this->close_form_div();
     }
 
-    private function render_IMAXEL_product_settings(Product_Meta_Data $meta_data): void
-    {
-        INPUT_FIELDS::text_input(
-            Product_IMAXEL_Data::IMAXEL_TEMPLATE_ID_KEY,
-            'IMAXEL template ID',
-            $meta_data->imaxel_data()->get_template_id(),
-            '',
-            ['input-text'],
-            'IMAXEL specific template ID'
-        );
-
-        INPUT_FIELDS::text_input(
-            Product_IMAXEL_Data::IMAXEL_VARIANT_ID_KEY,
-            'IMAXEL Variant ID',
-            $meta_data->imaxel_data()->get_variant_id(),
-            '',
-            ['input-text'],
-            'IMAXEL specific variant ID'
-        );
-    }
-
     private function render_PDF_upload_settings(Product_Meta_Data $meta_data): void
     {
         Input_Fields::checkbox_input(
@@ -260,23 +229,25 @@ class Parent_Product_Custom_Fields extends Abstract_Action_Hookable
 
         Input_Fields::number_input(
             Product_Meta_Data::PDF_MIN_PAGES_KEY,
-            __('pdf Min Pages', PWP_TEXT_DOMAIN),
+            __('PDF Min Pages', PWP_TEXT_DOMAIN),
             $meta_data->get_pdf_min_pages(),
             [],
-            __('min pages allowed per PDF upload', PWP_TEXT_DOMAIN)
+            __('min pages allowed per PDF upload', PWP_TEXT_DOMAIN),
+            array('min' => 1)
         );
 
         Input_Fields::number_input(
             Product_Meta_Data::PDF_MAX_PAGES_KEY,
-            __('pdf Max Pages', PWP_TEXT_DOMAIN),
+            __('PDF Max Pages', PWP_TEXT_DOMAIN),
             $meta_data->get_pdf_max_pages(),
             [],
-            __('max pages allowed per PDF upload', PWP_TEXT_DOMAIN)
+            __('max pages allowed per PDF upload. Leave at 0 for unlimited', PWP_TEXT_DOMAIN),
+            array('min' => 0)
         );
 
         Input_Fields::number_input(
             Product_Meta_Data::PDF_WIDTH_KEY,
-            __('pdf Format Width', PWP_TEXT_DOMAIN),
+            __('PDF Format Width', PWP_TEXT_DOMAIN),
             $meta_data->get_pdf_width(),
             [],
             __('permitted width of PDF uploads in mm', PWP_TEXT_DOMAIN)
@@ -284,7 +255,7 @@ class Parent_Product_Custom_Fields extends Abstract_Action_Hookable
 
         Input_Fields::number_input(
             Product_Meta_Data::PDF_HEIGHT_KEY,
-            __('pdf Format Height', PWP_TEXT_DOMAIN),
+            __('PDF Format Height', PWP_TEXT_DOMAIN),
             $meta_data->get_pdf_height(),
             [],
             __('permitted height of PDF uploads in mm', PWP_TEXT_DOMAIN)
@@ -293,7 +264,7 @@ class Parent_Product_Custom_Fields extends Abstract_Action_Hookable
         //pdf price per additional page field. precision up to 3 decimal places
         Input_Fields::number_input(
             Product_Meta_Data::PDF_PRICE_PER_PAGE_KEY,
-            __('pdf price per page', PWP_TEXT_DOMAIN),
+            __('PDF price per page', PWP_TEXT_DOMAIN),
             $meta_data->get_price_per_page(),
             [],
             __('additional price per page', PWP_TEXT_DOMAIN),
