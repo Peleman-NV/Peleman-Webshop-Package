@@ -4,11 +4,9 @@ declare(strict_types=1);
 
 namespace PWP\adminPage\hookables;
 
-use PWP\includes\editor\Keys;
 use PWP\includes\editor\Product_Meta_Data;
 use PWP\includes\editor\Product_PIE_Data;
 use PWP\includes\editor\PIE_Editor_Instructions;
-use PWP\includes\editor\Product_IMAXEL_Data;
 use PWP\includes\hookables\abstracts\Abstract_Action_Hookable;
 use PWP\includes\utilities\Input_Fields;
 use WP_Post;
@@ -44,11 +42,11 @@ class Variable_Product_Custom_Fields extends Abstract_Action_Hookable
         $this->loopEnd = "[{$loop}]";
 
         $this->heading(
-            __('Peleman Webshop Properties', PWP_TEXT_DOMAIN),
+            __('Product Settings', PWP_TEXT_DOMAIN),
             2,
             ['pwp-options-group-title']
         );
-        $this->open_div(['pwp-options-group']);
+        $this->open_div(['classes' => ['pwp-options-group']]);
         $this->render_standard_product_settings($meta_data);
         $this->close_div();
 
@@ -57,9 +55,15 @@ class Variable_Product_Custom_Fields extends Abstract_Action_Hookable
             2,
             ['pwp-options-group-title']
         );
-        $this->open_div(['pwp-options-group']);
+        $this->open_div(['classes' => ['pwp-options-group']]);
         $this->render_PIE_product_settings($meta_data);
-        // $this->render_IMAXEL_product_settings($meta_data);
+        $this->close_div();
+        $this->heading(
+            __('PDF Upload Settings', PWP_TEXT_DOMAIN),
+            2,
+            ['pwp-options-group-title']
+        );
+        $this->open_div(['classes' => ['pwp-options-group']]);
         $this->render_PDF_upload_settings($meta_data);
         $this->close_div();
     }
@@ -121,20 +125,22 @@ class Variable_Product_Custom_Fields extends Abstract_Action_Hookable
             ['form-row', 'form-row-full'],
             __('custom add to cart button label for this variation', PWP_TEXT_DOMAIN)
         );
-
+    }
+    private function render_PIE_product_settings(Product_Meta_Data $meta): void
+    {
         Input_Fields::dropdown_input(
             Product_Meta_Data::EDITOR_ID_KEY . $this->loopEnd,
             __("Editor", PWP_TEXT_DOMAIN),
             array(
                 '' => __('no customization', PWP_TEXT_DOMAIN),
                 Product_PIE_Data::MY_EDITOR => "Peleman Image Editor",
-                // Product_IMAXEL_Data::MY_EDITOR => "Imaxel"
             ),
             $meta->get_editor_id(),
             ['form-row', 'form-row-full', 'pwp-editor-select'],
             __('Which editor to use for this product. Ensure the template and variant IDs are valid for the editor.', PWP_TEXT_DOMAIN)
         );
 
+        $this->open_div(['id' => "pwp_editor_properties" . $this->loopEnd, 'classes' => ['pwp-hidden']]);
         Input_Fields::checkbox_input(
             Product_Meta_Data::OVERRIDE_CART_THUMB . $this->loopEnd,
             __('Use project preview thumbnail in cart', PWP_TEXT_DOMAIN),
@@ -142,9 +148,7 @@ class Variable_Product_Custom_Fields extends Abstract_Action_Hookable
             ['form-row', 'form-row-full'],
             __('Whether to override the product thumbnail in the cart with a preview of the editor project, if available.', PWP_TEXT_DOMAIN)
         );
-    }
-    private function render_PIE_product_settings(Product_Meta_Data $meta): void
-    {
+
         INPUT_FIELDS::create_field(
             Product_PIE_Data::PIE_TEMPLATE_ID_KEY . $this->loopEnd,
             __('PIE Template ID', PWP_TEXT_DOMAIN),
@@ -237,6 +241,7 @@ class Variable_Product_Custom_Fields extends Abstract_Action_Hookable
             '',
             array('min' => 0)
         );
+        $this->close_div();
     }
 
     private function render_PDF_upload_settings(Product_Meta_Data $meta): void
@@ -292,14 +297,18 @@ class Variable_Product_Custom_Fields extends Abstract_Action_Hookable
         );
     }
 
-    private function open_div(array $classes = []): void
+    private function open_div(array $args = []): void
     {
-        if ($classes) {
-            $classes = implode(' ', $classes);
-            echo ("<div class='{$classes}'>");
-            return;
+        echo ("<div");
+        if (isset($args['id'])) {
+            $id = $args['id'];
+            echo (" id='{$id}'");
         }
-        echo ('<div>');
+        if (isset($args['classes'])) {
+            $classes = implode(' ', $args['classes']);
+            echo (" class='{$classes}'");
+        }
+        echo ">";
     }
 
     private function close_div(): void

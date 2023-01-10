@@ -60,11 +60,12 @@ class Parent_Product_Custom_Fields extends Abstract_Action_Hookable
     {
         $meta_data = new Product_Meta_Data($product);
 
+        $this->open_div();
         Input_Fields::number_input(
             $meta_data::UNIT_PRICE,
             __('Unit Purchase Price', PWP_TEXT_DOMAIN),
             (string)$meta_data->get_unit_price() ?: 0.0,
-            ['short'],
+            ['form-row', 'form-row-first', 'short'],
             __('Total price of a unit. a unit is composed of multiple individual items.', PWP_TEXT_DOMAIN),
             array('step' => 0.1)
         );
@@ -73,7 +74,7 @@ class Parent_Product_Custom_Fields extends Abstract_Action_Hookable
             $meta_data::UNIT_AMOUNT,
             __('Unit amount', PWP_TEXT_DOMAIN),
             (string)$meta_data->get_unit_amount() ?: 1,
-            ['short'],
+            ['form-row', 'form-row-last', 'short'],
             __('Amount of items per unit. ie. 1 box (unit) contains 20 cards (items).', PWP_TEXT_DOMAIN)
         );
 
@@ -82,22 +83,36 @@ class Parent_Product_Custom_Fields extends Abstract_Action_Hookable
             __('Unit code', PWP_TEXT_DOMAIN),
             $meta_data->get_unit_code(),
             '',
-            ['short'],
+            ['form-row', 'form-row-full'],
         );
 
-        /* Editor settings */
-        Input_Fields::dropdown_input(
-            Product_Meta_Data::EDITOR_ID_KEY,
-            __("Editor", PWP_TEXT_DOMAIN),
-            array(
-                '' => 'no customization',
-                Product_PIE_Data::MY_EDITOR => "Peleman Image Editor",
-                // Product_IMAXEL_Data::MY_EDITOR => "Imaxel"
-            ),
-            $meta_data->get_editor_id(),
-            ['form-row', 'form-row-full', 'pwp-editor-select'],
-            __('which editor to use for this product. Ensure the template and variant IDs are valid for the editor.', PWP_TEXT_DOMAIN)
+
+        $this->close_div();
+        $this->render_PIE_product_settings($meta_data);
+        // $this->render_IMAXEL_product_settings($meta_data);
+        $this->render_PDF_upload_settings($meta_data);
+    }
+
+    private function render_PIE_product_settings(Product_Meta_Data $meta_data): void
+    {
+        Input_Fields::wp_dropdown_input(
+            [
+                'id'        => Product_Meta_Data::EDITOR_ID_KEY,
+                'classes'   => ['pwp-editor-select', 'form-field', 'form-row-full'],
+                'label'     => __("Editor", PWP_TEXT_DOMAIN),
+                'options'   => [
+                    'none'                      => 'no customization',
+                    Product_PIE_Data::MY_EDITOR => 'Peleman Image Editor'
+                ],
+                'selected'  => $meta_data->get_editor_id(),
+                'desc'      => __('which editor to use for this product. Ensure the template and variant IDs are valid for the editor.', PWP_TEXT_DOMAIN),
+                'custom_attributes' => [
+                    'target'     => 'pwp_editor_properties'
+                ]
+            ]
         );
+
+        $this->open_div(['id' => 'pwp_editor_properties', 'classes' => ['pwp-hidden']]);
 
         Input_Fields::checkbox_input(
             Product_Meta_Data::OVERRIDE_CART_THUMB,
@@ -107,14 +122,6 @@ class Parent_Product_Custom_Fields extends Abstract_Action_Hookable
             __('wether to override the product thumbnail in the cart with a preview of the editor project, if available.', PWP_TEXT_DOMAIN)
         );
 
-        $this->render_PIE_product_settings($meta_data);
-        // $this->render_IMAXEL_product_settings($meta_data);
-        $this->render_PDF_upload_settings($meta_data);
-    }
-
-    private function render_PIE_product_settings(Product_Meta_Data $meta_data): void
-    {
-        $this->open_form_div();
         INPUT_FIELDS::text_input(
             Product_PIE_Data::PIE_TEMPLATE_ID_KEY,
             __('PIE Template ID', PWP_TEXT_DOMAIN),
@@ -131,9 +138,6 @@ class Parent_Product_Custom_Fields extends Abstract_Action_Hookable
             [],
         );
 
-        $this->close_form_div();
-        $this->open_form_div();
-
         $instructions = $meta_data->pie_data()->get_editor_instructions();
         woocommerce_wp_textarea_input(array(
             'label' => __('Instructions', PWP_TEXT_DOMAIN),
@@ -144,8 +148,6 @@ class Parent_Product_Custom_Fields extends Abstract_Action_Hookable
             'description' => __('editor instruction values. for reference, see the PIE editor documentation. enter values separated by a space.', PWP_TEXT_DOMAIN),
             'wrapper_class' => implode(" ", []),
         ));
-        $this->close_form_div();
-        $this->open_form_div();
 
         INPUT_FIELDS::text_input(
             Product_PIE_Data::COLOR_CODE_KEY,
@@ -162,8 +164,6 @@ class Parent_Product_Custom_Fields extends Abstract_Action_Hookable
             '',
             [],
         );
-        $this->close_form_div();
-        $this->open_form_div();
 
         INPUT_FIELDS::checkbox_input(
             Product_PIE_Data::USE_IMAGE_UPLOAD_KEY,
@@ -214,7 +214,7 @@ class Parent_Product_Custom_Fields extends Abstract_Action_Hookable
             array('min' => 0)
         );
 
-        $this->close_form_div();
+        $this->close_div();
     }
 
     private function render_PDF_upload_settings(Product_Meta_Data $meta_data): void
@@ -227,6 +227,7 @@ class Parent_Product_Custom_Fields extends Abstract_Action_Hookable
             __('wether this product requires customers to upload a pdf file for contents.', PWP_TEXT_DOMAIN)
         );
 
+        $this->open_div(['id' => 'pdf_upload_properties', 'classes' => ['pwp-hidden']]);
         Input_Fields::number_input(
             Product_Meta_Data::PDF_MIN_PAGES_KEY,
             __('PDF Min Pages', PWP_TEXT_DOMAIN),
@@ -235,7 +236,6 @@ class Parent_Product_Custom_Fields extends Abstract_Action_Hookable
             __('min pages allowed per PDF upload', PWP_TEXT_DOMAIN),
             array('min' => 1)
         );
-
         Input_Fields::number_input(
             Product_Meta_Data::PDF_MAX_PAGES_KEY,
             __('PDF Max Pages', PWP_TEXT_DOMAIN),
@@ -244,7 +244,6 @@ class Parent_Product_Custom_Fields extends Abstract_Action_Hookable
             __('max pages allowed per PDF upload. Leave at 0 for unlimited', PWP_TEXT_DOMAIN),
             array('min' => 0)
         );
-
         Input_Fields::number_input(
             Product_Meta_Data::PDF_WIDTH_KEY,
             __('PDF Format Width', PWP_TEXT_DOMAIN),
@@ -252,7 +251,6 @@ class Parent_Product_Custom_Fields extends Abstract_Action_Hookable
             [],
             __('permitted width of PDF uploads in mm', PWP_TEXT_DOMAIN)
         );
-
         Input_Fields::number_input(
             Product_Meta_Data::PDF_HEIGHT_KEY,
             __('PDF Format Height', PWP_TEXT_DOMAIN),
@@ -260,7 +258,6 @@ class Parent_Product_Custom_Fields extends Abstract_Action_Hookable
             [],
             __('permitted height of PDF uploads in mm', PWP_TEXT_DOMAIN)
         );
-
         //pdf price per additional page field. precision up to 3 decimal places
         Input_Fields::number_input(
             Product_Meta_Data::PDF_PRICE_PER_PAGE_KEY,
@@ -270,16 +267,32 @@ class Parent_Product_Custom_Fields extends Abstract_Action_Hookable
             __('additional price per page', PWP_TEXT_DOMAIN),
             array('step' => 0.001)
         );
+        $this->close_div();
     }
 
-    private function open_form_div(array $classes = []): void
+    private function open_div(array $args = []): void
     {
-        $classes = implode(' ', $classes);
-        echo ("<div class='options_group {$classes}'>");
+        echo ("<div");
+        if (isset($args['id'])) {
+            $id = $args['id'];
+            echo (" id='{$id}'");
+        }
+        if (isset($args['classes'])) {
+            $classes = implode(' ', $args['classes']);
+            echo (" class='{$classes}'");
+        }
+        echo ">";
     }
 
-    private function close_form_div(): void
+    private function close_div(): void
     {
         echo ("</div>");
+    }
+
+    private function heading(string $text, int $importance = 1, array $classes = []): void
+    {
+        $importance = min(6, max(1, $importance));
+        $classes = implode(' ', $classes);
+        echo "<h{$importance} class='{$classes}'>{$text}</h{$importance}>";
     }
 }

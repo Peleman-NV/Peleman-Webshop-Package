@@ -111,6 +111,41 @@ class Input_Fields
             <?php endif; ?>
         </p>
 <?php
+    }
 
+    public static function wp_dropdown_input(array $args): void
+    {
+        $classes = isset($args['classes']) ? implode(' ', $args['classes']) : '';
+        $options = isset($args['options']) ? $args['options'] : [];
+        $selected = isset($args['selected']) ? $args['selected'] : '';
+        $description = isset($args['desc']) ? $args['desc'] : '';
+        $attributes = isset($args['custom_attributes']) ? $args['custom_attributes'] : '';
+
+        echo '<p class="form-field form-row form-row-full">';
+        if ($args['id'] && $args['label']) {
+            echo '<label for="' . $args['id'] . '">' . $args['label'] . '</label>';
+        }
+        echo '<select';
+        if ($args['id']) {
+            echo ' id="' . $args['id'] . '"';
+        }
+        if ($classes) {
+            echo ' class="' . $classes . '"';
+        }
+        if ($attributes) {
+            foreach ($attributes as $attribute => $value) {
+                echo ' ' . $attribute . '="' . $value . '"';
+            }
+        }
+        echo '>';
+
+        foreach ($options as $key => $option) {
+            echo '<option value="' . $key . '" ' . ($key === $selected ? 'selected' : '') . '>' . $option . '</option>';
+        }
+        echo '</select>';
+        if ($description) {
+            echo "<span>{$description}</span>";
+        }
+        echo "</p>";
     }
 }

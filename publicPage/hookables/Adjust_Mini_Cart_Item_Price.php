@@ -24,7 +24,7 @@ class Adjust_Mini_Cart_Item_Price extends Abstract_Action_Hookable
             $price = $meta->get_unit_price();
             ob_start();
 ?>
-            <span class="quantity"> <?php echo $unitAmount; ?> X
+            <span class="quantity"> <?php echo $unitAmount; ?> </span> X
                 <span class="woocommerce-Price-amount amount">
                     <bdi>
                         <span class="woocommerce-Price-currencySymbol">
@@ -33,7 +33,6 @@ class Adjust_Mini_Cart_Item_Price extends Abstract_Action_Hookable
                         <?php echo wc_price($price); ?>
                     </bdi>
                 </span>
-            </span>
 <?php
 
             $output = ob_get_clean();

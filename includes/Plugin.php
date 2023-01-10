@@ -18,10 +18,9 @@ use PWP\adminPage\hookables\Admin_Control_Panel;
 use PWP\adminPage\hookables\Admin_Enqueue_Scripts;
 use PWP\adminPage\hookables\Admin_Notice_Poster;
 use PWP\adminPage\hookables\Admin_Enqueue_Styles;
-use PWP\adminPage\hookables\Register_Editor_Options;
+use PWP\adminPage\hookables\Admin_Submenu_Fields;
 use PWP\adminPage\hookables\PIE_Editor_Control_Panel;
 use PWP\adminPage\hookables\Parent_Product_Custom_Fields;
-use PWP\adminPage\hookables\Register_Plugin_Options;
 use PWP\adminPage\hookables\Variable_Product_Custom_Fields;
 use PWP\adminPage\hookables\Save_Parent_Product_Custom_Fields;
 use PWP\adminPage\hookables\Save_Variable_Product_Custom_Fields;
@@ -100,8 +99,7 @@ final class Plugin
         /** control panel hookables */
         $this->add_hookable(new Admin_Enqueue_Styles());
         $this->add_hookable(new Admin_Enqueue_Scripts());
-        $this->add_hookable(new Register_Plugin_Options());
-        $this->add_hookable(new Register_Editor_Options());
+        $this->add_hookable(new Admin_Submenu_Fields());
 
         $this->add_hookable(new Admin_Control_Panel());
         $this->add_hookable(new PIE_Editor_Control_Panel());
@@ -116,7 +114,7 @@ final class Plugin
         /** cron jobs */
         $this->add_hookable(new Add_Cron_Schedules());
     }
-    
+
     private function public_hooks(): void
     {
         $this->add_hookable(new Cleanup_Unordered_Projects());
