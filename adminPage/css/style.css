@@ -7,7 +7,7 @@
     margin: 0 !important;
 }
 
-.pwp-options-group .form-field {
+.pwp-options-group.form-row-first, .pwp-options-group.form-row-last {
     width: 46% !important;
 }
 
@@ -16,6 +16,14 @@
     font-weight: 600 !important;
     font-size: 1.3em !important;
     margin-top: 12px !important;
+}
+
+.pwp-options-header {
+    width: 100%;
+    clear: both;
+    font-weight: bold !important;
+    font-size: inherit;
+    border-bottom: 1px solid #ccc !important;
 }
 
 .pwp-options-group input[type='checkbox'] {
@@ -88,6 +96,14 @@
 
 .pwp-hidden {
     display: none !important;
+}
+
+.form-row.form-row-full {
+    width: auto !important;
+}
+
+.form-field select{
+    max-width: 100% !important
 }
 
 @keyframes rotate-with-color {

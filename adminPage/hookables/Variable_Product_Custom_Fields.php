@@ -221,7 +221,7 @@ class Variable_Product_Custom_Fields extends Abstract_Action_Hookable
             'value' => $meta->pie_data()->uses_image_upload() ? 'yes' : 'no',
             'desc_tip' => true,
             'description' => __('', PWP_TEXT_DOMAIN),
-            'wrapper_class' => 'form-row form-row-full',
+            'wrapper_class' => 'form-row form-row-first',
         ));
 
         woocommerce_wp_text_input(array(
@@ -231,7 +231,7 @@ class Variable_Product_Custom_Fields extends Abstract_Action_Hookable
             'value' => $meta->pie_data()->get_num_pages(),
             'desc_tip' => true,
             'description' =>  __('', PWP_TEXT_DOMAIN),
-            'wrapper_class' => 'form-row form-row-full',
+            'wrapper_class' => 'form-row form-row-last',
             'type' => 'number',
             'custom_attributes' => array(
                 'step' => 1,
@@ -295,6 +295,9 @@ class Variable_Product_Custom_Fields extends Abstract_Action_Hookable
 
     private function render_editor_instructions(Product_Meta_Data $meta): void
     {
+    ?>
+        <div class="pwp-options-header">Editor Instructions</div>
+<?php
         $this->open_div();
         $instructions = $meta->pie_data()->get_editor_instructions();
         $index = 0;
@@ -325,7 +328,7 @@ class Variable_Product_Custom_Fields extends Abstract_Action_Hookable
             'value' => $meta->uses_pdf_content() ? 'yes' : 'no',
             'desc_tip' => true,
             'description' => __('whether this product requires customers to upload a pdf file for contents.', PWP_TEXT_DOMAIN),
-            'wrapper_class' => 'form-row form-row-first',
+            'wrapper_class' => 'form-row form-row-full',
             'custom_attributes' => array('foldout' => $custom)
         ));
 
@@ -341,7 +344,7 @@ class Variable_Product_Custom_Fields extends Abstract_Action_Hookable
             'value' => $meta->get_price_per_page(),
             'desc_tip' => true,
             'description' => __('additional price per page', PWP_TEXT_DOMAIN),
-            'wrapper_class' => 'form-row form-row-last',
+            'wrapper_class' => 'form-row form-row-first',
             'data_type' => 'price',
             'custom_attributes' => array('step' => 0.001)
         ));

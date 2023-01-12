@@ -205,7 +205,7 @@ class Parent_Product_Custom_Fields extends Abstract_Action_Hookable
             'id' => Product_PIE_Data::COLOR_CODE_KEY,
             'name' => Product_PIE_Data::COLOR_CODE_KEY,
             'label' => __('Color code', PWP_TEXT_DOMAIN),
-            'value' => $meta->pie_data()->get_num_pages(),
+            'value' => $meta->pie_data()->get_color_code(),
             'desc_tip' => true,
             'description' =>  __('', PWP_TEXT_DOMAIN),
             'wrapper_class' => 'form-row form-row-first',
@@ -292,6 +292,9 @@ class Parent_Product_Custom_Fields extends Abstract_Action_Hookable
 
     private function render_editor_instructions(Product_Meta_Data $meta)
     {
+?>
+        <div class="pwp-options-header">Editor Instructions</div>
+<?php
         $this->open_div();
         $instructions = $meta->pie_data()->get_editor_instructions();
         $index = 0;
@@ -322,7 +325,7 @@ class Parent_Product_Custom_Fields extends Abstract_Action_Hookable
             'value' => $meta->uses_pdf_content() ? 'yes' : 'no',
             'desc_tip' => true,
             'description' => __('whether this product requires customers to upload a pdf file for contents.', PWP_TEXT_DOMAIN),
-            'wrapper_class' => 'form-row form-row-first',
+            'wrapper_class' => 'form-row form-row-full',
             'custom_attributes' => array('foldout' => $custom)
         ));
 

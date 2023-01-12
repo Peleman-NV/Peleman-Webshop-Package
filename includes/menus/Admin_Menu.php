@@ -12,8 +12,8 @@ abstract class Admin_menu implements IWPMenu
     {
         $option = $args['option'];
         $value = get_option($option);
-        $placeholder = $args['placeholder'] ?: '';
-        $description = $args['description'] ?: '';
+        $placeholder = isset($args['placeholder']) ? $args['placeholder'] : '';
+        $description = isset($args['description']) ? $args['description'] : '';
 
         $classArray = isset($args['classes']) ? $args['classes'] : [];
         $classArray[] = 'regular-text';

@@ -44,7 +44,7 @@ class Editor_Submenu extends Admin_menu
         add_settings_section(
             'pwp_settings_editors',
             __("Editor", PWP_TEXT_DOMAIN),
-            array($this, ''),
+            null,
             Admin_Control_Panel::PAGE_SLUG,
         );
         add_settings_field(
@@ -54,7 +54,7 @@ class Editor_Submenu extends Admin_menu
             Admin_Control_Panel::PAGE_SLUG,
             "pwp_settings_editors",
             array(
-                'option' => 'pwp_pie_domain',
+                'option' => 'pie_domain',
                 'placeholder' => "https://deveditor.peleman.com",
                 'description' => __("base Site Address of the PIE editor", PWP_TEXT_DOMAIN)
             )

@@ -52,6 +52,7 @@ class PIE_Editor_Instructions extends Product_Meta
         $this->add_instruction('usetext', 'use text');
         $this->add_instruction('uselayers', 'use layers');
         $this->add_instruction('useqr', 'use QR');
+        $this->add_instruction('usesettings', 'use settings');
 
 
         $instructionString = $this->parent->get_meta(self::EDITOR_INSTRUCTIONS_KEY);
@@ -77,7 +78,6 @@ class PIE_Editor_Instructions extends Product_Meta
 
     public function parse_instruction_array(array $instructions): self
     {
-        error_log("instructions: " . print_r($instructions, true));
         foreach ($this->instructions as $key => $instruction) {
             $instruction->set_enabled(isset($instructions[$key]));
         }
