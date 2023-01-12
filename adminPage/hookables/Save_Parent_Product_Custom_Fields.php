@@ -69,7 +69,7 @@ class Save_Parent_Product_Custom_Fields extends Abstract_Action_Hookable
                 ->set_format_id(esc_attr(sanitize_text_field($_POST[Product_PIE_Data::FORMAT_ID_KEY])))
                 ->set_max_images((int)esc_attr(sanitize_text_field($_POST[Product_PIE_Data::MAX_IMAGES_KEY])))
                 ->set_min_images((int)esc_attr(sanitize_text_field($_POST[Product_PIE_Data::MIN_IMAGES_KEY])))
-                ->set_editor_instructions(explode(' ', esc_attr(sanitize_text_field($_POST[PIE_Editor_Instructions::EDITOR_INSTRUCTIONS_KEY]))));
+                ->parse_instruction_array($_POST);
         }
 
         $product->save_meta_data();

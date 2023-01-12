@@ -99,30 +99,41 @@ class Product_PIE_Data extends Product_Meta
         return $this;
     }
 
-
+    /**
+     * returns a dictionary of editor instruction objects
+     *
+     * @return PIE_Instruction[]
+     */
     public function get_editor_instructions(): array
     {
         return $this->editorInstructions->get_instructions();
     }
 
-    public function set_editor_instructions(array $instructions): self
+    public function get_editor_instruction_string(): string
     {
-        $this->editorInstructions->set_instructions($instructions);
+        return $this->editorInstructions->get_instructions_string();
+    }
+    /**
+     * returns a string containing the keys of all enabled editor instructions.
+     *
+     * @return string[]
+     */
+    public function get_editor_instruction_array(): array
+    {
+        return $this->editorInstructions->get_instruction_array();
+    }
+
+    public function parse_instruction_array(array $instructions): self
+    {
+        $this->editorInstructions->parse_instruction_array($instructions);
         return $this;
     }
 
-    public function add_editor_instruction(string $instruction): self
+    public function parse_instruction_array_loop(array $instructions, int $loop): self
     {
-        $this->editorInstructions->add_instruction($instruction);
+        $this->editorInstructions->parse_instruction_array_loop($instructions, $loop);
         return $this;
     }
-
-    public function remove_editor_instruction(string $instruction): self
-    {
-        $this->editorInstructions->remove_instruction($instruction);
-        return $this;
-    }
-
 
     public function get_template_id(): string
     {

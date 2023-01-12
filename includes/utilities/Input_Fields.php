@@ -51,10 +51,11 @@ class Input_Fields
             'id'                => $id,
             'label'             => $label,
             'value'             => $value,
-            'type'              => 'number',
+            'type'              => 'text',
             'desc_tip'          => !empty($description),
             'description'       => __($description, PWP_TEXT_DOMAIN),
             'wrapper_class'     => implode(' ', $classes),
+            'class'             => implode(' ', $classes),
             'custom_attributes' => $attributes,
         ));
     }
@@ -71,7 +72,7 @@ class Input_Fields
         ));
     }
 
-    public static function checkbox_input(string $id, string $label, bool $value, array $classes = [], string $description = ''): void
+    public static function checkbox_input(string $id, string $label, bool $value, array $classes = [], string $description = '', array $attributes = []): void
     {
         \woocommerce_wp_checkbox(array(
             'id'            => $id,
@@ -80,6 +81,7 @@ class Input_Fields
             'desc_tip'      => !empty($description),
             'description'   => __($description, PWP_TEXT_DOMAIN),
             'wrapper_class' => implode(' ', $classes),
+            'custom_attributes' => $attributes
         ));
     }
 
@@ -128,6 +130,7 @@ class Input_Fields
         echo '<select';
         if ($args['id']) {
             echo ' id="' . $args['id'] . '"';
+            echo ' name="' . $args['id'] . '"';
         }
         if ($classes) {
             echo ' class="' . $classes . '"';

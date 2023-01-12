@@ -31,7 +31,7 @@ class Save_Variable_Product_Custom_Fields extends Abstract_Action_Hookable
     {
         $editor_data = new Product_Meta_Data(wc_get_product($variation_id));
         $pie_data = $editor_data->pie_data();
-        $imaxel_data = $editor_data->imaxel_data();
+        // error_log(print_r($_POST, true));
 
         $editor_data
             ->set_unit_amount((int)$_POST[Product_Meta_Data::UNIT_AMOUNT][$loop] ?: 1)
@@ -49,7 +49,7 @@ class Save_Variable_Product_Custom_Fields extends Abstract_Action_Hookable
                 esc_attr(sanitize_text_field($_POST[Product_Meta_Data::EDITOR_ID_KEY][$loop]))
             )->set_custom_add_to_cart_label(
                 esc_attr(sanitize_text_field($_POST[Product_Meta_Data::CUSTOM_LABEL_KEY][$loop]))
-            )->set_override_thumbnail((bool)$_POST[Product_Meta_Data::OVERRIDE_CART_THUMB][$loop]);
+            )->set_override_thumbnail(isset($_POST[Product_Meta_Data::OVERRIDE_CART_THUMB][$loop]));
 
         $pie_data->set_template_id(
             esc_attr(sanitize_text_field(
@@ -59,38 +59,16 @@ class Save_Variable_Product_Custom_Fields extends Abstract_Action_Hookable
 
         //PIE specific data
         $pie_data
-            ->set_design_id(
-                esc_attr(sanitize_text_field($_POST[Product_PIE_Data::DESIGN_ID_KEY][$loop]))
-            )->set_color_code(
-                esc_attr(sanitize_text_field($_POST[Product_PIE_Data::COLOR_CODE_KEY][$loop]))
-            )->set_background_id(
-                esc_attr(sanitize_text_field($_POST[Product_PIE_Data::BACKGROUND_ID_KEY][$loop]))
-            )->set_uses_image_upload(
-                isset($_POST[Product_PIE_Data::USE_IMAGE_UPLOAD_KEY][$loop])
-            )->set_autofill(
-                isset($_POST[Product_PIE_Data::AUTOFILL_KEY][$loop])
-            )->set_num_pages(
-                (int)esc_attr(sanitize_text_field($_POST[Product_PIE_Data::NUM_PAGES_KEY][$loop]))
-            )->set_format_id(
-                esc_attr(sanitize_text_field($_POST[Product_PIE_Data::FORMAT_ID_KEY][$loop]))
-            )->set_max_images(
-                (int)esc_attr(sanitize_text_field($_POST[Product_PIE_Data::MAX_IMAGES_KEY][$loop]))
-            )->set_min_images(
-                (int)esc_attr(sanitize_text_field($_POST[Product_PIE_Data::MIN_IMAGES_KEY][$loop]))
-            )->set_editor_instructions(
-                explode(' ', ($_POST[PIE_Editor_Instructions::EDITOR_INSTRUCTIONS_KEY][$loop]))
-            );
-
-        //IMAXEL specific data
-        // $imaxel_data->set_template_id(
-        //     esc_attr(sanitize_text_field(
-        //         $_POST[Keys::IMAXEL_TEMPLATE_ID_KEY][$loop]
-        //     ))
-        // )->set_variant_id(
-        //     esc_attr(sanitize_text_field(
-        //         $_POST[Keys::IMAXEL_VARIANT_ID_KEY][$loop]
-        //     ))
-        // );
+            ->set_design_id(esc_attr(sanitize_text_field($_POST[Product_PIE_Data::DESIGN_ID_KEY][$loop])))
+            ->set_color_code(esc_attr(sanitize_text_field($_POST[Product_PIE_Data::COLOR_CODE_KEY][$loop])))
+            ->set_background_id(esc_attr(sanitize_text_field($_POST[Product_PIE_Data::BACKGROUND_ID_KEY][$loop])))
+            ->set_uses_image_upload(isset($_POST[Product_PIE_Data::USE_IMAGE_UPLOAD_KEY][$loop]))
+            ->set_autofill(isset($_POST[Product_PIE_Data::AUTOFILL_KEY][$loop]))
+            ->set_num_pages((int)esc_attr(sanitize_text_field($_POST[Product_PIE_Data::NUM_PAGES_KEY][$loop])))
+            ->set_format_id(esc_attr(sanitize_text_field($_POST[Product_PIE_Data::FORMAT_ID_KEY][$loop])))
+            ->set_max_images((int)esc_attr(sanitize_text_field($_POST[Product_PIE_Data::MAX_IMAGES_KEY][$loop])))
+            ->set_min_images((int)esc_attr(sanitize_text_field($_POST[Product_PIE_Data::MIN_IMAGES_KEY][$loop])))
+            ->parse_instruction_array_loop($_POST, $loop);
 
         $editor_data->update_meta_data();
         $editor_data->save_meta_data();

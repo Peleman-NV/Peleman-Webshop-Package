@@ -44,6 +44,7 @@ class Admin_Control_Panel extends Abstract_Action_Hookable
                 <a href="?page=<?php echo $this::PAGE_SLUG; ?>&tab=1" class="nav-tab <?php echo $activeTab == 'multi_order' ? 'nav_tab_active' : ''; ?>">General</a>
                 <a href="?page=<?php echo $this::PAGE_SLUG; ?>&tab=2" class="nav-tab <?php echo $activeTab == 'multi_order' ? 'nav_tab_active' : ''; ?>">Buttons</a>
                 <a href="?page=<?php echo $this::PAGE_SLUG; ?>&tab=3" class="nav-tab <?php echo $activeTab == 'multi_order' ? 'nav_tab_active' : ''; ?>">Editor</a>
+                <a href="?page=<?php echo $this::PAGE_SLUG; ?>&tab=4" class="nav-tab <?php echo $activeTab == 'multi_order' ? 'nav_tab_active' : ''; ?>">Advanced</a>
             </h2>
 
             <!-- <form method="post" action="options.php"> -->
@@ -61,6 +62,11 @@ class Admin_Control_Panel extends Abstract_Action_Hookable
                         break;
                     case 3:
                         settings_fields('pwp-editor-options-group');
+                        do_settings_sections($this::PAGE_SLUG);
+                        submit_button();
+                        break;
+                    case 4:
+                        settings_fields('pwp-f2d-options-group');
                         do_settings_sections($this::PAGE_SLUG);
                         submit_button();
                         break;

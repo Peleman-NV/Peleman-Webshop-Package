@@ -92,7 +92,7 @@ class Ajax_Add_To_Cart extends Abstract_Ajax_Hookable
 
                     $_SESSION[$sessionId] = $itemData;
 
-                    error_log( print_r($projectData->get_project_editor_url(false),true));
+                    error_log(print_r($projectData->get_project_editor_url(false), true));
                     wp_send_json_success(
                         array(
                             'message' => __('external project created, redirecting user to editor for customization...', PWP_TEXT_DOMAIN),
@@ -180,8 +180,6 @@ class Ajax_Add_To_Cart extends Abstract_Ajax_Hookable
         switch ($data->get_editor_id()) {
             case Product_PIE_Data::MY_EDITOR:
                 return $this->new_PIE_Project($data->pie_data(), $returnURL ?: site_url());
-            case Product_IMAXEL_Data::MY_EDITOR:
-                return $this->new_IMAXEL_Project($data->imaxel_data(), $returnURL ?: site_url());
             default:
                 return null;
         }
@@ -208,17 +206,6 @@ class Ajax_Add_To_Cart extends Abstract_Ajax_Hookable
         $request->set_project_name($data->get_parent()->get_name());
         $request->set_timeout(10);
         return $request->make_request();
-    }
-
-
-    private function new_IMAXEL_Project(Product_IMAXEL_Data $data, string $continueUrl): IMAXEL_Project
-    {
-        return
-            New_IMAXEL_Project_Request::new()
-            ->initialize_from_imaxel_data($data)
-            ->set_back_url(wc_get_cart_url())
-            ->set_add_to_cart_url($continueUrl)
-            ->make_request();
     }
 
     private function get_site_language(): string

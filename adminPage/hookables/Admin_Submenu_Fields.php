@@ -7,6 +7,7 @@ namespace PWP\adminPage\hookables;
 use PWP\includes\hookables\abstracts\Abstract_Action_Hookable;
 use PWP\includes\menus\Button_Submenu;
 use PWP\includes\menus\Editor_Submenu;
+use PWP\includes\menus\F2D_Menu;
 
 class Admin_Submenu_Fields extends Abstract_Action_Hookable
 {
@@ -28,6 +29,10 @@ class Admin_Submenu_Fields extends Abstract_Action_Hookable
                 break;
             case 3:
                 $menu = new Editor_Submenu();
+                $menu->render_menu();
+                break;
+            case 4:
+                $menu = new F2D_Menu();
                 $menu->render_menu();
                 break;
         }

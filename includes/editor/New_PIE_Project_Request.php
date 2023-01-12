@@ -172,7 +172,7 @@ class New_PIE_Project_Request extends Abstract_PIE_Request
             'backgroundid'          => $this->editorData->get_background_id(),
             'colorcode'             => $this->editorData->get_color_code(),
             'formatid'              => $this->editorData->get_format_id(),
-            'editorinstructions'    => array_merge($this->editorData->get_editor_instructions(), $this->editorInstructions),
+            'editorinstructions'    => array_merge($this->editorData->get_editor_instruction_array(), $this->editorInstructions),
             'projectname'           => $this->projectName,
             'returnurl'             => $this->returnUrl,
         );

@@ -3,13 +3,19 @@
     background: #f8f8f8;
     border: 1px solid #ccc;
     border-radius: 4px;
-    overflow: hidden;
+    overflow: hidden !important;
+    margin: 0 !important;
+}
+
+.pwp-options-group .form-field {
+    width: 46% !important;
 }
 
 .pwp-options-group-title {
     padding: 0 !important;
     font-weight: 600 !important;
     font-size: 1.3em !important;
+    margin-top: 12px !important;
 }
 
 .pwp-options-group input[type='checkbox'] {
