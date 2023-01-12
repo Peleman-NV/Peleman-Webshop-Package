@@ -27,7 +27,6 @@
             console.log(id);
 
             var target = $(id);
-            elementVisibility(target, $(this).val() != 'none');
             $(this).change(function () {
                 console.log('foo');
                 elementVisibility(target, $(this).val() != 'none');
@@ -37,7 +36,6 @@
         var checks = $("input[foldout]");
         checks.each(function () {
             var target = $('#' + $(this).attr('foldout'));
-            elementVisibility(target, $(this).prop('checked'));
             $(this).change(function () {
                 elementVisibility(target, $(this).prop('checked'));
             });

@@ -39,7 +39,7 @@ class PIE_Editor_Instructions extends Product_Meta
         $this->instructions = array();
 
         $this->add_instruction('usedesignmode', 'use design mode');
-        $this->add_instruction('useImageUpload', 'use image upload', false, 'Allow user to upload images');
+        $this->add_instruction('useimageupload', 'use image upload', 'Allow user to upload images');
         $this->add_instruction('usebackgrounds', 'use backgrounds');
         $this->add_instruction('usedesigns', 'use designs');
         $this->add_instruction('useelements', 'use elements');
@@ -51,9 +51,8 @@ class PIE_Editor_Instructions extends Product_Meta
         $this->add_instruction('usestockphotos', 'use stock photos');
         $this->add_instruction('usetext', 'use text');
         $this->add_instruction('uselayers', 'use layers');
-        $this->add_instruction('useqr', 'use QR');
+        $this->add_instruction('useqr', 'use QR code');
         $this->add_instruction('usesettings', 'use settings');
-
 
         $instructionString = $this->parent->get_meta(self::EDITOR_INSTRUCTIONS_KEY);
         $instructionArray = $instructionString ? explode(' ', $instructionString) : [];
@@ -63,9 +62,9 @@ class PIE_Editor_Instructions extends Product_Meta
         }
     }
 
-    public function add_instruction(string $key, string $label, bool $enabled = false, string $description = ''): self
+    public function add_instruction(string $key, string $label, string $description = '', bool $enabled = false): self
     {
-        $instruction = new PIE_Instruction($label, $enabled, $description);
+        $instruction = new PIE_Instruction($label, $description, $enabled);
         $this->instructions[$key] = $instruction;
         return $this;
     }
@@ -125,7 +124,7 @@ class PIE_Editor_Instructions extends Product_Meta
     {
         $arr = [];
         foreach ($this->instructions as $key => $instruction) {
-            if ($instruction->is_enabled()) {
+            if (!$instruction->is_enabled()) {
                 $arr[] = $key;
             }
         }

@@ -159,7 +159,10 @@ class Parent_Product_Custom_Fields extends Abstract_Action_Hookable
             'wrapper_class' => 'form-row form-row-full',
         ));
 
-        $this->open_div(['id' => $custom, 'classes' => ['pwp-hidden']]);
+        $this->open_div([
+            'id' => $custom,
+            'classes' => $meta->get_editor_id() == 'PIE' ? [] :  ['pwp-hidden']
+        ]);
 
         woocommerce_wp_text_input(array(
             'id' => Product_PIE_Data::PIE_TEMPLATE_ID_KEY,
@@ -331,7 +334,7 @@ class Parent_Product_Custom_Fields extends Abstract_Action_Hookable
 
         $this->open_div(array(
             'id' => $custom,
-            'classes' => array('pwp-hidden')
+            'classes' => $meta->uses_pdf_content() ? [] : ['pwp-hidden']
         ));
 
         woocommerce_wp_text_input(array(
@@ -341,7 +344,7 @@ class Parent_Product_Custom_Fields extends Abstract_Action_Hookable
             'value' => $meta->get_price_per_page(),
             'desc_tip' => true,
             'description' => __('additional price per page', PWP_TEXT_DOMAIN),
-            'wrapper_class' => 'form-row form-row-last',
+            'wrapper_class' => 'form-row form-row-first',
             'data_type' => 'price',
             'custom_attributes' => array('step' => 0.001)
         ));

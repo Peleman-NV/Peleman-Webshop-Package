@@ -12,11 +12,11 @@ final class PIE_Instruction
     private bool $enabled;
     private string $description;
 
-    public function __construct(string $label, bool $enabled = false, string $description = '')
+    public function __construct(string $label, string $description = '', bool $enabled = false)
     {
         $this->label = $label;
-        $this->enabled = $enabled;
         $this->description = $description;
+        $this->enabled = $enabled;
     }
 
     public function set_enabled(bool $enabled): void
