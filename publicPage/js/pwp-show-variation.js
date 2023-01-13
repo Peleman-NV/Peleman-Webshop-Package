@@ -85,7 +85,7 @@
                             showCallUsTextAndButton();
                             return;
                         }
-                        showUnitPrice(response.data.bundleObject);
+                        // showUnitPrice(response.data.bundleObject);
                         buttonText = response.data.button_text ?? fallbackAddToCartLabel;
 
                         if (response.data.f2dArtCode) {
@@ -175,11 +175,6 @@
             enableUploadBtn();
             const { height, width, min_pages, max_pages, price_per_page } =
                 data.pdf_data;
-            // height = data.pdf_data.height;
-            // width = data.pdf_data.width;
-            // min_pages = data.pdf_data.min_pages;
-            // max_pages = data.pdf_data.max_pages;
-            // price_per_page = data.pdf_data.price_per_page;
 
             hideElement($('#ppi-loading'));
             showElement($('.pwp-upload-parameters'));
@@ -187,7 +182,6 @@
             showElement($('.upload-label'));
             showElement($('#max-upload-size'));
             $('#pwp-file-upload').prop('required', true);
-            // $('#pwp-file-upload').val();
 
             if (height != '') {
                 $('#content-height').html(height);
@@ -219,7 +213,6 @@
             } else {
                 hideElement($('#content-price-per-page').parent());
             }
-
         }
 
         function DisplayBundlePricing(data) {
@@ -231,6 +224,7 @@
                 $('.bundle-suffix').html(data.unit_amount)
                 return;
             }
+            $('.bundle-price-amount').html(data.item_price);
             $('.individual-price').addClass('pwp-hidden');
             $('.bundle-suffix').addClass('pwp-hidden');
         }

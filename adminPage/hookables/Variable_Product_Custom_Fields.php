@@ -155,7 +155,7 @@ class Variable_Product_Custom_Fields extends Abstract_Action_Hookable
             'description' => __('which editor to use for this product. Ensure the template and variant IDs are valid for the editor.', PWP_TEXT_DOMAIN),
             'custom_attributes' => array('foldout' => $custom),
             'options'   => [
-                'none'                      => 'no customization',
+                ''                          => 'no customization',
                 Product_PIE_Data::MY_EDITOR => 'Peleman Image Editor'
             ],
             'value' => $meta->get_editor_id() ?: 'none',
@@ -354,17 +354,17 @@ class Variable_Product_Custom_Fields extends Abstract_Action_Hookable
 
 
         woocommerce_wp_text_input(array(
-            'id' => Product_Meta_Data::PDF_MIN_PAGES_KEY . $this->loopEnd,
-            'name' => Product_Meta_Data::PDF_MIN_PAGES_KEY . $this->loopEnd,
-            'label' => __('PDF Min Pages', PWP_TEXT_DOMAIN),
-            'value' => $meta->get_pdf_min_pages(),
-            'desc_tip' => true,
-            'description' =>  __('min pages allowed per PDF upload', PWP_TEXT_DOMAIN),
+            'id'            => Product_Meta_Data::PDF_MIN_PAGES_KEY . $this->loopEnd,
+            'name'          => Product_Meta_Data::PDF_MIN_PAGES_KEY . $this->loopEnd,
+            'label'         => __('PDF Min Pages', PWP_TEXT_DOMAIN),
+            'value'         => $meta->get_pdf_min_pages() ?: 1,
+            'desc_tip'      => true,
+            'description'   =>  __('min pages allowed per PDF upload', PWP_TEXT_DOMAIN),
             'wrapper_class' => 'form-row form-row-first',
-            'type' => 'number',
+            'type'          => 'number',
             'custom_attributes' => array(
-                'step' => 1,
-                'min' => 1
+                'step'  => 1,
+                'min'   => 1
             )
         ));
 
@@ -372,7 +372,7 @@ class Variable_Product_Custom_Fields extends Abstract_Action_Hookable
             'id' => Product_Meta_Data::PDF_MAX_PAGES_KEY . $this->loopEnd,
             'name' => Product_Meta_Data::PDF_MAX_PAGES_KEY . $this->loopEnd,
             'label' => __('PDF Max Pages', PWP_TEXT_DOMAIN),
-            'value' => $meta->get_pdf_max_pages(),
+            'value' => $meta->get_pdf_max_pages() ?: 1,
             'desc_tip' => true,
             'description' =>  __('max pages allowed per PDF upload', PWP_TEXT_DOMAIN),
             'wrapper_class' => 'form-row form-row-last',
@@ -387,7 +387,7 @@ class Variable_Product_Custom_Fields extends Abstract_Action_Hookable
             'id' => Product_Meta_Data::PDF_WIDTH_KEY . $this->loopEnd,
             'name' => Product_Meta_Data::PDF_WIDTH_KEY . $this->loopEnd,
             'label' => __('PDF Format Width', PWP_TEXT_DOMAIN),
-            'value' => $meta->get_pdf_width(),
+            'value' => $meta->get_pdf_width() ?: 1,
             'desc_tip' => true,
             'description' =>  __('permitted width of PDF uploads in mm', PWP_TEXT_DOMAIN),
             'wrapper_class' => 'form-row form-row-first',
@@ -402,7 +402,7 @@ class Variable_Product_Custom_Fields extends Abstract_Action_Hookable
             'id' => Product_Meta_Data::PDF_HEIGHT_KEY . $this->loopEnd,
             'name' => Product_Meta_Data::PDF_HEIGHT_KEY . $this->loopEnd,
             'label' => __('PDF Format Height', PWP_TEXT_DOMAIN),
-            'value' => $meta->get_pdf_height(),
+            'value' => $meta->get_pdf_height() ?: 1,
             'desc_tip' => true,
             'description' =>  __('permitted height of PDF uploads in mm', PWP_TEXT_DOMAIN),
             'wrapper_class' => 'form-row form-row-last',

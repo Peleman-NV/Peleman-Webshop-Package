@@ -6,8 +6,7 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-error_log("ding");
-$isB2cSite = get_option('ppi-is-b2b') ? true : false;
+$isB2cSite = get_option('ppi-is-b2b', false);
 
 global $product;
 $meta = new Product_Meta_Data($product);
@@ -22,7 +21,7 @@ $individualPriceWithCurrencySymbol = get_woocommerce_currency_symbol() . number_
 
 $bundlePrice = $meta->get_unit_price();
 $bundleUnits = $meta->get_unit_amount();
-$isBundleProduct = $bundleUnits > 1 && !empty($bundlePrice);
+$isBundleProduct = $bundleUnits > 1;
 
 $bundleLabel = '';
 if ($isBundleProduct) {
@@ -81,14 +80,15 @@ if ($isBundleProduct) {
                 <?php echo _e($articleCode); ?>
             </span>
         </span>
-    <?php endif; ?>
+    <?php else : ?>
 
-    <!-- Variable product: display article code placeholder to be filled with the magic of JavaScript! -->
-    <span class="sku_wrapper article-code-container">
-        <span class="label article-code-label">
-            <?php esc_html_e('Article code:', PWP_TEXT_DOMAIN); ?>
+        <!-- Variable product: display article code placeholder to be filled with the magic of JavaScript! -->
+        <span class="sku_wrapper article-code-container">
+            <span class="label article-code-label">
+                <?php esc_html_e('Article code:', PWP_TEXT_DOMAIN); ?>
+            </span>
         </span>
-    </span>
+    <?php endif; ?>
 
 
     <!-- Display SKU if user is admin -->

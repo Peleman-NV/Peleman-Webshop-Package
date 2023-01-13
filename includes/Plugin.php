@@ -39,6 +39,7 @@ use PWP\publicPage\hookables\Add_Class_To_Add_To_Cart_Button;
 use PWP\publicPage\hookables\Display_PDF_Data_In_Cart;
 use PWP\publicPage\hookables\Add_PDF_Prices_To_Cart;
 use PWP\publicPage\hookables\Add_PDF_Data_To_Cart_Item;
+use PWP\publicPage\hookables\Apply_Bundle_Price_Cart_Widget;
 use PWP\publicPage\hookables\Change_Add_To_Cart_Archive_Button;
 use PWP\publicPage\hookables\Change_Cart_Item_Thumbnail;
 use PWP\publicPage\hookables\Enqueue_PDF_JS;
@@ -119,6 +120,7 @@ final class Plugin
     {
         $this->add_hookable(new Cleanup_Unordered_Projects());
         $this->add_hookable(new Override_WC_Templates());
+        $this->add_hookable(new Apply_Bundle_Price_Cart_Widget());
 
         $this->add_hookable(new Enqueue_Public_Styles());
         $this->add_hookable(new Enqueue_PDF_JS());

@@ -37,6 +37,8 @@ class Save_Parent_Product_Custom_Fields extends Abstract_Action_Hookable
             return;
         }
 
+        error_log(print_r($_POST, true));
+        
         $editorMeta->set_unit_amount((int)$_POST[Product_Meta_Data::UNIT_AMOUNT] ?: 1)
             ->set_unit_price((float)$_POST[Product_Meta_Data::UNIT_PRICE])
             ->set_unit_code($_POST[Product_Meta_Data::UNIT_CODE])

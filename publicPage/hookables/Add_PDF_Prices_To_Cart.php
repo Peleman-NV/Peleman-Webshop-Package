@@ -22,6 +22,9 @@ class Add_PDF_Prices_To_Cart extends Abstract_Action_Hookable
     {
         foreach ($cart->get_cart() as $key => $cartItem) {
             $product = $cartItem['data'];
+            $quantity = $cartItem['quantity'];
+            error_log(print_r($quantity, true));
+
             $meta = new Product_Meta_Data($product);
             if (isset($cartItem['_pdf_data'])) {
 
@@ -36,9 +39,7 @@ class Add_PDF_Prices_To_Cart extends Abstract_Action_Hookable
             }
 
             //override price with cart unit price
-            if ($meta->get_unit_amount() > 1) {
-                $unit_amount = $meta->get_unit_amount();
-                $unit_count = $meta->get_unit_price();
+            if ($meta->get_unit_amount() > 1 && $meta->get_unit_price() > 0) {
                 $cartItem['data']->set_price($meta->get_unit_price());
             }
         }

@@ -40,17 +40,13 @@ class Product_Meta_Data extends Product_Meta
     private bool $overrideThumb;
 
     public ?Product_PIE_Data $pieData;
-    /**
-     * @deprecated 1.0.0 PWP no longers supports IMAXEL
-     */
-    public ?Product_IMAXEL_Data $imaxelData;
 
     public function __construct(\WC_Product $product)
     {
         parent::__construct($product);
 
         $this->editorId             = $this->parent->get_meta(self::EDITOR_ID_KEY) ?: '';
-        $this->customizable         = !empty($this->editorId);
+        $this->customizable         = !empty($this->editorID);
         $this->usePDFContent        = boolval($this->parent->get_meta(self::USE_PDF_CONTENT_KEY)) ?: false;
         $this->customAddToCartLabel = $this->parent->get_meta(self::CUSTOM_LABEL_KEY) ?: '';
 
@@ -208,18 +204,6 @@ class Product_Meta_Data extends Product_Meta
         return $this->overrideThumb;
     }
 
-    /**
-     * @return Product_IMAXEL_Data
-     * @deprecated 1.0.0 PWP no longers supports IMAXEL
-     */
-    public function imaxel_data(): Product_IMAXEL_Data
-    {
-        if ($this->imaxelData === null) {
-            $this->imaxelData = new Product_IMAXEL_Data($this->get_parent());
-        }
-        return $this->imaxelData;
-    }
-
     public function pie_data(): Product_PIE_Data
     {
         if ($this->pieData === null) {
@@ -247,14 +231,12 @@ class Product_Meta_Data extends Product_Meta
         $this->parent->update_meta_data(self::PDF_PRICE_PER_PAGE_KEY, $this->pricePerPage);
         $this->parent->update_meta_data(self::OVERRIDE_CART_THUMB, $this->overrideThumb);
 
-        $this->imaxel_data()->update_meta_data();
         $this->pie_data()->update_meta_data();
     }
 
     public function save_meta_data(): void
     {
         $this->parent->save();
-        $this->imaxel_data()->save_meta_data();
         $this->pie_data()->save_meta_data();
         $this->parent->save_meta_data();
     }

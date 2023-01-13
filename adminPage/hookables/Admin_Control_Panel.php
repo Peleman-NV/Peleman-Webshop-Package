@@ -80,8 +80,16 @@ class Admin_Control_Panel extends Abstract_Action_Hookable
     private function display_general_message()
     {
     ?>
-        <div>
-            The Peleman Webshop Package has been designed to work in tandem with the Peleman Image Editor (PIE) In order for proper communication with the PIE, they have to be set up to communicate with one another. Please fill in your API credentials in Editor settings to get started.
+        <div class="pwp-settings">
+            <h1>Peleman Webshop Package</h1>
+            <hr>
+            <p>The Peleman Webshop Package has been designed to work in tandem with the <b>Peleman Image Editor (PIE)</b></p>
+            <p>The PWP plugin requires the following plugins for its functionality:</p>
+            <ul>
+                <li>Woocommerce 7.2.0+</li>
+            </ul>
+            <hr>
+            <p>For proper communication with the <b>PIE</b>, The plugin will require proper PIE API credentials. Please go to the <b>Editor tab</b> to get started.</p>
         </div>
 <?php
     }

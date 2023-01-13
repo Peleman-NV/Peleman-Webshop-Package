@@ -26,21 +26,21 @@
 * [x] Max images for upload (uppie)
 * [x] Autofill Template Pages in Editor
 * [x] Use Project preview thumbnail in cart (checkbox)
-* [ ] Editor instructions (checkbox for each property)
-  * [ ] usedesignmode
-  * [ ] useimageupload
-  * [ ] usebackgrounds
-  * [ ] usedesigns
-  * [ ] uselements
-  * [ ] usedownloadpreview
-  * [ ] useopenfile
-  * [ ] useexport
-  * [ ] useshowcropzone
-  * [ ] useshowsafezone
-  * [ ] usestockphotos
-  * [ ] usetext
-  * [ ] uselayers
-  * [ ] useqr
+* [x] Editor instructions (checkbox for each property)
+  * [x] usedesignmode
+  * [x] useimageupload
+  * [x] usebackgrounds
+  * [x] usedesigns
+  * [x] uselements
+  * [x] usedownloadpreview
+  * [x] useopenfile
+  * [x] useexport
+  * [x] useshowcropzone
+  * [x] useshowsafezone
+  * [x] usestockphotos
+  * [x] usetext
+  * [x] uselayers
+  * [x] useqr
 ## PDF Upload Settings
 * [x] Require PDF upload (checkbox)
   * [x] Hide other fields if off
