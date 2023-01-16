@@ -25,9 +25,6 @@ global $product;
 $cartUnits = (int)$product->get_meta('cart_units');
 $cartPrice = (float)$product->get_meta('cart_price');
 
-error_log($cartUnits);
-error_lo($cartPrice);
-
 if ($cartUnits > 1 && !empty($cartPrice)) {
 	return;
 }

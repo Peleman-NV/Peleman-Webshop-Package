@@ -15,6 +15,11 @@ This plugin allows a WordPress/WooCommerce webshop to show and sell Peleman prod
 
 
 == Changelog ==
+= 1.3.2 =
+* updated admin control panels. Now uses tabs instead of multiple submenus.
+* improved styling of product definition forms.
+* improved display of bundled product pricing and general information.
+* performance updates
 
 = 1.1.10: =
 * updating system based on feedback by the Wordpress Foundation upon review
