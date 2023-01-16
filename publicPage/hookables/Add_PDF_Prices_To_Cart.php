@@ -23,14 +23,12 @@ class Add_PDF_Prices_To_Cart extends Abstract_Action_Hookable
         foreach ($cart->get_cart() as $key => $cartItem) {
             $product = $cartItem['data'];
             $quantity = $cartItem['quantity'];
-            error_log(print_r($quantity, true));
 
             $meta = new Product_Meta_Data($product);
             if (isset($cartItem['_pdf_data'])) {
 
                 $pdfData = $cartItem['_pdf_data'];
-
-
+                
                 //update product price with pdf price if applicable
                 if ($product instanceof WC_Product && $pdfData) {
                     $basePrice = $product->get_price();

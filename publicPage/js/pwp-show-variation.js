@@ -50,11 +50,13 @@
         function enableElement(element) {
             element.prop('disabled', false);
             element.removeClass('pwp-disabled');
+            element.removeClass('disabled');
         }
 
         function disableElement(element) {
             element.prop('disabled', true)
-            element.addClass('pwp-enabled');
+            element.addClass('pwp-disabled');
+            element.addClass('disabled')
         }
 
         function getProductVariationData(variationId) {

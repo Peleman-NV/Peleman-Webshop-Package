@@ -23,6 +23,8 @@ node_modules/
 *.sqlite
 *.phar
 *.dist.xml
+*.cache
+phpunit.xml
 
 # additional ignores
 /vendor
@@ -33,3 +35,4 @@ Config.php
 /.phpdoc
 /build
 /docs
+/tools

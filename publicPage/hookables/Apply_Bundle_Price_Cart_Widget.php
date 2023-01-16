@@ -24,7 +24,7 @@ class Apply_Bundle_Price_Cart_Widget extends Abstract_Filter_Hookable
 
         $id = $cart_item['variation_id'] ?: $cart_item['product_id'];
 
-        $meta = new Product_Meta_Data(new WC_Product($id));
+        $meta = new Product_Meta_Data(wc_get_product($id));
         if (!$meta->get_unit_amount() > 1 || !$meta->get_unit_price() > 0) {
             return $price;
         }
@@ -39,7 +39,7 @@ class Apply_Bundle_Price_Cart_Widget extends Abstract_Filter_Hookable
                     <span class="woocommerce-Price-currencySymbol">
                         <?php echo get_woocommerce_currency_symbol(); ?>
                     </span>
-                    <?php echo $bundlePrice ?>
+                    <?php echo wc_format_localized_price($bundlePrice); ?>
                 </bdi>
             </span>
         </span>
