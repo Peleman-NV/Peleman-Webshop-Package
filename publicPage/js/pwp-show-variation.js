@@ -224,11 +224,13 @@
                 $('.bundle-price-amount').html(data.unit_price);
                 $('.bundle-suffix').removeClass('pwp-hidden');
                 $('.bundle-suffix').html(data.unit_amount)
+                hideElement($('.woocommerce-variation-price'));
                 return;
             }
             $('.bundle-price-amount').html(data.item_price);
             $('.individual-price').addClass('pwp-hidden');
             $('.bundle-suffix').addClass('pwp-hidden');
+            showElement($('woocommerce-variation-price'));
         }
 
         /**

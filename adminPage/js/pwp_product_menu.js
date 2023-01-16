@@ -29,7 +29,7 @@
             var target = $(id);
             $(this).change(function () {
                 console.log('foo');
-                elementVisibility(target, $(this).val() != 'none');
+                elementVisibility(target, $(this).val() != '');
             });
         });
 

@@ -331,7 +331,7 @@ class Variable_Product_Custom_Fields extends Abstract_Action_Hookable
             'value' => $meta->uses_pdf_content() ? 'yes' : 'no',
             'desc_tip' => true,
             'description' => __('whether this product requires customers to upload a pdf file for contents.', PWP_TEXT_DOMAIN),
-            'wrapper_class' => 'form-row form-row-full',
+            'wrapper_class' => 'form-row form-row-first',
             'custom_attributes' => array('foldout' => $custom)
         ));
 

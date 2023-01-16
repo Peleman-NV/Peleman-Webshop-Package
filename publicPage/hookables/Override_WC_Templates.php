@@ -25,7 +25,8 @@ class Override_WC_Templates extends Abstract_Action_Hookable
                 return trailingslashit(plugin_dir_path(__FILE__)) . '../../templates/woocommerce/variation-add-to-cart-button.php';
             case 'price':
                 return trailingslashit(plugin_dir_path(__FILE__)) . '../../templates/woocommerce/price.php';
-                '';
+            case 'variation':
+                return trailingslashit(plugin_dir_path(__FILE__)) . '../../templates/woocommerce/variation.php';
             default:
                 return $template;
         }

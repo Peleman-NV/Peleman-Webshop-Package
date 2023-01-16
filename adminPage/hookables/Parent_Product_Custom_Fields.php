@@ -25,7 +25,6 @@ class Parent_Product_Custom_Fields extends Abstract_Action_Hookable
         $product = wc_get_product(get_the_ID());
         $meta = new Product_Meta_Data($product);
         if (!$product) return;
-        $this->render_standard_product_settings($meta);
 
         if ($product instanceof \WC_Product_Simple) {
             $this->open_div(['classes' => ['options_group']]);
@@ -44,7 +43,9 @@ class Parent_Product_Custom_Fields extends Abstract_Action_Hookable
             $this->render_PDF_upload_settings($meta);
             $this->close_div();
             $this->close_div();
+            return;
         }
+        $this->render_standard_product_settings($meta);
     }
 
     private function render_standard_product_settings(Product_Meta_Data $meta): void
@@ -328,7 +329,7 @@ class Parent_Product_Custom_Fields extends Abstract_Action_Hookable
             'value' => $meta->uses_pdf_content() ? 'yes' : 'no',
             'desc_tip' => true,
             'description' => __('whether this product requires customers to upload a pdf file for contents.', PWP_TEXT_DOMAIN),
-            'wrapper_class' => 'form-row form-row-full',
+            'wrapper_class' => 'form-row form-row-first',
             'custom_attributes' => array('foldout' => $custom)
         ));
 
@@ -398,7 +399,7 @@ class Parent_Product_Custom_Fields extends Abstract_Action_Hookable
             'id' => Product_Meta_Data::PDF_HEIGHT_KEY,
             'name' => Product_Meta_Data::PDF_HEIGHT_KEY,
             'label' => __('PDF Format Height', PWP_TEXT_DOMAIN),
-            'value' => $meta->get_pdf_height()?: 1,
+            'value' => $meta->get_pdf_height() ?: 1,
             'desc_tip' => true,
             'description' =>  __('permitted height of PDF uploads in mm', PWP_TEXT_DOMAIN),
             'wrapper_class' => 'form-row form-row-last',
