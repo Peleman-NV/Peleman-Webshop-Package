@@ -26,6 +26,12 @@ node_modules/
 *.cache
 phpunit.xml
 
+# VS studio specific files
+VSWorkspaceState.json
+*.lock
+*.vsidx
+*.wsuo
+
 # additional ignores
 /vendor
 /woocommerce
