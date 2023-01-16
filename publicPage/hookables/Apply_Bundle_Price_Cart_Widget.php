@@ -18,10 +18,6 @@ class Apply_Bundle_Price_Cart_Widget extends Abstract_Filter_Hookable
 
     public function apply_bundle_pricing(string $price, array $cart_item, string $cart_item_key): string
     {
-        // error_log(print_r($price, true));
-        // error_log(print_r($cart_item, true));
-        // error_log(print_r($cart_item_key, true));
-
         $id = $cart_item['variation_id'] ?: $cart_item['product_id'];
 
         $meta = new Product_Meta_Data(wc_get_product($id));

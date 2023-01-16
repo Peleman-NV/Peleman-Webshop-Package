@@ -7,7 +7,8 @@
     margin: 0 !important;
 }
 
-.pwp-options-group.form-row-first, .pwp-options-group.form-row-last {
+.pwp-options-group.form-row-first,
+.pwp-options-group.form-row-last {
     width: 46% !important;
 }
 
@@ -102,8 +103,42 @@
     width: auto !important;
 }
 
-.form-field select{
+.form-field select {
     max-width: 100% !important
+}
+
+.woocommerce-help-tip {
+    /* float: none !important; */
+}
+
+.form-row.form-row-first,
+.form-row.form-row-last {
+    /* width: auto !important; */
+}
+
+.woocommerce_options_panel fieldset.form-field,
+.woocommerce_options_panel p.form-field {
+    padding: 5px 5px 5px 5px !important;
+}
+
+.woocommerce_options_panel input[type=email],
+.woocommerce_options_panel input[type=number],
+.woocommerce_options_panel input[type=password],
+.woocommerce_options_panel input[type=text] {
+    width: 100% !important;
+    float: left;
+    clear: both;
+}
+
+.woocommerce_options_panel label,
+.woocommerce_options_panel legend {
+    /* float:left !important; */
+    /* width: 60% !important; */
+    margin: 0 0 0 0 !important;
+}
+
+#pwp_editor_id {
+    width: 100% !important;
 }
 
 @keyframes rotate-with-color {

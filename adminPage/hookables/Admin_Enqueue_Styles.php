@@ -13,12 +13,12 @@ class Admin_Enqueue_Styles extends Abstract_Action_Hookable
 {
     public function __construct()
     {
-        parent::__construct('admin_enqueue_scripts', 'enqueue_styles');
+        parent::__construct('admin_enqueue_scripts', 'enqueue_styles', 60);
     }
 
     public function enqueue_styles(): void
     {
-        $randomVersionNumber = rand(0, 1000);
+        $randomVersionNumber = random_int(0, 1000);
         wp_enqueue_style(
             'pwp_admin_stylesheet',
             plugins_url('../css/style.css', __FILE__),
