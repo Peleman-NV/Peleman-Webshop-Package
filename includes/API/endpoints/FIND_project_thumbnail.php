@@ -6,7 +6,6 @@ namespace PWP\includes\API\endpoints;
 
 use PWP\includes\authentication\I_Api_Authenticator;
 use PWP\includes\exceptions\WP_Error_Exception;
-use WP_Error;
 use WP_REST_Response;
 
 defined('ABSPATH') || die;

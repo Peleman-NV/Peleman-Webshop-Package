@@ -113,7 +113,7 @@
 
 .form-row.form-row-first,
 .form-row.form-row-last {
-    /* width: auto !important; */
+    width: 46% !important;
 }
 
 .woocommerce_options_panel fieldset.form-field,
