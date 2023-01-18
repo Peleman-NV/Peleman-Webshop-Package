@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace PWP\includes\menus;
 
 use PWP\adminPage\hookables\Admin_Control_Panel;
-use PWP\includes\menus\Admin_menu;
+use PWP\includes\menus\Admin_Menu;
 
-class F2D_Menu extends Admin_menu
+class F2D_Menu extends Admin_Menu
 {
     public function render_menu(): void
     {

@@ -6,7 +6,7 @@ namespace PWP\includes\menus;
 
 use PWP\adminPage\hookables\Admin_Control_Panel;
 
-class Button_Submenu extends Admin_menu
+class Button_Submenu extends Admin_Menu
 {
     public function render_menu(): void
     {

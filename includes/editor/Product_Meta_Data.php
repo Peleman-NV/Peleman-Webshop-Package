@@ -46,7 +46,7 @@ class Product_Meta_Data extends Product_Meta
         parent::__construct($product);
 
         $this->editorId             = $this->parent->get_meta(self::EDITOR_ID_KEY) ?: '';
-        $this->customizable         = !empty($this->editorID);
+        $this->customizable         = !empty($this->editorId);
         $this->usePDFContent        = boolval($this->parent->get_meta(self::USE_PDF_CONTENT_KEY)) ?: false;
         $this->customAddToCartLabel = $this->parent->get_meta(self::CUSTOM_LABEL_KEY) ?: '';
 
@@ -62,7 +62,6 @@ class Product_Meta_Data extends Product_Meta
 
         $this->overrideThumb        = boolval($this->parent->get_meta(self::OVERRIDE_CART_THUMB)) ?: false;
         $this->pieData              = null;
-        $this->imaxelData           = null;
     }
 
     public function set_uses_pdf_content(bool $usePDFContent): self

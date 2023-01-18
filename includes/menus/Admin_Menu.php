@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PWP\includes\menus;
 
-abstract class Admin_menu implements IWPMenu
+abstract class Admin_Menu implements IWPMenu
 {
     public abstract function render_menu(): void;
 

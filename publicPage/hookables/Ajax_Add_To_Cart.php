@@ -41,8 +41,9 @@ class Ajax_Add_To_Cart extends Abstract_Ajax_Hookable
                 401
             );
 
-        if (!isset($_REQUEST['product_id']))
+        if (!isset($_REQUEST['product_id'])) {
             return;
+        }
 
         try {
             //find and store all relevant variables
