@@ -124,7 +124,7 @@ class PIE_Editor_Instructions extends Product_Meta
     {
         $arr = [];
         foreach ($this->instructions as $key => $instruction) {
-            if (!$instruction->is_enabled()) {
+            if ($instruction->is_enabled()) {
                 $arr[] = $key;
             }
         }
