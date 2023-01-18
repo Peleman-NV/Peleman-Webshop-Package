@@ -61,7 +61,7 @@ class Editor_Submenu extends Admin_menu
         );
         add_settings_field(
             'pie_customer_id',
-            __("PIE domain (URL)", PWP_TEXT_DOMAIN),
+            __("PIE Customer ID", PWP_TEXT_DOMAIN),
             array($this, 'text_property_callback'),
             Admin_Control_Panel::PAGE_SLUG,
             "pwp_settings_editors",
@@ -71,7 +71,7 @@ class Editor_Submenu extends Admin_menu
         );
         add_settings_field(
             'pie_api_key',
-            __("PIE domain (URL)", PWP_TEXT_DOMAIN),
+            __("PIE API key", PWP_TEXT_DOMAIN),
             array($this, 'text_property_callback'),
             Admin_Control_Panel::PAGE_SLUG,
             "pwp_settings_editors",

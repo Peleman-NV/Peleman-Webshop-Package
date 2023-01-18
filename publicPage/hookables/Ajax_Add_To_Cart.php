@@ -202,7 +202,7 @@ class Ajax_Add_To_Cart extends Abstract_Ajax_Hookable
         $request->initialize_from_pie_data($data);
         $request->set_return_url($continueUrl);
         $request->set_user_id(get_current_user_id());
-        $request->set_language($this->get_site_language());
+        $request->set_language($this->get_site_language() ?: 'en');
         $request->set_project_name($data->get_parent()->get_name());
         $request->set_timeout(10);
         return $request->make_request();
@@ -210,7 +210,7 @@ class Ajax_Add_To_Cart extends Abstract_Ajax_Hookable
 
     private function get_site_language(): string
     {
-        if (defined('ICL_LANGUAGE_CODE')) {
+        if (defined('ICL_LANGUAGE_CODE') && ICL_LANGUAGE_CODE) {
             return ICL_LANGUAGE_CODE;
         }
         return explode("_", get_locale())[0];
