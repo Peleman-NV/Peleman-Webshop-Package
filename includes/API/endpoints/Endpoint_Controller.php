@@ -7,7 +7,7 @@ namespace PWP\includes\API\endpoints;
 use PWP\includes\authentication\I_Api_Authenticator;
 use PWP\includes\exceptions\Invalid_Input_Exception;
 use PWP\includes\hookables\abstracts\I_Hookable_Component;
-use WP_REST_Controller;
+use WP_REST_Server;
 
 abstract class Endpoint_Controller implements I_Endpoint, I_Hookable_Component
 {
@@ -15,20 +15,17 @@ abstract class Endpoint_Controller implements I_Endpoint, I_Hookable_Component
     protected string $path;
     protected string $title;
     protected I_Api_Authenticator $authenticator;
+    private int $priority;
 
     protected string $object;
 
-    public function __construct(string $namespace, string $path, string $title, I_Api_Authenticator $authenticator)
+    public function __construct(string $namespace, string $path, string $title, I_Api_Authenticator $authenticator, int $priority = 10)
     {
         $this->namespace = $namespace;
         $this->path = $path;
         $this->title = $title;
         $this->authenticator = $authenticator;
-    }
-
-    final public function get_callback(): callable
-    {
-        return array($this, 'do_action');
+        $this->priority = $priority;
     }
 
     public function get_permission_callback(): callable
@@ -36,7 +33,7 @@ abstract class Endpoint_Controller implements I_Endpoint, I_Hookable_Component
         return array($this, 'authenticate');
     }
 
-    public function get_path(): string
+    final public function get_path(): string
     {
         return $this->path;
     }
@@ -46,16 +43,20 @@ abstract class Endpoint_Controller implements I_Endpoint, I_Hookable_Component
         return $this->authenticator;
     }
 
-
     final public function register(): void
+    {
+        add_action('rest_api_init', array($this, 'register_endpoint'), $this->priority, 1);
+    }
+
+    final public function register_endpoint(WP_REST_Server $restServer): void
     {
         register_rest_route(
             $this->namespace,
-            $this->get_path(),
+            $this->path,
             array(
                 array(
                     'methods' => $this->get_methods(),
-                    'callback' => $this->get_callback(),
+                    'callback' => array($this, 'do_action'),
                     'permission_callback' => $this->get_permission_callback(),
                     'args' => $this->get_arguments(),
                 ),

@@ -4,9 +4,6 @@ declare(strict_types=1);
 
 namespace PWP\includes\API\endpoints;
 
-use WP_REST_Request;
-use WP_REST_Response;
-
 interface I_Endpoint
 {
 
@@ -17,13 +14,7 @@ interface I_Endpoint
      */
     public function get_arguments(): array;
     /**
-     * get the callback used by the REST API endpoint
-     *
-     * @return callable
-     */
-    public function get_callback(): callable;
-    /**
-     * gt the callback used to validate a request to the REST API endpoint
+     * get the callback used to validate a request to the REST API endpoint
      *
      * @return callable
      */

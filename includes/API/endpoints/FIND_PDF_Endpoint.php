@@ -14,13 +14,14 @@ defined('ABSPATH') || die;
 
 class FIND_PDF_Endpoint extends Abstract_FIND_Endpoint
 {
-    public function __construct(string $namespace, I_Api_Authenticator $authenticator)
+    public function __construct(string $namespace, I_Api_Authenticator $authenticator, int $priority = 10)
     {
         parent::__construct(
             $namespace,
             '/pdf/(?P<id>\w+)',
             'pdf',
-            $this->authenticator = $authenticator
+            $this->authenticator = $authenticator,
+            $priority
         );
     }
 

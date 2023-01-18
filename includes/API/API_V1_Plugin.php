@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 namespace PWP\includes\API;
+
 use PWP\includes\authentication\Authenticator;
 use PWP\includes\hookables\abstracts\I_Hookable_Component;
 
@@ -32,18 +33,13 @@ class API_V1_Plugin implements I_Hookable_Component
 
     public function register(): void
     {
-        \add_action('rest_api_init', array($this, 'register_hookables'), 10, 1);
-    }
-
-    public function add_hookable(I_Hookable_Component $hookable): void
-    {
-        $this->hookables[] = $hookable;
-    }
-
-    public function register_hookables(): void
-    {
         foreach ($this->hookables as $hookable) {
             $hookable->register();
         }
+    }
+
+    final public function add_hookable(I_Hookable_Component $hookable): void
+    {
+        $this->hookables[] = $hookable;
     }
 }

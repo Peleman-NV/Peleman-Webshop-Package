@@ -12,13 +12,14 @@ defined('ABSPATH') || die;
 
 class FIND_Project_Thumbnail extends Abstract_FIND_Endpoint
 {
-    public function __construct(string $namespace, I_Api_Authenticator $authenticator)
+    public function __construct(string $namespace, I_Api_Authenticator $authenticator, int $priority = 10)
     {
         parent::__construct(
             $namespace,
             '/thumb/(?P<projectId>[a-z0-9_\-]+)',
             'thumbnail',
-            $this->authenticator = $authenticator
+            $this->authenticator = $authenticator,
+            $priority
         );
     }
 
