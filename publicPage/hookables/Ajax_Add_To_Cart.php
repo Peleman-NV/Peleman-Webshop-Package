@@ -57,8 +57,6 @@ class Ajax_Add_To_Cart extends Abstract_Ajax_Hookable
             if (apply_filters('woocommerce_add_to_cart_validation', true, $productId, $quantity, $variationId)) {
                 wc_clear_notices();
                 if ($productMeta->is_customizable()) {
-
-                    // error_log("product is customizable. generating project files...");
                     session_start();
 
                     $sessionId = uniqid('ord');
