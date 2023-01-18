@@ -27,11 +27,20 @@ class PIE_Project extends Editor_Project
 
         $params = array_merge($params, $this->editorData->get_editor_params());
         $params['customerapikey'] = get_option('pie_api_key');
+        $params['lang'] = $this->get_editor_lang();
 
         $url = get_option('pie_domain') . "/editor/upload";
         $url .= "?projectid={$id}";
 
         $url .= '&' . http_build_query($params);
         return $url;
+    }
+
+    private function get_editor_lang(): string
+    {
+        if (defined('ICL_LANGUAGE_CODE') && ICL_LANGUAGE_CODE) {
+            return ICL_LANGUAGE_CODE;
+        }
+        return explode("_", get_locale())[0];
     }
 }

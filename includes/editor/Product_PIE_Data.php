@@ -266,6 +266,7 @@ class Product_PIE_Data extends Product_Meta
             $params['formatid'] = $this->formatId;
         if ($this->numPages)
             $params['numpages'] = $this->numPages;
+            
 
         return $params;
     }
