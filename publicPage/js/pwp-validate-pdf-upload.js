@@ -1,8 +1,6 @@
 (function ($) {
     ('use strict');
     $(function () {
-        console.log('foo!');
-
         const _clear = $('#pwp-file-clear');
         const _upload = $('#pwp-file-upload');
         const _preview = $('#pwp-pdf-canvas');
