@@ -1,10 +1,14 @@
 .pwp-options-group {
+    FONT-WEIGHT: 200;
     padding: 10px;
     background: #f8f8f8;
     border: 1px solid #ccc;
     border-radius: 4px;
     overflow: hidden !important;
-    margin: 0 !important;
+}
+
+.pwp-options-margins {
+    padding: 0em 2em;
 }
 
 .pwp-options-group.form-row-first,
@@ -12,8 +16,18 @@
     width: 46% !important;
 }
 
+.form-row-multi-3 {
+    width: 30% !important;
+    float: left;
+}
+
+.pwp-form-row-padding-5 {
+    padding: 5px !important;
+}
+
+
 .pwp-options-group-title {
-    padding: 0 !important;
+    padding: 6px !important;
     font-weight: 600 !important;
     font-size: 1.3em !important;
     margin-top: 12px !important;
@@ -99,20 +113,18 @@
     display: none !important;
 }
 
-.form-row.form-row-full {
+.pwp-options-group.form-row.form-row-full {
     width: auto !important;
 }
 
-.form-field select {
-    max-width: 100% !important
-}
-
-.woocommerce-help-tip {
-    /* float: none !important; */
+.pwp-options-group.form-field select {
+    max-width: 100% !important;
+    font-weight: 200;
 }
 
 .form-row.form-row-first,
 .form-row.form-row-last {
+    FONT-VARIANT: JIS78;
     width: 46% !important;
 }
 
@@ -130,15 +142,20 @@
     clear: both;
 }
 
-.woocommerce_options_panel label,
-.woocommerce_options_panel legend {
-    /* float:left !important; */
-    /* width: 60% !important; */
+.pwp-options-group label,
+.pwp-options-group legend {
+    font-size: 13px !important;
+    float: left !important;
+    width: 150px !important;
+    padding: 0;
+    clear: right;
     margin: 0 0 0 0 !important;
 }
 
 #pwp_editor_id {
     width: 100% !important;
+    max-width: 100%;
+    /* clear: both; */
 }
 
 @keyframes rotate-with-color {

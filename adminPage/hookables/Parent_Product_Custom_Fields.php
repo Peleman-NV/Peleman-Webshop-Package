@@ -27,7 +27,7 @@ class Parent_Product_Custom_Fields extends Abstract_Action_Hookable
         if (!$product) return;
 
         if ($product instanceof \WC_Product_Simple) {
-            $this->open_div(['classes' => ['options_group']]);
+            $this->open_div(['classes' => ['pwp-options_group', 'pwp-options-margins']]);
             $this->heading(__('Product Settings', PWP_TEXT_DOMAIN), 2, ['pwp-options-group-title']);
             $this->open_div(['classes' => ['pwp-options-group']]);
             $this->render_simple_product_settings($meta);
@@ -58,7 +58,7 @@ class Parent_Product_Custom_Fields extends Abstract_Action_Hookable
             'placeholder' => 'eg. Design Project',
             'desc_tip' => true,
             'description' =>  __('custom add to cart button label for this product', PWP_TEXT_DOMAIN),
-            'wrapper_class' => 'form-row form-row-full',
+            'wrapper_class' => 'form-row form-row-full pwp-form-row-padding-5',
         ));
     }
 
@@ -78,7 +78,7 @@ class Parent_Product_Custom_Fields extends Abstract_Action_Hookable
                 'value' => $meta->get_parent()->get_meta('f2d_sku_components'),
                 'desc_tip' => true,
                 'description' =>  __('F2D components that make up a variation', PWP_TEXT_DOMAIN),
-                'wrapper_class' => 'form-row form-row-first',
+                'wrapper_class' => 'form-row form-row-first pwp-form-row-padding-5',
             ));
 
             woocommerce_wp_text_input(array(
@@ -88,7 +88,7 @@ class Parent_Product_Custom_Fields extends Abstract_Action_Hookable
                 'value' => $meta->get_parent()->get_meta('f2d_artcd'),
                 'desc_tip' => true,
                 'description' =>  __('F2D article code', PWP_TEXT_DOMAIN),
-                'wrapper_class' => 'form-row form-row-last',
+                'wrapper_class' => 'form-row form-row-last pwp-form-row-padding-5',
             ));
         }
         woocommerce_wp_text_input(array(
@@ -98,7 +98,7 @@ class Parent_Product_Custom_Fields extends Abstract_Action_Hookable
             'value' =>  (string)$meta->get_unit_price() ?: 0,
             'desc_tip' => true,
             'description' => __('These items are sold as units, not individually', PWP_TEXT_DOMAIN),
-            'wrapper_class' => 'form-row form-row-first',
+            'wrapper_class' => 'form-row form-row-first pwp-form-row-padding-5',
             'data_type' => 'price',
             'custom_attributes' => array('step' => 0.001)
         ));
@@ -110,7 +110,7 @@ class Parent_Product_Custom_Fields extends Abstract_Action_Hookable
             'value' => (string)$meta->get_unit_amount() ?: 1,
             'desc_tip' => true,
             'description' =>  __('Amount of items per unit. ie. 1 box (unit) contains 20 cards (items).', PWP_TEXT_DOMAIN),
-            'wrapper_class' => 'form-row form-row-last',
+            'wrapper_class' => 'form-row form-row-last pwp-form-row-padding-5',
             'type' => 'number',
             'custom_attributes' => array(
                 'step' => 1,
@@ -125,7 +125,7 @@ class Parent_Product_Custom_Fields extends Abstract_Action_Hookable
             'value' => $meta->get_unit_code(),
             'desc_tip' => true,
             'description' =>  __('', PWP_TEXT_DOMAIN),
-            'wrapper_class' => 'form-row form-row-first',
+            'wrapper_class' => 'form-row form-row-first pwp-form-row-padding-5',
         ));
 
 
@@ -137,13 +137,14 @@ class Parent_Product_Custom_Fields extends Abstract_Action_Hookable
             'placeholder' => 'add to cart',
             'desc_tip' => true,
             'description' =>  __('custom add to cart button label for this variation', PWP_TEXT_DOMAIN),
-            'wrapper_class' => 'form-row form-row-full',
+            'wrapper_class' => 'form-row form-row-last pwp-form-row-padding-5',
         ));
     }
 
     private function render_PIE_product_settings(Product_Meta_Data $meta): void
     {
         $custom = uniqid();
+        $custom2 = uniqid();
 
         woocommerce_wp_select(array(
             'id' => Product_Meta_Data::EDITOR_ID_KEY,
@@ -157,7 +158,7 @@ class Parent_Product_Custom_Fields extends Abstract_Action_Hookable
                 Product_PIE_Data::MY_EDITOR => 'Peleman Image Editor'
             ],
             'value' => $meta->get_editor_id() ?: 'none',
-            'wrapper_class' => 'form-row form-row-full',
+            'wrapper_class' => 'form-row form-row-full pwp-form-row-padding-5',
         ));
 
         $this->open_div([
@@ -172,7 +173,7 @@ class Parent_Product_Custom_Fields extends Abstract_Action_Hookable
             'value' => $meta->pie_data()->get_template_id(),
             'desc_tip' => true,
             'description' =>  __('', PWP_TEXT_DOMAIN),
-            'wrapper_class' => 'form-row form-row-first',
+            'wrapper_class' => 'form-row form-row-first pwp-form-row-padding-5',
         ));
 
         woocommerce_wp_text_input(array(
@@ -182,7 +183,7 @@ class Parent_Product_Custom_Fields extends Abstract_Action_Hookable
             'value' => $meta->pie_data()->get_design_id(),
             'desc_tip' => true,
             'description' =>  __('', PWP_TEXT_DOMAIN),
-            'wrapper_class' => 'form-row form-row-last',
+            'wrapper_class' => 'form-row form-row-last pwp-form-row-padding-5',
         ));
 
         woocommerce_wp_text_input(array(
@@ -192,7 +193,7 @@ class Parent_Product_Custom_Fields extends Abstract_Action_Hookable
             'value' => $meta->pie_data()->get_background_id(),
             'desc_tip' => true,
             'description' =>  __('', PWP_TEXT_DOMAIN),
-            'wrapper_class' => 'form-row form-row-first',
+            'wrapper_class' => 'form-row form-row-first pwp-form-row-padding-5',
         ));
 
         woocommerce_wp_text_input(array(
@@ -202,7 +203,7 @@ class Parent_Product_Custom_Fields extends Abstract_Action_Hookable
             'value' => $meta->pie_data()->get_format_id(),
             'desc_tip' => true,
             'description' =>  __('format id for the template to be filled out', PWP_TEXT_DOMAIN),
-            'wrapper_class' => 'form-row form-row-last',
+            'wrapper_class' => 'form-row form-row-last pwp-form-row-padding-5',
         ));
 
         woocommerce_wp_text_input(array(
@@ -212,7 +213,7 @@ class Parent_Product_Custom_Fields extends Abstract_Action_Hookable
             'value' => $meta->pie_data()->get_color_code(),
             'desc_tip' => true,
             'description' =>  __('', PWP_TEXT_DOMAIN),
-            'wrapper_class' => 'form-row form-row-first',
+            'wrapper_class' => 'form-row form-row-first pwp-form-row-padding-5',
         ));
 
         woocommerce_wp_checkbox(array(
@@ -222,8 +223,14 @@ class Parent_Product_Custom_Fields extends Abstract_Action_Hookable
             'value' => $meta->pie_data()->uses_image_upload() ? 'yes' : 'no',
             'desc_tip' => true,
             'description' => __('', PWP_TEXT_DOMAIN),
-            'wrapper_class' => 'form-row form-row-full',
+            'wrapper_class' => 'form-row form-row-first pwp-form-row-padding-5',
+            'custom_attributes' => array('foldout' => $custom2),
         ));
+
+        $this->open_div([
+            'id' => $custom2,
+            'classes' => $meta->pie_data()->uses_image_upload() ? [] : ['pwp-hidden']
+        ]);
 
         woocommerce_wp_text_input(array(
             'id' => Product_PIE_Data::NUM_PAGES_KEY,
@@ -232,7 +239,7 @@ class Parent_Product_Custom_Fields extends Abstract_Action_Hookable
             'value' => $meta->pie_data()->get_num_pages(),
             'desc_tip' => true,
             'description' =>  __('', PWP_TEXT_DOMAIN),
-            'wrapper_class' => 'form-row form-row-full',
+            'wrapper_class' => 'form-row form-row-last pwp-form-row-padding-5',
             'type' => 'number',
             'custom_attributes' => array(
                 'step' => 1,
@@ -247,7 +254,7 @@ class Parent_Product_Custom_Fields extends Abstract_Action_Hookable
             'value' => $meta->pie_data()->get_min_images(),
             'desc_tip' => true,
             'description' =>  __('', PWP_TEXT_DOMAIN),
-            'wrapper_class' => 'form-row form-row-first',
+            'wrapper_class' => 'form-row form-row-first pwp-form-row-padding-5',
             'type' => 'number',
             'custom_attributes' => array(
                 'step' => 1,
@@ -262,7 +269,7 @@ class Parent_Product_Custom_Fields extends Abstract_Action_Hookable
             'value' => $meta->pie_data()->get_max_images(),
             'desc_tip' => true,
             'description' =>  __('', PWP_TEXT_DOMAIN),
-            'wrapper_class' => 'form-row form-row-last',
+            'wrapper_class' => 'form-row form-row-last pwp-form-row-padding-5',
             'type' => 'number',
             'custom_attributes' => array(
                 'step' => 1,
@@ -277,8 +284,10 @@ class Parent_Product_Custom_Fields extends Abstract_Action_Hookable
             'value' => $meta->pie_data()->get_autofill() ? 'yes' : 'no',
             'desc_tip' => true,
             'description' => __('', PWP_TEXT_DOMAIN),
-            'wrapper_class' => 'form-row form-row-first',
+            'wrapper_class' => 'form-row form-row-first pwp-form-row-padding-5',
         ));
+
+        $this->close_div();
 
         woocommerce_wp_checkbox(array(
             'id'    => Product_Meta_Data::OVERRIDE_CART_THUMB,
@@ -287,23 +296,23 @@ class Parent_Product_Custom_Fields extends Abstract_Action_Hookable
             'value' => $meta->get_override_thumbnail() ? 'yes' : 'no',
             'desc_tip' => true,
             'description' => __('Whether to override the product thumbnail in the cart with a preview of the editor project, if available.', PWP_TEXT_DOMAIN),
-            'wrapper_class' => 'form-row form-row-first',
+            'wrapper_class' => 'form-row form-row-first pwp-form-row-padding-5',
         ));
 
         $this->render_editor_instructions($meta);
         $this->close_div();
     }
 
-    private function render_editor_instructions(Product_Meta_Data $meta)
+    private function render_editor_instructions(Product_Meta_Data $meta, int $columns = 1): void
     {
 ?>
         <div class="pwp-options-header">Editor Instructions</div>
 <?php
         $this->open_div();
         $instructions = $meta->pie_data()->get_editor_instructions();
+        $colWidth = (int)(100 / $columns);
         $index = 0;
         foreach ($instructions as $key => $instruction) {
-            $row = $index % 2 === 0 ? 'form-row-first' : 'form-row-last';
             woocommerce_wp_checkbox(array(
                 'id' => $key,
                 'name' => $key,
@@ -311,7 +320,7 @@ class Parent_Product_Custom_Fields extends Abstract_Action_Hookable
                 'value' => $instruction->is_enabled() ? 'yes' : 'no',
                 'desc_tip' => true,
                 'description' => $instruction->get_description(),
-                'wrapper_class' => 'form-row ' . $row
+                'wrapper_class' => 'form-row-multi-3 pwp-form-row-padding-5',
             ));
             $index++;
         }
@@ -329,7 +338,7 @@ class Parent_Product_Custom_Fields extends Abstract_Action_Hookable
             'value' => $meta->uses_pdf_content() ? 'yes' : 'no',
             'desc_tip' => true,
             'description' => __('whether this product requires customers to upload a pdf file for contents.', PWP_TEXT_DOMAIN),
-            'wrapper_class' => 'form-row form-row-first',
+            'wrapper_class' => 'form-row form-row-first pwp-form-row-padding-5',
             'custom_attributes' => array('foldout' => $custom)
         ));
 
@@ -345,7 +354,7 @@ class Parent_Product_Custom_Fields extends Abstract_Action_Hookable
             'value' => $meta->get_price_per_page(),
             'desc_tip' => true,
             'description' => __('additional price per page', PWP_TEXT_DOMAIN),
-            'wrapper_class' => 'form-row form-row-first',
+            'wrapper_class' => 'form-row form-row-first pwp-form-row-padding-5',
             'data_type' => 'price',
             'custom_attributes' => array('step' => 0.001)
         ));
@@ -357,7 +366,7 @@ class Parent_Product_Custom_Fields extends Abstract_Action_Hookable
             'value' => $meta->get_pdf_min_pages() ?: 1,
             'desc_tip' => true,
             'description' =>  __('min pages allowed per PDF upload', PWP_TEXT_DOMAIN),
-            'wrapper_class' => 'form-row form-row-first',
+            'wrapper_class' => 'form-row form-row-first pwp-form-row-padding-5',
             'type' => 'number',
             'custom_attributes' => array(
                 'step' => 1,
@@ -372,7 +381,7 @@ class Parent_Product_Custom_Fields extends Abstract_Action_Hookable
             'value' => $meta->get_pdf_max_pages() ?: 1,
             'desc_tip' => true,
             'description' =>  __('max pages allowed per PDF upload', PWP_TEXT_DOMAIN),
-            'wrapper_class' => 'form-row form-row-last',
+            'wrapper_class' => 'form-row form-row-last pwp-form-row-padding-5',
             'type' => 'number',
             'custom_attributes' => array(
                 'step' => 1,
@@ -387,7 +396,7 @@ class Parent_Product_Custom_Fields extends Abstract_Action_Hookable
             'value' => $meta->get_pdf_width() ?: 1,
             'desc_tip' => true,
             'description' =>  __('permitted width of PDF uploads in mm', PWP_TEXT_DOMAIN),
-            'wrapper_class' => 'form-row form-row-first',
+            'wrapper_class' => 'form-row form-row-first pwp-form-row-padding-5',
             'type' => 'number',
             'custom_attributes' => array(
                 'step' => 1,
@@ -402,7 +411,7 @@ class Parent_Product_Custom_Fields extends Abstract_Action_Hookable
             'value' => $meta->get_pdf_height() ?: 1,
             'desc_tip' => true,
             'description' =>  __('permitted height of PDF uploads in mm', PWP_TEXT_DOMAIN),
-            'wrapper_class' => 'form-row form-row-last',
+            'wrapper_class' => 'form-row form-row-last pwp-form-row-padding-5',
             'type' => 'number',
             'custom_attributes' => array(
                 'step' => 1,
