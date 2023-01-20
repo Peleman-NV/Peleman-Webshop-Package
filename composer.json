@@ -15,11 +15,13 @@
         "phpstan/phpstan": "^1.9",
         "phpstan/extension-installer": "^1.2",
         "szepeviktor/phpstan-wordpress": "^1.1",
-        "php-stubs/woocommerce-stubs": "^7.1"
+        "php-stubs/woocommerce-stubs": "^7.1",
+        "phpro/grumphp": "^1.13"
     },
     "config": {
         "allow-plugins": {
-            "phpstan/extension-installer": true
+            "phpstan/extension-installer": true,
+            "phpro/grumphp": true
         }
     }
 }
