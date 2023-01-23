@@ -1,0 +1,8 @@
+# grumphp.yml
+
+grumphp:
+  tasks:
+    phpcs:
+      standard: PSR12
+    phpstan:
+      level: 8
