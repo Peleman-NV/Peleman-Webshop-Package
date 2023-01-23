@@ -1,7 +1,7 @@
 {
     "autoload": {
         "psr-4": {
-            "PWP\\": ""
+            "PWP": ""
         }
     },
     "require": {
@@ -22,7 +22,8 @@
     "config": {
         "allow-plugins": {
             "phpstan/extension-installer": true,
-            "phpro/grumphp": true
+            "phpro/grumphp": true,
+            "dealerdirect/phpcodesniffer-composer-installer": true
         }
     }
 }
