@@ -14,5 +14,6 @@ class Deactivator
 {
     public static function deactivate()
     {
+        error_log("disabling PWP plugin...");
     }
 }
