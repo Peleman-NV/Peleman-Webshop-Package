@@ -16,7 +16,8 @@
         "phpstan/extension-installer": "^1.2",
         "szepeviktor/phpstan-wordpress": "^1.1",
         "php-stubs/woocommerce-stubs": "^7.1",
-        "phpro/grumphp": "^1.13"
+        "phpro/grumphp": "^1.13",
+        "squizlabs/php_codesniffer": "^3.7"
     },
     "config": {
         "allow-plugins": {
