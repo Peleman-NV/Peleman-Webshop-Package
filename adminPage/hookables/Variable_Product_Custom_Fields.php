@@ -305,14 +305,13 @@ class Variable_Product_Custom_Fields extends Abstract_Action_Hookable
         $this->close_div();
     }
 
-    private function render_editor_instructions(Product_Meta_Data $meta, int $columns = 1): void
+    private function render_editor_instructions(Product_Meta_Data $meta): void
     {
     ?>
         <div class="pwp-options-header">Editor Instructions</div>
 <?php
         $this->open_div();
         $instructions = $meta->pie_data()->get_editor_instructions();
-        $colWidth = (int)(100 / $columns);
         $index = 0;
         foreach ($instructions as $key => $instruction) {
             woocommerce_wp_checkbox(array(
