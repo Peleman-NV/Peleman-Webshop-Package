@@ -355,7 +355,10 @@ class Parent_Product_Custom_Fields extends Abstract_Action_Hookable
             'description' => __('additional price per page', PWP_TEXT_DOMAIN),
             'wrapper_class' => 'form-row form-row-first pwp-form-row-padding-5',
             'data_type' => 'price',
-            'custom_attributes' => array('step' => 0.001)
+            'custom_attributes' => array(
+                'step' => 0.001,
+                'min' => 0
+            )
         ));
 
         woocommerce_wp_text_input(array(
@@ -369,7 +372,8 @@ class Parent_Product_Custom_Fields extends Abstract_Action_Hookable
             'type' => 'number',
             'custom_attributes' => array(
                 'step' => 1,
-                'min' => 1
+                'min' => 1,
+                'max' => 300
             )
         ));
 
@@ -384,14 +388,15 @@ class Parent_Product_Custom_Fields extends Abstract_Action_Hookable
             'type' => 'number',
             'custom_attributes' => array(
                 'step' => 1,
-                'min' => 1
+                'min' => 1,
+                'max' => 300
             )
         ));
 
         woocommerce_wp_text_input(array(
             'id' => Product_Meta_Data::PDF_WIDTH_KEY,
             'name' => Product_Meta_Data::PDF_WIDTH_KEY,
-            'label' => __('PDF Format Width', PWP_TEXT_DOMAIN),
+            'label' => __('PDF Format Width (mm)', PWP_TEXT_DOMAIN),
             'value' => $meta->get_pdf_width() ?: 1,
             'desc_tip' => true,
             'description' =>  __('permitted width of PDF uploads in mm', PWP_TEXT_DOMAIN),
@@ -406,7 +411,7 @@ class Parent_Product_Custom_Fields extends Abstract_Action_Hookable
         woocommerce_wp_text_input(array(
             'id' => Product_Meta_Data::PDF_HEIGHT_KEY,
             'name' => Product_Meta_Data::PDF_HEIGHT_KEY,
-            'label' => __('PDF Format Height', PWP_TEXT_DOMAIN),
+            'label' => __('PDF Format Height (mm)', PWP_TEXT_DOMAIN),
             'value' => $meta->get_pdf_height() ?: 1,
             'desc_tip' => true,
             'description' =>  __('permitted height of PDF uploads in mm', PWP_TEXT_DOMAIN),
