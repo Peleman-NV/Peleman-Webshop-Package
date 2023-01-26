@@ -7,7 +7,6 @@ namespace PWP\includes;
 #region includes
 
 use PWP\templates\Template;
-use PWP\includes\loadables\Plugin_Loader;
 use PWP\includes\API\API_V1_Plugin;
 use PWP\includes\hookables\abstracts\I_Hookable_Component;
 use PWP\includes\versionControl\VersionController;
@@ -60,9 +59,9 @@ defined('ABSPATH') || exit;
 
 final class Plugin
 {
-    private Plugin_Loader $loader;
     private string $version;
     private string $plugin_name;
+    private Plugin_Loader $loader;
     private Admin_Notice_Poster $noticePoster;
     private Template $templateEngine;
 

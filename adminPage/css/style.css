@@ -128,15 +128,15 @@
     width: 46% !important;
 }
 
-.woocommerce_options_panel fieldset.form-field,
-.woocommerce_options_panel p.form-field {
+.pwp-options-group fieldset.form-field,
+.pwp-options-group p.form-field {
     padding: 5px 5px 5px 5px !important;
 }
 
-.woocommerce_options_panel input[type=email],
-.woocommerce_options_panel input[type=number],
-.woocommerce_options_panel input[type=password],
-.woocommerce_options_panel input[type=text] {
+.pwp-options-group input[type=email],
+.pwp-options-group input[type=number],
+.pwp-options-group input[type=password],
+.pwp-options-group input[type=text] {
     width: 100% !important;
     float: left;
     clear: both;

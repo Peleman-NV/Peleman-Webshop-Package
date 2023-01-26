@@ -109,6 +109,12 @@ class Product_PIE_Data extends Product_Meta
         return $this->editorInstructions->get_instructions();
     }
 
+    public function set_editor_instructions(string $instructions): self
+    {
+        $this->editorInstructions->set_instructions_from_string($instructions);
+        return $this;
+    }
+
     public function get_editor_instruction_string(): string
     {
         return $this->editorInstructions->get_instructions_string();
@@ -266,7 +272,7 @@ class Product_PIE_Data extends Product_Meta
             $params['formatid'] = $this->formatId;
         if ($this->numPages)
             $params['numpages'] = $this->numPages;
-            
+
 
         return $params;
     }

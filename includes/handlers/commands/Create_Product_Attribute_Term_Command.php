@@ -4,8 +4,7 @@ declare(strict_types=1);
 
 namespace PWP\includes\handlers\commands;
 
-use PWP\includes\utilities\notification\Success_Notice;
-use PWP\includes\utilities\response\I_Response;
+use PWP\includes\utilities\notification\I_Notice;
 use PWP\includes\utilities\response\Response;
 
 class Create_Product_Attribute_Term_Command implements I_Command
@@ -25,7 +24,7 @@ class Create_Product_Attribute_Term_Command implements I_Command
         $this->menuOrder = $menuOrder;
     }
 
-    public function do_action(): Response
+    public function do_action(): I_Notice
     {
         if (term_exists($this->slug, $this->taxonomy)) {
             return Response::failure(

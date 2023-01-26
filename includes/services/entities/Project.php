@@ -32,7 +32,6 @@ class Project implements I_Entity, JsonSerializable
      *
      * @param integer $userId id of the user. if user is not logged in, should be 0
      * @param integer $productId id of the product this pdf is to be applied to
-     * @param string $path relative path of the pdf in the wp_uploads folder
      * @param string $fileName original name of the file, given by the uploader/user
      * @param integer $pages amount of pages in the PDF
      * @param float $price_vat_excl total price of the PDF, calculated from the amount of pages and cost per page of the product
@@ -51,7 +50,7 @@ class Project implements I_Entity, JsonSerializable
         $this->ordered = '';
     }
 
-    public static function get_by_id(int $id): ?self
+    final public static function get_by_id(int $id): ?self
     {
         global $wpdb;
         $table_name = $wpdb->prefix . PWP_PROJECTS_TABLE;

@@ -50,15 +50,15 @@ class Product_Meta_Data extends Product_Meta
         $this->usePDFContent        = boolval($this->parent->get_meta(self::USE_PDF_CONTENT_KEY)) ?: false;
         $this->customAddToCartLabel = $this->parent->get_meta(self::CUSTOM_LABEL_KEY) ?: '';
 
-        $this->cartUnits            = (int)$this->parent->get_meta(self::UNIT_AMOUNT) ?: 0;
-        $this->cartPrice            = (float)$this->parent->get_meta(self::UNIT_PRICE) ?: 0;
+        $this->cartUnits            = (int)$this->parent->get_meta(self::UNIT_AMOUNT) ?: 1;
+        $this->cartPrice            = (float)$this->parent->get_meta(self::UNIT_PRICE) ?: 0.00;
         $this->unitCode             = $this->parent->get_meta(self::UNIT_CODE) ?: '';
 
-        $this->pdfHeight            = (int)$this->parent->get_meta(self::PDF_HEIGHT_KEY) ?: 0;
-        $this->pdfWidth             = (int)$this->parent->get_meta(self::PDF_WIDTH_KEY) ?: 0;
-        $this->maxPages             = (int)$this->parent->get_meta(self::PDF_MAX_PAGES_KEY) ?: 0;
+        $this->pdfHeight            = (int)$this->parent->get_meta(self::PDF_HEIGHT_KEY) ?: 297;
+        $this->pdfWidth             = (int)$this->parent->get_meta(self::PDF_WIDTH_KEY) ?: 210;
+        $this->maxPages             = (int)$this->parent->get_meta(self::PDF_MAX_PAGES_KEY) ?: 1;
         $this->minPages             = (int)$this->parent->get_meta(self::PDF_MIN_PAGES_KEY) ?: 1;
-        $this->pricePerPage         = (float)$this->parent->get_meta(self::PDF_PRICE_PER_PAGE_KEY) ?: 0;
+        $this->pricePerPage         = (float)$this->parent->get_meta(self::PDF_PRICE_PER_PAGE_KEY) ?: 0.000;
 
         $this->overrideThumb        = boolval($this->parent->get_meta(self::OVERRIDE_CART_THUMB)) ?: false;
         $this->pieData              = null;

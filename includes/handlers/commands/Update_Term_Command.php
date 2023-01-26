@@ -12,6 +12,8 @@ use PWP\includes\validation\Validation_Handler;
 use PWP\includes\validation\Abstract_Term_Handler;
 use PWP\includes\utilities\notification\Notification;
 use PWP\includes\exceptions\Not_Implemented_Exception;
+use PWP\includes\utilities\notification\Error_Notice;
+use PWP\includes\utilities\notification\I_Notice;
 use PWP\includes\validation\Validate_Term_Slug_Exists;
 use PWP\includes\utilities\notification\I_Notification;
 use PWP\includes\utilities\notification\Success_Notice;
@@ -52,7 +54,7 @@ class Update_Term_Command implements I_Command
             ->set_next(new Validate_Term_New_Slug_Characters($this->service));
     }
 
-    final public function do_action(): I_Response
+    final public function do_action(): I_Notice
     {
         $notification = new Notification();
         if (!$this->validate_data($notification)) {
@@ -73,16 +75,12 @@ class Update_Term_Command implements I_Command
         );
     }
 
-    final public function undo_action(): I_Response
+    final public function undo_action(): I_Notice
     {
-        $notification = new Notification();
-        return $notification->add_error(
-            "method not implemented",
-            "method " . __METHOD__ . " not implemented"
-        );
+        return new Error_Notice("method not implemented", "method " . __METHOD__ . " not implemented");
     }
 
-    protected function update_term(WP_Term $original): \WP_TERM
+    protected function update_term(\WP_Term $original): \WP_Term
     {
         $this->data->set_parent($this->get_parent($original));
 
@@ -92,7 +90,7 @@ class Update_Term_Command implements I_Command
         );
     }
 
-    protected function configure_translation_table(WP_Term $term): void
+    protected function configure_translation_table(\WP_Term $term): void
     {
         if ($this->data->has_translation_data()) {
             $translationData = $this->data->get_translation_data();
@@ -104,12 +102,11 @@ class Update_Term_Command implements I_Command
                 $term,
                 $original,
                 $translationData->get_language_code(),
-                $this->service->get_sourcelang()
             );
         }
     }
 
-    protected function configure_SEO_data(WP_Term $term): void
+    protected function configure_SEO_data(\WP_Term $term): void
     {
         $seoData = $this->data->get_seo_data();
         if (!empty($seoData)) {
@@ -122,7 +119,7 @@ class Update_Term_Command implements I_Command
         return $this->handler->handle($this->data, $notification);
     }
 
-    final protected function get_parent(WP_Term $original): int
+    final protected function get_parent(\WP_Term $original): int
     {
         if ($this->canChangeParent || empty($original->parent)) {
             $parent = $this->service->get_item_by_slug($this->data->get_parent_slug());

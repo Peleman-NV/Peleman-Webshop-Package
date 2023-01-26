@@ -27,7 +27,7 @@ class Validate_PDF_Upload extends Abstract_Filter_Hookable
         $this->key = "upload";
     }
 
-    public function validate_pdf_upload(bool $passed, int $product_id, int $quantity, int $variation_id = 0, array $variations = [])
+    public function validate_pdf_upload(bool $passed, int $product_id, int $quantity, int $variation_id = 0, array $variations = []): bool
     {
         $product = new Product_Meta_Data(wc_get_product($variation_id ?: $product_id));
 
@@ -59,7 +59,7 @@ class Validate_PDF_Upload extends Abstract_Filter_Hookable
 
             if (!$notification->is_success()) {
                 wc_add_notice(
-                    $notification ? $notification->get_errors()[0]->get_description() : __('the uploaded pdf is not valid', PWP_TEXT_DOMAIN),
+                    $notification->get_errors()[0]->get_description() ?: __('the uploaded pdf is not valid', PWP_TEXT_DOMAIN),
                     'error'
                 );
             }

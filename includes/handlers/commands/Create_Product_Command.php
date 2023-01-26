@@ -93,8 +93,8 @@ abstract class Create_Product_Command implements I_Command
     /**
      * Configure two products as translations with WPML
      *
-     * @param WC_Product $translation
-     * @param WC_Product $original
+     * @param \WC_Product $translation
+     * @param \WC_Product $original
      * @param string $lang
      * @return boolean returns `false` if WPML is not active, or something went wrong with the translation. Returns 'true' if 
      * operation was successful.
@@ -108,7 +108,8 @@ abstract class Create_Product_Command implements I_Command
 
         $id = $translation->get_id();
         $parentId = $original->get_id();
-        $trid = $spWrapper->sitepress->get_element_trid($parentId, 'post_product');
+
+        $trid = $spWrapper->get_element_trid($parentId, 'post_product');
 
         $sourceLang = 'en';
 
@@ -124,9 +125,6 @@ abstract class Create_Product_Command implements I_Command
         switch ($id) {
             case 'PIE':
                 $meta->set_editor(Product_PIE_Data::MY_EDITOR);
-                break;
-            case 'IMAXEL':
-                $meta->set_editor(Product_IMAXEL_Data::MY_EDITOR);
                 break;
             default:
                 $meta->set_editor('');
@@ -146,15 +144,7 @@ abstract class Create_Product_Command implements I_Command
             ->set_background_id($data['background_id'] ?: '')
             ->set_format_id($data['format_id'] ?: '')
             ->set_num_pages($data['pages_to_fill'] ?: 0)
-            ->set_editor_instructions($data['editor_instructions'] ?: []);
-    }
-
-    protected function set_product_imaxel_data(Product_Meta_Data $meta, array $data): void
-    {
-        $imaxelData = $meta->imaxel_data();
-        $imaxelData
-            ->set_template_id($data['template_id'])
-            ->set_variant_id($data['variant_code'] ?: '');
+            ->set_editor_instructions($data['editor_instructions'] ?: '');
     }
 
     protected function set_product_pdf_data(Product_Meta_Data $meta, array $data): void
@@ -166,7 +156,7 @@ abstract class Create_Product_Command implements I_Command
             ->set_pdf_height($data['pdf_height'] ?: 0);
     }
 
-    protected function handle_producT_meta_components(\WC_Product $product): void
+    protected function handle_product_meta_components(\WC_Product $product): void
     {
         /** start product meta data flow */
         $productMeta = new Product_Meta_Data($product);
@@ -178,10 +168,6 @@ abstract class Create_Product_Command implements I_Command
         }
         if (isset($this->data['pie_settings'])) {
             $this->set_product_pie_data($productMeta, $this->data['pie_settings']);
-        }
-
-        if (isset($this->data['imaxel_settings'])) {
-            $this->set_product_imaxel_data($productMeta, $this->data['imaxel_settings']);
         }
 
         if (isset($this->data['pdf_upload'])) {

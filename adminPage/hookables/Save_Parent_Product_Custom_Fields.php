@@ -4,10 +4,8 @@ declare(strict_types=1);
 
 namespace PWP\adminPage\hookables;
 
-use PWP\includes\editor\Keys;
 use PWP\includes\editor\Product_Meta_Data;
 use PWP\includes\editor\Product_PIE_Data;
-use PWP\includes\editor\PIE_Editor_Instructions;
 use PWP\includes\hookables\abstracts\Abstract_Action_Hookable;
 use WC_Product_Simple;
 use WP_Post;
@@ -37,8 +35,7 @@ class Save_Parent_Product_Custom_Fields extends Abstract_Action_Hookable
             return;
         }
 
-        error_log(print_r($_POST, true));
-        
+        error_log(print_r($post,true));
         $editorMeta->set_unit_amount((int)$_POST[Product_Meta_Data::UNIT_AMOUNT] ?: 1)
             ->set_unit_price((float)$_POST[Product_Meta_Data::UNIT_PRICE])
             ->set_unit_code($_POST[Product_Meta_Data::UNIT_CODE])
@@ -68,7 +65,7 @@ class Save_Parent_Product_Custom_Fields extends Abstract_Action_Hookable
                 ->set_uses_image_upload(isset($_POST[Product_PIE_Data::USE_IMAGE_UPLOAD_KEY]))
                 ->set_autofill(isset($_POST[Product_PIE_Data::AUTOFILL_KEY]))
                 ->set_num_pages((int)esc_attr(sanitize_text_field($_POST[Product_PIE_Data::NUM_PAGES_KEY])))
-                ->set_format_id(esc_attr(sanitize_text_field($_POST[Product_PIE_Data::FORMAT_ID_KEY])))
+                // ->set_format_id(esc_attr(sanitize_text_field($_POST[Product_PIE_Data::FORMAT_ID_KEY])))
                 ->set_max_images((int)esc_attr(sanitize_text_field($_POST[Product_PIE_Data::MAX_IMAGES_KEY])))
                 ->set_min_images((int)esc_attr(sanitize_text_field($_POST[Product_PIE_Data::MIN_IMAGES_KEY])))
                 ->parse_instruction_array($_POST);

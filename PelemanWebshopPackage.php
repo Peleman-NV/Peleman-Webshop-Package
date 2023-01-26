@@ -38,9 +38,10 @@ define('PWP_VERSION', '1.3.3');
 !defined('PWP_TEXT_DOMAIN')         ? define('PWP_TEXT_DOMAIN', 'PelemanWebshopPackage') : null;
 
 !defined('PWP_DIRECTORY')           ? define('PWP_DIRECTORY', plugin_dir_path(__FILE__)) : null;
-!defined('PWP_THUMBNAIL_DIR')       ? define('PWP_THUMBNAIL_DIR', WP_CONTENT_DIR . '/uploads/pwp/thumbnails') : null;
+/**@phpstan-ignore-next-line */
 !defined('PWP_UPLOAD_DIR')          ? define('PWP_UPLOAD_DIR', WP_CONTENT_DIR . '/uploads/pwp/') : null;
 !defined('PWP_TEMPLATES_DIR')       ? define('PWP_TEMPLATES_DIR',  plugin_dir_path(__FILE__) . '/templates') : null;
+/**@phpstan-ignore-next-line */
 !defined('PWP_LOG_DIR')             ? define('PWP_LOG_DIR', WP_CONTENT_DIR . '/uploads/pwp/logs') : null;
 
 !defined('PWP_API_KEY_TABLE')       ? define('PWP_API_KEY_TABLE', 'pwp_api_keys') : null;

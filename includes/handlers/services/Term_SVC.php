@@ -178,7 +178,7 @@ class Term_SVC
         if (is_null($this->sitepressHandler->sitepress)) {
             return -1;
         }
-        return $this->sitepressHandler->sitepress->get_object_id($term->term_id, $this->taxonomyType, false, $this->sourceLang);
+        return $this->sitepressHandler->get_object_id($term->term_id, $this->taxonomyType, false, $this->sourceLang);
     }
 
     /**
@@ -189,7 +189,10 @@ class Term_SVC
      */
     public function get_children(WP_Term $term): array
     {
-        $terms = get_terms(array('taxonomy' => $this->taxonomy, 'parent' => $term->id));
+        $terms = get_terms(array(
+            'taxonomy' => $this->taxonomy,
+            'parent' => $term->term_id
+        ));
         if (is_wp_error($terms)) throw new \Exception("Fatal error: taxonomy {$this->taxonomy} not found in database");
         return $terms;
     }
@@ -220,8 +223,8 @@ class Term_SVC
 
         $currentSeoMetaData = get_option('wpseo_taxonomy_meta');
 
-        $currentSeoMetaData[$this->taxonomy][$term->id]['wpseo_focuskw'] = $data->get_focus_keyword();
-        $currentSeoMetaData[$this->taxonomy][$term->id]['wpseo_desc'] = $data->get_description();
+        $currentSeoMetaData[$this->taxonomy][$term->term_id]['wpseo_focuskw'] = $data->get_focus_keyword();
+        $currentSeoMetaData[$this->taxonomy][$term->term_id]['wpseo_desc'] = $data->get_description();
 
         update_option('wpseo_taxonomy_meta', $currentSeoMetaData);
     }
@@ -236,7 +239,7 @@ class Term_SVC
 
         $taxonomyId = $translatedTerm->term_taxonomy_id;
         $parentTaxonomyId = $originalTerm->term_taxonomy_id;
-        $trid = $this->sitepressHandler->sitepress->get_element_trid($parentTaxonomyId, $this->taxonomyType);
+        $trid = $this->sitepressHandler->get_element_trid($parentTaxonomyId, $this->taxonomyType);
 
         $sourceLang = $this->sourceLang !== $lang ? $this->sourceLang : null;
 
@@ -256,7 +259,7 @@ class Term_SVC
         if (is_null($this->sitepressHandler->sitepress)) {
             return -1;
         }
-        $trid = $this->sitepressHandler->sitepress->get_element_trid($original->term_id, $this->taxonomyType);
+        $trid = $this->sitepressHandler->get_element_trid($original->term_id, $this->taxonomyType);
         var_dump($trid);
         return (int)$trid ?: 0;
     }

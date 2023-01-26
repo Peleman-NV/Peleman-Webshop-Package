@@ -22,13 +22,10 @@ class Template
 
     public function render(string $template, array $vars = []): string
     {
-        $template =  "{$this->templateDirectory}/{$template}.php";
-        $output = '';
-        if ($template) {
-            $output = $this->render_template($template, $vars);
-        }
-        return $output;
+        $template = "{$this->templateDirectory}/{$template}.php";
+        return $this->render_template($template, $vars);
     }
+
 
     private function render_template(string $template, array $vars = []): string
     {

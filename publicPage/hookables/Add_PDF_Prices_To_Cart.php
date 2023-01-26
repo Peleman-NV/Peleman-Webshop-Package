@@ -32,7 +32,7 @@ class Add_PDF_Prices_To_Cart extends Abstract_Action_Hookable
                 //update product price with pdf price if applicable
                 if ($product instanceof WC_Product && $pdfData) {
                     $basePrice = $product->get_price();
-                    $product->set_price($basePrice + $pdfData['pages'] * $meta->get_price_per_page());
+                    $product->set_price((float)$basePrice + $pdfData['pages'] * $meta->get_price_per_page());
                 }
             }
 

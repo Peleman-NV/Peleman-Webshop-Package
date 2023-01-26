@@ -28,7 +28,7 @@ abstract class Abstract_Thumbnail_Generator implements I_Thumbnail_Generator
      * Undocumented function
      *
      * @param string $src
-     * @return resource|\GdImage
+     * @return resource
      * @throws Not_Found_Exception
      * @throws Invalid_Input_Exception
      */
@@ -66,7 +66,8 @@ abstract class Abstract_Thumbnail_Generator implements I_Thumbnail_Generator
      * @param resource|\GdImage $image
      * @param integer $tgtWidth target width of thumbnail
      * @param integer|null $tgtHeight target height of thumbnail. default `null`, height will be based on target width and aspect ratio
-     * @return resource|\GdImage
+     * @return resource
+     * @phpstan-ignore-next-line
      */
     protected function generate_thumbnail($image, int $tgtWidth, ?int $tgtHeight = null)
     {

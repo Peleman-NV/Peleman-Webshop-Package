@@ -58,7 +58,7 @@ class Set_PIE_Project_As_Completed extends Abstract_Action_Hookable
 
             error_log("editor response: " . print_r($response, true));
 
-            return !empty($response);
+            return true;
         } catch (Invalid_Response_Exception $exception) {
             error_log((string)$exception);
             error_log(sprintf(

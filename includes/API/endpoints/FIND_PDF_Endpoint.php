@@ -6,7 +6,6 @@ namespace PWP\includes\API\endpoints;
 
 use PWP\includes\authentication\I_Api_Authenticator;
 use PWP\includes\services\entities\Project;
-use Requests_Exception_HTTP_403;
 use WP_REST_Request;
 use WP_REST_Response;
 
@@ -29,6 +28,9 @@ class FIND_PDF_Endpoint extends Abstract_FIND_Endpoint
     {
         $projectId = (int)$request['id'];
         $project = Project::get_by_id($projectId);
+        if(is_null($project)){
+            exit();
+        }
         //we get the current user with the nonce, but this code is still needed
         //to determine if the user is the owner of the PDF in question.
         // if (get_current_user_id() !== $project->get_user_id() || !current_user_can('edit_posts')) {

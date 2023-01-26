@@ -21,7 +21,7 @@ interface I_Handler
      * @param integer $id id of the item that is to be updated
      * @param array $updateData array of data to update/override the original data
      * @param array $args array of additonal arguments for the update process
-     * @param boolean $useEmpty default false. determines if values that have been left empty in the args
+     * @param boolean $useNullValues default false. determines if values that have been left empty in the args
      * should be persisted anyway.
      * @return object
      */
