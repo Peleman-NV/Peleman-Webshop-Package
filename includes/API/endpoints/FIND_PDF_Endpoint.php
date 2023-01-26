@@ -28,8 +28,9 @@ class FIND_PDF_Endpoint extends Abstract_FIND_Endpoint
     {
         $projectId = (int)$request['id'];
         $project = Project::get_by_id($projectId);
-        if(is_null($project)){
-            exit();
+        if (is_null($project)) {
+            error_log("encountered error finding PDF file: project id: {$projectId}");
+            // exit();
         }
         //we get the current user with the nonce, but this code is still needed
         //to determine if the user is the owner of the PDF in question.
@@ -49,16 +50,24 @@ class FIND_PDF_Endpoint extends Abstract_FIND_Endpoint
 
         //in order to allow a PDF download, we bypass the WP_REST_Response requirement
         //instead, we do it the old fashioned way
+
         $filePath = PWP_UPLOAD_DIR . $project->get_path();
         $name = $project->get_file_name();
+
+        if (!filesize($filePath)) {
+            error_log("oops!");
+            return new WP_REST_Response(array(
+                'error',
+                'file not found'));
+        }
+
         ob_start();
         header('Content-Type: application/pdf');
         header('Content-Length: ' . filesize($filePath));
         header("Content-disposition: inline; filename=\"{$name}\"");
         header('Pragma: public');
-        ob_clean();
         flush();
-        readfile($filePath);
+        ob_clean();
         exit();
     }
 }
