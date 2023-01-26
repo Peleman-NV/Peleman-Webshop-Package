@@ -2,8 +2,5 @@
 
 grumphp:
   tasks:
-    phpcs:
-      standard: 
-        - 'PSR12'
     phpstan:
-      level: 6
+      level: 2

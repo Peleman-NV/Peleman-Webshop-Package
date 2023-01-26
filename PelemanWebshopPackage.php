@@ -40,7 +40,7 @@ define('PWP_VERSION', '1.3.3');
 !defined('PWP_DIRECTORY')           ? define('PWP_DIRECTORY', plugin_dir_path(__FILE__)) : null;
 /**@phpstan-ignore-next-line */
 !defined('PWP_UPLOAD_DIR')          ? define('PWP_UPLOAD_DIR', WP_CONTENT_DIR . '/uploads/pwp/') : null;
-!defined('PWP_TEMPLATES_DIR')       ? define('PWP_TEMPLATES_DIR',  plugin_dir_path(__FILE__) . '/templates') : null;
+!defined('PWP_TEMPLATES_DIR')       ? define('PWP_TEMPLATES_DIR', plugin_dir_path(__FILE__) . '/templates') : null;
 /**@phpstan-ignore-next-line */
 !defined('PWP_LOG_DIR')             ? define('PWP_LOG_DIR', WP_CONTENT_DIR . '/uploads/pwp/logs') : null;
 
