@@ -102,8 +102,10 @@ class Variable_Product_Custom_Fields extends Abstract_Action_Hookable
             'desc_tip' => true,
             'description' => __('The price of the unit total that will be added to cart. This is used in conjunction with UNIT AMOUNT.', PWP_TEXT_DOMAIN),
             'wrapper_class' => 'form-row form-row-first pwp-form-row-padding-5',
+            'class' => "wc_input_price",
             'data_type' => 'price',
-            'custom_attributes' => array('step' => 0.001),
+            'type' => 'number',
+            'custom_attributes' => array('step' => 0.01),
             'placeholder' => 0.00,
         ));
 
@@ -134,7 +136,6 @@ class Variable_Product_Custom_Fields extends Abstract_Action_Hookable
             'placeholder' => 'BOX, CRT, ...'
         ));
 
-
         woocommerce_wp_text_input(array(
             'id' => Product_Meta_Data::CUSTOM_LABEL_KEY  . $this->loopEnd,
             'name' => Product_Meta_Data::CUSTOM_LABEL_KEY . $this->loopEnd,
@@ -149,8 +150,8 @@ class Variable_Product_Custom_Fields extends Abstract_Action_Hookable
 
     private function render_PIE_product_settings(Product_Meta_Data $meta): void
     {
-        $custom = 'editor_' . $this->loop;
-        $custom2 = 'upload_' . $this->loop;
+        $editorToggle = 'editor_' . $this->loop;
+        $uploadToggle = 'upload_' . $this->loop;
         $required = 'pie_req_' . $this->loop;
 
         woocommerce_wp_select(array(
@@ -160,7 +161,7 @@ class Variable_Product_Custom_Fields extends Abstract_Action_Hookable
             'desc_tip' => true,
             'description' => __('Enable/disable the editor for this product/variation. Ensure the template ID is at least filled in.', PWP_TEXT_DOMAIN),
             'custom_attributes' => array(
-                'foldout' => $custom,
+                'foldout' => $editorToggle,
                 'requires' => $required
             ),
             'options'   => [
@@ -172,7 +173,7 @@ class Variable_Product_Custom_Fields extends Abstract_Action_Hookable
         ));
 
         $this->open_div([
-            'id' => $custom,
+            'id' => $editorToggle,
             'classes' => $meta->get_editor_id() == 'PIE' ? [] : ['pwp-hidden']
         ]);
 
@@ -239,11 +240,11 @@ class Variable_Product_Custom_Fields extends Abstract_Action_Hookable
             'desc_tip' => true,
             'description' => __('Require image uploads before you enter the editor. These images will be used to fill in placeholders, ie. a photobook', PWP_TEXT_DOMAIN),
             'wrapper_class' => 'form-row form-row-first pwp-form-row-padding-5',
-            'custom_attributes' => array('foldout' => $custom2),
+            'custom_attributes' => array('foldout' => $uploadToggle),
         ));
 
         $this->open_div([
-            'id' => $custom2,
+            'id' => $uploadToggle,
             'classes' => $meta->pie_data()->uses_image_upload() ? [] : ['pwp-hidden']
         ]);
 
@@ -346,7 +347,7 @@ class Variable_Product_Custom_Fields extends Abstract_Action_Hookable
 
     private function render_PDF_upload_settings(Product_Meta_Data $meta): void
     {
-        $custom = 'pdf_required_' . $this->loop;
+        $editorToggle = 'pdf_required_' . $this->loop;
         $required = 'pdf_req_' . $this->loop;
 
         woocommerce_wp_checkbox(array(
@@ -357,11 +358,11 @@ class Variable_Product_Custom_Fields extends Abstract_Action_Hookable
             'desc_tip' => true,
             'description' => __('Enable/disable PDF upload for this product/variation', PWP_TEXT_DOMAIN),
             'wrapper_class' => 'form-row form-row-first pwp-form-row-padding-5',
-            'custom_attributes' => array('foldout' => $custom, 'requires' => $required)
+            'custom_attributes' => array('foldout' => $editorToggle, 'requires' => $required)
         ));
 
         $this->open_div(array(
-            'id' => $custom,
+            'id' => $editorToggle,
             'classes' => $meta->uses_pdf_content() ? [] : ['pwp-hidden']
         ));
 
@@ -372,9 +373,10 @@ class Variable_Product_Custom_Fields extends Abstract_Action_Hookable
             'value' => $meta->get_price_per_page(),
             'desc_tip' => true,
             'description' => __('Additional price per page that will be added to product/variation price', PWP_TEXT_DOMAIN),
-            'class' => $required,
-            'wrapper_class' => 'form-row form-row-first pwp-form-row-padding-5',
+            'class' => "{$required} wc_input_price",
+            'wrapper_class' => 'form-row form-row-last pwp-form-row-padding-5',
             'data_type' => 'price',
+            'type' => 'number',
             'custom_attributes' => array('step' => 0.001, 'min' => 0.000),
             'placeholder' => '0.000'
         ));

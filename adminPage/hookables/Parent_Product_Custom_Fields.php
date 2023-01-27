@@ -14,13 +14,15 @@ use WC_Product_Simple;
  */
 class Parent_Product_Custom_Fields extends Abstract_Action_Hookable
 {
+    private string $currencySuffix;
+
     public function __construct()
     {
         parent::__construct('woocommerce_product_options_general_product_data', 'render_custom_fields', 11, 3);
     }
     public function render_custom_fields(): void
     {
-
+        $this->currencySuffix =  ' (' . get_woocommerce_currency_symbol() . ')';
         $product = wc_get_product(get_the_ID());
         $meta = new Product_Meta_Data($product);
         if (!$product) return;
@@ -94,13 +96,15 @@ class Parent_Product_Custom_Fields extends Abstract_Action_Hookable
         woocommerce_wp_text_input(array(
             'id' => Product_Meta_Data::UNIT_PRICE,
             'name' => Product_Meta_Data::UNIT_PRICE,
-            'label' => __('Unit Purchase Price', PWP_TEXT_DOMAIN),
+            'label' => __('Unit Purchase Price', PWP_TEXT_DOMAIN) . $this->currencySuffix,
             'value' =>  (string)$meta->get_unit_price() ?: 0,
             'desc_tip' => true,
             'description' => __('The price of the unit total that will be added to cart. This is used in conjunction with UNIT AMOUNT.', PWP_TEXT_DOMAIN),
+            'class' => "wc_input_price",
             'wrapper_class' => 'form-row form-row-first pwp-form-row-padding-5',
             'data_type' => 'price',
-            'custom_attributes' => array('step' => 0.001),
+            'type' => 'number',
+            'custom_attributes' => array('step' => 0.01),
             'placeholder' => 0.00,
         ));
 
@@ -365,13 +369,14 @@ class Parent_Product_Custom_Fields extends Abstract_Action_Hookable
         woocommerce_wp_text_input(array(
             'id' => Product_Meta_Data::PDF_PRICE_PER_PAGE_KEY,
             'name' => Product_Meta_Data::PDF_PRICE_PER_PAGE_KEY,
-            'label' => __('PDF price per page', PWP_TEXT_DOMAIN),
+            'label' => __('PDF price per page', PWP_TEXT_DOMAIN) . $this->currencySuffix,
             'value' => $meta->get_price_per_page(),
             'desc_tip' => true,
             'description' => __('Additional price per page that will be added to product/variation price', PWP_TEXT_DOMAIN),
-            'class' => $required,
-            'wrapper_class' => 'form-row form-row-first pwp-form-row-padding-5',
+            'class' => "{$required} wc_input_price",
+            'wrapper_class' => 'form-row form-row-last pwp-form-row-padding-5',
             'data_type' => 'price',
+            'type' => 'number',
             'custom_attributes' => array('step' => 0.001, 'min' => 0.000),
             'placeholder' => '0.000'
         ));
