@@ -31,7 +31,7 @@ class Save_Variable_Product_Custom_Fields extends Abstract_Action_Hookable
     {
         $editor_data = new Product_Meta_Data(wc_get_product($variation_id));
         $pie_data = $editor_data->pie_data();
-        // error_log(print_r($_POST, true));
+        error_log(print_r($_POST, true));
 
         $editor_data
             ->set_unit_amount((int)$_POST[Product_Meta_Data::UNIT_AMOUNT][$loop] ?: 1)
@@ -65,7 +65,7 @@ class Save_Variable_Product_Custom_Fields extends Abstract_Action_Hookable
             ->set_uses_image_upload(isset($_POST[Product_PIE_Data::USE_IMAGE_UPLOAD_KEY][$loop]))
             ->set_autofill(isset($_POST[Product_PIE_Data::AUTOFILL_KEY][$loop]))
             ->set_num_pages((int)esc_attr(sanitize_text_field($_POST[Product_PIE_Data::NUM_PAGES_KEY][$loop])))
-            ->set_format_id(esc_attr(sanitize_text_field($_POST[Product_PIE_Data::FORMAT_ID_KEY][$loop])))
+            // ->set_format_id(esc_attr(sanitize_text_field($_POST[Product_PIE_Data::FORMAT_ID_KEY][$loop])))
             ->set_max_images((int)esc_attr(sanitize_text_field($_POST[Product_PIE_Data::MAX_IMAGES_KEY][$loop])))
             ->set_min_images((int)esc_attr(sanitize_text_field($_POST[Product_PIE_Data::MIN_IMAGES_KEY][$loop])))
             ->parse_instruction_array_loop($_POST, $loop);

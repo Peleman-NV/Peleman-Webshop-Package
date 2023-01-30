@@ -12,9 +12,8 @@ use PWP\includes\validation\Validation_Handler;
 use PWP\includes\validation\Abstract_Term_Handler;
 use PWP\includes\utilities\notification\Notification;
 use PWP\includes\validation\Validate_Term_Slug_Exists;
-use PWP\includes\utilities\notification\I_Notification;
 use PWP\includes\utilities\notification\Success_Notice;
-use PWP\includes\utilities\response\I_Response;
+use PWP\includes\utilities\notification\I_Notice;
 
 final class Delete_Term_Command implements I_Command
 {
@@ -32,7 +31,7 @@ final class Delete_Term_Command implements I_Command
         $this->handler->set_next(new Validate_Term_Slug_Exists($this->service));
     }
 
-    public function do_action(): I_Response
+    public function do_action(): I_Notice
     {
         $notification = new Notification();
         $data = new Term_Data(['slug' => $this->slug]);
@@ -53,7 +52,7 @@ final class Delete_Term_Command implements I_Command
     }
 
 
-    public function undo_action(): I_Response
+    public function undo_action(): I_Notice
     {
         return new Error_Notice(
             "method not implemented",

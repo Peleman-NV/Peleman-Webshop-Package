@@ -53,6 +53,7 @@ class Ajax_Add_To_Cart extends Abstract_Ajax_Hookable
             $product        = wc_get_product($variationId ?: $productId);
             $productMeta     = new Product_Meta_Data($product);
             $quantity       = wc_stock_amount((float)$_REQUEST['quantity'] ?: 1);
+            $redirectUrl = '';
 
             if (apply_filters('woocommerce_add_to_cart_validation', true, $productId, $quantity, $variationId)) {
                 wc_clear_notices();
@@ -63,6 +64,7 @@ class Ajax_Add_To_Cart extends Abstract_Ajax_Hookable
 
                     $continueUrl = wc_get_cart_url() . "?CustProj={$sessionId}";
                     $cancelUrl = get_permalink($product->get_id());
+                    $redirectUrl = '';
 
                     $projectData = $this->generate_new_project($productMeta, $continueUrl, $cancelUrl);
 
@@ -103,11 +105,6 @@ class Ajax_Add_To_Cart extends Abstract_Ajax_Hookable
                 }
 
                 //store relevant data in session
-                /**
-                 * @var array $itemData array of data to be stored in the session until user returns
-                 * @var \WC_Product $product product which is to be stored
-                 * @var Product_Meta_Data $productMeta product meta data object
-                 */
                 $meta = apply_filters(
                     'pwp_add_cart_item_data',
                     array(),
@@ -167,13 +164,13 @@ class Ajax_Add_To_Cart extends Abstract_Ajax_Hookable
     /**
      * attempt creation of a new project. Method will try to use the template Id to determine what editor is to be used.
      *
-     * @param integer $productId id of the product we are trying to edit
-     * @param string $templateId template Id of the product. Needed to deterime the appropriate Editor
+
+     * @param Product_Meta_Data $data template Id of the product. Needed to deterime the appropriate Editor
      * @param string $returnURL url to which the editor will return the user after saving their project, if blank, refer to editor.
      * @param string $cancelURL url to which the editor will return the user if the user cancels their project.
      * @return Editor_Project|null wil return a Editor_Project object if successful. if the method can not determine a valid editor, will return null.
      */
-    public function generate_new_project(Product_Meta_Data $data, string $returnURL = '', string $cancelURL = ''): Editor_Project
+    public function generate_new_project(Product_Meta_Data $data, string $returnURL = '', string $cancelURL = ''): ?Editor_Project
     {
         // error_log($data->get_editor_id());
         switch ($data->get_editor_id()) {
@@ -186,7 +183,7 @@ class Ajax_Add_To_Cart extends Abstract_Ajax_Hookable
     /**
      * generate a new project for the Peleman Image Editor
      *
-     * @param integer $variant_id product or variant id of the product
+     * @param Product_PIE_Data $data product or variant id of the product
      * @param string $continueUrl when the user has completed their project, they will be redirected to this URL
      * @return PIE_Project project object
      */

@@ -16,21 +16,11 @@ class PIE_Editor_Instructions extends Product_Meta
     public const EDITOR_INSTRUCTIONS_KEY    = 'pie_editor_instructions';
     public const INSTRUCTION_PREFIX         = 'pie_instruct_';
 
-    public const USE_DESIGN_MODE = 'usedesignmode';
-    public const USE_IMAGE_UPLOAD = 'useimageupload';
-    public const USE_BACKGROUNDS = 'usebackgrounds';
-    public const USE_DESIGNS = 'usedesigns';
-    public const USE_ELEMENTS = 'uselements';
-    public const USE_DOWNLOAD_PREVIEW = 'usedownloadpreview';
-    public const USE_OPEN_FILE = 'useopenfile';
-    public const USE_EXPORT = 'useexport';
-    public const USE_SHOW_CROPZONE = 'useshowcropzone';
-    public const USE_SHOW_SAFEZONE = 'useshowsafezone';
-    public const USE_STOCK_PHOTOS = 'usestockphotos';
-    public const USE_TEXT = 'usetext';
-    public const USE_LAYERS = 'uselayers';
-    public const USE_QR = 'useqr';
-
+    /**
+     * contained array of individual PIE instructions
+     *
+     * @var PIE_Instruction[]
+     */
     private array $instructions;
 
     public function __construct(WC_Product $parent)
@@ -38,23 +28,41 @@ class PIE_Editor_Instructions extends Product_Meta
         $this->parent = $parent;
         $this->instructions = array();
 
-        $this->add_instruction('usedesignmode', 'use design mode');
-        $this->add_instruction('useimageupload', 'use image upload', 'Allow user to upload images');
-        $this->add_instruction('usebackgrounds', 'use backgrounds');
-        $this->add_instruction('usedesigns', 'use designs');
-        $this->add_instruction('useelements', 'use elements');
-        $this->add_instruction('usedownloadpreview', 'use download preview');
-        $this->add_instruction('useopenfile', 'use open file');
-        $this->add_instruction('useexport', 'use export');
-        $this->add_instruction('useshowcropzone', 'use show cropzone');
-        $this->add_instruction('useshowsafezone', 'use show safe zone');
-        $this->add_instruction('usestockphotos', 'use stock photos');
-        $this->add_instruction('usetext', 'use text');
-        $this->add_instruction('uselayers', 'use layers');
-        $this->add_instruction('useqr', 'use QR code');
-        $this->add_instruction('usesettings', 'use settings');
+        $this->add_instruction('usedesigns', 'use designs', true);
+        $this->add_instruction('usebackgrounds', 'use backgrounds', true);
+        $this->add_instruction('uselayers', 'use layers', true);
 
+        $this->add_instruction('useimageupload', 'use image upload', true);
+        $this->add_instruction('useelements', 'use elements', true);
+        $this->add_instruction('useexport', 'use export', false);
+
+        $this->add_instruction('usestockphotos', 'use stock photos', true);
+        $this->add_instruction('useqr', 'use QR code', true);
+        $this->add_instruction('useshowsafezone', 'use show safe zone', true);
+
+        $this->add_instruction('usetext', 'use text', true);
+        $this->add_instruction('usesettings', 'use settings', true);
+        $this->add_instruction('useshowcropzone', 'use show cropzone', true);
+
+        // $this->add_instruction('usedownloadpreview', 'use download preview');
+        // $this->add_instruction('useopenfile', 'use open file');
+        // $this->add_instruction('usedesignmode', 'use design mode');
+
+        $this->parse_instructions_from_meta();
+    }
+
+    private function parse_instructions_from_meta()
+    {
         $instructionString = $this->parent->get_meta(self::EDITOR_INSTRUCTIONS_KEY);
+        if (empty($instructionString)) {
+            return;
+        }
+
+        $this->set_instructions_from_string($instructionString);
+    }
+
+    public function set_instructions_from_string(string $instructionString): void
+    {
         $instructionArray = $instructionString ? explode(' ', $instructionString) : [];
 
         foreach ($this->instructions as $key => $instruction) {
@@ -62,9 +70,9 @@ class PIE_Editor_Instructions extends Product_Meta
         }
     }
 
-    public function add_instruction(string $key, string $label, string $description = '', bool $enabled = false): self
+    public function add_instruction(string $key, string $label, bool $enabled = false, string $description = ''): self
     {
-        $instruction = new PIE_Instruction($label, $description, $enabled);
+        $instruction = new PIE_Instruction($key, $label, $enabled, $description);
         $this->instructions[$key] = $instruction;
         return $this;
     }

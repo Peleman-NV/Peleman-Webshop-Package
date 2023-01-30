@@ -1,0 +1,10 @@
+parameters:
+    level: 3
+    paths: 
+        - PelemanWebshopPackage.php
+        - adminPage
+        - includes
+        - publicPage
+    bootstrapFiles:
+        - %rootDir%/../../php-stubs/wordpress-stubs/wordpress-stubs.php
+        - %rootDir%/../../php-stubs/woocommerce-stubs/woocommerce-stubs.php

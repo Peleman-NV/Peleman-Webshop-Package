@@ -31,9 +31,10 @@ class F2D_Product
     private \WC_Product $product;
     private array $metaProperties;
 
-
     public function __construct(int $productId)
     {
+        $this->product = wc_get_product($productId);
+        $this->metaProperties = [];
     }
 
     public function get_product(): \WC_Product

@@ -1,23 +1,31 @@
 (function ($) {
     ('use strict');
     $(function () {
-        connectElements();
+        connectFoldouts();
+        connectRequirements();
         $(document).on('woocommerce_variations_loaded', function (event) {
-            connectElements();
+            connectFoldouts();
+            connectRequirements();
         });
     });
 
     function elementVisibility(element, isVisible) {
         isVisible ? showElements(element) : hideElements(element);
     }
+
     function hideElements(element) {
         element.addClass('pwp-hidden');
     }
+
     function showElements(element) {
         element.removeClass('pwp-hidden');
     }
 
-    function connectElements() {
+    function setelementRequired(element, isRequired) {
+        element.prop('required', isRequired);
+    }
+
+    function connectFoldouts() {
 
         console.log('ding');
 
@@ -41,5 +49,25 @@
             });
         })
     };
+
+    function connectRequirements() {
+        console.log("dong");
+
+        var selections = $("select[requires]");
+        selections.each(function () {
+            var targets = $('.' + $(this).attr('requires'));
+            $(this).change(function () {
+                setelementRequired(targets, $(this).val() != '');
+            });
+        });
+
+        var checks = $("input[requires]");
+        checks.each(function () {
+            var targets = $('.' + $(this).attr('requires'));
+            $(this).change(function () {
+                setelementRequired(targets, $(this).prop('checked'));
+            });
+        });
+    }
 
 })(jQuery);

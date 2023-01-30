@@ -34,9 +34,6 @@ class Display_Editor_Project_Button_In_Cart extends Abstract_Action_Hookable
             case (Product_PIE_Data::MY_EDITOR):
                 $project_url = $this->get_PIE_Project_Url($cart_item, $project_id);
                 break;
-            case (Product_IMAXEL_Data::MY_EDITOR):
-                $project_url = $this->get_IMAXEL_project_url($cart_item, $project_id);
-                break;
             default:
                 return;
         }
@@ -56,17 +53,5 @@ class Display_Editor_Project_Button_In_Cart extends Abstract_Action_Hookable
         $data = new Product_PIE_Data(wc_get_product($variant_id ?: $product_id));
         $project = new PIE_Project($data, $project_id);
         return wc_clean($project->get_project_editor_url(true));
-    }
-
-    private function get_IMAXEL_project_url(array $cart_item, string $project_id): string
-    {
-        $service = new ImaxelService();
-        return $service->get_editor_url(
-            $project_id,
-            wc_get_cart_url(),
-            //get site language
-            explode('-', get_locale())[0],
-            wc_get_cart_url()
-        );
     }
 }

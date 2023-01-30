@@ -9,8 +9,10 @@ use SitePress;
 class SitePress_Wrapper
 
 {
+    /**@phpstan-ignore-next-line */
     public ?SitePress $sitepress;
     private bool $sitepressOverrideActive;
+
     public function __construct()
     {
         if (class_exists('SitePress')) {
@@ -21,6 +23,8 @@ class SitePress_Wrapper
         }
         $this->sitepressOverrideActive = false;
     }
+
+    /**@phpstan-ignore-next-line */
     final public function get_sitepress(): ?SitePress
     {
         return $this->sitepress;
@@ -64,10 +68,46 @@ class SitePress_Wrapper
 
     final public function get_active_languages(bool $refresh = false, bool $majorFirst = false): array
     {
-        if ($this->sitepress) {
-            $langs = $this->sitepress->get_active_languages($refresh, $majorFirst);
-            return array_keys($langs);
+        if (!$this->sitepress) {
+            return get_available_languages();
         }
-        return get_available_languages();
+
+        /** @phpstan-ignore-next-line */
+        $langs = $this->sitepress->get_active_languages($refresh, $majorFirst);
+        return array_keys($langs);
+    }
+
+    /**
+     * @param integer $element_id
+     * @param string $el_type
+     * @return bool|mixed|null|string
+     */
+    final public function get_element_trid(int $element_id, string $el_type)
+    {
+        if (!$this->sitepress) {
+            return null;
+        }
+
+        /** @phpstan-ignore-next-line */
+        return $this->sitepress->get_element_trid($element_id, $el_type);
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param integer $element_id
+     * @param string $element_type
+     * @param boolean $return_original_if_missing
+     * @param string|null $language_code
+     * @return integer|null
+     */
+    final public function get_object_id(int $element_id, string $element_type, bool $return_original_if_missing = false, string $language_code = null): ?int
+    {
+        if (!$this->sitepress) {
+            return null;
+        }
+
+        /** @phpstan-ignore-next-line */
+        return $this->sitepress->get_object_id($element_id, $element_type, $return_original_if_missing, $language_code);
     }
 }

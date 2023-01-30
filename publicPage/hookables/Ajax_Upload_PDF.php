@@ -124,36 +124,6 @@ class Ajax_Upload_PDF extends Abstract_Ajax_Hookable
         );
     }
 
-    private function save_file(string $folderName, string $fileName): string
-    {
-        //chmod 660
-        $targetDirectory = PWP_UPLOAD_DIR . $folderName;
-        error_log($targetDirectory);
-        mkdir($targetDirectory, 0660, true);
-        $newFileDestination = realpath(PWP_UPLOAD_DIR) . "/{$folderName}/{$fileName}.pdf";
-        move_uploaded_file($_FILES['file']['tmp_name'], $newFileDestination);
-        return $newFileDestination;
-    }
-
-    private function generate_thumbnail(string $filePath, string $filename, int $targetWidth): string
-    {
-        if (!class_exists('Imagick')) {
-            wp_send_json_error("Imagick not active!");
-        }
-        // if (!WP_Image_Editor_Imagick::test())
-        //     wp_send_json_error("imagick not supported", 420);
-        $im = new \Imagick();
-        $im->readImage($filePath . '[0]');
-        $im->setImageFormat('jpg');
-        $im->setImageAlphaChannel(\Imagick::ALPHACHANNEL_REMOVE);
-        $im->setCompressionQuality(25);
-        $im->scaleImage(150, 0);
-        $im->writeImage(PWP_THUMBNAIL_DIR . '/' . $filename);
-        return PWP_THUMBNAIL_DIR . '/' . $filename;
-        // $generator = new Thumbnail_Generator_JPG(-1);
-        // return $generator->generate($filePath . '[0]', PWP_THUMBNAIL_DIR, $filename, 160);
-    }
-
     /**
      * generate and return an iterator chain that validates a file
      *

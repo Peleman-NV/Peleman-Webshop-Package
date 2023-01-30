@@ -8,17 +8,24 @@ use WC_Product;
 
 final class PIE_Instruction
 {
+    private string $key;
     private string $label;
     private bool $enabled;
     private string $description;
 
-    public function __construct(string $label, string $description = '', bool $enabled = false)
+    public function __construct(string $key, string $label, bool $enabled, string $description = '')
     {
+        $this->key = $key;
         $this->label = $label;
         $this->description = $description;
         $this->enabled = $enabled;
     }
 
+    public function get_key(): string
+    {
+        return $this->key;
+    }
+    
     public function set_enabled(bool $enabled): void
     {
         $this->enabled = $enabled;

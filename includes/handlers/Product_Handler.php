@@ -7,14 +7,11 @@ namespace PWP\includes\handlers;
 use WC_Product;
 use PWP\includes\exceptions\Not_Found_Exception;
 use PWP\includes\exceptions\Not_Implemented_Exception;
-use PWP\includes\handlers\services\Product_Category_SVC;
 use PWP\includes\handlers\services\Term_SVC;
 
 
-class Product_Handler implements I_Handler
+class Product_Handler
 {
-    protected $logger;
-
     public function __construct()
     {
     }
@@ -165,7 +162,7 @@ class Product_Handler implements I_Handler
     {
         if (is_null($slugs)) return [];
 
-        $handler = new Product_Attribute_Handler($this->logger);
+        $handler = new Product_Attribute_Handler();
         $attributeIds = array();
         foreach ($slugs as $slug) {
             $attribute = $handler->get_attribute_by_slug($slug);

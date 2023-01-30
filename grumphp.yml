@@ -1,0 +1,6 @@
+# grumphp.yml
+
+grumphp:
+  tasks:
+    phpstan:
+      level: 2

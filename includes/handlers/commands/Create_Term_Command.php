@@ -109,7 +109,6 @@ class Create_Term_Command implements I_Command
                 $term,
                 $original,
                 $translationData->get_language_code(),
-                $this->service->get_sourcelang()
             );
         }
     }

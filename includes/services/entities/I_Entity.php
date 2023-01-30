@@ -16,7 +16,7 @@ interface I_Entity
     /**
      * Save object in database if new, or update if not
      *
-     * @return integer
+     * @return void
      */
     public function persist(): void;
 }

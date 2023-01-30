@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace PWP\includes\utilities\response;
 
+use PWP\includes\utilities\notification\I_Notice;
+
 class Error_Response implements I_Response
 {
     private int $code;
@@ -52,9 +54,5 @@ class Error_Response implements I_Response
     public function get_message(): string
     {
         return $this->message;
-    }
-
-    public function add_response_component(I_Response $response): void
-    {
     }
 }

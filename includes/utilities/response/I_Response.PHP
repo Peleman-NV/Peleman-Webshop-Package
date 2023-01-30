@@ -8,7 +8,6 @@ use PWP\includes\utilities\notification\I_Notice;
 
 interface I_Response
 {
-    public function add_response_component(I_Notice $response): void;
     public function to_array(): array;
     public function get_message(): string;
     public function get_code(): int;

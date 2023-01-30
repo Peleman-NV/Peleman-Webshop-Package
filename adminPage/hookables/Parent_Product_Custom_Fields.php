@@ -6,7 +6,6 @@ namespace PWP\adminPage\hookables;
 
 use PWP\includes\editor\Product_PIE_Data;
 use PWP\includes\editor\Product_Meta_Data;
-use PWP\includes\editor\PIE_Editor_Instructions;
 use PWP\includes\hookables\abstracts\Abstract_Action_Hookable;
 use WC_Product_Simple;
 
@@ -15,13 +14,15 @@ use WC_Product_Simple;
  */
 class Parent_Product_Custom_Fields extends Abstract_Action_Hookable
 {
+    private string $currencySuffix;
+
     public function __construct()
     {
         parent::__construct('woocommerce_product_options_general_product_data', 'render_custom_fields', 11, 3);
     }
     public function render_custom_fields(): void
     {
-
+        $this->currencySuffix =  ' (' . get_woocommerce_currency_symbol() . ')';
         $product = wc_get_product(get_the_ID());
         $meta = new Product_Meta_Data($product);
         if (!$product) return;
@@ -55,7 +56,7 @@ class Parent_Product_Custom_Fields extends Abstract_Action_Hookable
             'name' => Product_Meta_Data::CUSTOM_LABEL_KEY,
             'label' => __('Custom add to cart label', PWP_TEXT_DOMAIN),
             'value' => $meta->get_custom_add_to_cart_label(),
-            'placeholder' => 'eg. Design Project',
+            'placeholder' => 'Add to cart',
             'desc_tip' => true,
             'description' =>  __('custom add to cart button label for this product', PWP_TEXT_DOMAIN),
             'wrapper_class' => 'form-row form-row-full pwp-form-row-padding-5',
@@ -65,10 +66,10 @@ class Parent_Product_Custom_Fields extends Abstract_Action_Hookable
     /**
      * render additional buttons for a simple product
      *
-     * @param WC_Product_Simple $product
+     * @param Product_Meta_Data $meta
      * @return void
      */
-    private function render_simple_product_settings(Product_Meta_data $meta): void
+    private function render_simple_product_settings(Product_Meta_Data $meta): void
     {
         if (get_option('pwp_enable_f2d')) {
             woocommerce_wp_text_input(array(
@@ -87,20 +88,24 @@ class Parent_Product_Custom_Fields extends Abstract_Action_Hookable
                 'label' => __('Fly2Data article code', PWP_TEXT_DOMAIN),
                 'value' => $meta->get_parent()->get_meta('f2d_artcd'),
                 'desc_tip' => true,
-                'description' =>  __('F2D article code', PWP_TEXT_DOMAIN),
+                'description' =>  __('Fly2Data article code for this variation/product', PWP_TEXT_DOMAIN),
                 'wrapper_class' => 'form-row form-row-last pwp-form-row-padding-5',
+                'placeholder'   => 'Fly2Data article code',
             ));
         }
         woocommerce_wp_text_input(array(
             'id' => Product_Meta_Data::UNIT_PRICE,
             'name' => Product_Meta_Data::UNIT_PRICE,
-            'label' => __('Unit Purchase Price', PWP_TEXT_DOMAIN),
+            'label' => __('Unit Purchase Price', PWP_TEXT_DOMAIN) . $this->currencySuffix,
             'value' =>  (string)$meta->get_unit_price() ?: 0,
             'desc_tip' => true,
-            'description' => __('These items are sold as units, not individually', PWP_TEXT_DOMAIN),
+            'description' => __('The price of the unit total that will be added to cart. This is used in conjunction with UNIT AMOUNT.', PWP_TEXT_DOMAIN),
+            'class' => "wc_input_price",
             'wrapper_class' => 'form-row form-row-first pwp-form-row-padding-5',
             'data_type' => 'price',
-            'custom_attributes' => array('step' => 0.001)
+            'type' => 'number',
+            'custom_attributes' => array('step' => 0.01),
+            'placeholder' => 0.00,
         ));
 
         woocommerce_wp_text_input(array(
@@ -115,7 +120,8 @@ class Parent_Product_Custom_Fields extends Abstract_Action_Hookable
             'custom_attributes' => array(
                 'step' => 1,
                 'min' => 1
-            )
+            ),
+            'placeholder' => 1
         ));
 
         woocommerce_wp_text_input(array(
@@ -124,8 +130,9 @@ class Parent_Product_Custom_Fields extends Abstract_Action_Hookable
             'label' => __('Unit code', PWP_TEXT_DOMAIN),
             'value' => $meta->get_unit_code(),
             'desc_tip' => true,
-            'description' =>  __('', PWP_TEXT_DOMAIN),
+            'description' =>  __('The unit code for internal identification , ie. BOX, CRT, ...', PWP_TEXT_DOMAIN),
             'wrapper_class' => 'form-row form-row-first pwp-form-row-padding-5',
+            'placeholder' => 'BOX, CRT, ...'
         ));
 
 
@@ -134,27 +141,31 @@ class Parent_Product_Custom_Fields extends Abstract_Action_Hookable
             'name' => Product_Meta_Data::CUSTOM_LABEL_KEY,
             'label' => __('Custom add to cart label', PWP_TEXT_DOMAIN),
             'value' => $meta->get_custom_add_to_cart_label(),
-            'placeholder' => 'add to cart',
             'desc_tip' => true,
-            'description' =>  __('custom add to cart button label for this variation', PWP_TEXT_DOMAIN),
+            'description' =>  __('Custom Add To Cart label that will be displayed on the product page', PWP_TEXT_DOMAIN),
             'wrapper_class' => 'form-row form-row-last pwp-form-row-padding-5',
+            'placeholder' => 'Add to cart'
         ));
     }
 
     private function render_PIE_product_settings(Product_Meta_Data $meta): void
     {
-        $custom = uniqid();
-        $custom2 = uniqid();
+        $custom = 'editor';
+        $custom2 = 'upload';
+        $required = 'pie_req';
 
         woocommerce_wp_select(array(
             'id' => Product_Meta_Data::EDITOR_ID_KEY,
             'name' => Product_Meta_Data::EDITOR_ID_KEY,
             'label'     => __("Editor", PWP_TEXT_DOMAIN),
             'desc_tip' => true,
-            'description' => __('which editor to use for this product. Ensure the template and variant IDs are valid for the editor.', PWP_TEXT_DOMAIN),
-            'custom_attributes' => array('foldout' => $custom),
+            'description' => __('Enable/disable the editor for this product/variation. Ensure the template ID is at least filled in.', PWP_TEXT_DOMAIN),
+            'custom_attributes' => array(
+                'foldout' => $custom,
+                'requires' => $required
+            ),
             'options'   => [
-                ''                          => 'no customization',
+                ''                          => 'No customization',
                 Product_PIE_Data::MY_EDITOR => 'Peleman Image Editor'
             ],
             'value' => $meta->get_editor_id() ?: 'none',
@@ -163,17 +174,19 @@ class Parent_Product_Custom_Fields extends Abstract_Action_Hookable
 
         $this->open_div([
             'id' => $custom,
-            'classes' => $meta->get_editor_id() == 'PIE' ? [] :  ['pwp-hidden']
+            'classes' => $meta->get_editor_id() == 'PIE' ? [] : ['pwp-hidden']
         ]);
 
         woocommerce_wp_text_input(array(
             'id' => Product_PIE_Data::PIE_TEMPLATE_ID_KEY,
             'name' => Product_PIE_Data::PIE_TEMPLATE_ID_KEY,
-            'label' => __('PIE Template ID', PWP_TEXT_DOMAIN),
+            'label' => __('Template ID', PWP_TEXT_DOMAIN),
             'value' => $meta->pie_data()->get_template_id(),
             'desc_tip' => true,
-            'description' =>  __('', PWP_TEXT_DOMAIN),
+            'description' =>  __('ID of the template that will be used in the editor. This needs to correspond with the template ID defined in the editor dashboard', PWP_TEXT_DOMAIN),
+            'class' => $required,
             'wrapper_class' => 'form-row form-row-first pwp-form-row-padding-5',
+            'placeholder' => 'REQUIRED'
         ));
 
         woocommerce_wp_text_input(array(
@@ -182,29 +195,31 @@ class Parent_Product_Custom_Fields extends Abstract_Action_Hookable
             'label' => __('Design ID', PWP_TEXT_DOMAIN),
             'value' => $meta->pie_data()->get_design_id(),
             'desc_tip' => true,
-            'description' =>  __('', PWP_TEXT_DOMAIN),
+            'description' =>  __('The design theme that can be used in the webshop, ie. Funeral, Copyshop, ...', PWP_TEXT_DOMAIN),
             'wrapper_class' => 'form-row form-row-last pwp-form-row-padding-5',
+            'placeholder' => 'Design ID'
         ));
 
         woocommerce_wp_text_input(array(
             'id' => Product_PIE_Data::BACKGROUND_ID_KEY,
             'name' => Product_PIE_Data::BACKGROUND_ID_KEY,
-            'label' => __('PIE background ID', PWP_TEXT_DOMAIN),
+            'label' => __('Background ID', PWP_TEXT_DOMAIN),
             'value' => $meta->pie_data()->get_background_id(),
             'desc_tip' => true,
-            'description' =>  __('', PWP_TEXT_DOMAIN),
+            'description' =>  __('The background that will be displayed in the editor. This needs to correspond with the background ID defined in the format', PWP_TEXT_DOMAIN),
             'wrapper_class' => 'form-row form-row-first pwp-form-row-padding-5',
+            'placeholder' => 'Background ID'
         ));
 
-        woocommerce_wp_text_input(array(
-            'id' => Product_PIE_Data::FORMAT_ID_KEY,
-            'name' => Product_PIE_Data::FORMAT_ID_KEY,
-            'label' => __('Format ID', PWP_TEXT_DOMAIN),
-            'value' => $meta->pie_data()->get_format_id(),
-            'desc_tip' => true,
-            'description' =>  __('format id for the template to be filled out', PWP_TEXT_DOMAIN),
-            'wrapper_class' => 'form-row form-row-last pwp-form-row-padding-5',
-        ));
+        // woocommerce_wp_text_input(array(
+        //     'id' => Product_PIE_Data::FORMAT_ID_KEY ,
+        //     'name' => Product_PIE_Data::FORMAT_ID_KEY ,
+        //     'label' => __('Format ID', PWP_TEXT_DOMAIN),
+        //     'value' => $meta->pie_data()->get_format_id(),
+        //     'desc_tip' => true,
+        //     'description' =>  __('format id for the template to be filled out', PWP_TEXT_DOMAIN),
+        //     'wrapper_class' => 'form-row form-row-last pwp-form-row-padding-5',
+        // ));
 
         woocommerce_wp_text_input(array(
             'id' => Product_PIE_Data::COLOR_CODE_KEY,
@@ -212,8 +227,9 @@ class Parent_Product_Custom_Fields extends Abstract_Action_Hookable
             'label' => __('Color code', PWP_TEXT_DOMAIN),
             'value' => $meta->pie_data()->get_color_code(),
             'desc_tip' => true,
-            'description' =>  __('', PWP_TEXT_DOMAIN),
-            'wrapper_class' => 'form-row form-row-first pwp-form-row-padding-5',
+            'description' =>  __('The color code of this product/variation to use the corresponding background inside the editor. This needs to correspond with the color code defined in the format', PWP_TEXT_DOMAIN),
+            'wrapper_class' => 'form-row form-row-last pwp-form-row-padding-5',
+            'placeholder' => 'Color code'
         ));
 
         woocommerce_wp_checkbox(array(
@@ -222,7 +238,7 @@ class Parent_Product_Custom_Fields extends Abstract_Action_Hookable
             'label' => __('Use Image Uploads', PWP_TEXT_DOMAIN),
             'value' => $meta->pie_data()->uses_image_upload() ? 'yes' : 'no',
             'desc_tip' => true,
-            'description' => __('', PWP_TEXT_DOMAIN),
+            'description' => __('Require image uploads before you enter the editor. These images will be used to fill in placeholders, ie. a photobook', PWP_TEXT_DOMAIN),
             'wrapper_class' => 'form-row form-row-first pwp-form-row-padding-5',
             'custom_attributes' => array('foldout' => $custom2),
         ));
@@ -238,13 +254,14 @@ class Parent_Product_Custom_Fields extends Abstract_Action_Hookable
             'label' => __('Pages to Fill', PWP_TEXT_DOMAIN),
             'value' => $meta->pie_data()->get_num_pages(),
             'desc_tip' => true,
-            'description' =>  __('', PWP_TEXT_DOMAIN),
+            'description' =>  __('Number of pages to fill in, this will be used for templates that have multiple pages, ie. a photobook', PWP_TEXT_DOMAIN),
             'wrapper_class' => 'form-row form-row-last pwp-form-row-padding-5',
             'type' => 'number',
             'custom_attributes' => array(
                 'step' => 1,
                 'min' => 0
-            )
+            ),
+            'placeholder' => 0
         ));
 
         woocommerce_wp_text_input(array(
@@ -253,13 +270,14 @@ class Parent_Product_Custom_Fields extends Abstract_Action_Hookable
             'label' => __('Min Images for upload', PWP_TEXT_DOMAIN),
             'value' => $meta->pie_data()->get_min_images(),
             'desc_tip' => true,
-            'description' =>  __('', PWP_TEXT_DOMAIN),
+            'description' =>  __('Minimum images that users are required to upload', PWP_TEXT_DOMAIN),
             'wrapper_class' => 'form-row form-row-first pwp-form-row-padding-5',
             'type' => 'number',
             'custom_attributes' => array(
                 'step' => 1,
                 'min' => 0
-            )
+            ),
+            'placeholder' => 0
         ));
 
         woocommerce_wp_text_input(array(
@@ -268,22 +286,23 @@ class Parent_Product_Custom_Fields extends Abstract_Action_Hookable
             'label' => __('Max images for upload', PWP_TEXT_DOMAIN),
             'value' => $meta->pie_data()->get_max_images(),
             'desc_tip' => true,
-            'description' =>  __('', PWP_TEXT_DOMAIN),
+            'description' =>  __('Maximum images that users are required to upload', PWP_TEXT_DOMAIN),
             'wrapper_class' => 'form-row form-row-last pwp-form-row-padding-5',
             'type' => 'number',
             'custom_attributes' => array(
                 'step' => 1,
                 'min' => 0
-            )
+            ),
+            'placeholder' => 0
         ));
 
         woocommerce_wp_checkbox(array(
             'id'    => Product_PIE_Data::AUTOFILL_KEY,
             'name'  => Product_PIE_Data::AUTOFILL_KEY,
-            'label' => __('Autofill templage pages in editor', PWP_TEXT_DOMAIN),
+            'label' => __('Autofill template pages in editor', PWP_TEXT_DOMAIN),
             'value' => $meta->pie_data()->get_autofill() ? 'yes' : 'no',
             'desc_tip' => true,
-            'description' => __('', PWP_TEXT_DOMAIN),
+            'description' => __('Autofill the template pages inside the editor', PWP_TEXT_DOMAIN),
             'wrapper_class' => 'form-row form-row-first pwp-form-row-padding-5',
         ));
 
@@ -295,7 +314,7 @@ class Parent_Product_Custom_Fields extends Abstract_Action_Hookable
             'label' => __('Use project preview thumbnail in cart', PWP_TEXT_DOMAIN),
             'value' => $meta->get_override_thumbnail() ? 'yes' : 'no',
             'desc_tip' => true,
-            'description' => __('Whether to override the product thumbnail in the cart with a preview of the editor project, if available.', PWP_TEXT_DOMAIN),
+            'description' => __('Show a preview of the project when the product is added to the cart', PWP_TEXT_DOMAIN),
             'wrapper_class' => 'form-row form-row-first pwp-form-row-padding-5',
         ));
 
@@ -328,7 +347,8 @@ class Parent_Product_Custom_Fields extends Abstract_Action_Hookable
 
     private function render_PDF_upload_settings(Product_Meta_Data $meta): void
     {
-        $custom = uniqid();
+        $custom = 'pdf_required';
+        $required = 'pdf_req';
 
         woocommerce_wp_checkbox(array(
             'id'    => Product_Meta_Data::USE_PDF_CONTENT_KEY,
@@ -336,9 +356,9 @@ class Parent_Product_Custom_Fields extends Abstract_Action_Hookable
             'label' => __('Require PDF upload', PWP_TEXT_DOMAIN),
             'value' => $meta->uses_pdf_content() ? 'yes' : 'no',
             'desc_tip' => true,
-            'description' => __('whether this product requires customers to upload a pdf file for contents.', PWP_TEXT_DOMAIN),
+            'description' => __('Enable/disable PDF upload for this product/variation', PWP_TEXT_DOMAIN),
             'wrapper_class' => 'form-row form-row-first pwp-form-row-padding-5',
-            'custom_attributes' => array('foldout' => $custom)
+            'custom_attributes' => array('foldout' => $custom, 'requires' => $required)
         ));
 
         $this->open_div(array(
@@ -349,32 +369,35 @@ class Parent_Product_Custom_Fields extends Abstract_Action_Hookable
         woocommerce_wp_text_input(array(
             'id' => Product_Meta_Data::PDF_PRICE_PER_PAGE_KEY,
             'name' => Product_Meta_Data::PDF_PRICE_PER_PAGE_KEY,
-            'label' => __('PDF price per page', PWP_TEXT_DOMAIN),
+            'label' => __('PDF price per page', PWP_TEXT_DOMAIN) . $this->currencySuffix,
             'value' => $meta->get_price_per_page(),
             'desc_tip' => true,
-            'description' => __('additional price per page', PWP_TEXT_DOMAIN),
-            'wrapper_class' => 'form-row form-row-first pwp-form-row-padding-5',
+            'description' => __('Additional price per page that will be added to product/variation price', PWP_TEXT_DOMAIN),
+            'class' => "{$required} wc_input_price",
+            'wrapper_class' => 'form-row form-row-last pwp-form-row-padding-5',
             'data_type' => 'price',
-            'custom_attributes' => array(
-                'step' => 0.001,
-                'min' => 0
-            )
+            'type' => 'number',
+            'custom_attributes' => array('step' => 0.001, 'min' => 0.000),
+            'placeholder' => '0.000'
         ));
 
+
         woocommerce_wp_text_input(array(
-            'id' => Product_Meta_Data::PDF_MIN_PAGES_KEY,
-            'name' => Product_Meta_Data::PDF_MIN_PAGES_KEY,
-            'label' => __('PDF Min Pages', PWP_TEXT_DOMAIN),
-            'value' => $meta->get_pdf_min_pages() ?: 1,
-            'desc_tip' => true,
-            'description' =>  __('min pages allowed per PDF upload', PWP_TEXT_DOMAIN),
+            'id'            => Product_Meta_Data::PDF_MIN_PAGES_KEY,
+            'name'          => Product_Meta_Data::PDF_MIN_PAGES_KEY,
+            'label'         => __('PDF Min Pages', PWP_TEXT_DOMAIN),
+            'value'         => $meta->get_pdf_min_pages() ?: 1,
+            'desc_tip'      => true,
+            'description'   =>  __('Minimum number of pages required for PDF upload', PWP_TEXT_DOMAIN),
+            'class' => $required,
             'wrapper_class' => 'form-row form-row-first pwp-form-row-padding-5',
-            'type' => 'number',
+            'type'          => 'number',
             'custom_attributes' => array(
-                'step' => 1,
-                'min' => 1,
-                'max' => 300
-            )
+                'step'  => 1,
+                'min'   => 1,
+                'max'   => 1000
+            ),
+            'placeholder' => 1
         ));
 
         woocommerce_wp_text_input(array(
@@ -383,14 +406,16 @@ class Parent_Product_Custom_Fields extends Abstract_Action_Hookable
             'label' => __('PDF Max Pages', PWP_TEXT_DOMAIN),
             'value' => $meta->get_pdf_max_pages() ?: 1,
             'desc_tip' => true,
-            'description' =>  __('max pages allowed per PDF upload', PWP_TEXT_DOMAIN),
+            'description' =>  __('Maximum number of pages allowed for PDF upload', PWP_TEXT_DOMAIN),
+            'class' => $required,
             'wrapper_class' => 'form-row form-row-last pwp-form-row-padding-5',
             'type' => 'number',
             'custom_attributes' => array(
                 'step' => 1,
                 'min' => 1,
-                'max' => 300
-            )
+                'max' => 1000
+            ),
+            'placeholder' => 1
         ));
 
         woocommerce_wp_text_input(array(
@@ -400,12 +425,14 @@ class Parent_Product_Custom_Fields extends Abstract_Action_Hookable
             'value' => $meta->get_pdf_width() ?: 1,
             'desc_tip' => true,
             'description' =>  __('permitted width of PDF uploads in mm', PWP_TEXT_DOMAIN),
+            'class' => $required,
             'wrapper_class' => 'form-row form-row-first pwp-form-row-padding-5',
             'type' => 'number',
             'custom_attributes' => array(
                 'step' => 1,
                 'min' => 1
-            )
+            ),
+            'placeholder' => 210
         ));
 
         woocommerce_wp_text_input(array(
@@ -415,12 +442,14 @@ class Parent_Product_Custom_Fields extends Abstract_Action_Hookable
             'value' => $meta->get_pdf_height() ?: 1,
             'desc_tip' => true,
             'description' =>  __('permitted height of PDF uploads in mm', PWP_TEXT_DOMAIN),
+            'class' => $required,
             'wrapper_class' => 'form-row form-row-last pwp-form-row-padding-5',
             'type' => 'number',
             'custom_attributes' => array(
                 'step' => 1,
                 'min' => 1
-            )
+            ),
+            'placeholder' => 297
         ));
 
         $this->close_div();

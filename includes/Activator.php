@@ -30,6 +30,7 @@ class Activator
 
     public function init_settings()
     {
+        error_log("Enabling PWP plugin...");
         register_setting(PWP_OPTION_GROUP, 'pwp-version', array(
             'default' => '0.0.1',
         ));
@@ -47,25 +48,6 @@ class Activator
             // $table_name = $wpdb->prefix . PWP_API_KEY_TABLE;
 
             $charset_collate = $wpdb->get_charset_collate();
-
-            // //create table to store API keys
-            // \maybe_create_table($table_name, $wpdb->prepare(
-            //     "CREATE TABLE  {$table_name} (
-            // id              mediumint(9) NOT NULL AUTO_INCREMENT,
-            // name            tinytext DEFAULT NULL,
-            // key             tinytext NOT NULL,
-            // hashed_secret   tinytext NOT NULL,
-            // key_suffix      tinytext NOT NULL,
-            // salt            int(11) NOT NULL,
-            // created         datetime DEFAULT CURRENT_TIMESTAMP,
-            // modified        datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP, 
-            // rate_limit      decimal(10,2) DEFAULT NULL,
-
-            // PRIMARY KEY (id)) %s",
-            //     array(
-            //         $charset_collate
-            //     )
-            // ));
 
             $table_name = $wpdb->prefix . PWP_PROJECTS_TABLE;
 
@@ -97,7 +79,6 @@ class Activator
 
     public function init_directories()
     {
-        error_log(PWP_UPLOAD_DIR);
         if (!is_dir(PWP_UPLOAD_DIR)) {
             mkdir(PWP_UPLOAD_DIR, 0755, true);
         }

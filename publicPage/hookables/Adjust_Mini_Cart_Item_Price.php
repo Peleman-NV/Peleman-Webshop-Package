@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PWP\publicPage\hookables;
 
-use PCMB\includes\hookables\abstracts\Abstract_Action_Hookable;
+use PWP\includes\hookables\abstracts\Abstract_Action_Hookable;
 use PWP\includes\editor\Product_Meta_Data;
 
 class Adjust_Mini_Cart_Item_Price extends Abstract_Action_Hookable
@@ -25,19 +25,18 @@ class Adjust_Mini_Cart_Item_Price extends Abstract_Action_Hookable
             ob_start();
 ?>
             <span class="quantity"> <?php echo $unitAmount; ?> </span> X
-                <span class="woocommerce-Price-amount amount">
-                    <bdi>
-                        <span class="woocommerce-Price-currencySymbol">
-                            <?php echo get_woocommerce_currency_symbol(); ?>
-                        </span>
-                        <?php echo wc_price($price); ?>
-                    </bdi>
-                </span>
+            <span class="woocommerce-Price-amount amount">
+                <bdi>
+                    <span class="woocommerce-Price-currencySymbol">
+                        <?php echo get_woocommerce_currency_symbol(); ?>
+                    </span>
+                    <?php echo wc_price($price); ?>
+                </bdi>
+            </span>
 <?php
 
             $output = ob_get_clean();
+            return $output;
         }
-
-        return $output;
     }
 }
