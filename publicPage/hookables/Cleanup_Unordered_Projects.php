@@ -15,7 +15,7 @@ use PWP\includes\services\entities\Project;
  */
 class Cleanup_Unordered_Projects extends Abstract_Action_Hookable
 {
-    private const HOOK = 'pwp_cleanup_projects';
+    public const HOOK = 'pwp_cleanup_projects';
     public function __construct()
     {
         parent::__construct(self::HOOK, 'clean');
