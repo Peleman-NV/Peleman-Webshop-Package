@@ -15,13 +15,13 @@ use PWP\includes\services\entities\Project;
  */
 class Cleanup_Unordered_Projects extends Abstract_Action_Hookable
 {
+    private const HOOK = 'pwp_cleanup_projects';
     public function __construct()
     {
-        $hook = 'pwp_cleanup_projects';
-        parent::__construct($hook, 'clean');
+        parent::__construct(self::HOOK, 'clean');
 
-        if (!wp_next_scheduled($hook)) {
-            wp_schedule_event(time(), 'daily', $hook);
+        if (!wp_next_scheduled(self::HOOK)) {
+            wp_schedule_event(time(), 'daily', self::HOOK);
         }
     }
 

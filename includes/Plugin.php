@@ -96,67 +96,75 @@ final class Plugin
     private function admin_hooks(): void
     {
         $this->add_hookable($this->noticePoster);
-        /** control panel hookables */
-        $this->add_hookable(new Admin_Enqueue_Styles());
-        $this->add_hookable(new Admin_Enqueue_Scripts());
-        $this->add_hookable(new Admin_Submenu_Fields());
-
-        $this->add_hookable(new Admin_Control_Panel());
-        $this->add_hookable(new PIE_Editor_Control_Panel());
-
-        /* product page hookables */
-        $this->add_hookable(new Parent_Product_Custom_Fields());
-        $this->add_hookable(new Variable_Product_Custom_Fields());
-        $this->add_hookable(new Save_Parent_Product_Custom_Fields());
-        $this->add_hookable(new Save_Variable_Product_Custom_Fields());
-        $this->add_hookable(new Add_PIE_Printfile_Download_Button());
-
         /** cron jobs */
         $this->add_hookable(new Add_Cron_Schedules());
+        /** control panel hookables */
+        $this->add_hookables(
+            new Admin_Enqueue_Styles(),
+            new Admin_Enqueue_Scripts(),
+            new Admin_Submenu_Fields(),
+            new Admin_Control_Panel(),
+            new PIE_Editor_Control_Panel(),
+        );
+        /* product page hookables */
+        $this->add_hookables(
+            new Parent_Product_Custom_Fields(),
+            new Variable_Product_Custom_Fields(),
+            new Save_Parent_Product_Custom_Fields(),
+            new Save_Variable_Product_Custom_Fields(),
+            new Add_PIE_Printfile_Download_Button(),
+        );
     }
 
     private function public_hooks(): void
     {
-        $this->add_hookable(new Cleanup_Unordered_Projects());
-        $this->add_hookable(new Override_WC_Templates());
-        $this->add_hookable(new Apply_Bundle_Price_Cart_Widget());
+        $this->add_hookables(
+            new Cleanup_Unordered_Projects(),
+            new Override_WC_Templates(),
+            new Apply_Bundle_Price_Cart_Widget()
+        );
 
-        $this->add_hookable(new Enqueue_Public_Styles());
-        $this->add_hookable(new Enqueue_PDF_JS());
+        $this->add_hookables(
+            new Enqueue_Public_Styles(),
+            new Enqueue_PDF_JS()
+        );
 
-        $this->add_hookable(new Add_Class_To_Add_To_Cart_Button());
-        $this->add_hookable(new Change_Add_To_Cart_Archive_Button());
-        $this->add_hookable(new Change_Add_To_Cart_Button_Label());
-        $this->add_hookable(new Add_Fields_To_Add_To_Cart_Button());
+        $this->add_hookables(
+            new Add_Class_To_Add_To_Cart_Button(),
+            new Change_Add_To_Cart_Archive_Button(),
+            new Change_Add_To_Cart_Button_Label(),
+            new Add_Fields_To_Add_To_Cart_Button(),
 
-        $this->add_hookable(new Set_PIE_Project_As_Completed());
+            new Set_PIE_Project_As_Completed()
+        );
 
         /* PDF upload hookables */
-        $this->add_hookable(new Display_PDF_Upload_Form($this->templateEngine));
-        $this->add_hookable(new Validate_PDF_Upload);
-        $this->add_hookable(new Add_PDF_Data_To_Cart_Item());
-        $this->add_hookable(new Display_PDF_Data_In_Cart());
-        $this->add_hookable(new Remove_PDF_On_Cart_Deletion());
-        $this->add_hookable(new Add_PDF_Prices_To_Cart());
-        $this->add_hookable(new Order_Project());
-        $this->add_hookable(new Display_PDF_Data_After_Order_Item());
+        $this->add_hookables(
+            new Display_PDF_Upload_Form($this->templateEngine),
+            new Validate_PDF_Upload(),
+            new Add_PDF_Data_To_Cart_Item(),
+            new Display_PDF_Data_In_Cart(),
+            new Remove_PDF_On_Cart_Deletion(),
+            new Add_PDF_Prices_To_Cart(),
+            new Order_Project(),
+            new Display_PDF_Data_After_Order_Item()
+        );
 
         /* EDITOR product hookables */
-        $this->add_hookable(new Ajax_Show_Variation());
-        $this->add_hookable(new Ajax_Add_To_Cart());
-        $this->add_hookable(new Display_Editor_Project_Button_In_Cart());
-        $this->add_hookable(new Add_Custom_Project_On_Return());
-        $this->add_hookable(new Save_Cart_Item_Meta_To_Order_Item_Meta());
+        $this->add_hookables(
+            new Ajax_Show_Variation(),
+            new Ajax_Add_To_Cart(),
+            new Display_Editor_Project_Button_In_Cart(),
+            new Add_Custom_Project_On_Return(),
+            new Save_Cart_Item_Meta_To_Order_Item_Meta()
+        );
 
         /* EDITOR front end display hookables */
         $this->add_hookable(new Change_Cart_Item_Thumbnail());
-        // $this->add_hookable(new Ajax_Load_Cart_Thumbnail());
     }
 
     private function api_endpoints(): void
     {
-        // $this->loader->add_API_endpoint(new TEST_OAuth2_Client_Endpoint());
-
         $this->add_hookable(new API_V1_Plugin('pwp/v1'));
     }
 
@@ -177,5 +185,16 @@ final class Plugin
     private function add_hookable(I_Hookable_Component $hookable): void
     {
         $this->loader->add_hookable(($hookable));
+    }
+
+    /**
+     * @param I_Hookable_Component ...$hookables
+     * @return void
+     */
+    private function add_hookables(...$hookables): void
+    {
+        foreach ($hookables as $hookable) {
+            $this->loader->add_hookable($hookable);
+        }
     }
 }

@@ -225,7 +225,7 @@ class Parent_Product_Custom_Fields extends Abstract_Action_Hookable
             'id' => Product_PIE_Data::COLOR_CODE_KEY,
             'name' => Product_PIE_Data::COLOR_CODE_KEY,
             'label' => __('Color code', PWP_TEXT_DOMAIN),
-            'value' => $meta->pie_data()->get_num_pages(),
+            'value' => $meta->pie_data()->get_color_code(),
             'desc_tip' => true,
             'description' =>  __('The color code of this product/variation to use the corresponding background inside the editor. This needs to correspond with the color code defined in the format', PWP_TEXT_DOMAIN),
             'wrapper_class' => 'form-row form-row-last pwp-form-row-padding-5',
