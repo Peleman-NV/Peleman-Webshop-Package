@@ -31,7 +31,7 @@ class Save_Variable_Product_Custom_Fields extends Abstract_Action_Hookable
     {
         $editor_data = new Product_Meta_Data(wc_get_product($variation_id));
         $pie_data = $editor_data->pie_data();
-        error_log(print_r($_POST, true));
+        // error_log(print_r($_POST, true));
 
         $editor_data
             ->set_unit_amount((int)$_POST[Product_Meta_Data::UNIT_AMOUNT][$loop] ?: 1)

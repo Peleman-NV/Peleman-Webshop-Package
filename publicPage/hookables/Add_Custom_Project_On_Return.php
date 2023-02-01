@@ -25,14 +25,17 @@ class Add_Custom_Project_On_Return extends Abstract_Action_Hookable
 
     public function add_customized_product_to_cart()
     {
-        if (isset($_REQUEST['CustProj'])) {
+        $get = filter_input_array(INPUT_GET, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+        if (!empty($get['CustProj'])) {
             session_start();
-            $sessionId = sanitize_key($_REQUEST['CustProj']);
+
+            $sessionId = sanitize_key($get['CustProj']);
 
             if (isset($_SESSION[$sessionId])) {
 
                 $data = $_SESSION[$sessionId];
-                unset($_SESSION[$sessionId]);
+                error_log(print_r($data));
+                // unset($_SESSION[$sessionId]);
 
                 // error_log("adding project to cart: " . print_r($data, true));
 
