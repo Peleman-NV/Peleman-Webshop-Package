@@ -31,44 +31,46 @@ class Save_Variable_Product_Custom_Fields extends Abstract_Action_Hookable
     {
         $editor_data = new Product_Meta_Data(wc_get_product($variation_id));
         $pie_data = $editor_data->pie_data();
-        // error_log(print_r($_POST, true));
+
+        $post = filter_input_array(INPUT_POST, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+        error_log(print_r($post, true));
 
         $editor_data
-            ->set_unit_amount((int)$_POST[Product_Meta_Data::UNIT_AMOUNT][$loop] ?: 1)
-            ->set_unit_price((float)$_POST[Product_Meta_Data::UNIT_PRICE][$loop])
-            ->set_unit_code($_POST[Product_Meta_Data::UNIT_CODE][$loop])
+            ->set_unit_amount((int)$post[Product_Meta_Data::UNIT_AMOUNT][$loop] ?: 1)
+            ->set_unit_price((float)$post[Product_Meta_Data::UNIT_PRICE][$loop])
+            ->set_unit_code($post[Product_Meta_Data::UNIT_CODE][$loop])
             ->set_uses_pdf_content(
-                isset($_POST[Product_Meta_Data::USE_PDF_CONTENT_KEY][$loop])
+                isset($post[Product_Meta_Data::USE_PDF_CONTENT_KEY][$loop])
             )
-            ->set_pdf_max_pages((int)$_POST[Product_Meta_Data::PDF_MAX_PAGES_KEY][$loop])
-            ->set_pdf_min_pages((int)$_POST[Product_Meta_Data::PDF_MIN_PAGES_KEY][$loop])
-            ->set_pdf_height((int)$_POST[Product_Meta_Data::PDF_HEIGHT_KEY][$loop])
-            ->set_pdf_width((int)$_POST[Product_Meta_Data::PDF_WIDTH_KEY][$loop])
-            ->set_price_per_page((float)$_POST[Product_Meta_Data::PDF_PRICE_PER_PAGE_KEY][$loop])
+            ->set_pdf_max_pages((int)$post[Product_Meta_Data::PDF_MAX_PAGES_KEY][$loop])
+            ->set_pdf_min_pages((int)$post[Product_Meta_Data::PDF_MIN_PAGES_KEY][$loop])
+            ->set_pdf_height((int)$post[Product_Meta_Data::PDF_HEIGHT_KEY][$loop])
+            ->set_pdf_width((int)$post[Product_Meta_Data::PDF_WIDTH_KEY][$loop])
+            ->set_price_per_page((float)$post[Product_Meta_Data::PDF_PRICE_PER_PAGE_KEY][$loop])
             ->set_editor(
-                esc_attr(sanitize_text_field($_POST[Product_Meta_Data::EDITOR_ID_KEY][$loop]))
+                esc_attr(sanitize_text_field($post[Product_Meta_Data::EDITOR_ID_KEY][$loop]))
             )->set_custom_add_to_cart_label(
-                esc_attr(sanitize_text_field($_POST[Product_Meta_Data::CUSTOM_LABEL_KEY][$loop]))
-            )->set_override_thumbnail(isset($_POST[Product_Meta_Data::OVERRIDE_CART_THUMB][$loop]));
+                esc_attr(sanitize_text_field($post[Product_Meta_Data::CUSTOM_LABEL_KEY][$loop]))
+            )->set_override_thumbnail(isset($post[Product_Meta_Data::OVERRIDE_CART_THUMB][$loop]));
 
         $pie_data->set_template_id(
             esc_attr(sanitize_text_field(
-                $_POST[Product_PIE_Data::PIE_TEMPLATE_ID_KEY][$loop]
+                $post[Product_PIE_Data::PIE_TEMPLATE_ID_KEY][$loop]
             ))
         );
 
         //PIE specific data
         $pie_data
-            ->set_design_id(esc_attr(sanitize_text_field($_POST[Product_PIE_Data::DESIGN_ID_KEY][$loop])))
-            ->set_color_code(esc_attr(sanitize_text_field($_POST[Product_PIE_Data::COLOR_CODE_KEY][$loop])))
-            ->set_background_id(esc_attr(sanitize_text_field($_POST[Product_PIE_Data::BACKGROUND_ID_KEY][$loop])))
-            ->set_uses_image_upload(isset($_POST[Product_PIE_Data::USE_IMAGE_UPLOAD_KEY][$loop]))
-            ->set_autofill(isset($_POST[Product_PIE_Data::AUTOFILL_KEY][$loop]))
-            ->set_num_pages((int)esc_attr(sanitize_text_field($_POST[Product_PIE_Data::NUM_PAGES_KEY][$loop])))
-            // ->set_format_id(esc_attr(sanitize_text_field($_POST[Product_PIE_Data::FORMAT_ID_KEY][$loop])))
-            ->set_max_images((int)esc_attr(sanitize_text_field($_POST[Product_PIE_Data::MAX_IMAGES_KEY][$loop])))
-            ->set_min_images((int)esc_attr(sanitize_text_field($_POST[Product_PIE_Data::MIN_IMAGES_KEY][$loop])))
-            ->parse_instruction_array_loop($_POST, $loop);
+            ->set_design_id(esc_attr(sanitize_text_field($post[Product_PIE_Data::DESIGN_ID_KEY][$loop])))
+            ->set_color_code(esc_attr(sanitize_text_field($post[Product_PIE_Data::COLOR_CODE_KEY][$loop])))
+            ->set_background_id(esc_attr(sanitize_text_field($post[Product_PIE_Data::BACKGROUND_ID_KEY][$loop])))
+            ->set_uses_image_upload(isset($post[Product_PIE_Data::USE_IMAGE_UPLOAD_KEY][$loop]))
+            ->set_autofill(isset($post[Product_PIE_Data::AUTOFILL_KEY][$loop]))
+            ->set_num_pages((int)esc_attr(sanitize_text_field($post[Product_PIE_Data::NUM_PAGES_KEY][$loop])))
+            // ->set_format_id(esc_attr(sanitize_text_field($post[Product_PIE_Data::FORMAT_ID_KEY][$loop])))
+            ->set_max_images((int)esc_attr(sanitize_text_field($post[Product_PIE_Data::MAX_IMAGES_KEY][$loop])))
+            ->set_min_images((int)esc_attr(sanitize_text_field($post[Product_PIE_Data::MIN_IMAGES_KEY][$loop])))
+            ->parse_instruction_array_loop($post, $loop);
 
         $editor_data->update_meta_data();
         $editor_data->save_meta_data();

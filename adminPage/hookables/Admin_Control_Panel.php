@@ -33,7 +33,8 @@ class Admin_Control_Panel extends Abstract_Action_Hookable
 
     public function render_tab_buttons()
     {
-        $activeTab = isset($_GET['tab']) ? $_GET['tab'] : 1;
+        $get = filter_input_array(INPUT_GET, array('tab' => FILTER_VALIDATE_INT));
+        $activeTab = isset($get['tab']) ? $get['tab'] : 1;
 ?>
         <div class="wrap">
             <div id="icon-themes" class="icon32"></div>

@@ -33,8 +33,6 @@ class Add_Custom_Project_On_Return extends Abstract_Action_Hookable
             $data = get_transient($transientId);
 
             if (false !== $data) {
-
-                error_log(print_r($data, true));
                 // error_log("adding project to cart: " . print_r($data, true));
 
                 $productId      = (int)$data['product_id'];
