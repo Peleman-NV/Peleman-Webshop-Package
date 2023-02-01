@@ -326,7 +326,7 @@ class Parent_Product_Custom_Fields extends Abstract_Action_Hookable
     {
 ?>
         <div class="pwp-options-header">Editor Instructions</div>
-<?php
+        <?php
         $this->open_div();
         $instructions = $meta->pie_data()->get_editor_instructions();
         $index = 0;
@@ -470,8 +470,10 @@ class Parent_Product_Custom_Fields extends Abstract_Action_Hookable
 
     private function heading(string $text, int $importance = 1, array $classes = []): void
     {
-        $importance = min(6, max(1, $importance));
+        $tag = 'h' . (min(6, max(1, $importance)));
         $classes = implode(' ', $classes);
-        echo "<h{$importance} class='{$classes}'>{$text}</h{$importance}>";
+        ?>
+        <<?php echo esc_attr($tag); ?> class='<?php echo esc_attr($classes); ?>'><?php echo esc_attr($text); ?></<?php echo esc_attr($tag); ?>>
+<?php
     }
 }

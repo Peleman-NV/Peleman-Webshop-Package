@@ -40,9 +40,9 @@ class FIND_Project_Thumbnail extends Abstract_FIND_Endpoint
             $src = $img;
             ob_start();
             header('Content-Type: image/jpeg');
-            ob_clean();
+            echo($img);
+            ob_end_clean();
             flush();
-            echo $img;
         } catch (WP_Error_Exception $error) {
             error_Log((string)$error);
         } catch (\Throwable $error) {

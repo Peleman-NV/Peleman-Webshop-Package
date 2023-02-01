@@ -22,8 +22,8 @@ class Display_PDF_Data_In_Cart extends Abstract_Action_Hookable
             $pages = $cart_item['_pdf_data']['pages'];
 
 ?>
-            <div><strong>pdf</strong>: <?php echo $filename; ?></div>
-            <div><strong>pages</strong>: <?php echo $pages; ?></div>
+            <div><strong>pdf</strong>: <?php echo esc_html($filename); ?></div>
+            <div><strong>pages</strong>: <?php echo esc_html($pages); ?></div>
 <?php
         }
     }

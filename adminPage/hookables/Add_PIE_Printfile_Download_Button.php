@@ -86,7 +86,7 @@ class Add_PIE_Printfile_Download_Button extends Abstract_Action_Hookable
 ?>
                 <span>
 
-                    <a type="button" class="button" href=<?php echo $dl_url; ?>>
+                    <a type="button" class="button" href=<?php echo esc_url($dl_url); ?>>
                         <?php echo esc_html__(" Download print file.", PWP_TEXT_DOMAIN); ?>
                     </a>
                 </span>

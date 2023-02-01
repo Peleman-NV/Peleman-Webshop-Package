@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace PWP\adminPage\hookables;
 
-use PWP\includes\editor\Keys;
-use PWP\includes\editor\PIE_Editor_Instructions;
 use PWP\includes\editor\Product_Meta_Data;
 use PWP\includes\editor\Product_PIE_Data;
 use PWP\includes\hookables\abstracts\Abstract_Action_Hookable;
