@@ -29,14 +29,12 @@ class Add_Custom_Project_On_Return extends Abstract_Action_Hookable
         if (!empty($get['CustProj'])) {
             session_start();
 
-            $sessionId = sanitize_key($get['CustProj']);
+            $transientId = sanitize_key($get['CustProj']);
+            $data = get_transient($transientId);
 
-            if (isset($_SESSION[$sessionId])) {
+            if (false !== $data) {
 
-                $data = $_SESSION[$sessionId];
-                error_log(print_r($data));
-                // unset($_SESSION[$sessionId]);
-
+                error_log(print_r($data, true));
                 // error_log("adding project to cart: " . print_r($data, true));
 
                 $productId      = (int)$data['product_id'];
@@ -60,6 +58,7 @@ class Add_Custom_Project_On_Return extends Abstract_Action_Hookable
                     wp_die("something went catastrophically wrong adding the item and project to the cart.");
                 }
                 wc_add_to_cart_message(array($productId => $quantity), true);
+                delete_transient($transientId);
             }
 
             wp_redirect(wc_get_cart_url());
