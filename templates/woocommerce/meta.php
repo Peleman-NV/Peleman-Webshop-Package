@@ -45,10 +45,10 @@ if ($isBundleProduct) {
                     <?php _e('Individual price', PWP_TEXT_DOMAIN) . ': '; ?>
                 </span>
                 <span class="individual-price-amount woocommerce-Price-amount amount">
-                    <?php _e($isBundleProduct ? $individualPriceWithCurrencySymbol : ''); ?>
+                    <?php echo esc_html($isBundleProduct ? $individualPriceWithCurrencySymbol : ''); ?>
                 </span>
                 <span class="woocommerce-price-suffix">
-                    <?php _e($priceSuffix); ?>
+                    <?php echo esc_html($priceSuffix); ?>
                 </span>
             </span>
             <span class="add-to-cart-price">
@@ -56,10 +56,10 @@ if ($isBundleProduct) {
                     <?php _e('Price', PWP_TEXT_DOMAIN) . ': '; ?>
                 </span>
                 <span class="bundle-price-amount woocommerce-Price-amount amount">
-                    <?php _e($isBundleProduct ? $bundlePriceWithCurrencySymbol : $individualPriceWithCurrencySymbol); ?>
+                    <?php echo esc_html($isBundleProduct ? $bundlePriceWithCurrencySymbol : $individualPriceWithCurrencySymbol); ?>
                 </span>
                 <span class="woocommerce-price-suffix">
-                    <?php _e($priceSuffix); ?>
+                    <?php echo esc_html($priceSuffix); ?>
                     <span class="bundle-suffix <?php echo !$isBundleProduct ? 'pwp-hidden' : ''; ?>"> <?php echo $bundleLabel; ?>
                     </span>
                 </span>
