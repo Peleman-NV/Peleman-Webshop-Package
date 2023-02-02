@@ -25,15 +25,14 @@ class Add_Custom_Project_On_Return extends Abstract_Action_Hookable
 
     public function add_customized_product_to_cart()
     {
-        if (isset($_REQUEST['CustProj'])) {
+        $get = filter_input_array(INPUT_GET, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+        if (!empty($get['CustProj'])) {
             session_start();
-            $sessionId = sanitize_key($_REQUEST['CustProj']);
 
-            if (isset($_SESSION[$sessionId])) {
+            $transientId = sanitize_key($get['CustProj']);
+            $data = get_transient($transientId);
 
-                $data = $_SESSION[$sessionId];
-                unset($_SESSION[$sessionId]);
-
+            if (false !== $data) {
                 // error_log("adding project to cart: " . print_r($data, true));
 
                 $productId      = (int)$data['product_id'];
@@ -57,6 +56,7 @@ class Add_Custom_Project_On_Return extends Abstract_Action_Hookable
                     wp_die("something went catastrophically wrong adding the item and project to the cart.");
                 }
                 wc_add_to_cart_message(array($productId => $quantity), true);
+                delete_transient($transientId);
             }
 
             wp_redirect(wc_get_cart_url());

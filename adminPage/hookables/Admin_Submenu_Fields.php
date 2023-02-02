@@ -18,7 +18,8 @@ class Admin_Submenu_Fields extends Abstract_Action_Hookable
 
     public function register_submenu_fields()
     {
-        $activeTab = isset($_GET['tab']) ? $_GET['tab'] : 1;
+        $get = filter_input_array(INPUT_GET, array('tab' => FILTER_VALIDATE_INT));
+        $activeTab = isset($get['tab']) ? (int)$get['tab'] : 1;
         switch ($activeTab) {
             default:
             case 1:

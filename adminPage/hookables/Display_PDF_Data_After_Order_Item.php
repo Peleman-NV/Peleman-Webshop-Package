@@ -27,8 +27,7 @@ class Display_PDF_Data_After_Order_Item extends Abstract_Action_Hookable
 
         $download = home_url('wp-json/pwp/v1/pdf/' . $id . "?_wpnonce={$nonce}");
 ?>
-        <div><a type="button" class="button" style="margin-top:4px; margin-bottom:4px;" download="<?php echo $name; ?>" target="_blank" href="<?php echo $download ?>">Download <?php echo $name; ?></a></div>
-        <!-- <div><a target="_blank" href=<?php echo $download; ?>>download <?php echo $name ?></a></div> -->
+        <div><a type="button" class="button" style="margin-top:4px; margin-bottom:4px;" download="<?php echo esc_attr($name); ?>" target="_blank" href="<?php echo esc_url($download); ?>">Download <?php echo esc_html($name); ?></a></div>
 <?php
     }
 }

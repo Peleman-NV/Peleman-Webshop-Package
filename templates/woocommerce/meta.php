@@ -77,7 +77,7 @@ if ($isBundleProduct) {
                 <?php esc_html_e('Article code:', PWP_TEXT_DOMAIN); ?>
             </span>
             <span class="sku">
-                <?php echo _e($articleCode); ?>
+                <?php echo $articleCode; ?>
             </span>
         </span>
     <?php else : ?>

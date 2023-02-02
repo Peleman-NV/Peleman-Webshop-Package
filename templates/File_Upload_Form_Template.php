@@ -4,44 +4,44 @@ if (!defined('ABSPATH')) {
 }
 ?>
 
-<div class='pwp-upload-form <?php echo $enabled ? '' :  'pwp-hidden'; ?>'>
+<div class='pwp-upload-form <?php echo esc_attr($enabled ? '' :  'pwp-hidden');/* @phpstan-ignore-line */ ?>'>
     <div class='pwp-upload-parameters' style="display: inline-block">
         <p>
             <?php echo esc_html__('Your full price will be calculated in the cart according to the number of pages of your content PDF.', PWP_TEXT_DOMAIN); ?>
-            <?php echo esc_html__('The price per page for this product equals', PWP_TEXT_DOMAIN); ?> <span class="price-per-page"><?php echo wc_price($price_per_page) ?: '' ?></span>
+            <?php echo esc_html__('The price per page for this product equals', PWP_TEXT_DOMAIN); ?> <span class="price-per-page"><?php echo wc_price($price_per_page ?: '');/* @phpstan-ignore-line */ ?></span>
         </p>
         <table class="pwp-pdf-table">
             <tbody>
                 <tr>
                     <td><?php echo esc_html__('Maximum file size', PWP_TEXT_DOMAIN); ?></td>
-                    <td><?php echo $max_file_size; ?></td>
+                    <td><?php echo esc_html($max_file_size);/* @phpstan-ignore-line */ ?></td>
                 </tr>
                 <tr>
                     <td><?php echo esc_html__('PDF page width (mm)', PWP_TEXT_DOMAIN); ?></td>
-                    <td class='param-value' id='content-width'><?php echo $pdf_width ?: ''; ?></td>
+                    <td class='param-value' id='content-width'><?php echo esc_attr($pdf_width ?: '');/* @phpstan-ignore-line */ ?></td>
                 </tr>
                 <tr>
                     <td><?php echo esc_html__('PDF page height (mm)', PWP_TEXT_DOMAIN); ?></td>
-                    <td class='param-value' id='content-height'><?php echo $pdf_height ?: ''; ?></td>
-                </tr>
+                    <td class='param-value' id='content-height'><?php echo esc_attr($pdf_height ?: ''); /* @phpstan-ignore-line */ ?></td>
+                </tr> G
                 <tr>
                     <td><?php echo esc_html__('Minimum page count', PWP_TEXT_DOMAIN); ?></td>
-                    <td class='param-value' id='content-min-pages'><?php echo $pdf_min_pages ?: ''; ?></td>
+                    <td class='param-value' id='content-min-pages'><?php echo esc_attr($pdf_min_pages ?: '');/* @phpstan-ignore-line */ ?></td>
                 </tr>
                 <tr>
                     <td><?php echo esc_html__('Maximum page count', PWP_TEXT_DOMAIN); ?></td>
-                    <td class='param-value' id='content-max-pages'><?php echo $pdf_max_pages ?: ''; ?></td>
+                    <td class='param-value' id='content-max-pages'><?php echo esc_attr($pdf_max_pages ?: '');/* @phpstan-ignore-line */ ?></td>
                 </tr>
                 <tr>
                     <td><?php echo esc_html__('Price per page', PWP_TEXT_DOMAIN); ?></td>
-                    <td class='param-value price-per-page' id='content-price-per-page'><?php echo wc_price($price_per_page) ?: '' ?></td>
+                    <td class='param-value price-per-page' id='content-price-per-page'><?php echo wc_price($price_per_page ?: '');?></td>
                 </tr>
             </tbody>
         </table>
         <div id='pwp-upload-info'>
             <label class='pwp-upload-label' for='pwp-file-upload'>
                 <i class="icon-doc"></i><?php echo esc_html__('Drag or upload your PDF file here', PWP_TEXT_DOMAIN); ?>
-                <input class='pwp-upload-field' id='pwp-file-upload' type='file' accept='application/pdf' name='pdf-upload' size='<?php echo $size; ?>' required />
+                <input class='pwp-upload-field' id='pwp-file-upload' type='file' accept='application/pdf' name='pdf-upload' size='<?php echo esc_html($size); /* @phpstan-ignore-line */?>' required />
                 <br /><span id="pwp-upload-filename" style="color: green; margin-top: 20px; font-weight: 500; font-size: 16px;"></span>
             </label>
             <div class='pwp-thumbnail-container'>

@@ -6,9 +6,6 @@ namespace PWP\publicPage\hookables;
 
 use PWP\includes\editor\Product_Meta_Data;
 use PWP\includes\editor\Editor_Project;
-use PWP\includes\editor\Product_IMAXEL_Data;
-use PWP\includes\editor\IMAXEL_Project;
-use PWP\includes\editor\New_IMAXEL_Project_Request;
 use PWP\includes\editor\New_PIE_Project_Request;
 use PWP\includes\editor\PIE_Editor_Instructions;
 use PWP\includes\editor\Product_PIE_Data;
@@ -60,9 +57,9 @@ class Ajax_Add_To_Cart extends Abstract_Ajax_Hookable
                 if ($productMeta->is_customizable()) {
                     session_start();
 
-                    $sessionId = uniqid('ord');
+                    $transientId = uniqid('pwpproj-');
 
-                    $continueUrl = wc_get_cart_url() . "?CustProj={$sessionId}";
+                    $continueUrl = wc_get_cart_url() . "?CustProj={$transientId}";
                     $cancelUrl = get_permalink($product->get_id());
                     $redirectUrl = '';
 
@@ -78,7 +75,7 @@ class Ajax_Add_To_Cart extends Abstract_Ajax_Hookable
                         )
                     );
 
-                    //store relevant data in session
+                    //store relevant data in transients
                     /**
                      * @var array $itemData array of data to be stored in the session until user returns
                      * @var \WC_Product $product product which is to be stored
@@ -91,7 +88,9 @@ class Ajax_Add_To_Cart extends Abstract_Ajax_Hookable
                         $productMeta,
                     );
 
-                    $_SESSION[$sessionId] = $itemData;
+                    // $_SESSION[$transientId] = $itemData;
+                    //transient expires in 30 days
+                    set_transient($transientId, $itemData, 30 * 86400);
 
                     error_log(print_r($projectData->get_project_editor_url(false), true));
                     wp_send_json_success(

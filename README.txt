@@ -2,7 +2,7 @@
 Contributors: pelemanindustries
 Tags: Peleman,
 Requires at least: 5.9.0
-Tested up to: 6.0.2
+Tested up to: 6.1.1
 Requires PHP: 7.4
 Stable tag: 1.4.0
 License: GPL-2.0+

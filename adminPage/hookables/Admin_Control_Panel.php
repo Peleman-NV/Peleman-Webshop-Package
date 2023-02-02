@@ -33,7 +33,8 @@ class Admin_Control_Panel extends Abstract_Action_Hookable
 
     public function render_tab_buttons()
     {
-        $activeTab = isset($_GET['tab']) ? $_GET['tab'] : 1;
+        $get = filter_input_array(INPUT_GET, array('tab' => FILTER_VALIDATE_INT));
+        $activeTab = isset($get['tab']) ? $get['tab'] : 1;
 ?>
         <div class="wrap">
             <div id="icon-themes" class="icon32"></div>
@@ -41,10 +42,10 @@ class Admin_Control_Panel extends Abstract_Action_Hookable
             <?php settings_errors();
             ?>
             <h2 class="nav-tab-wrapper">
-                <a href="?page=<?php echo $this::PAGE_SLUG; ?>&tab=1" class="nav-tab <?php echo $activeTab == 'multi_order' ? 'nav_tab_active' : ''; ?>">General</a>
-                <a href="?page=<?php echo $this::PAGE_SLUG; ?>&tab=2" class="nav-tab <?php echo $activeTab == 'multi_order' ? 'nav_tab_active' : ''; ?>">Buttons</a>
-                <a href="?page=<?php echo $this::PAGE_SLUG; ?>&tab=3" class="nav-tab <?php echo $activeTab == 'multi_order' ? 'nav_tab_active' : ''; ?>">Editor</a>
-                <a href="?page=<?php echo $this::PAGE_SLUG; ?>&tab=4" class="nav-tab <?php echo $activeTab == 'multi_order' ? 'nav_tab_active' : ''; ?>">Advanced</a>
+                <a href="?page=<?php echo esc_attr($this::PAGE_SLUG); ?>&tab=1" class="nav-tab <?php echo esc_url($activeTab == 'multi_order' ? 'nav_tab_active' : ''); ?>">General</a>
+                <a href="?page=<?php echo esc_attr($this::PAGE_SLUG); ?>&tab=2" class="nav-tab <?php echo esc_url($activeTab == 'multi_order' ? 'nav_tab_active' : ''); ?>">Buttons</a>
+                <a href="?page=<?php echo esc_attr($this::PAGE_SLUG); ?>&tab=3" class="nav-tab <?php echo esc_url($activeTab == 'multi_order' ? 'nav_tab_active' : ''); ?>">Editor</a>
+                <a href="?page=<?php echo esc_attr($this::PAGE_SLUG); ?>&tab=4" class="nav-tab <?php echo esc_url($activeTab == 'multi_order' ? 'nav_tab_active' : ''); ?>">Advanced</a>
             </h2>
 
             <!-- <form method="post" action="options.php"> -->
