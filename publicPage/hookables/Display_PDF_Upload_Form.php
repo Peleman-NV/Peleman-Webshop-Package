@@ -45,7 +45,7 @@ class Display_PDF_Upload_Form extends Abstract_Action_Hookable
         $meta = new Product_Meta_Data($product);
         $params = array(
             'enabled' => $enabled,
-            'button_label' => esc_html__('Click here to upload your PDF file', PWP_TEXT_DOMAIN),
+            'button_label' => esc_html__('Click here to upload your PDF file', Peleman-Webshop-Package),
             'max_file_size' => '200 MB',
             'size' => (int)ini_get('upload_max_filesize') * Validate_File_Size::MB,
             'pdf_width' => $meta->get_pdf_width() ? "{$meta->get_pdf_width()} mm" : '',
@@ -53,7 +53,7 @@ class Display_PDF_Upload_Form extends Abstract_Action_Hookable
             'pdf_min_pages' => $meta->get_pdf_min_pages() ? $meta->get_pdf_min_pages() : '',
             'pdf_max_pages' => $meta->get_pdf_max_pages() ?: '',
             'price_per_page' => $meta->get_price_per_page() ?: '',
-            'pdf_label' => esc_html__('upload your pdf here', PWP_TEXT_DOMAIN),
+            'pdf_label' => esc_html__('upload your pdf here', Peleman-Webshop-Package),
         );
 
         echo $this->template->render('File_Upload_Form_Template', $params);

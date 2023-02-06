@@ -34,7 +34,7 @@ class Ajax_Add_To_Cart extends Abstract_Ajax_Hookable
     {
         if (!$this->verify_nonce($_REQUEST['nonce']))
             wp_send_json_error(
-                array('message' => __('session timed out', PWP_TEXT_DOMAIN)),
+                array('message' => __('session timed out', Peleman-Webshop-Package)),
                 401
             );
 
@@ -95,7 +95,7 @@ class Ajax_Add_To_Cart extends Abstract_Ajax_Hookable
                     error_log(print_r($projectData->get_project_editor_url(false), true));
                     wp_send_json_success(
                         array(
-                            'message' => __('external project created, redirecting user to editor for customization...', PWP_TEXT_DOMAIN),
+                            'message' => __('external project created, redirecting user to editor for customization...', Peleman-Webshop-Package),
                             'destination_url' => $projectData->get_project_editor_url(false),
                         ),
                         201
@@ -121,7 +121,7 @@ class Ajax_Add_To_Cart extends Abstract_Ajax_Hookable
                     // wc_ajax::get_refreshed_fragments();
 
                     wp_send_json_success(array(
-                        'message' => __('standard product, using default functionality', PWP_TEXT_DOMAIN),
+                        'message' => __('standard product, using default functionality', Peleman-Webshop-Package),
                         'destination_url' => $redirectUrl ?: '',
                     ), 200);
                 }
@@ -140,7 +140,7 @@ class Ajax_Add_To_Cart extends Abstract_Ajax_Hookable
         } catch (Invalid_Response_Exception $err) {
             error_log($err->getMessage());
             wp_send_json_error(
-                array('message' => __('Could not connect to Peleman Image Editor. Please try again in a few moments.', PWP_TEXT_DOMAIN)),
+                array('message' => __('Could not connect to Peleman Image Editor. Please try again in a few moments.', Peleman-Webshop-Package)),
             );
         } catch (\Exception $err) {
             error_log(sprintf("PHP Error: %s in %s on line %s", $err->getMessage(), $err->getFile(), $err->getLine()));
@@ -148,7 +148,7 @@ class Ajax_Add_To_Cart extends Abstract_Ajax_Hookable
 
             wp_send_json_error(
                 array(
-                    'message' => __('The System has encountered an unexpected error. Please try again in a few moments.', PWP_TEXT_DOMAIN),
+                    'message' => __('The System has encountered an unexpected error. Please try again in a few moments.', Peleman-Webshop-Package),
                 ),
                 200
             );

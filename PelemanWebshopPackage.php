@@ -26,7 +26,7 @@ use PWP\includes\Plugin;
  * Author URI:        https://github.com/KaiHelsen
  * License:           GPL-2.0+
  * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
- * Text Domain:       PelemanWebshopPackage
+ * Text Domain:       Peleman-Webshop-Package
  * Domain Path:       /languages
  */
 
@@ -35,7 +35,6 @@ defined('WPINC') || die;
 //define PWP constant values
 define('PWP_VERSION', '1.3.3');
 !defined('PWP_OPTION_GROUP')        ? define('PWP_OPTION_GROUP', 'OPTIONS') : null;
-!defined('PWP_TEXT_DOMAIN')         ? define('PWP_TEXT_DOMAIN', 'PelemanWebshopPackage') : null;
 
 !defined('PWP_DIRECTORY')           ? define('PWP_DIRECTORY', plugin_dir_path(__FILE__)) : null;
 /**@phpstan-ignore-next-line */

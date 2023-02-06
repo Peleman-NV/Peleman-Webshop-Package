@@ -5,10 +5,8 @@ declare(strict_types=1);
 namespace PWP\publicPage\hookables;
 
 use PWP\includes\editor\PIE_Project;
-use PWP\includes\editor\Product_IMAXEL_Data;
 use PWP\includes\editor\Product_PIE_Data;
 use PWP\includes\hookables\abstracts\Abstract_Action_Hookable;
-use PWP\includes\services\ImaxelService;
 
 /**
  * Adds a button in the cart menu for users to return to the image editor to revise or make adjustments

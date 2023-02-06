@@ -87,7 +87,7 @@ class Add_PIE_Printfile_Download_Button extends Abstract_Action_Hookable
                 <span>
 
                     <a type="button" class="button" href=<?php echo esc_url($dl_url); ?>>
-                        <?php echo esc_html__(" Download print file.", PWP_TEXT_DOMAIN); ?>
+                        <?php echo esc_html__(" Download print file.", Peleman-Webshop-Package); ?>
                     </a>
                 </span>
             <?php
@@ -96,7 +96,7 @@ class Add_PIE_Printfile_Download_Button extends Abstract_Action_Hookable
             ?>
                 <span>
                     <a role="link" type="button" class="button disabled" aria-disabled="true">
-                        <?php echo esc_html__("Error connecting to editor server; try again later.", PWP_TEXT_DOMAIN); ?>
+                        <?php echo esc_html__("Error connecting to editor server; try again later.", Peleman-Webshop-Package); ?>
                     </a>
                 </span>
             <?php
@@ -120,7 +120,7 @@ class Add_PIE_Printfile_Download_Button extends Abstract_Action_Hookable
         }
         ?>
         <span>
-            <i><?php echo sprintf(esc_html__("Estimated completion time: UTC "), PWP_TEXT_DOMAIN); ?><strong><?php echo esc_html($eta); ?></strong></i>
+            <i><?php echo sprintf(esc_html__("Estimated completion time: UTC "), Peleman-Webshop-Package); ?><strong><?php echo esc_html($eta); ?></strong></i>
         </span>
 <?php
     }

@@ -41,7 +41,7 @@ class Validate_File_Dimensions extends Abstract_File_Handler
         }
         $notification->add_error(
             'Dimensions not valid',
-            __('The dimensions of the file do not match the specified dimensions', PWP_TEXT_DOMAIN)
+            __('The dimensions of the file do not match the specified dimensions', Peleman-Webshop-Package)
         );
         return false;
     }

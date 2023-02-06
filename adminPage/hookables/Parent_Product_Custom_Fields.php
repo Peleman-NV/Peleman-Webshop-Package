@@ -7,6 +7,7 @@ namespace PWP\adminPage\hookables;
 use PWP\includes\editor\Product_PIE_Data;
 use PWP\includes\editor\Product_Meta_Data;
 use PWP\includes\hookables\abstracts\Abstract_Action_Hookable;
+use PWP\includes\utilities\HTML_Builder;
 use WC_Product_Simple;
 
 /**
@@ -28,22 +29,22 @@ class Parent_Product_Custom_Fields extends Abstract_Action_Hookable
         if (!$product) return;
 
         if ($product instanceof \WC_Product_Simple) {
-            $this->open_div(['classes' => ['pwp-options_group', 'pwp-options-margins']]);
-            $this->heading(__('Product Settings', PWP_TEXT_DOMAIN), 2, ['pwp-options-group-title']);
-            $this->open_div(['classes' => ['pwp-options-group']]);
+            HTML_Builder::open_div(['classes' => ['pwp-options_group', 'pwp-options-margins']]);
+            HTML_Builder::heading(__('Product Settings', Peleman-Webshop-Package), 2, ['pwp-options-group-title']);
+            HTML_Builder::open_div(['classes' => ['pwp-options-group']]);
             $this->render_simple_product_settings($meta);
-            $this->close_div();
+            HTML_Builder::close_div();
 
-            $this->heading(__('Image Editor Settings', PWP_TEXT_DOMAIN), 2, ['pwp-options-group-title']);
-            $this->open_div(['classes' => ['pwp-options-group']]);
+            HTML_Builder::heading(__('Image Editor Settings', Peleman-Webshop-Package), 2, ['pwp-options-group-title']);
+            HTML_Builder::open_div(['classes' => ['pwp-options-group']]);
             $this->render_PIE_product_settings($meta);
-            $this->close_div();
+            HTML_Builder::close_div();
 
-            $this->heading(__('PDF Upload Settings', PWP_TEXT_DOMAIN), 2, ['pwp-options-group-title']);
-            $this->open_div(['classes' => ['pwp-options-group']]);
+            HTML_Builder::heading(__('PDF Upload Settings', Peleman-Webshop-Package), 2, ['pwp-options-group-title']);
+            HTML_Builder::open_div(['classes' => ['pwp-options-group']]);
             $this->render_PDF_upload_settings($meta);
-            $this->close_div();
-            $this->close_div();
+            HTML_Builder::close_div();
+            HTML_Builder::close_div();
             return;
         }
         $this->render_standard_product_settings($meta);
@@ -54,11 +55,11 @@ class Parent_Product_Custom_Fields extends Abstract_Action_Hookable
         woocommerce_wp_text_input(array(
             'id' => Product_Meta_Data::CUSTOM_LABEL_KEY,
             'name' => Product_Meta_Data::CUSTOM_LABEL_KEY,
-            'label' => __('Custom add to cart label', PWP_TEXT_DOMAIN),
+            'label' => __('Custom add to cart label', Peleman-Webshop-Package),
             'value' => $meta->get_custom_add_to_cart_label(),
             'placeholder' => 'Add to cart',
             'desc_tip' => true,
-            'description' =>  __('custom add to cart button label for this product', PWP_TEXT_DOMAIN),
+            'description' =>  __('custom add to cart button label for this product', Peleman-Webshop-Package),
             'wrapper_class' => 'form-row form-row-full pwp-form-row-padding-5',
         ));
     }
@@ -75,20 +76,20 @@ class Parent_Product_Custom_Fields extends Abstract_Action_Hookable
             woocommerce_wp_text_input(array(
                 'id' => "f2d_sku_components",
                 'name' => "f2d_sku_components",
-                'label' => __('Fly2Data SKU', PWP_TEXT_DOMAIN),
+                'label' => __('Fly2Data SKU', Peleman-Webshop-Package),
                 'value' => $meta->get_parent()->get_meta('f2d_sku_components'),
                 'desc_tip' => true,
-                'description' =>  __('F2D components that make up a variation', PWP_TEXT_DOMAIN),
+                'description' =>  __('F2D components that make up a variation', Peleman-Webshop-Package),
                 'wrapper_class' => 'form-row form-row-first pwp-form-row-padding-5',
             ));
 
             woocommerce_wp_text_input(array(
                 'id' => "f2d_artcd",
                 'name' => "f2d_artcd",
-                'label' => __('Fly2Data article code', PWP_TEXT_DOMAIN),
+                'label' => __('Fly2Data article code', Peleman-Webshop-Package),
                 'value' => $meta->get_parent()->get_meta('f2d_artcd'),
                 'desc_tip' => true,
-                'description' =>  __('Fly2Data article code for this variation/product', PWP_TEXT_DOMAIN),
+                'description' =>  __('Fly2Data article code for this variation/product', Peleman-Webshop-Package),
                 'wrapper_class' => 'form-row form-row-last pwp-form-row-padding-5',
                 'placeholder'   => 'Fly2Data article code',
             ));
@@ -96,10 +97,10 @@ class Parent_Product_Custom_Fields extends Abstract_Action_Hookable
         woocommerce_wp_text_input(array(
             'id' => Product_Meta_Data::UNIT_PRICE,
             'name' => Product_Meta_Data::UNIT_PRICE,
-            'label' => __('Unit Purchase Price', PWP_TEXT_DOMAIN) . $this->currencySuffix,
+            'label' => __('Unit Purchase Price', Peleman-Webshop-Package) . $this->currencySuffix,
             'value' =>  (string)$meta->get_unit_price() ?: 0,
             'desc_tip' => true,
-            'description' => __('The price of the unit total that will be added to cart. This is used in conjunction with UNIT AMOUNT.', PWP_TEXT_DOMAIN),
+            'description' => __('The price of the unit total that will be added to cart. This is used in conjunction with UNIT AMOUNT.', Peleman-Webshop-Package),
             'class' => "wc_input_price",
             'wrapper_class' => 'form-row form-row-first pwp-form-row-padding-5',
             'data_type' => 'price',
@@ -111,10 +112,10 @@ class Parent_Product_Custom_Fields extends Abstract_Action_Hookable
         woocommerce_wp_text_input(array(
             'id' => Product_Meta_Data::UNIT_AMOUNT,
             'name' => Product_Meta_Data::UNIT_AMOUNT,
-            'label' => __('Unit amount', PWP_TEXT_DOMAIN),
+            'label' => __('Unit amount', Peleman-Webshop-Package),
             'value' => (string)$meta->get_unit_amount() ?: 1,
             'desc_tip' => true,
-            'description' =>  __('Amount of items per unit. ie. 1 box (unit) contains 20 cards (items).', PWP_TEXT_DOMAIN),
+            'description' =>  __('Amount of items per unit. ie. 1 box (unit) contains 20 cards (items).', Peleman-Webshop-Package),
             'wrapper_class' => 'form-row form-row-last pwp-form-row-padding-5',
             'type' => 'number',
             'custom_attributes' => array(
@@ -127,10 +128,10 @@ class Parent_Product_Custom_Fields extends Abstract_Action_Hookable
         woocommerce_wp_text_input(array(
             'id' => $meta::UNIT_CODE,
             'name' => $meta::UNIT_CODE,
-            'label' => __('Unit code', PWP_TEXT_DOMAIN),
+            'label' => __('Unit code', Peleman-Webshop-Package),
             'value' => $meta->get_unit_code(),
             'desc_tip' => true,
-            'description' =>  __('The unit code for internal identification , ie. BOX, CRT, ...', PWP_TEXT_DOMAIN),
+            'description' =>  __('The unit code for internal identification , ie. BOX, CRT, ...', Peleman-Webshop-Package),
             'wrapper_class' => 'form-row form-row-first pwp-form-row-padding-5',
             'placeholder' => 'BOX, CRT, ...'
         ));
@@ -139,10 +140,10 @@ class Parent_Product_Custom_Fields extends Abstract_Action_Hookable
         woocommerce_wp_text_input(array(
             'id' => Product_Meta_Data::CUSTOM_LABEL_KEY,
             'name' => Product_Meta_Data::CUSTOM_LABEL_KEY,
-            'label' => __('Custom add to cart label', PWP_TEXT_DOMAIN),
+            'label' => __('Custom add to cart label', Peleman-Webshop-Package),
             'value' => $meta->get_custom_add_to_cart_label(),
             'desc_tip' => true,
-            'description' =>  __('Custom Add To Cart label that will be displayed on the product page', PWP_TEXT_DOMAIN),
+            'description' =>  __('Custom Add To Cart label that will be displayed on the product page', Peleman-Webshop-Package),
             'wrapper_class' => 'form-row form-row-last pwp-form-row-padding-5',
             'placeholder' => 'Add to cart'
         ));
@@ -157,9 +158,9 @@ class Parent_Product_Custom_Fields extends Abstract_Action_Hookable
         woocommerce_wp_select(array(
             'id' => Product_Meta_Data::EDITOR_ID_KEY,
             'name' => Product_Meta_Data::EDITOR_ID_KEY,
-            'label'     => __("Editor", PWP_TEXT_DOMAIN),
+            'label'     => __("Editor", Peleman-Webshop-Package),
             'desc_tip' => true,
-            'description' => __('Enable/disable the editor for this product/variation. Ensure the template ID is at least filled in.', PWP_TEXT_DOMAIN),
+            'description' => __('Enable/disable the editor for this product/variation. Ensure the template ID is at least filled in.', Peleman-Webshop-Package),
             'custom_attributes' => array(
                 'foldout' => $custom,
                 'requires' => $required
@@ -172,7 +173,7 @@ class Parent_Product_Custom_Fields extends Abstract_Action_Hookable
             'wrapper_class' => 'form-row form-row-full pwp-form-row-padding-5',
         ));
 
-        $this->open_div([
+        HTML_Builder::open_div([
             'id' => $custom,
             'classes' => $meta->get_editor_id() == 'PIE' ? [] : ['pwp-hidden']
         ]);
@@ -180,10 +181,10 @@ class Parent_Product_Custom_Fields extends Abstract_Action_Hookable
         woocommerce_wp_text_input(array(
             'id' => Product_PIE_Data::PIE_TEMPLATE_ID_KEY,
             'name' => Product_PIE_Data::PIE_TEMPLATE_ID_KEY,
-            'label' => __('Template ID', PWP_TEXT_DOMAIN),
+            'label' => __('Template ID', Peleman-Webshop-Package),
             'value' => $meta->pie_data()->get_template_id(),
             'desc_tip' => true,
-            'description' =>  __('ID of the template that will be used in the editor. This needs to correspond with the template ID defined in the editor dashboard', PWP_TEXT_DOMAIN),
+            'description' =>  __('ID of the template that will be used in the editor. This needs to correspond with the template ID defined in the editor dashboard', Peleman-Webshop-Package),
             'class' => $required,
             'wrapper_class' => 'form-row form-row-first pwp-form-row-padding-5',
             'placeholder' => 'REQUIRED'
@@ -192,10 +193,10 @@ class Parent_Product_Custom_Fields extends Abstract_Action_Hookable
         woocommerce_wp_text_input(array(
             'id' => Product_PIE_Data::DESIGN_ID_KEY,
             'name' => Product_PIE_Data::DESIGN_ID_KEY,
-            'label' => __('Design ID', PWP_TEXT_DOMAIN),
+            'label' => __('Design ID', Peleman-Webshop-Package),
             'value' => $meta->pie_data()->get_design_id(),
             'desc_tip' => true,
-            'description' =>  __('The design theme that can be used in the webshop, ie. Funeral, Copyshop, ...', PWP_TEXT_DOMAIN),
+            'description' =>  __('The design theme that can be used in the webshop, ie. Funeral, Copyshop, ...', Peleman-Webshop-Package),
             'wrapper_class' => 'form-row form-row-last pwp-form-row-padding-5',
             'placeholder' => 'Design ID'
         ));
@@ -203,10 +204,10 @@ class Parent_Product_Custom_Fields extends Abstract_Action_Hookable
         woocommerce_wp_text_input(array(
             'id' => Product_PIE_Data::BACKGROUND_ID_KEY,
             'name' => Product_PIE_Data::BACKGROUND_ID_KEY,
-            'label' => __('Background ID', PWP_TEXT_DOMAIN),
+            'label' => __('Background ID', Peleman-Webshop-Package),
             'value' => $meta->pie_data()->get_background_id(),
             'desc_tip' => true,
-            'description' =>  __('The background that will be displayed in the editor. This needs to correspond with the background ID defined in the format', PWP_TEXT_DOMAIN),
+            'description' =>  __('The background that will be displayed in the editor. This needs to correspond with the background ID defined in the format', Peleman-Webshop-Package),
             'wrapper_class' => 'form-row form-row-first pwp-form-row-padding-5',
             'placeholder' => 'Background ID'
         ));
@@ -214,20 +215,20 @@ class Parent_Product_Custom_Fields extends Abstract_Action_Hookable
         // woocommerce_wp_text_input(array(
         //     'id' => Product_PIE_Data::FORMAT_ID_KEY ,
         //     'name' => Product_PIE_Data::FORMAT_ID_KEY ,
-        //     'label' => __('Format ID', PWP_TEXT_DOMAIN),
+        //     'label' => __('Format ID', Peleman-Webshop-Package),
         //     'value' => $meta->pie_data()->get_format_id(),
         //     'desc_tip' => true,
-        //     'description' =>  __('format id for the template to be filled out', PWP_TEXT_DOMAIN),
+        //     'description' =>  __('format id for the template to be filled out', Peleman-Webshop-Package),
         //     'wrapper_class' => 'form-row form-row-last pwp-form-row-padding-5',
         // ));
 
         woocommerce_wp_text_input(array(
             'id' => Product_PIE_Data::COLOR_CODE_KEY,
             'name' => Product_PIE_Data::COLOR_CODE_KEY,
-            'label' => __('Color code', PWP_TEXT_DOMAIN),
+            'label' => __('Color code', Peleman-Webshop-Package),
             'value' => $meta->pie_data()->get_color_code(),
             'desc_tip' => true,
-            'description' =>  __('The color code of this product/variation to use the corresponding background inside the editor. This needs to correspond with the color code defined in the format', PWP_TEXT_DOMAIN),
+            'description' =>  __('The color code of this product/variation to use the corresponding background inside the editor. This needs to correspond with the color code defined in the format', Peleman-Webshop-Package),
             'wrapper_class' => 'form-row form-row-last pwp-form-row-padding-5',
             'placeholder' => 'Color code'
         ));
@@ -235,15 +236,15 @@ class Parent_Product_Custom_Fields extends Abstract_Action_Hookable
         woocommerce_wp_checkbox(array(
             'id'    => Product_PIE_Data::USE_IMAGE_UPLOAD_KEY,
             'name'  => Product_PIE_Data::USE_IMAGE_UPLOAD_KEY,
-            'label' => __('Use Image Uploads', PWP_TEXT_DOMAIN),
+            'label' => __('Use Image Uploads', Peleman-Webshop-Package),
             'value' => $meta->pie_data()->uses_image_upload() ? 'yes' : 'no',
             'desc_tip' => true,
-            'description' => __('Require image uploads before you enter the editor. These images will be used to fill in placeholders, ie. a photobook', PWP_TEXT_DOMAIN),
+            'description' => __('Require image uploads before you enter the editor. These images will be used to fill in placeholders, ie. a photobook', Peleman-Webshop-Package),
             'wrapper_class' => 'form-row form-row-first pwp-form-row-padding-5',
             'custom_attributes' => array('foldout' => $custom2),
         ));
 
-        $this->open_div([
+        HTML_Builder::open_div([
             'id' => $custom2,
             'classes' => $meta->pie_data()->uses_image_upload() ? [] : ['pwp-hidden']
         ]);
@@ -251,10 +252,10 @@ class Parent_Product_Custom_Fields extends Abstract_Action_Hookable
         woocommerce_wp_text_input(array(
             'id' => Product_PIE_Data::NUM_PAGES_KEY,
             'name' => Product_PIE_Data::NUM_PAGES_KEY,
-            'label' => __('Pages to Fill', PWP_TEXT_DOMAIN),
+            'label' => __('Pages to Fill', Peleman-Webshop-Package),
             'value' => $meta->pie_data()->get_num_pages(),
             'desc_tip' => true,
-            'description' =>  __('Number of pages to fill in, this will be used for templates that have multiple pages, ie. a photobook', PWP_TEXT_DOMAIN),
+            'description' =>  __('Number of pages to fill in, this will be used for templates that have multiple pages, ie. a photobook', Peleman-Webshop-Package),
             'wrapper_class' => 'form-row form-row-last pwp-form-row-padding-5',
             'type' => 'number',
             'custom_attributes' => array(
@@ -267,10 +268,10 @@ class Parent_Product_Custom_Fields extends Abstract_Action_Hookable
         woocommerce_wp_text_input(array(
             'id' => Product_PIE_Data::MIN_IMAGES_KEY,
             'name' => Product_PIE_Data::MIN_IMAGES_KEY,
-            'label' => __('Min Images for upload', PWP_TEXT_DOMAIN),
+            'label' => __('Min Images for upload', Peleman-Webshop-Package),
             'value' => $meta->pie_data()->get_min_images(),
             'desc_tip' => true,
-            'description' =>  __('Minimum images that users are required to upload', PWP_TEXT_DOMAIN),
+            'description' =>  __('Minimum images that users are required to upload', Peleman-Webshop-Package),
             'wrapper_class' => 'form-row form-row-first pwp-form-row-padding-5',
             'type' => 'number',
             'custom_attributes' => array(
@@ -283,10 +284,10 @@ class Parent_Product_Custom_Fields extends Abstract_Action_Hookable
         woocommerce_wp_text_input(array(
             'id' => Product_PIE_Data::MAX_IMAGES_KEY,
             'name' => Product_PIE_Data::MAX_IMAGES_KEY,
-            'label' => __('Max images for upload', PWP_TEXT_DOMAIN),
+            'label' => __('Max images for upload', Peleman-Webshop-Package),
             'value' => $meta->pie_data()->get_max_images(),
             'desc_tip' => true,
-            'description' =>  __('Maximum images that users are required to upload', PWP_TEXT_DOMAIN),
+            'description' =>  __('Maximum images that users are required to upload', Peleman-Webshop-Package),
             'wrapper_class' => 'form-row form-row-last pwp-form-row-padding-5',
             'type' => 'number',
             'custom_attributes' => array(
@@ -299,35 +300,35 @@ class Parent_Product_Custom_Fields extends Abstract_Action_Hookable
         woocommerce_wp_checkbox(array(
             'id'    => Product_PIE_Data::AUTOFILL_KEY,
             'name'  => Product_PIE_Data::AUTOFILL_KEY,
-            'label' => __('Autofill template pages in editor', PWP_TEXT_DOMAIN),
+            'label' => __('Autofill template pages in editor', Peleman-Webshop-Package),
             'value' => $meta->pie_data()->get_autofill() ? 'yes' : 'no',
             'desc_tip' => true,
-            'description' => __('Autofill the template pages inside the editor', PWP_TEXT_DOMAIN),
+            'description' => __('Autofill the template pages inside the editor', Peleman-Webshop-Package),
             'wrapper_class' => 'form-row form-row-first pwp-form-row-padding-5',
         ));
 
-        $this->close_div();
+        HTML_Builder::close_div();
 
         woocommerce_wp_checkbox(array(
             'id'    => Product_Meta_Data::OVERRIDE_CART_THUMB,
             'name'  => Product_Meta_Data::OVERRIDE_CART_THUMB,
-            'label' => __('Use project preview thumbnail in cart', PWP_TEXT_DOMAIN),
+            'label' => __('Use project preview thumbnail in cart', Peleman-Webshop-Package),
             'value' => $meta->get_override_thumbnail() ? 'yes' : 'no',
             'desc_tip' => true,
-            'description' => __('Show a preview of the project when the product is added to the cart', PWP_TEXT_DOMAIN),
+            'description' => __('Show a preview of the project when the product is added to the cart', Peleman-Webshop-Package),
             'wrapper_class' => 'form-row form-row-first pwp-form-row-padding-5',
         ));
 
         $this->render_editor_instructions($meta);
-        $this->close_div();
+        HTML_Builder::close_div();
     }
 
     private function render_editor_instructions(Product_Meta_Data $meta): void
     {
 ?>
         <div class="pwp-options-header">Editor Instructions</div>
-        <?php
-        $this->open_div();
+<?php
+        HTML_Builder::open_div();
         $instructions = $meta->pie_data()->get_editor_instructions();
         $index = 0;
         foreach ($instructions as $key => $instruction) {
@@ -342,7 +343,7 @@ class Parent_Product_Custom_Fields extends Abstract_Action_Hookable
             ));
             $index++;
         }
-        $this->close_div();
+        HTML_Builder::close_div();
     }
 
     private function render_PDF_upload_settings(Product_Meta_Data $meta): void
@@ -353,15 +354,15 @@ class Parent_Product_Custom_Fields extends Abstract_Action_Hookable
         woocommerce_wp_checkbox(array(
             'id'    => Product_Meta_Data::USE_PDF_CONTENT_KEY,
             'name'  => Product_Meta_Data::USE_PDF_CONTENT_KEY,
-            'label' => __('Require PDF upload', PWP_TEXT_DOMAIN),
+            'label' => __('Require PDF upload', Peleman-Webshop-Package),
             'value' => $meta->uses_pdf_content() ? 'yes' : 'no',
             'desc_tip' => true,
-            'description' => __('Enable/disable PDF upload for this product/variation', PWP_TEXT_DOMAIN),
+            'description' => __('Enable/disable PDF upload for this product/variation', Peleman-Webshop-Package),
             'wrapper_class' => 'form-row form-row-first pwp-form-row-padding-5',
             'custom_attributes' => array('foldout' => $custom, 'requires' => $required)
         ));
 
-        $this->open_div(array(
+        HTML_Builder::open_div(array(
             'id' => $custom,
             'classes' => $meta->uses_pdf_content() ? [] : ['pwp-hidden']
         ));
@@ -369,10 +370,10 @@ class Parent_Product_Custom_Fields extends Abstract_Action_Hookable
         woocommerce_wp_text_input(array(
             'id' => Product_Meta_Data::PDF_PRICE_PER_PAGE_KEY,
             'name' => Product_Meta_Data::PDF_PRICE_PER_PAGE_KEY,
-            'label' => __('PDF price per page', PWP_TEXT_DOMAIN) . $this->currencySuffix,
+            'label' => __('PDF price per page', Peleman-Webshop-Package) . $this->currencySuffix,
             'value' => $meta->get_price_per_page(),
             'desc_tip' => true,
-            'description' => __('Additional price per page that will be added to product/variation price', PWP_TEXT_DOMAIN),
+            'description' => __('Additional price per page that will be added to product/variation price', Peleman-Webshop-Package),
             'class' => "{$required} wc_input_price",
             'wrapper_class' => 'form-row form-row-last pwp-form-row-padding-5',
             'data_type' => 'price',
@@ -385,10 +386,10 @@ class Parent_Product_Custom_Fields extends Abstract_Action_Hookable
         woocommerce_wp_text_input(array(
             'id'            => Product_Meta_Data::PDF_MIN_PAGES_KEY,
             'name'          => Product_Meta_Data::PDF_MIN_PAGES_KEY,
-            'label'         => __('PDF Min Pages', PWP_TEXT_DOMAIN),
+            'label'         => __('PDF Min Pages', Peleman-Webshop-Package),
             'value'         => $meta->get_pdf_min_pages() ?: 1,
             'desc_tip'      => true,
-            'description'   =>  __('Minimum number of pages required for PDF upload', PWP_TEXT_DOMAIN),
+            'description'   =>  __('Minimum number of pages required for PDF upload', Peleman-Webshop-Package),
             'class' => $required,
             'wrapper_class' => 'form-row form-row-first pwp-form-row-padding-5',
             'type'          => 'number',
@@ -403,10 +404,10 @@ class Parent_Product_Custom_Fields extends Abstract_Action_Hookable
         woocommerce_wp_text_input(array(
             'id' => Product_Meta_Data::PDF_MAX_PAGES_KEY,
             'name' => Product_Meta_Data::PDF_MAX_PAGES_KEY,
-            'label' => __('PDF Max Pages', PWP_TEXT_DOMAIN),
+            'label' => __('PDF Max Pages', Peleman-Webshop-Package),
             'value' => $meta->get_pdf_max_pages() ?: 1,
             'desc_tip' => true,
-            'description' =>  __('Maximum number of pages allowed for PDF upload', PWP_TEXT_DOMAIN),
+            'description' =>  __('Maximum number of pages allowed for PDF upload', Peleman-Webshop-Package),
             'class' => $required,
             'wrapper_class' => 'form-row form-row-last pwp-form-row-padding-5',
             'type' => 'number',
@@ -421,10 +422,10 @@ class Parent_Product_Custom_Fields extends Abstract_Action_Hookable
         woocommerce_wp_text_input(array(
             'id' => Product_Meta_Data::PDF_WIDTH_KEY,
             'name' => Product_Meta_Data::PDF_WIDTH_KEY,
-            'label' => __('PDF Format Width (mm)', PWP_TEXT_DOMAIN),
+            'label' => __('PDF Format Width (mm)', Peleman-Webshop-Package),
             'value' => $meta->get_pdf_width() ?: 1,
             'desc_tip' => true,
-            'description' =>  __('permitted width of PDF uploads in mm', PWP_TEXT_DOMAIN),
+            'description' =>  __('permitted width of PDF uploads in mm', Peleman-Webshop-Package),
             'class' => $required,
             'wrapper_class' => 'form-row form-row-first pwp-form-row-padding-5',
             'type' => 'number',
@@ -438,10 +439,10 @@ class Parent_Product_Custom_Fields extends Abstract_Action_Hookable
         woocommerce_wp_text_input(array(
             'id' => Product_Meta_Data::PDF_HEIGHT_KEY,
             'name' => Product_Meta_Data::PDF_HEIGHT_KEY,
-            'label' => __('PDF Format Height (mm)', PWP_TEXT_DOMAIN),
+            'label' => __('PDF Format Height (mm)', Peleman-Webshop-Package),
             'value' => $meta->get_pdf_height() ?: 1,
             'desc_tip' => true,
-            'description' =>  __('permitted height of PDF uploads in mm', PWP_TEXT_DOMAIN),
+            'description' =>  __('permitted height of PDF uploads in mm', Peleman-Webshop-Package),
             'class' => $required,
             'wrapper_class' => 'form-row form-row-last pwp-form-row-padding-5',
             'type' => 'number',
@@ -452,28 +453,6 @@ class Parent_Product_Custom_Fields extends Abstract_Action_Hookable
             'placeholder' => 297
         ));
 
-        $this->close_div();
-    }
-
-    private function open_div(array $args = []): void
-    {
-        $classes = isset($args['classes']) ? implode(' ', $args['classes']) : '';
-        $id = isset($args['id']) ? $args['id'] : '';
-
-        echo '<div id ="' . esc_attr($id) . '" class="' . esc_attr($classes) . '">';
-    }
-
-    private function close_div(): void
-    {
-        echo ("</div>");
-    }
-
-    private function heading(string $text, int $importance = 1, array $classes = []): void
-    {
-        $tag = 'h' . (min(6, max(1, $importance)));
-        $classes = implode(' ', $classes);
-        ?>
-        <<?php echo esc_attr($tag); ?> class='<?php echo esc_attr($classes); ?>'><?php echo esc_attr($text); ?></<?php echo esc_attr($tag); ?>>
-<?php
+        HTML_Builder::close_div();
     }
 }

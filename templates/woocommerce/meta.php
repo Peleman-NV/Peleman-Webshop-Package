@@ -29,7 +29,7 @@ if ($isBundleProduct) {
     $bundleLabel = sprintf(
         " (%d %s)",
         $bundleUnits,
-        __('pieces', PWP_TEXT_DOMAIN)
+        __('pieces', Peleman-Webshop-Package)
     );
 }
 // }
@@ -40,9 +40,9 @@ if ($isBundleProduct) {
 
     <?php if (!empty($individualPrice)) : ?>
         <span class="sku_wrapper">
-            <span class="individual-price <?php echo !$isBundleProduct ? 'pwp-hidden' : ''; ?>">
+            <span class="individual-price <?php echo esc_html(!$isBundleProduct ? 'pwp-hidden' : ''); ?>">
                 <span class="label">
-                    <?php _e('Individual price', PWP_TEXT_DOMAIN) . ': '; ?>
+                    <?php _e('Individual price', Peleman-Webshop-Package) . ': '; ?>
                 </span>
                 <span class="individual-price-amount woocommerce-Price-amount amount">
                     <?php _e($isBundleProduct ? $individualPriceWithCurrencySymbol : ''); ?>
@@ -53,14 +53,14 @@ if ($isBundleProduct) {
             </span>
             <span class="add-to-cart-price">
                 <span class="label">
-                    <?php _e('Price', PWP_TEXT_DOMAIN) . ': '; ?>
+                    <?php _e('Price', Peleman-Webshop-Package) . ': '; ?>
                 </span>
                 <span class="bundle-price-amount woocommerce-Price-amount amount">
                     <?php _e($isBundleProduct ? $bundlePriceWithCurrencySymbol : $individualPriceWithCurrencySymbol); ?>
                 </span>
                 <span class="woocommerce-price-suffix">
                     <?php _e($priceSuffix); ?>
-                    <span class="bundle-suffix <?php echo !$isBundleProduct ? 'pwp-hidden' : ''; ?>"> <?php echo $bundleLabel; ?>
+                    <span class="bundle-suffix <?php echo esc_htmL(!$isBundleProduct ? 'pwp-hidden' : ''); ?>"> <?php echo esc_html($bundleLabel); ?>
                     </span>
                 </span>
             </span>
@@ -74,10 +74,10 @@ if ($isBundleProduct) {
     <?php if (!empty($articleCode)) : ?>
         <span class="sku_wrapper">
             <span class="label">
-                <?php esc_html_e('Article code:', PWP_TEXT_DOMAIN); ?>
+                <?php esc_html_e('Article code:', Peleman-Webshop-Package); ?>
             </span>
             <span class="sku">
-                <?php echo $articleCode; ?>
+                <?php echo esc_html($articleCode); ?>
             </span>
         </span>
     <?php else : ?>
@@ -85,7 +85,7 @@ if ($isBundleProduct) {
         <!-- Variable product: display article code placeholder to be filled with the magic of JavaScript! -->
         <span class="sku_wrapper article-code-container">
             <span class="label article-code-label">
-                <?php esc_html_e('Article code:', PWP_TEXT_DOMAIN); ?>
+                <?php esc_html_e('Article code:', Peleman-Webshop-Package); ?>
             </span>
         </span>
     <?php endif; ?>
@@ -99,7 +99,7 @@ if ($isBundleProduct) {
                     <?php esc_html_e('SKU:', 'woocommerce'); ?>
                 </span>
                 <span class="sku">
-                    <?php echo ($sku = $product->get_sku()) ? _e($sku) : esc_html__('N/A', 'woocommerce'); ?>
+                    <?php echo esc_html($sku = $product->get_sku() ? $sku : __('N/A', 'woocommerce')); ?>
                 </span>
             </span>
         <?php endif; ?>

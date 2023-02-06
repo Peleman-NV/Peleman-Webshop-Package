@@ -21,7 +21,7 @@ class Admin_Control_Panel extends Abstract_Action_Hookable
     public function pwp_add_control_panel(...$args): void
     {
         add_menu_page(
-            __("Peleman Webshop Control Panel", PWP_TEXT_DOMAIN),
+            __("Peleman Webshop Control Panel", Peleman-Webshop-Package),
             "Peleman PWP",
             "manage_options",
             $this::PAGE_SLUG,

@@ -29,19 +29,19 @@ class F2D_Menu extends Admin_Menu
     {
         add_settings_section(
             'pwp_settings_f2d',
-            __("Fly2Data", PWP_TEXT_DOMAIN),
+            __("Fly2Data", Peleman-Webshop-Package),
             null,
             Admin_Control_Panel::PAGE_SLUG,
         );
         add_settings_field(
             'pwp_enable_f2d',
-            __("Enable F2D integration", PWP_TEXT_DOMAIN),
+            __("Enable F2D integration", Peleman-Webshop-Package),
             array($this, 'bool_property_callback'),
             Admin_Control_Panel::PAGE_SLUG,
             "pwp_settings_f2d",
             array(
                 'option' => 'pwp_enable_f2d',
-                'description' =>  __("Enables F2D specific properties on products and API. ", PWP_TEXT_DOMAIN),
+                'description' =>  __("Enables F2D specific properties on products and API. ", Peleman-Webshop-Package),
             )
         );
     }
