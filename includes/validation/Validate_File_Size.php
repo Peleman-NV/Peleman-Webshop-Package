@@ -37,7 +37,7 @@ final class Validate_File_Size extends Abstract_File_Handler
 
         $notification->add_error(
             'file too large',
-            __('The file is too large. Please upload a file smaller than the maximum upload size.', Peleman-Webshop-Package)
+            __('The file is too large. Please upload a file smaller than the maximum upload size.', 'Peleman-Webshop-Package')
         );
         return false;
     }

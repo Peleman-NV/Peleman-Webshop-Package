@@ -62,7 +62,7 @@ class Set_PIE_Project_As_Completed extends Abstract_Action_Hookable
         } catch (Invalid_Response_Exception $exception) {
             error_log((string)$exception);
             error_log(sprintf(
-                __("an error occurred trying to complete order %d; project id %s", Peleman-Webshop-Package),
+                __("an error occurred trying to complete order %d; project id %s", 'Peleman-Webshop-Package'),
                 $orderId,
                 $projectId
             ));

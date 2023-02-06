@@ -89,7 +89,7 @@ abstract class Abstract_PIE_Request extends Abstract_Request
         ));
 
         if (is_wp_error($response) || !$response) {
-            throw new Invalid_Response_Exception(__("Could not connect to API.", Peleman-Webshop-Package));
+            throw new Invalid_Response_Exception(__("Could not connect to API.", 'Peleman-Webshop-Package'));
         }
 
         return (object)$response['body'];

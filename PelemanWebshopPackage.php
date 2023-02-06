@@ -26,7 +26,7 @@ use PWP\includes\Plugin;
  * Author URI:        https://github.com/KaiHelsen
  * License:           GPL-2.0+
  * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
- * Text Domain:       Peleman-Webshop-Package
+ * Text Domain:       'Peleman-Webshop-Package'
  * Domain Path:       /languages
  */
 

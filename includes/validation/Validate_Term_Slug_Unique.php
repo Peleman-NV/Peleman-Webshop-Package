@@ -15,9 +15,9 @@ class Validate_Term_Slug_Unique extends Abstract_Term_Handler
         $slug = $request->get_slug();
         if ($this->service->is_slug_in_use($slug)) {
             $notification->add_error(
-                __("Slug not unique", Peleman-Webshop-Package),
+                __("Slug not unique", 'Peleman-Webshop-Package'),
                 sprintf(
-                    __("%s is already in use for a %s term", Peleman-Webshop-Package),
+                    __("%s is already in use for a %s term", 'Peleman-Webshop-Package'),
                     $slug,
                     $this->service->get_taxonomy_name()
                 )

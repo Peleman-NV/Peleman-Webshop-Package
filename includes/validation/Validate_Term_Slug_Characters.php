@@ -25,9 +25,9 @@ class Validate_Term_Slug_Characters extends Abstract_Term_Handler
 
         if (!preg_match($this->expression, $slug)) {
             $notification->add_error(
-                __("Invalid characters in slug", Peleman-Webshop-Package),
+                __("Invalid characters in slug", 'Peleman-Webshop-Package'),
                 sprintf(
-                    __("Slug %s not of valid format. can only have lowercase letters, numbers, dashes, and underscores", Peleman-Webshop-Package),
+                    __("Slug %s not of valid format. can only have lowercase letters, numbers, dashes, and underscores", 'Peleman-Webshop-Package'),
                     $slug
                 )
             );

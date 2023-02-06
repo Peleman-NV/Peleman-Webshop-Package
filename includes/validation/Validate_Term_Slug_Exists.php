@@ -14,9 +14,9 @@ class Validate_Term_Slug_Exists extends Abstract_Term_Handler
         $slug = $request->get_slug() ?: null;
         if (empty($slug) || !$this->service->is_slug_in_use($slug)) {
             $notification->add_error(
-                __("Term not found", Peleman-Webshop-Package),
+                __("Term not found", 'Peleman-Webshop-Package'),
                 sprintf(
-                    __("term %s with slug %s does not exist", Peleman-Webshop-Package),
+                    __("term %s with slug %s does not exist", 'Peleman-Webshop-Package'),
                     $this->service->get_taxonomy_name(),
                     $slug
                 )
