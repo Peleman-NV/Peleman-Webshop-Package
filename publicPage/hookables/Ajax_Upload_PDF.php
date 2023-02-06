@@ -163,8 +163,8 @@ class Ajax_Upload_PDF extends Abstract_Ajax_Hookable
     private function send_json_error(string $message, string $description, int $httpCode = 400, array $data = []): void
     {
         $error = new Error_Notice(
-            __($message, PWP_TEXT_DOMAIN),
-            __($description, PWP_TEXT_DOMAIN),
+            __($message, 'Peleman-Webshop-Package'),
+            __($description, 'Peleman-Webshop-Package'),
             $data
         );
         wp_send_json_error($error->to_array(), $httpCode);
@@ -173,8 +173,8 @@ class Ajax_Upload_PDF extends Abstract_Ajax_Hookable
     private function send_json_success(string $message, string $description, int $httpCode = 200, array $data = []): void
     {
         $success = new Success_Notice(
-            __($message, PWP_TEXT_DOMAIN),
-            __($description, PWP_TEXT_DOMAIN),
+            __($message, 'Peleman-Webshop-Package'),
+            __($description, 'Peleman-Webshop-Package'),
             $data
         );
         wp_send_json_success($success->to_array(), $httpCode);

@@ -29,7 +29,7 @@ class Apply_Bundle_Price_Cart_Widget extends Abstract_Filter_Hookable
         $bundlePrice = $meta->get_unit_price();
         ob_start();
 ?>
-        <span class="quantity"> <?php echo $quantity; ?> &times;
+        <span class="quantity"> <?php echo esc_html($quantity); ?> &times;
             <span class="?woocommerce-Price-amount amount">
                 <bdi>
                     <span class="woocommerce-Price-currencySymbol">

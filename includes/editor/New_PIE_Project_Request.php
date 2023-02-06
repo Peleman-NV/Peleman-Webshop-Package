@@ -147,14 +147,14 @@ class New_PIE_Project_Request extends Abstract_PIE_Request
 
         //TODO: use improved request feedback to bolster error response system
         if (is_wp_error($response)) {
-            throw new Invalid_Response_Exception(__('Could not connect to Peleman Image Editor. Please try again later.', PWP_TEXT_DOMAIN));
+            throw new Invalid_Response_Exception(__('Could not connect to Peleman Image Editor. Please try again later.', 'Peleman-Webshop-Package'));
         }
 
         $responseBody = sanitize_key($response['body']);
         $responseArr = $response['response'];
         error_log('editor response: ' . print_r($responseBody, true));
         if (empty($responseBody) || is_bool($responseBody)) {
-            throw new Invalid_Response_Exception(__('No valid response received. Likely an authentication issue. Please check the validity of your Peleman Editor credentials.', PWP_TEXT_DOMAIN));
+            throw new Invalid_Response_Exception(__('No valid response received. Likely an authentication issue. Please check the validity of your Peleman Editor credentials.', 'Peleman-Webshop-Package'));
         }
 
         return new PIE_Project($this->editorData, $responseBody);

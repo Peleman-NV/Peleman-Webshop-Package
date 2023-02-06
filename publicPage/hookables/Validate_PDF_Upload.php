@@ -35,7 +35,7 @@ class Validate_PDF_Upload extends Abstract_Filter_Hookable
 
         if (!isset($_FILES[$this->key])) {
             wc_add_notice(
-                __('product requires PDF upload.', PWP_TEXT_DOMAIN),
+                __('product requires PDF upload.', 'Peleman-Webshop-Package'),
                 'error'
             );
             return false;
@@ -43,7 +43,7 @@ class Validate_PDF_Upload extends Abstract_Filter_Hookable
 
         if (!isset($_FILES[$this->key]['error']) || is_array($_FILES[$this->key]['error'])) {
             wc_add_notice(
-                __('invalid file upload parameters. Try again with a different file.', PWP_TEXT_DOMAIN),
+                __('invalid file upload parameters. Try again with a different file.', 'Peleman-Webshop-Package'),
                 'error'
             );
             return false;
@@ -59,7 +59,7 @@ class Validate_PDF_Upload extends Abstract_Filter_Hookable
 
             if (!$notification->is_success()) {
                 wc_add_notice(
-                    $notification->get_errors()[0]->get_description() ?: __('the uploaded pdf is not valid', PWP_TEXT_DOMAIN),
+                    $notification->get_errors()[0]->get_description() ?: __('the uploaded pdf is not valid', 'Peleman-Webshop-Package'),
                     'error'
                 );
             }
@@ -68,7 +68,7 @@ class Validate_PDF_Upload extends Abstract_Filter_Hookable
         } catch (\Exception $e) {
             Error_log((string)$e);
             wc_add_notice(
-                __('could not process PDF upload. try again with a different file.', PWP_TEXT_DOMAIN),
+                __('could not process PDF upload. try again with a different file.', 'Peleman-Webshop-Package'),
                 'error'
             );
             return false;

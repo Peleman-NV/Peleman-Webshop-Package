@@ -14,9 +14,9 @@ class Validate_Term_Parent_Exists extends Abstract_Term_Handler
         $parentSlug = $request->get_parent_slug() ?: '';
         if (!empty($parentSlug) && !$this->service->is_slug_in_use($parentSlug)) {
             $notification->add_error(
-                __("Parent term not found", PWP_TEXT_DOMAIN),
+                __("Parent term not found", 'Peleman-Webshop-Package'),
                 sprintf(
-                    __("Parent term %s with slug %s does not exist", PWP_TEXT_DOMAIN),
+                    __("Parent term %s with slug %s does not exist", 'Peleman-Webshop-Package'),
                     $this->service->get_taxonomy_name(),
                     $parentSlug
                 )

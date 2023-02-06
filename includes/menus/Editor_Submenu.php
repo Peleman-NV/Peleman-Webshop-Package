@@ -43,25 +43,25 @@ class Editor_Submenu extends Admin_Menu
     {
         add_settings_section(
             'pwp_settings_editors',
-            __("Editor", PWP_TEXT_DOMAIN),
+            __("Editor", 'Peleman-Webshop-Package'),
             null,
             Admin_Control_Panel::PAGE_SLUG,
         );
         add_settings_field(
             'pie_domain',
-            __("PIE domain (URL)", PWP_TEXT_DOMAIN),
+            __("PIE domain (URL)", 'Peleman-Webshop-Package'),
             array($this, 'text_property_callback'),
             Admin_Control_Panel::PAGE_SLUG,
             "pwp_settings_editors",
             array(
                 'option' => 'pie_domain',
                 'placeholder' => "https://deveditor.peleman.com",
-                'description' => __("base Site Address of the PIE editor", PWP_TEXT_DOMAIN)
+                'description' => __("base Site Address of the PIE editor", 'Peleman-Webshop-Package')
             )
         );
         add_settings_field(
             'pie_customer_id',
-            __("PIE Customer ID", PWP_TEXT_DOMAIN),
+            __("PIE Customer ID", 'Peleman-Webshop-Package'),
             array($this, 'text_property_callback'),
             Admin_Control_Panel::PAGE_SLUG,
             "pwp_settings_editors",
@@ -71,7 +71,7 @@ class Editor_Submenu extends Admin_Menu
         );
         add_settings_field(
             'pie_api_key',
-            __("PIE API key", PWP_TEXT_DOMAIN),
+            __("PIE API key", 'Peleman-Webshop-Package'),
             array($this, 'text_property_callback'),
             Admin_Control_Panel::PAGE_SLUG,
             "pwp_settings_editors",

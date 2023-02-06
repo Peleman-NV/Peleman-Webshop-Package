@@ -24,7 +24,7 @@ class Change_Add_To_Cart_Archive_Button extends Abstract_Filter_Hookable
 
         if ($product->get_type() === 'variable' || $meta->uses_pdf_content() || $meta->is_editable()) {
             $label = $this->get_label($product, $meta);
-            $label = __($label, PWP_TEXT_DOMAIN);
+            $label = __($label, 'Peleman-Webshop-Package');
             $redir = $product->get_permalink();
             $button = "<a class='button' href='{$redir}'>{$label}</a>";
         }
@@ -36,15 +36,15 @@ class Change_Add_To_Cart_Archive_Button extends Abstract_Filter_Hookable
     {
         switch ($product->get_type()) {
             case 'simple':
-                return  get_option('pwp_customize_label', __('add to cart', PWP_TEXT_DOMAIN));
+                return  get_option('pwp_customize_label', __('add to cart', 'Peleman-Webshop-Package'));
             case 'variant':
             case 'variable':
-                return get_option('pwp_archive_var_label', __('read more', PWP_TEXT_DOMAIN));
+                return get_option('pwp_archive_var_label', __('read more', 'Peleman-Webshop-Package'));
             case 'external':
             case 'grouped':
             case 'default':
             default:
-                return __('add to cart', PWP_TEXT_DOMAIN);
+                return __('add to cart', 'Peleman-Webshop-Package');
         }
     }
 }

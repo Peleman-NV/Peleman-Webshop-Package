@@ -43,32 +43,32 @@ class Button_Submenu extends Admin_Menu
     {
         add_settings_section(
             'pwp_settings_buttons',
-            __("Buttons", PWP_TEXT_DOMAIN),
+            __("Buttons", 'Peleman-Webshop-Package'),
             array($this, ''),
             Admin_Control_Panel::PAGE_SLUG,
         );
         add_settings_field(
             'pwp_customize_label',
-            __("Simple product - customizable", PWP_TEXT_DOMAIN),
+            __("Simple product - customizable", 'Peleman-Webshop-Package'),
             array($this, 'text_property_callback'),
             Admin_Control_Panel::PAGE_SLUG,
             "pwp_settings_buttons",
             array(
                 'option' => 'pwp_customize_label',
                 'placeholder' => 'customize me',
-                'description' =>  __("label for products that require customization/user input", PWP_TEXT_DOMAIN),
+                'description' =>  __("label for products that require customization/user input", 'Peleman-Webshop-Package'),
             )
         );
         add_settings_field(
             'pwp_archive_var_label',
-            __("Variable product - customizable", PWP_TEXT_DOMAIN),
+            __("Variable product - customizable", 'Peleman-Webshop-Package'),
             array($this, 'text_property_callback'),
             Admin_Control_Panel::PAGE_SLUG,
             "pwp_settings_buttons",
             array(
                 'option' => 'pwp_archive_var_label',
                 'placeholder' => 'customize me',
-                'description' =>  __("label for customizable variable products", PWP_TEXT_DOMAIN)
+                'description' =>  __("label for customizable variable products", 'Peleman-Webshop-Package')
             )
         );
     }

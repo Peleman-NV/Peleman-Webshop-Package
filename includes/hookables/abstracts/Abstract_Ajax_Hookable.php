@@ -108,7 +108,7 @@ abstract class Abstract_Ajax_Hookable implements I_Hookable_Component
             $this->scriptHandle,
             $this->jsFilePath,
             array('jquery'),
-            rand(0, 2000),
+            wp_rand(0, 2000),
             true
         );
         wp_localize_script(

@@ -19,9 +19,9 @@ abstract class Admin_Menu implements IWPMenu
         $classArray[] = 'regular-text';
         $classes = implode(" ", $classArray);
 
-        echo "<input id='{$option}' name='{$option}' value='{$value}' placeholder='{$placeholder}' type='text' class='{$classes}' />";
+        echo wp_kses_post("<input id='{$option}' name='{$option}' value='{$value}' placeholder='{$placeholder}' type='text' class='{$classes}' />");
         if ($description) {
-            echo "<p class='description'>{$description}</p>";
+            echo wp_kses_post("<p class='description'>{$description}</p>");
         }
     }
 
@@ -34,9 +34,9 @@ abstract class Admin_Menu implements IWPMenu
         $classArray[] = 'regular-text';
         $classes = implode(" ", $classArray);
 
-        echo "<input type='checkbox' id='{$option}' name='{$option}' value='1' class='{$classes}' " . checked(1, get_option($option), false) . "/>";
+        echo wp_kses_post("<input type='checkbox' id='{$option}' name='{$option}' value='1' class='{$classes}' " . checked(1, get_option($option), false) . "/>");
         if ($description) {
-            echo "<p class='description'>{$description}</p>";
+            echo wp_kses_post("<p class='description'>{$description}</p>");
         }
     }
 }

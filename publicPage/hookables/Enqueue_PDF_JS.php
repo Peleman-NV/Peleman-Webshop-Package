@@ -41,7 +41,7 @@ class Enqueue_PDF_JS extends Abstract_Action_Hookable
                 'pdfworkerjs',
                 'jquery'
             ),
-            rand(0, 2000),
+            wp_rand(0, 2000),
         );
     }
 }

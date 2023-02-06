@@ -15,18 +15,18 @@ class Validate_Term_Translation_Data extends Abstract_Term_Handler
             $translationData = $request->get_translation_data();
             if (!$this->service->is_slug_in_use($translationData->get_english_slug())) {
                 $notification->add_error(
-                    __("Translation original not found", PWP_TEXT_DOMAIN),
+                    __("Translation original not found", 'Peleman-Webshop-Package'),
                     sprintf(
-                        __("Translation data for term with slug %s does not have a valid or existing english parent slug.", PWP_TEXT_DOMAIN),
+                        __("Translation data for term with slug %s does not have a valid or existing english parent slug.", 'Peleman-Webshop-Package'),
                         $request->get_slug()
                     )
                 );
             }
             if (!$translationData->get_language_code()) {
                 $notification->add_error(
-                    __("Language code missing", PWP_TEXT_DOMAIN),
+                    __("Language code missing", 'Peleman-Webshop-Package'),
                     sprintf(
-                        __("Translation data for term with slug %s lacks a language code", PWP_TEXT_DOMAIN),
+                        __("Translation data for term with slug %s lacks a language code", 'Peleman-Webshop-Package'),
                         $request->get_slug()
                     )
                 );

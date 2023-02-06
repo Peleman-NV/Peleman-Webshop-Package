@@ -18,7 +18,7 @@ class Admin_Enqueue_Scripts extends Abstract_Action_Hookable
 
     public function enqueue_scripts()
     {
-        $randomVersionNumber = rand(0, 1000);
+        $randomVersionNumber = wp_rand(0, 1000);
         wp_enqueue_script(
             'pwp_reset_theme_colors',
             plugins_url('../js/pwp_reset_theme_colors.js', __FILE__),

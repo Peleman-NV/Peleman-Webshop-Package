@@ -25,8 +25,8 @@ final class Validate_File_Type_Is_PDF extends Abstract_File_Handler
         
         if ($this->type !== $extension || $type != 'application/pdf') {
             $notification->add_error(
-                __("incorrect file extension", PWP_TEXT_DOMAIN),
-                sprintf(__("Uploaded file is of the incorrect type. Expected %s.", PWP_TEXT_DOMAIN), $this->type)
+                __("incorrect file extension", 'Peleman-Webshop-Package'),
+                sprintf(__("Uploaded file is of the incorrect type. Expected %s.", 'Peleman-Webshop-Package'), $this->type)
             );
         }
         return $this->handle_next($file, $notification);
