@@ -4,12 +4,10 @@ declare(strict_types=1);
 
 namespace PWP\includes\hookables\abstracts;
 
-use PWP\includes\hookables\abstracts\I_Hookable_Component;
-
 /**
  * Abstract observer class for implementing WP sortcodes in an OOP fashion. 
  */
-abstract class Abstract_Shortcode_Hookable implements I_Hookable_Component
+abstract class Abstract_Shortcode_Hookable extends Abstract_Hookable
 {
     /**
      * Shortcode tag
@@ -17,29 +15,22 @@ abstract class Abstract_Shortcode_Hookable implements I_Hookable_Component
      * @var string
      */
     protected string $tag;
-
-    protected const CALLBACK = 'shortcode_callback';
+    protected string $callback;
 
     /**
      * Abstract observer class for a WP shortcode
      *
-     * @param string $tag
+     * @param string $tag shortcode tag
+     * @param string $callback name of the method which the shortcode calls.
      */
-    public function __construct(string $tag)
+    public function __construct(string $tag, string $callback)
     {
         $this->tag = $tag;
+        $this->callback = $callback;
     }
 
     final public function register(): void
     {
-        \add_shortcode($this->tag, array($this, self::CALLBACK));
+        \add_shortcode($this->tag, array($this, $this->callback));
     }
-
-    /**
-     * Method to run when hook is called
-     *
-     * @param mixed ...$args
-     * @return void
-     */
-    public abstract function shortcode_callback(...$args): void;
 }

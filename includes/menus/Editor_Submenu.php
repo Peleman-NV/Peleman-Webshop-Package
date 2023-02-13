@@ -56,7 +56,7 @@ class Editor_Submenu extends Admin_Menu
             array(
                 'option' => 'pie_domain',
                 'placeholder' => "https://deveditor.peleman.com",
-                'description' => __("base Site Address of the PIE editor", 'Peleman-Webshop-Package')
+                'description' => __("base Site Address of the PIE editor", 'Peleman-Webshop-Package'),
             )
         );
         add_settings_field(

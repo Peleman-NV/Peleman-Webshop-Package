@@ -18,8 +18,9 @@ abstract class Admin_Menu implements IWPMenu
         $classArray = isset($args['classes']) ? $args['classes'] : [];
         $classArray[] = 'regular-text';
         $classes = implode(" ", $classArray);
-
-        echo wp_kses_post("<input id='{$option}' name='{$option}' value='{$value}' placeholder='{$placeholder}' type='text' class='{$classes}' />");
+?>
+        <input type="text" id="<?php echo esc_attr($option); ?>" name="<?php echo esc_attr($option); ?>" value="<?php echo esc_html($value); ?>" placeholder="<?php echo esc_html($placeholder); ?>" class="<?php esc_attr($classes); ?>" size=40 />
+        <?php
         if ($description) {
             echo wp_kses_post("<p class='description'>{$description}</p>");
         }
@@ -34,7 +35,9 @@ abstract class Admin_Menu implements IWPMenu
         $classArray[] = 'regular-text';
         $classes = implode(" ", $classArray);
 
-        echo wp_kses_post("<input type='checkbox' id='{$option}' name='{$option}' value='1' class='{$classes}' " . checked(1, get_option($option), false) . "/>");
+        ?>
+        <input type='checkbox' id=" <?php echo esc_attr($option); ?>" name="<?php echo esc_attr($option); ?>" value="1" class="<?php esc_attr($classes); ?>" <?php checked(1, get_option($option), false); ?> />
+<?php
         if ($description) {
             echo wp_kses_post("<p class='description'>{$description}</p>");
         }
