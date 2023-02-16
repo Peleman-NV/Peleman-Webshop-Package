@@ -28,7 +28,7 @@ class Parent_Product_Custom_Fields extends Abstract_Action_Hookable
         $meta = new Product_Meta_Data($product);
         if (!$product) return;
 
-        if ($product instanceof \WC_Product_Simple) {
+        if (!$product->is_type('variable')) {
             HTML_Builder::open_div(['classes' => ['pwp-options_group', 'pwp-options-margins']]);
             HTML_Builder::heading(__('Product Settings', 'Peleman-Webshop-Package'), 2, ['pwp-options-group-title']);
             HTML_Builder::open_div(['classes' => ['pwp-options-group']]);
