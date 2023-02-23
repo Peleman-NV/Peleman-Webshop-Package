@@ -28,6 +28,7 @@ class FIND_Project_Thumbnail extends Abstract_FIND_Endpoint
         $projectId = $request['projectId'];
         $src = '';
         $url = $this->generate_thumbnail_request_url($projectId);
+        error_log($url);
 
         try {
             $img = wp_remote_get($url);
@@ -36,13 +37,12 @@ class FIND_Project_Thumbnail extends Abstract_FIND_Endpoint
             }
             $img = $img['body'];
 
-            if (!$img || $img === false)  return rest_ensure_response('');
-            $src = $img;
+            if (!$img)  return rest_ensure_response('');
             ob_start();
             header('Content-Type: image/jpeg');
-            echo($img);
+            echo ($img);
+            ob_flush();
             ob_end_clean();
-            flush();
         } catch (WP_Error_Exception $error) {
             error_Log((string)$error);
         } catch (\Throwable $error) {
