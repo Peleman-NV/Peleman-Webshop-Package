@@ -83,7 +83,7 @@ class Admin_Control_Panel extends Abstract_Action_Hookable
     ?>
         <div class="pwp-settings">
             <h1>Peleman Webshop Package</h1>
-            <h3>current version: <?php esc_html_e(PWP_VERSION); ?></h3>
+            <h3>current version: <?php echo esc_html(PWP_VERSION); ?></h3>
             <hr>
             <p>The Peleman Webshop Package has been designed to work in tandem with the <b>Peleman Image Editor (PIE)</b></p>
             <p>The PWP plugin requires the following plugins for its functionality:</p>

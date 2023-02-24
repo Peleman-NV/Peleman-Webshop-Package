@@ -24,7 +24,7 @@ class Add_Fields_To_Add_To_Cart_Button extends Abstract_Action_Hookable
             return;
 
 ?>
-        <input type="hidden" name="add-to-cart" value="<?php echo _e(absint($product->get_id())); ?>" />
+        <input type="hidden" name="add-to-cart" value="<?php echo esc_html(absint($product->get_id())); ?>" />
 <?php
     }
 }
