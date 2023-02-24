@@ -48,7 +48,7 @@ if ($isBundleProduct) {
                     <?php echo esc_html($isBundleProduct ? $individualPriceWithCurrencySymbol : ''); ?>
                 </span>
                 <span class="woocommerce-price-suffix">
-                    <?php echo esc_html($priceSuffix); ?>
+                    <?php echo $priceSuffix; ?>
                 </span>
             </span>
             <span class="add-to-cart-price">
@@ -59,7 +59,7 @@ if ($isBundleProduct) {
                     <?php echo esc_html($isBundleProduct ? $bundlePriceWithCurrencySymbol : $individualPriceWithCurrencySymbol); ?>
                 </span>
                 <span class="woocommerce-price-suffix">
-                    <?php echo esc_html($priceSuffix); ?>
+                    <?php echo $priceSuffix; ?>
                     <span class="bundle-suffix <?php echo !$isBundleProduct ? 'pwp-hidden' : ''; ?>"> <?php echo $bundleLabel; ?>
                     </span>
                 </span>
