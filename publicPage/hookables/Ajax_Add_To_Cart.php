@@ -21,12 +21,12 @@ use WC_AJAX;
  */
 class Ajax_Add_To_Cart extends Abstract_Ajax_Hookable
 {
-    public function __construct()
+    public function __construct(int $priority = 10)
     {
         parent::__construct(
             'Ajax_Add_To_Cart',
             plugins_url('../js/pwp-add-to-cart.js', __FILE__),
-            5
+            $priority
         );
     }
 

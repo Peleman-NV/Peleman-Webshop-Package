@@ -15,63 +15,59 @@
 
 (function ($) {
     ('use strict');
-    $(function () {
+    console.log('updated add to cart js initializing...');
 
-        console.log('updated add to cart js initializing...');
+    $(document).on('click', '.single_add_to_cart_button', function (e) {
+        e.preventDefault();
 
+        var $thisButton = $(this);
+        var $form = $thisButton.closest('form.cart');
+        var id = $thisButton.val();
+        var product_qty = $form.find('input[name=quantity]').val() || 1;
+        var product_id = $form.find('input[name=product_id]').val() || id;
+        var variation_id = $form.find('input[name=variation_id]').val() || 0;
+        var file = $form.find('input[id="pwp-file-upload"]')[0].files[0];
 
-        $(document).on('click', '.single_add_to_cart_button', function (e) {
-            e.preventDefault();
+        var formData = new FormData();
+        formData.append('action', 'Ajax_Add_To_Cart');
+        formData.append('product_id', product_id);
+        formData.append('product_sku', '');
+        formData.append('quantity', product_qty);
+        formData.append('variation_id', variation_id);
+        formData.append('upload', file);
+        formData.append('nonce', Ajax_Add_To_Cart_object.nonce);
 
-            var $thisButton = $(this);
-            var $form = $thisButton.closest('form.cart');
-            var id = $thisButton.val();
-            var product_qty = $form.find('input[name=quantity]').val() || 1;
-            var product_id = $form.find('input[name=product_id]').val() || id;
-            var variation_id = $form.find('input[name=variation_id]').val() || 0;
-            var file = $form.find('input[id="pwp-file-upload"]')[0].files[0];
+        $(document.body).trigger('adding_to_cart', [$thisButton, formData]);
 
-            var formData = new FormData();
-            formData.append('action', 'Ajax_Add_To_Cart');
-            formData.append('product_id', product_id);
-            formData.append('product_sku', '');
-            formData.append('quantity', product_qty);
-            formData.append('variation_id', variation_id);
-            formData.append('upload', file);
-            formData.append('nonce', Ajax_Add_To_Cart_object.nonce);
+        $.ajax({
+            url: Ajax_Add_To_Cart_object.ajax_url,
+            method: 'POST',
+            type: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false,
+            beforeSend: function () {
+                $thisButton.removeClass('pwp-added')
+                $thisButton.addClass('pwp-loading');
+                showElement($('#pwp-loading'));
+            },
+            complete: function (response) {
+                $thisButton.addClass('pwp-added')
+                $thisButton.removeClass('pwp-loading');
+                hideElement($('#pwp-loading'));
+                console.log(response);
+            },
+            success: function (response) {
+                data = response.data;
+                response.success ? onSuccess(data, $thisButton) : onFailure(data);
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                logAjaxError(jqXHR, textStatus, errorThrown);
 
-            $(document.body).trigger('adding_to_cart', [$thisButton, formData]);
-
-            $.ajax({
-                url: Ajax_Add_To_Cart_object.ajax_url,
-                method: 'POST',
-                type: 'POST',
-                data: formData,
-                processData: false,
-                contentType: false,
-                beforeSend: function () {
-                    $thisButton.removeClass('pwp-added')
-                    $thisButton.addClass('pwp-loading');
-                    showElement($('#pwp-loading'));
-                },
-                complete: function (response) {
-                    $thisButton.addClass('pwp-added')
-                    $thisButton.removeClass('pwp-loading');
-                    hideElement($('#pwp-loading'));
-                    console.log(response);
-                },
-                success: function (response) {
-                    data = response.data;
-                    response.success ? onSuccess(data, $thisButton) : onFailure(data);
-                },
-                error: function (jqXHR, textStatus, errorThrown) {
-                    logAjaxError(jqXHR, textStatus, errorThrown);
-
-                }
-            });
+            }
         });
-        return false;
     });
+    return false;
 
     function onFailure(data) {
         console.log(data);

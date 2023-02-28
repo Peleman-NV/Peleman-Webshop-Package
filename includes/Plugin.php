@@ -48,6 +48,7 @@ use PWP\publicPage\hookables\Remove_PDF_On_Cart_Deletion;
 use PWP\publicPage\hookables\Set_PIE_Project_As_Completed;
 use PWP\publicPage\hookables\Validate_PDF_Upload;
 use PWP\publicPage\hookables\Cleanup_Unordered_Projects;
+use PWP\publicPage\hookables\Get_PDF_Project_Data;
 
 #endregion
 
@@ -152,8 +153,8 @@ final class Plugin
 
         /* EDITOR product hookables */
         $this->add_hookables(
-            new Ajax_Show_Variation(),
-            new Ajax_Add_To_Cart(),
+            new Ajax_Show_Variation(8),
+            new Ajax_Add_To_Cart(8),
             new Display_Editor_Project_Button_In_Cart(),
             new Add_Custom_Project_On_Return(),
             new Save_Cart_Item_Meta_To_Order_Item_Meta()
@@ -161,6 +162,9 @@ final class Plugin
 
         /* EDITOR front end display hookables */
         $this->add_hookable(new Change_Cart_Item_Thumbnail());
+
+        /* ADDITIONAL ACTIONS & FILTERS */
+        $this->add_hookables(new Get_PDF_Project_Data());
     }
 
     private function api_endpoints(): void

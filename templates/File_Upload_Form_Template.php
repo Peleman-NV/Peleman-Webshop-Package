@@ -23,7 +23,7 @@ if (!defined('ABSPATH')) {
                 <tr>
                     <td><?php echo esc_html__('PDF page height (mm)', 'Peleman-Webshop-Package'); ?></td>
                     <td class='param-value' id='content-height'><?php echo esc_attr($pdf_height ?: ''); /* @phpstan-ignore-line */ ?></td>
-                </tr> G
+                </tr>
                 <tr>
                     <td><?php echo esc_html__('Minimum page count', 'Peleman-Webshop-Package'); ?></td>
                     <td class='param-value' id='content-min-pages'><?php echo esc_attr($pdf_min_pages ?: '');/* @phpstan-ignore-line */ ?></td>

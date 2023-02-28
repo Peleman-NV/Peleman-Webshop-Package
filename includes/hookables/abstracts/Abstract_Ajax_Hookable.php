@@ -78,6 +78,7 @@ abstract class Abstract_Ajax_Hookable implements I_Hookable_Component
                 $this,
                 'enqueue_ajax'
             ),
+            $this->priority
         );
         add_action(
             "wp_ajax_{$this->scriptHandle}",

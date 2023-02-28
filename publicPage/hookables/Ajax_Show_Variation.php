@@ -14,12 +14,12 @@ use WC_Product;
  */
 class Ajax_Show_Variation extends Abstract_Ajax_Hookable
 {
-    public function __construct()
+    public function __construct(int $priority = 10)
     {
         parent::__construct(
             'Ajax_Show_Variation',
             plugins_url('../js/pwp-show-variation.js', __FILE__),
-            5
+            $priority
         );
     }
 
