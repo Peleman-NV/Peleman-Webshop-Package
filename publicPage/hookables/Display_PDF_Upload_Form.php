@@ -48,13 +48,17 @@ class Display_PDF_Upload_Form extends Abstract_Action_Hookable
             'button_label' => esc_html__('Click here to upload your PDF file', 'Peleman-Webshop-Package'),
             'max_file_size' => '200 MB',
             'size' => (int)ini_get('upload_max_filesize') * Validate_File_Size::MB,
-            'pdf_width' => $meta->get_pdf_width() ? "{$meta->get_pdf_width()} mm" : '',
-            'pdf_height' => $meta->get_pdf_height() ? "{$meta->get_pdf_height()}mm" : '',
+            'pdf_width' => $meta->get_pdf_width() ? $meta->get_pdf_width() : '',
+            'pdf_height' => $meta->get_pdf_height() ? $meta->get_pdf_height() : '',
             'pdf_min_pages' => $meta->get_pdf_min_pages() ? $meta->get_pdf_min_pages() : '',
             'pdf_max_pages' => $meta->get_pdf_max_pages() ?: '',
             'price_per_page' => $meta->get_price_per_page() ?: '',
             'pdf_label' => esc_html__('upload your pdf here', 'Peleman-Webshop-Package'),
+            'valuta' => get_woocommerce_currency_symbol(),
+            'individual_product_price' => $product->get_price(),
         );
+
+        error_log($product->get_price());
 
         echo $this->template->render('File_Upload_Form_Template', $params);
     }

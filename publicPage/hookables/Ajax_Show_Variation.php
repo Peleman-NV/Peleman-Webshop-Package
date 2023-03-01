@@ -19,7 +19,11 @@ class Ajax_Show_Variation extends Abstract_Ajax_Hookable
         parent::__construct(
             'Ajax_Show_Variation',
             plugins_url('../js/pwp-show-variation.js', __FILE__),
-            $priority
+            $priority,
+            [
+                'pdfjs',
+                'pdfworkerjs'
+            ],
         );
     }
 
@@ -34,24 +38,25 @@ class Ajax_Show_Variation extends Abstract_Ajax_Hookable
         // error_log(print_r($meta, true));
 
         $response = array(
-            'variant'               => $variantId,
-            'in_stock'              => $variant->is_in_stock(),
-            'is_customizable'       => $meta->is_customizable(),
-            'requires_pdf_upload'   => $meta->uses_pdf_content(),
-            'button_text'           => $this->get_add_to_cart_label($meta, $parent),
-            'is_bundle'             => $meta->get_unit_amount() > 1,
-            'unit_amount'           => " (" . $meta->get_unit_amount() . ' ' . __('pieces', 'Peleman-Webshop-Package') . ")",
-            'unit_price'            => get_woocommerce_currency_symbol() . number_format($meta->get_unit_price(), 2),
-            'item_price'            => get_woocommerce_currency_symbol() . number_format((float)$variant->get_price(), 2),
-            'pdf_data'              => array(
-                'width'             => $meta->get_pdf_width() ? $meta->get_pdf_width() . ' mm' : '',
-                'height'            => $meta->get_pdf_height() ? $meta->get_pdf_height() . ' mm' : '',
-                'min_pages'         => $meta->get_pdf_min_pages() ? $meta->get_pdf_min_pages() : '',
-                'max_pages'         => $meta->get_pdf_max_pages() ? $meta->get_pdf_max_pages() : '',
-                'price_per_page'    => $meta->get_price_per_page() ? wc_price($meta->get_price_per_page()) : '',
+            'variant'                   => $variantId,
+            'in_stock'                  => $variant->is_in_stock(),
+            'is_customizable'           => $meta->is_customizable(),
+            'requires_pdf_upload'       => $meta->uses_pdf_content(),
+            'button_text'               => $this->get_add_to_cart_label($meta, $parent),
+            'is_bundle'                 => $meta->get_unit_amount() > 1,
+            'unit_amount'               => " (" . $meta->get_unit_amount() . ' ' . __('pieces', 'Peleman-Webshop-Package') . ")",
+            'unit_price'                => get_woocommerce_currency_symbol() . number_format($meta->get_unit_price(), 2),
+            'item_price'                => get_woocommerce_currency_symbol() . number_format((float)$variant->get_price(), 2),
+            'pdf_data'                  => array(
+                'width'                 => $meta->get_pdf_width() ? $meta->get_pdf_width() . ' mm' : '',
+                'height'                => $meta->get_pdf_height() ? $meta->get_pdf_height() . ' mm' : '',
+                'min_pages'             => $meta->get_pdf_min_pages() ? $meta->get_pdf_min_pages() : '',
+                'max_pages'             => $meta->get_pdf_max_pages() ? $meta->get_pdf_max_pages() : '',
+                'price_per_page'        => $meta->get_price_per_page() ?: 0,
+                'price_per_page_html'   => $meta->get_price_per_page() ? wc_price($meta->get_price_per_page()) : '',
+                'total_price'           => $variant->get_price(),
             ),
         );
-
         wp_send_json_success($response, 200);
     }
 

@@ -13,7 +13,7 @@ class Enqueue_PDF_JS extends Abstract_Action_Hookable
 {
     public function __construct()
     {
-        parent::__construct('wp_enqueue_scripts', 'pwp_enqueue_pdf_js');
+        parent::__construct('wp_enqueue_scripts', 'pwp_enqueue_pdf_js', 1);
     }
 
     public function pwp_enqueue_pdf_js(): void

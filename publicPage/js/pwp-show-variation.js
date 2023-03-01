@@ -23,8 +23,9 @@
 
 (function ($) {
     ('use strict');
+    const buttonText = setAddToCartLabel();
 
-    let buttonText = setAddToCartLabel();
+    /** EVENTS */
     // Event: when a variation is selected
     $(document).on('show_variation', (event, variation) => {
         event.stopPropagation();
@@ -39,6 +40,8 @@
         resetUnitPrice();
         hideArticleCodeElement();
     });
+
+    /** FUNCTIONS */
 
     function hideElement(element) {
         element.addClass('pwp-hidden');
@@ -89,7 +92,7 @@
                         return;
                     }
                     // showUnitPrice(response.data.bundleObject);
-                    buttonText = response.data.button_text ?? fallbackAddToCartLabel;
+                    var buttonText = response.data.button_text ?? fallbackAddToCartLabel;
 
                     if (response.data.f2dArtCode) {
                         displayArticleCode(response.f2dArtCode);
@@ -176,7 +179,7 @@
      */
     function displayUploadElement(data) {
         enableUploadBtn();
-        const { height, width, min_pages, max_pages, price_per_page } =
+        const { height, width, min_pages, max_pages, price_per_page, price_per_page_html, total_price } =
             data.pdf_data;
 
         hideElement($('#ppi-loading'));
@@ -211,11 +214,14 @@
             hideElement($('#content-max-pages').parent());
         }
         if (price_per_page != '') {
-            $('.price-per-page').html(price_per_page);
+            $('.price-per-page').html(price_per_page_html);
+            $('.price-per-page').attr('value', price_per_page);
             showElement($('#content-price-per-page').parent());
         } else {
             hideElement($('#content-price-per-page').parent());
+            $('.price_per_page').attr('value', 0);
         }
+        $('#product-price').attr('value', total_price);
     }
 
     function DisplayBundlePricing(data) {
@@ -392,5 +398,4 @@
     function RemoveButtonIconClass() {
         $('.single_add_to_cart_button').removeClass('pwp_customizable');
     }
-
 })(jQuery);

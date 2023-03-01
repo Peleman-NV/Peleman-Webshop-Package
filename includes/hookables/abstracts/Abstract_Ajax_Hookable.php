@@ -47,6 +47,8 @@ abstract class Abstract_Ajax_Hookable implements I_Hookable_Component
      */
     private int $priority;
 
+    private array $dependencies;
+
     private const CALLBACK = 'callback';
     private const CALLBACK_NOPRIV = 'callback_nopriv';
 
@@ -60,12 +62,13 @@ abstract class Abstract_Ajax_Hookable implements I_Hookable_Component
      * @param string $jsFilePath absolute path of the Javascript file.
      * @param integer $priority when executing, the priority of this hook. default `10`
      */
-    public function __construct(string $handle, string $jsFilePath, int $priority = 10)
+    public function __construct(string $handle, string $jsFilePath, int $priority = 10, array $deps = [])
     {
         $this->scriptHandle = $handle;
         $this->objectName = $handle . self::OBJECT_SUFFIX;
         $this->nonceName = $handle . self::NONCE_SUFFIX;
         $this->jsFilePath = $jsFilePath;
+        $this->dependencies = array_merge(['jquery'], $deps);
 
         $this->priority = $priority;
     }

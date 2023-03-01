@@ -18,30 +18,31 @@ if (!defined('ABSPATH')) {
                 </tr>
                 <tr>
                     <td><?php echo esc_html__('PDF page width (mm)', 'Peleman-Webshop-Package'); ?></td>
-                    <td class='param-value' id='content-width'><?php echo esc_attr($pdf_width ?: '');/* @phpstan-ignore-line */ ?></td>
+                    <td class="param-value" id="content-width"><?php echo esc_attr($pdf_width ?: '');/* @phpstan-ignore-line */ ?> <span> mm</span></td>
                 </tr>
                 <tr>
                     <td><?php echo esc_html__('PDF page height (mm)', 'Peleman-Webshop-Package'); ?></td>
-                    <td class='param-value' id='content-height'><?php echo esc_attr($pdf_height ?: ''); /* @phpstan-ignore-line */ ?></td>
+                    <td class="param-value" id="content-height"><?php echo esc_attr($pdf_height ?: ''); /* @phpstan-ignore-line */ ?> <span> mm</span></td>
                 </tr>
                 <tr>
                     <td><?php echo esc_html__('Minimum page count', 'Peleman-Webshop-Package'); ?></td>
-                    <td class='param-value' id='content-min-pages'><?php echo esc_attr($pdf_min_pages ?: '');/* @phpstan-ignore-line */ ?></td>
+                    <td class="param-value" id="content-min-pages"><?php echo esc_attr($pdf_min_pages ?: '');/* @phpstan-ignore-line */ ?></td>
                 </tr>
                 <tr>
-                    <td><?php echo esc_html__('Maximum page count', 'Peleman-Webshop-Package'); ?></td>
-                    <td class='param-value' id='content-max-pages'><?php echo esc_attr($pdf_max_pages ?: '');/* @phpstan-ignore-line */ ?></td>
+                    <td><?php echo esc_html__("Maximum page count", "Peleman-Webshop-Package"); ?></td>
+                    <td class="param-value" id="content-max-pages"><?php echo esc_attr($pdf_max_pages ?: '');/* @phpstan-ignore-line */ ?></td>
                 </tr>
                 <tr>
                     <td><?php echo esc_html__('Price per page', 'Peleman-Webshop-Package'); ?></td>
-                    <td class='param-value price-per-page' id='content-price-per-page'><?php echo wc_price($price_per_page ?: '');?></td>
+                    <td class="param-value price-per-page" id="content-price-per-page" value="<?php echo $price_per_page ?: 0.00; ?>"><?php echo wc_price($price_per_page ?: ''); ?></td>
                 </tr>
             </tbody>
+            <span id="product-price" class="pwp_hidden" value="<?php echo $individual_product_price; ?>"></span>
         </table>
         <div id='pwp-upload-info'>
             <label class='pwp-upload-label' for='pwp-file-upload'>
-                <i class="icon-doc"></i><?php echo esc_html__('Drag or upload your PDF file here', 'Peleman-Webshop-Package'); ?>
-                <input class='pwp-upload-field' id='pwp-file-upload' type='file' accept='application/pdf' name='pdf-upload' size='<?php echo esc_html($size); /* @phpstan-ignore-line */?>' required />
+                <i class=" icon-doc"></i><?php echo esc_html__('Drag or upload your PDF file here', 'Peleman-Webshop-Package'); ?>
+                <input class='pwp-upload-field' id='pwp-file-upload' type='file' accept='application/pdf' name='pdf-upload' size='<?php echo esc_html($size); /* @phpstan-ignore-line */ ?>' required />
                 <br /><span id="pwp-upload-filename" style="color: green; margin-top: 20px; font-weight: 500; font-size: 16px;"></span>
             </label>
             <div class='pwp-thumbnail-container'>
