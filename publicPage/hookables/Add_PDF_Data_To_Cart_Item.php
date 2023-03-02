@@ -37,7 +37,7 @@ class Add_PDF_Data_To_Cart_Item extends Abstract_Filter_Hookable
 
             if ('application/pdf' == $fileArr['type'] && 0 === $fileArr['error']) {
 
-                if (4 == $fileArr['error']) {
+                if (4 === $fileArr['error']) {
                     wp_die('something went wrong with the file upload', 'upload failure');
                 }
 
