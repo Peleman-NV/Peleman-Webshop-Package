@@ -221,7 +221,7 @@
             hideElement($('#content-price-per-page').parent());
             $('.price_per_page').attr('value', 0);
         }
-        $('#product-price').attr('value', total_price);
+        $('#pwp-product-price').attr('value', total_price);
     }
 
     function DisplayBundlePricing(data) {

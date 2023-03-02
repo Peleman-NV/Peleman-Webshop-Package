@@ -20,10 +20,10 @@ class Template
         $this->templateDirectory = rtrim($directory);
     }
 
-    public function render(string $template, array $vars = []): string
+    public function render(string $template, array $vars = []): void
     {
         $template = "{$this->templateDirectory}/{$template}.php";
-        return $this->render_template($template, $vars);
+        echo $this->render_template($template, $vars);
     }
 
 

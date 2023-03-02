@@ -54,12 +54,11 @@ class Display_PDF_Upload_Form extends Abstract_Action_Hookable
             'pdf_max_pages' => $meta->get_pdf_max_pages() ?: '',
             'price_per_page' => $meta->get_price_per_page() ?: '',
             'pdf_label' => esc_html__('upload your pdf here', 'Peleman-Webshop-Package'),
-            'valuta' => get_woocommerce_currency_symbol(),
             'individual_product_price' => $product->get_price(),
+            'currency_code' => get_woocommerce_currency_symbol(),
+            'currency_pos' => get_option('woocommerce_currency_pos'),
         );
 
-        error_log($product->get_price());
-
-        echo $this->template->render('File_Upload_Form_Template', $params);
+        $this->template->render('File_Upload_Form_Template', $params);
     }
 }

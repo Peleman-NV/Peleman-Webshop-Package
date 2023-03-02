@@ -37,7 +37,9 @@ if (!defined('ABSPATH')) {
                     <td class="param-value price-per-page" id="content-price-per-page" value="<?php echo $price_per_page ?: 0.00; ?>"><?php echo wc_price($price_per_page ?: ''); ?></td>
                 </tr>
             </tbody>
-            <span id="product-price" class="pwp_hidden" value="<?php echo $individual_product_price; ?>"></span>
+            <span id="pwp-product-price" class="pwp_hidden" value="<?php echo $individual_product_price; /* @phpstan-ignore-line */ ?>"></span>
+            <span id="pwp-currency-code" class="pwp_hidden" value="<?php echo $currency_code; /* @phpstan-ignore-line */ ?>"></span>
+            <span id="pwp-price-format" class="pwp_hidden" value="<?php echo $currency_pos; /* @phpstan-ignore-line */ ?>"></span>
         </table>
         <div id='pwp-upload-info'>
             <label class='pwp-upload-label' for='pwp-file-upload'>

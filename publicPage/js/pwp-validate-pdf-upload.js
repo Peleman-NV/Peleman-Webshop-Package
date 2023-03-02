@@ -12,6 +12,9 @@
         const _totalPrice = $('#pwp-pdf-total');
         const _canvas = _preview[0];
 
+        const _currencyCode = $('#pwp-currency-code');
+        const _priceFormat = $('#pwp-price-format')
+
         var _pdf_doc;
         var _object_url;
 
@@ -76,16 +79,33 @@
             var pageCount = _pdf_doc.numPages;
             var pageCost = +$('#content-price-per-page').attr('value');
             console.log(pageCost);
-            var variantPrice = +($('#product-price').attr('value'));
+            var variantPrice = +($('#pwp-product-price').attr('value'));
 
             var price = pageCount * pageCost;
-
             var totalPrice = price + variantPrice;
+            price = price.toFixed(2);
+            totalPrice = totalPrice.toFixed(2);
+            var currency = _currencyCode.attr('value');
+            var format = _priceFormat.attr('value');
 
             _pages.text(pageCount);
-            _pagePricing.text(price.toFixed(2));
-            _totalPrice.text((totalPrice.toFixed(2)));
+            _pagePricing.text(formatPriceString(price, currency, format));
+            _totalPrice.text(formatPriceString(totalPrice, currency, format));
             _pdfPricing.css("display", '');
+        }
+
+        function formatPriceString(price, currency, format) {
+            switch (format) {
+                default:
+                case 'left':
+                    return currency + '' + price;
+                case 'left_space':
+                    return currency + ' ' + price;
+                case 'right':
+                    return price + '' + currency;;
+                case 'right_space':
+                    return price + ' ' + currency;
+            }
         }
     });
 })(jQuery);
