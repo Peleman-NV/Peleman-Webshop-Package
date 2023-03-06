@@ -214,8 +214,8 @@
             hideElement($('#content-max-pages').parent());
         }
         if (price_per_page != '') {
-            $('.price-per-page').html(price_per_page_html);
             $('.price-per-page').attr('value', price_per_page);
+            $('.price-per-page').html(price_per_page_html);
             showElement($('#content-price-per-page').parent());
         } else {
             hideElement($('#content-price-per-page').parent());

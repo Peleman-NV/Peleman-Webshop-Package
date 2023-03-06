@@ -55,7 +55,6 @@ class Ajax_Add_To_Cart extends Abstract_Ajax_Hookable
             if (apply_filters('woocommerce_add_to_cart_validation', true, $productId, $quantity, $variationId)) {
                 wc_clear_notices();
                 if ($productMeta->is_customizable()) {
-                    session_start();
 
                     $transientId = uniqid('pwpproj-');
 
@@ -88,7 +87,6 @@ class Ajax_Add_To_Cart extends Abstract_Ajax_Hookable
                         $productMeta,
                     );
 
-                    // $_SESSION[$transientId] = $itemData;
                     //transient expires in 30 days
                     set_transient($transientId, $itemData, 30 * 86400);
 

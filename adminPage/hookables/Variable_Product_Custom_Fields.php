@@ -105,9 +105,9 @@ class Variable_Product_Custom_Fields extends Abstract_Action_Hookable
             'wrapper_class' => 'form-row form-row-first pwp-form-row-padding-5',
             'class' => "wc_input_price",
             'data_type' => 'price',
-            'type' => 'number',
-            'custom_attributes' => array('step' => 0.01),
-            'placeholder' => 0.00,
+            // 'type' => 'number',
+            // 'custom_attributes' => array('step' => 0.01),
+            'placeholder' => wc_format_localized_decimal('0.00'),
         ));
 
         woocommerce_wp_text_input(array(
@@ -374,12 +374,14 @@ class Variable_Product_Custom_Fields extends Abstract_Action_Hookable
             'value' => $meta->get_price_per_page(),
             'desc_tip' => true,
             'description' => __('Additional price per page that will be added to product/variation price', 'Peleman-Webshop-Package'),
-            'class' => "{$required} wc_input_price",
+            'class' => "{$required}",
             'wrapper_class' => 'form-row form-row-last pwp-form-row-padding-5',
             'data_type' => 'price',
-            'type' => 'number',
-            'custom_attributes' => array('step' => 0.001, 'min' => 0.000),
-            'placeholder' => '0.000'
+            // 'custom_attributes' => array(
+            //     'step' =>  wc_format_localized_decimal(0.001),
+            //     'min' => wc_format_localized_decimal(0.000),
+            // ),
+            'placeholder' => wc_format_localized_decimal(0.000),
         ));
 
         

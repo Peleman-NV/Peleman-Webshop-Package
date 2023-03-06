@@ -34,7 +34,7 @@ if (!defined('ABSPATH')) {
                 </tr>
                 <tr>
                     <td><?php echo esc_html__('Price per page', 'Peleman-Webshop-Package'); ?></td>
-                    <td class="param-value price-per-page" id="content-price-per-page" value="<?php echo $price_per_page ?: 0.00; ?>"><?php echo wc_price($price_per_page ?: ''); ?></td>
+                    <td class="param-value price-per-page" id="content-price-per-page" value="<?php echo $price_per_page ?: 0.00; ?>"><?php echo wc_price($price_per_page ?: '', ['decimals' => 3]); ?></td>
                 </tr>
             </tbody>
             <span id="pwp-product-price" class="pwp_hidden" value="<?php echo $individual_product_price; /* @phpstan-ignore-line */ ?>"></span>
