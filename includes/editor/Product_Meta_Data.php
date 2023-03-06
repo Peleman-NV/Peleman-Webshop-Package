@@ -47,7 +47,7 @@ class Product_Meta_Data extends Product_Meta
 
         $this->editorId             = $this->parent->get_meta(self::EDITOR_ID_KEY) ?: '';
         $this->customizable         = !empty($this->editorId);
-        $this->usePDFContent        = boolval($this->parent->get_meta(self::USE_PDF_CONTENT_KEY)) ?: false;
+        $this->usePDFContent        = $this->parse_nonbool_value($this->parent->get_meta(self::USE_PDF_CONTENT_KEY));
         $this->customAddToCartLabel = $this->parent->get_meta(self::CUSTOM_LABEL_KEY) ?: '';
 
         $this->cartUnits            = (int)$this->parent->get_meta(self::UNIT_AMOUNT) ?: 1;
@@ -60,7 +60,7 @@ class Product_Meta_Data extends Product_Meta
         $this->minPages             = (int)$this->parent->get_meta(self::PDF_MIN_PAGES_KEY) ?: 1;
         $this->pricePerPage         = (float)$this->parent->get_meta(self::PDF_PRICE_PER_PAGE_KEY) ?: 0.000;
 
-        $this->overrideThumb        = boolval($this->parent->get_meta(self::OVERRIDE_CART_THUMB)) ?: false;
+        $this->overrideThumb        = $this->parse_nonbool_value($this->parent->get_meta(self::OVERRIDE_CART_THUMB)) ?: false;
         $this->pieData              = null;
     }
 
@@ -238,5 +238,18 @@ class Product_Meta_Data extends Product_Meta
         $this->parent->save();
         $this->pie_data()->save_meta_data();
         $this->parent->save_meta_data();
+    }
+
+    public function parse_nonbool_value($val)
+    {
+        switch ($val) {
+            case 'no':
+            case 'false':
+            case '0':
+            case false:
+                return false;
+            default:
+                return true;
+        }
     }
 }
