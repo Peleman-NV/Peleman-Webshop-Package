@@ -31,7 +31,7 @@ class Display_PDF_Upload_Form extends Abstract_Action_Hookable
         switch ($product->get_type()) {
             default:
             case 'simple':
-                $this->display_pdf_data_form($product, (bool)$product->get_meta(Product_Meta_Data::USE_PDF_CONTENT_KEY));
+                $this->display_pdf_data_form($product, $this->parse_nonbool_value($product->get_meta(Product_Meta_Data::USE_PDF_CONTENT_KEY)));
                 return;
             case 'variable':
             case 'variant':
@@ -60,5 +60,18 @@ class Display_PDF_Upload_Form extends Abstract_Action_Hookable
         );
 
         $this->template->render('File_Upload_Form_Template', $params);
+    }
+
+    public function parse_nonbool_value($val)
+    {
+        switch ($val) {
+            case 'no':
+            case 'false':
+            case '0':
+            case false:
+                return false;
+            default:
+                return true;
+        }
     }
 }
