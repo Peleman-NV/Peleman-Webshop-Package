@@ -382,6 +382,8 @@ class Variable_Product_Custom_Fields extends Abstract_Action_Hookable
             'placeholder' => '0.000'
         ));
 
+        
+
 
         woocommerce_wp_text_input(array(
             'id'            => Product_Meta_Data::PDF_MIN_PAGES_KEY . $this->loopEnd,
