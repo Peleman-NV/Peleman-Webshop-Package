@@ -17,7 +17,7 @@ class F2D_Menu extends Admin_Menu
 
     protected function register_settings(): void
     {
-        register_setting('pwp-f2d-options-group', 'pwp_enable_f2d', array(
+        register_setting('pwp-f2d-options-group', 'pwp_settings_f2d', array(
             'type' => 'bool',
             'description' => 'Enable F2D integration',
             'sanitize_callback' => 'wp_filter_nohtml_kses',
