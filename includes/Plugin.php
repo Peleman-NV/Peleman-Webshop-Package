@@ -18,6 +18,8 @@ use PWP\adminPage\hookables\Admin_Enqueue_Scripts;
 use PWP\adminPage\hookables\Admin_Notice_Poster;
 use PWP\adminPage\hookables\Admin_Enqueue_Styles;
 use PWP\adminPage\hookables\Admin_Submenu_Fields;
+use PWP\adminPage\hookables\Display_Order_Tracking_Information;
+use PWP\adminPage\hookables\Display_Order_Tracking_On_Customer_Order;
 use PWP\adminPage\hookables\PIE_Editor_Control_Panel;
 use PWP\adminPage\hookables\Parent_Product_Custom_Fields;
 use PWP\adminPage\hookables\Variable_Product_Custom_Fields;
@@ -115,6 +117,10 @@ final class Plugin
             new Save_Variable_Product_Custom_Fields(),
             new Add_PIE_Printfile_Download_Button(),
         );
+
+        $this->add_hookables(
+            new Display_Order_Tracking_Information(),
+        );
     }
 
     private function public_hooks(): void
@@ -162,6 +168,10 @@ final class Plugin
 
         /* EDITOR front end display hookables */
         $this->add_hookable(new Change_Cart_Item_Thumbnail());
+
+        $this->add_hookables(
+            new Display_Order_Tracking_On_Customer_Order(7),
+        );
 
         /* ADDITIONAL ACTIONS & FILTERS */
         $this->add_hookables(new Get_PDF_Project_Data());

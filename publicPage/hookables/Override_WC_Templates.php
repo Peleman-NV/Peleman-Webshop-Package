@@ -11,7 +11,7 @@ class Override_WC_Templates extends Abstract_Action_Hookable
 {
     public function __construct()
     {
-        parent::__construct('woocommerce_locate_template', 'override_wc_template', 10, 3);
+        parent::__construct('woocommerce_locate_template', 'override_wc_template', 12, 3);
     }
 
     public function override_wc_template(string $template, string $templateName, string $templatePath): string
@@ -27,6 +27,8 @@ class Override_WC_Templates extends Abstract_Action_Hookable
                 return trailingslashit(plugin_dir_path(__FILE__)) . '../../templates/woocommerce/price.php';
             case 'variation':
                 return trailingslashit(plugin_dir_path(__FILE__)) . '../../templates/woocommerce/variation.php';
+            case 'order-details-customer':
+                return trailingslashit(plugin_dir_path(__FILE__)) . '../../Templates/woocommerce/order-details-customer.php';
             default:
                 return $template;
         }
