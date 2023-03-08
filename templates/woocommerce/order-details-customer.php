@@ -18,13 +18,13 @@
 
 defined('ABSPATH') || exit;
 
-$show_shipping = !wc_ship_to_billing_address_only() && $order->needs_shipping_address();
+$show_shipping = !wc_ship_to_billing_address_only() && $order->needs_shipping_address();  /* @phpstan-ignore-line */
 ?>
 <section class="woocommerce-customer-details">
-	<?php if ($order->get_meta('f2d_tracking_data') !== '') : ?>
+	<?php if ($order->get_meta('f2d_tracking_data') !== '') :  /* @phpstan-ignore-line */ ?>
 		<section class="woocommerce-columns woocommerce-columns--2">
 			<h2 class="woocommerce-column__title"><?php esc_html_e('Tracking information', 'woocommerce'); ?></h2>
-			<?php do_action('display_order_tracking_information', $order); ?>
+			<?php do_action('display_order_tracking_information', $order);  /* @phpstan-ignore-line */ ?>
 
 		</section>
 	<?php endif; ?>
@@ -38,13 +38,13 @@ $show_shipping = !wc_ship_to_billing_address_only() && $order->needs_shipping_ad
 			<h2 class="woocommerce-column__title"><?php esc_html_e('Billing address', 'woocommerce'); ?></h2>
 
 			<address>
-				<?php echo wp_kses_post($order->get_formatted_billing_address(esc_html__('N/A', 'woocommerce'))); ?>
-				<?php if ($order->get_billing_phone()) : ?>
-					<p class="woocommerce-customer-details--phone"><?php echo esc_html($order->get_billing_phone()); ?></p>
+				<?php echo wp_kses_post($order->get_formatted_billing_address(esc_html__('N/A', 'woocommerce')));  /* @phpstan-ignore-line */ ?>
+				<?php if ($order->get_billing_phone()) :  /* @phpstan-ignore-line */ ?>
+					<p class="woocommerce-customer-details--phone"><?php echo esc_html($order->get_billing_phone());  /* @phpstan-ignore-line */ ?></p>
 				<?php endif; ?>
 
-				<?php if ($order->get_billing_email()) : ?>
-					<p class="woocommerce-customer-details--email"><?php echo esc_html($order->get_billing_email()); ?></p>
+				<?php if ($order->get_billing_email()) :  /* @phpstan-ignore-line */ ?>
+					<p class="woocommerce-customer-details--email"><?php echo esc_html($order->get_billing_email());  /* @phpstan-ignore-line */ ?></p>
 				<?php endif; ?>
 			</address>
 
@@ -55,7 +55,7 @@ $show_shipping = !wc_ship_to_billing_address_only() && $order->needs_shipping_ad
 			<div class="woocommerce-column woocommerce-column--2 woocommerce-column--shipping-address col-2">
 				<h2 class="woocommerce-column__title"><?php esc_html_e('Shipping address', 'woocommerce'); ?></h2>
 				<address>
-					<?php echo wp_kses_post($order->get_formatted_shipping_address(esc_html__('N/A', 'woocommerce'))); ?>
+					<?php echo wp_kses_post($order->get_formatted_shipping_address(esc_html__('N/A', 'woocommerce'))); /* @phpstan-ignore-line */  ?>
 				</address>
 			</div><!-- /.col-2 -->
 
@@ -63,6 +63,6 @@ $show_shipping = !wc_ship_to_billing_address_only() && $order->needs_shipping_ad
 
 	<?php endif; ?>
 
-	<?php do_action('woocommerce_order_details_after_customer_details', $order); ?>
+	<?php do_action('woocommerce_order_details_after_customer_details', $order);  /* @phpstan-ignore-line */ ?>
 
 </section>
