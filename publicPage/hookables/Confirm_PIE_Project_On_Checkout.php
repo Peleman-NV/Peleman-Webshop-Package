@@ -27,14 +27,15 @@ class Confirm_PIE_Project_On_Checkout extends Abstract_Action_Hookable
         }
         $request = new Order_PIE_Project_Request(
             get_option('pie_domain', 'https://deveditor.peleman.com'),
-            get_option('pie_customer_id', ''),
             get_option('pie_api_key', ''),
+            get_option('pie_customer_id', ''),
             $order_id
         );
 
+        error_log(print_r($request, true));
+
         $orderLines = $order->get_items();
         foreach ($orderLines as $key => $values) {
-            error_log(print_r($values, true));
             $projectId = $values->get_meta('_project_id');
             if (empty($projectId)) {
                 continue;

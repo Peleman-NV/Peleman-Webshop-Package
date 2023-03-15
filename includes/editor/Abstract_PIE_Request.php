@@ -80,7 +80,7 @@ abstract class Abstract_PIE_Request extends Abstract_Request
      */
     public function make_request(): object
     {
-        $response = wp_remote_get($this->endpoint, array(
+        $response = wp_remote_request($this->endpoint, array(
             'method' => $this->method,
             'timeout' => $this->timeout,
             'redirection' => $this->redirects,

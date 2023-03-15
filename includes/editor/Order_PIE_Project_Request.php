@@ -16,6 +16,7 @@ class Order_PIE_Project_Request extends Abstract_PIE_Request
 
         $this->orderId = $orderId;
         $this->orderLines = [];
+        $this->set_POST();
     }
 
     public function add_order_line(string $orderLineId, string $projectId): self
@@ -27,17 +28,18 @@ class Order_PIE_Project_Request extends Abstract_PIE_Request
     protected function generate_request_body(): array
     {
         $response = array(
-            'order_id' => $this->orderId,
+            'order_id' => (string)$this->orderId,
             'order_lines' => [],
         );
 
         foreach ($this->orderLines as $line => $id) {
             $response['order_lines'][] = array(
-                'order_line' => $line,
+                'order_line' => (string)$line,
                 'project_id' => $id,
             );
         }
 
+        error_log(json_encode($response));
         return $response;
     }
 }

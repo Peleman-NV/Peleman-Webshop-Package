@@ -42,7 +42,7 @@ class Complete_PIE_Project_Request extends Abstract_PIE_Request
     {
         $request = array(
             'customerid'        => $this->get_customer_id(),
-            'customerapikey'    => $this->get_customer_id(),
+            'customerapikey'    => $this->get_api_key(),
             'projectid'         => $this->projectId,
             "orderid"           => $this->orderId,
             'outputtype'        => $this->outputType,

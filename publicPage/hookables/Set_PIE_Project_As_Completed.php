@@ -42,7 +42,7 @@ class Set_PIE_Project_As_Completed extends Abstract_Action_Hookable
                 continue;
             }
 
-            $this->editor_set_order_as_complete($orderId, $customerId, $apiKey, $projectId);
+            // $this->editor_set_order_as_complete($orderId, $customerId, $apiKey, $projectId);
         }
     }
 
