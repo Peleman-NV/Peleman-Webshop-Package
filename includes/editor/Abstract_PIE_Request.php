@@ -85,7 +85,7 @@ abstract class Abstract_PIE_Request extends Abstract_Request
             'timeout' => $this->timeout,
             'redirection' => $this->redirects,
             'headers' => $this->generate_request_header(),
-            'body' => $this->generate_request_body(),
+            'body' => json_encode($this->generate_request_body()),
         ));
 
         if (is_wp_error($response) || !$response) {
