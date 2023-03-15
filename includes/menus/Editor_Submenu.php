@@ -79,5 +79,27 @@ class Editor_Submenu extends Admin_Menu
                 'option' => 'pie_api_key',
             )
         );
+        add_settings_field(
+            'pie_api_test',
+            __("PIE API test", 'Peleman-Webshop-Package'),
+            array($this, 'add_api_test_button'),
+            Admin_Control_Panel::PAGE_SLUG,
+            "pwp_settings_editors",
+            array(
+                'id' => 'pie_api_test',
+                'type' => 'button',
+                'title' => __('test credentials', 'PelemanWebshopPackage')
+            )
+        );
+    }
+
+    public function add_api_test_button(array $args): void
+    {
+        $id = isset($args['id']) ? $args['id'] : '';
+        $type = isset($args['type']) ? $args['type'] : 'button';
+        $title = isset($args['title']) ? $args['title'] : 'click me';
+?>
+        <button id="<?php echo $id; ?>" type="<?php echo $type; ?>"><?php echo $title; ?></button>
+<?php
     }
 }

@@ -25,6 +25,7 @@ use PWP\adminPage\hookables\Save_Parent_Product_Custom_Fields;
 use PWP\adminPage\hookables\Save_Variable_Product_Custom_Fields;
 use PWP\adminPage\hookables\Display_PDF_Data_After_Order_Item;
 
+
 use PWP\publicPage\hookables\Ajax_Add_To_Cart;
 use PWP\publicPage\hookables\Ajax_Show_Variation;
 use PWP\publicPage\hookables\Enqueue_Public_Styles;
@@ -48,6 +49,7 @@ use PWP\publicPage\hookables\Remove_PDF_On_Cart_Deletion;
 use PWP\publicPage\hookables\Set_PIE_Project_As_Completed;
 use PWP\publicPage\hookables\Validate_PDF_Upload;
 use PWP\publicPage\hookables\Cleanup_Unordered_Projects;
+use PWP\publicPage\hookables\Confirm_PIE_Project_On_Checkout;
 use PWP\publicPage\hookables\Get_PDF_Project_Data;
 
 #endregion
@@ -107,6 +109,7 @@ final class Plugin
             new Admin_Control_Panel(),
             new PIE_Editor_Control_Panel(),
         );
+
         /* product page hookables */
         $this->add_hookables(
             new Parent_Product_Custom_Fields(),
@@ -157,7 +160,8 @@ final class Plugin
             new Ajax_Add_To_Cart(8),
             new Display_Editor_Project_Button_In_Cart(),
             new Add_Custom_Project_On_Return(),
-            new Save_Cart_Item_Meta_To_Order_Item_Meta()
+            new Save_Cart_Item_Meta_To_Order_Item_Meta(),
+            new Confirm_PIE_Project_On_Checkout(),
         );
 
         /* EDITOR front end display hookables */

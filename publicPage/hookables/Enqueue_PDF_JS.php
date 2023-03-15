@@ -11,9 +11,13 @@ use PWP\includes\hookables\abstracts\Abstract_Action_Hookable;
  */
 class Enqueue_PDF_JS extends Abstract_Action_Hookable
 {
-    public function __construct()
+    public function __construct(int $priority = 10)
     {
-        parent::__construct('wp_enqueue_scripts', 'pwp_enqueue_pdf_js', 1);
+        parent::__construct(
+            'wp_enqueue_scripts',
+            'pwp_enqueue_pdf_js',
+            $priority
+        );
     }
 
     public function pwp_enqueue_pdf_js(): void
