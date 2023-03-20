@@ -6,8 +6,8 @@ namespace PWP\includes\API;
 
 use PWP\includes\authentication\Authenticator;
 use PWP\includes\hookables\abstracts\I_Hookable_Component;
-use PWP\restApi\v1\endpoints\GET_PDF_Endpoint;
-use PWP\restApi\v1\endpoints\GET_Project_Thumbnail;
+use PWP\restApi\v1\GET_PDF_Endpoint;
+use PWP\restApi\v1\GET_Project_Thumbnail;
 
 /**
  * overarching class which contains and handles the creation/registering of API Channels

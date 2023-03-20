@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PWP\restApi\v1\endpoints;
+namespace PWP\restApi\v1;
 
 use PWP\includes\API\endpoints\Abstract_FIND_Endpoint;
 use PWP\includes\authentication\I_Api_Authenticator;
