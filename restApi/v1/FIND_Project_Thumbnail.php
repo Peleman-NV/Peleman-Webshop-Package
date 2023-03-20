@@ -2,25 +2,31 @@
 
 declare(strict_types=1);
 
-namespace PWP\includes\API\endpoints;
+namespace PWP\restApi\v1\endpoints;
 
+use PWP\includes\API\endpoints\Abstract_FIND_Endpoint;
 use PWP\includes\authentication\I_Api_Authenticator;
 use PWP\includes\exceptions\WP_Error_Exception;
+use WP_REST_Request;
 use WP_REST_Response;
 
 defined('ABSPATH') || die;
 
 class FIND_Project_Thumbnail extends Abstract_FIND_Endpoint
 {
-    public function __construct(string $namespace, I_Api_Authenticator $authenticator, int $priority = 10)
+    public function __construct(string $namespace, int $priority = 10)
     {
         parent::__construct(
             $namespace,
             '/thumb/(?P<projectId>[a-z0-9_\-]+)',
             'thumbnail',
-            $this->authenticator = $authenticator,
             $priority
         );
+    }
+
+    public function authenticate(WP_REST_Request $request): bool
+    {
+        return true;
     }
 
     public function do_action(\WP_REST_Request $request): WP_REST_Response

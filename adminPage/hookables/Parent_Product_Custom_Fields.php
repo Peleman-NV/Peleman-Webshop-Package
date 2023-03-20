@@ -8,7 +8,6 @@ use PWP\includes\editor\Product_PIE_Data;
 use PWP\includes\editor\Product_Meta_Data;
 use PWP\includes\hookables\abstracts\Abstract_Action_Hookable;
 use PWP\includes\utilities\HTML_Builder;
-use WC_Product_Simple;
 
 /**
  * Ads PWP/PIE specific fields to a WC simple/parent product

@@ -12,7 +12,6 @@ use PWP\includes\editor\Product_PIE_Data;
 use PWP\includes\editor\PIE_Project;
 use PWP\includes\exceptions\Invalid_Response_Exception;
 use PWP\includes\hookables\abstracts\Abstract_Ajax_Hookable;
-use WC_AJAX;
 
 /**
  * AJAX method which handles add to cart requests. If the product being added to the cart requires customization,

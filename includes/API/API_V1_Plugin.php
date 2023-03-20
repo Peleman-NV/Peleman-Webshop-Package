@@ -6,9 +6,8 @@ namespace PWP\includes\API;
 
 use PWP\includes\authentication\Authenticator;
 use PWP\includes\hookables\abstracts\I_Hookable_Component;
-
-use PWP\includes\API\endpoints\FIND_PDF_Endpoint;
-use PWP\includes\API\endpoints\FIND_Project_Thumbnail;
+use PWP\restApi\v1\endpoints\FIND_PDF_Endpoint;
+use PWP\restApi\v1\endpoints\FIND_Project_Thumbnail;
 
 /**
  * overarching class which contains and handles the creation/registering of API Channels
@@ -27,8 +26,8 @@ class API_V1_Plugin implements I_Hookable_Component
         $this->namespace = $namespace;
         $authenticator = new Authenticator();
 
-        $this->add_hookable(new FIND_PDF_Endpoint($this->namespace, $authenticator));
-        $this->add_hookable(new FIND_Project_Thumbnail($this->namespace, $authenticator));
+        $this->add_hookable(new FIND_PDF_Endpoint($this->namespace));
+        $this->add_hookable(new FIND_Project_Thumbnail($this->namespace));
     }
 
     public function register(): void

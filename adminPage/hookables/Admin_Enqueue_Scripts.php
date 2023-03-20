@@ -31,12 +31,12 @@ class Admin_Enqueue_Scripts extends Abstract_Action_Hookable
             array(),
             $randomVersionNumber
         );
-        wp_enqueue_script(
-            'pie-test-js',
-            plugins_url('../js/pwp-test-editor-api-connection.js', __FILE__),
-            array('jquery'),
-            $randomVersionNumber,
-            true
-        );
+        // wp_enqueue_script(
+        //     'pie-test-js',
+        //     plugins_url('../js/pwp-test-editor-api-connection.js', __FILE__),
+        //     array('jquery'),
+        //     $randomVersionNumber,
+        //     true
+        // );
     }
 }

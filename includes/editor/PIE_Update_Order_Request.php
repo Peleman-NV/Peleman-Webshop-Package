@@ -4,15 +4,20 @@ declare(strict_types=1);
 
 namespace PWP\includes\editor;
 
-class Order_PIE_Project_Request extends Abstract_PIE_Request
+class PIE_Update_Order_Request extends Abstract_PIE_Request
 {
     private int $orderId;
     private array $orderLines;
 
-    public function __construct(string $domain, string $apiKey, string $customerId, int $orderId)
+    public function __construct(int $orderId)
     {
         $endpoint = '/editor/api/updateordernr.php';
-        parent::__construct($domain, $endpoint, $apiKey, $customerId);
+        parent::__construct(
+            get_option('pie_domain', 'https://deveditor.peleman.com'),
+            $endpoint,
+            get_option('pie_api_key', ''),
+            get_option('pie_customer_id', ''),
+        );
 
         $this->orderId = $orderId;
         $this->orderLines = [];

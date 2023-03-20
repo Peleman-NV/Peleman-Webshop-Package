@@ -8,11 +8,6 @@ namespace PWP\includes\API\endpoints;
  */
 abstract class Abstract_DELETE_Endpoint extends Endpoint_Controller
 {
-    public function authenticate(\WP_REST_Request $request): bool
-    {
-        return $this->get_authenticator()->auth_delete_item($request);
-    }
-
     final public function get_methods(): string
     {
         return \WP_REST_Server::DELETABLE;

@@ -12,11 +12,6 @@ use WP_REST_Request;
  */
 abstract class Abstract_BATCH_Endpoint extends Endpoint_Controller
 {
-    public function authenticate(WP_REST_Request $request): bool
-    {
-        return $this->get_authenticator()->auth_batch_items($request);
-    }
-
     final public function get_methods(): string
     {
         return \WP_REST_Server::EDITABLE;

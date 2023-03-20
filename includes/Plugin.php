@@ -18,6 +18,7 @@ use PWP\adminPage\hookables\Admin_Enqueue_Scripts;
 use PWP\adminPage\hookables\Admin_Notice_Poster;
 use PWP\adminPage\hookables\Admin_Enqueue_Styles;
 use PWP\adminPage\hookables\Admin_Submenu_Fields;
+use PWP\adminPage\hookables\Ajax_Verify_PIE_Editor_Credentials;
 use PWP\adminPage\hookables\PIE_Editor_Control_Panel;
 use PWP\adminPage\hookables\Parent_Product_Custom_Fields;
 use PWP\adminPage\hookables\Variable_Product_Custom_Fields;
@@ -123,6 +124,7 @@ final class Plugin
     private function public_hooks(): void
     {
         $this->add_hookables(
+            new Ajax_Verify_PIE_Editor_Credentials(6),
             new Cleanup_Unordered_Projects(),
             new Override_WC_Templates(),
             new Apply_Bundle_Price_Cart_Widget()
