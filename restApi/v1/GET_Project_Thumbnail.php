@@ -12,7 +12,7 @@ use WP_REST_Response;
 
 defined('ABSPATH') || die;
 
-class FIND_Project_Thumbnail extends Abstract_FIND_Endpoint
+class GET_Project_Thumbnail extends Abstract_FIND_Endpoint
 {
     public function __construct(string $namespace, int $priority = 10)
     {
