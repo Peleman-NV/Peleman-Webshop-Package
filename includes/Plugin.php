@@ -43,8 +43,6 @@ use PWP\publicPage\hookables\Add_Class_To_Add_To_Cart_Button;
 use PWP\publicPage\hookables\Change_Add_To_Cart_Button_Label;
 use PWP\publicPage\hookables\Confirm_PIE_Project_On_Checkout;
 use PWP\adminPage\hookables\Add_PIE_Printfile_Download_Button;
-use PWP\adminPage\hookables\Ajax_Save_F2D_Customer_Number;
-use PWP\adminPage\hookables\Display_F2D_Customer_Number_Field;
 use PWP\adminPage\hookables\Display_PDF_Data_After_Order_Item;
 use PWP\adminPage\hookables\Save_Parent_Product_Custom_Fields;
 use PWP\publicPage\hookables\Add_Fields_To_Add_To_Cart_Button;
@@ -119,9 +117,6 @@ final class Plugin
             new Save_Parent_Product_Custom_Fields(),
             new Save_Variable_Product_Custom_Fields(),
             new Add_PIE_Printfile_Download_Button(),
-            /* order page hookables */
-            new Display_F2D_Customer_Number_Field(),
-            new Ajax_Save_F2D_Customer_Number(),
         );
     }
 
