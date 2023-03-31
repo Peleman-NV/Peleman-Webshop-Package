@@ -6,7 +6,7 @@ namespace PWP\adminPage\hookables;
 
 use PWP\includes\hookables\abstracts\Abstract_Ajax_Hookable;
 
-class Ajax_Save_F2D_customer_Number extends Abstract_Ajax_Hookable
+class Ajax_Save_F2D_Customer_Number extends Abstract_Ajax_Hookable
 {
     public function __construct(int $priority = 10)
     {
