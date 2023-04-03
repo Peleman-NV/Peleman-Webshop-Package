@@ -37,7 +37,7 @@ class Save_Parent_Product_Custom_Fields extends Abstract_Action_Hookable
 
         $post = $this->filter_post();
 
-        // error_log(print_r($post, true));
+        error_log(print_r($post, true));
         $editorMeta->set_unit_amount((int)$post[Product_Meta_Data::UNIT_AMOUNT] ?: 1)
             ->set_unit_price((float)$post[Product_Meta_Data::UNIT_PRICE])
             ->set_unit_code($post[Product_Meta_Data::UNIT_CODE] ?: '')
@@ -54,7 +54,7 @@ class Save_Parent_Product_Custom_Fields extends Abstract_Action_Hookable
             )
             ->set_editor(esc_attr(sanitize_text_field($post[Product_Meta_Data::EDITOR_ID_KEY])))
             ->set_override_thumbnail(isset($post[Product_Meta_Data::OVERRIDE_CART_THUMB]))
-            ->set_f2d_article_code($post[Product_Meta_Data::F2D_ARTICLE_CODE]);
+            ->set_f2d_article_code($post[Product_Meta_Data::F2D_ARTICLE_CODE] ?: '');
 
         if ($product instanceof WC_Product_Simple) {
             $pieData = $editorMeta->pie_data();

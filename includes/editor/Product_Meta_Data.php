@@ -23,6 +23,8 @@ class Product_Meta_Data extends Product_Meta
 
     public const OVERRIDE_CART_THUMB    = 'pwp_override_cart_thumb';
 
+    public const VAR_PREFIX = "var_";
+
     private bool $customizable;
     private string $editorId;
     private string $customAddToCartLabel;

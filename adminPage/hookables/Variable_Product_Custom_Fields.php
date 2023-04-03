@@ -16,8 +16,9 @@ use WP_Post;
  */
 class Variable_Product_Custom_Fields extends Abstract_Action_Hookable
 {
-    private string $loopEnd = '';
     private int $loop;
+    private string $loopSuffix = '';
+    private string $var_prefix = 'var_';
 
     public function __construct()
     {
@@ -40,7 +41,7 @@ class Variable_Product_Custom_Fields extends Abstract_Action_Hookable
         $parentId = $wc_variation->get_parent_id();
 
         $this->loop = $loop;
-        $this->loopEnd = "[{$loop}]";
+        $this->loopSuffix = "[{$loop}]";
 
         HTML_Builder::heading(
             __('Product Settings', 'Peleman-Webshop-Package'),
@@ -75,8 +76,8 @@ class Variable_Product_Custom_Fields extends Abstract_Action_Hookable
     {
         if (get_option('pwp_enable_f2d')) {
             woocommerce_wp_text_input(array(
-                'id' => "f2d_sku_components" . $this->loopEnd,
-                'name' => "f2d_sku_components" . $this->loopEnd,
+                'id' => $this->format_loop_id("f2d_sku_components"),
+                'name' =>  $this->format_loop_id("f2d_sku_components"),
                 'label' => __('Fly2Data SKU', 'Peleman-Webshop-Package'),
                 'value' => $meta->get_parent()->get_meta('f2d_sku_components'),
                 'desc_tip' => true,
@@ -85,8 +86,8 @@ class Variable_Product_Custom_Fields extends Abstract_Action_Hookable
             ));
 
             woocommerce_wp_text_input(array(
-                'id' => Product_meta_data::F2D_ARTICLE_CODE . $this->loopEnd,
-                'name' => Product_meta_data::F2D_ARTICLE_CODE . $this->loopEnd,
+                'id' => $this->format_loop_id(Product_meta_data::F2D_ARTICLE_CODE),
+                'name' => $this->format_loop_id(Product_meta_data::F2D_ARTICLE_CODE),
                 'label' => __('Fly2Data article code', 'Peleman-Webshop-Package'),
                 'value' => $meta->get_f2d_article_code(),
                 'desc_tip' => true,
@@ -96,8 +97,8 @@ class Variable_Product_Custom_Fields extends Abstract_Action_Hookable
             ));
         }
         woocommerce_wp_text_input(array(
-            'id' => Product_Meta_Data::UNIT_PRICE . $this->loopEnd,
-            'name' => Product_Meta_Data::UNIT_PRICE . $this->loopEnd,
+            'id' => $this->format_loop_id(Product_Meta_Data::UNIT_PRICE),
+            'name' => $this->format_loop_id(Product_Meta_Data::UNIT_PRICE),
             'label' => __('Unit Purchase Price', 'Peleman-Webshop-Package'),
             'value' =>  (string)$meta->get_unit_price() ?: 0,
             'desc_tip' => true,
@@ -111,8 +112,8 @@ class Variable_Product_Custom_Fields extends Abstract_Action_Hookable
         ));
 
         woocommerce_wp_text_input(array(
-            'id' => Product_Meta_Data::UNIT_AMOUNT . $this->loopEnd,
-            'name' => Product_Meta_Data::UNIT_AMOUNT . $this->loopEnd,
+            'id' => $this->format_loop_id(Product_Meta_Data::UNIT_AMOUNT),
+            'name' => $this->format_loop_id(Product_Meta_Data::UNIT_AMOUNT),
             'label' => __('Unit amount', 'Peleman-Webshop-Package'),
             'value' => (string)$meta->get_unit_amount() ?: 1,
             'desc_tip' => true,
@@ -127,8 +128,8 @@ class Variable_Product_Custom_Fields extends Abstract_Action_Hookable
         ));
 
         woocommerce_wp_text_input(array(
-            'id' => Product_Meta_Data::UNIT_CODE  . $this->loopEnd,
-            'name' => Product_Meta_Data::UNIT_CODE . $this->loopEnd,
+            'id' => $this->format_loop_id(Product_Meta_Data::UNIT_CODE),
+            'name' => $this->format_loop_id(Product_Meta_Data::UNIT_CODE),
             'label' => __('Unit code', 'Peleman-Webshop-Package'),
             'value' => (string)$meta->get_unit_code(),
             'desc_tip' => true,
@@ -138,8 +139,8 @@ class Variable_Product_Custom_Fields extends Abstract_Action_Hookable
         ));
 
         woocommerce_wp_text_input(array(
-            'id' => Product_Meta_Data::CUSTOM_LABEL_KEY  . $this->loopEnd,
-            'name' => Product_Meta_Data::CUSTOM_LABEL_KEY . $this->loopEnd,
+            'id' => $this->format_loop_id(Product_Meta_Data::CUSTOM_LABEL_KEY),
+            'name' => $this->format_loop_id(Product_Meta_Data::CUSTOM_LABEL_KEY),
             'label' => __('Custom add to cart label', 'Peleman-Webshop-Package'),
             'value' => $meta->get_custom_add_to_cart_label(),
             'desc_tip' => true,
@@ -156,8 +157,8 @@ class Variable_Product_Custom_Fields extends Abstract_Action_Hookable
         $required = 'pie_req_' . $this->loop;
 
         woocommerce_wp_select(array(
-            'id' => Product_Meta_Data::EDITOR_ID_KEY . $this->loopEnd,
-            'name' => Product_Meta_Data::EDITOR_ID_KEY . $this->loopEnd,
+            'id' => $this->format_loop_id(Product_Meta_Data::EDITOR_ID_KEY),
+            'name' => $this->format_loop_id(Product_Meta_Data::EDITOR_ID_KEY),
             'label'     => __("Editor", 'Peleman-Webshop-Package'),
             'desc_tip' => true,
             'description' => __('Enable/disable the editor for this product/variation. Ensure the template ID is at least filled in.', 'Peleman-Webshop-Package'),
@@ -179,8 +180,8 @@ class Variable_Product_Custom_Fields extends Abstract_Action_Hookable
         ]);
 
         woocommerce_wp_text_input(array(
-            'id' => Product_PIE_Data::PIE_TEMPLATE_ID_KEY . $this->loopEnd,
-            'name' => Product_PIE_Data::PIE_TEMPLATE_ID_KEY . $this->loopEnd,
+            'id' => $this->format_loop_id(Product_PIE_Data::PIE_TEMPLATE_ID_KEY),
+            'name' => $this->format_loop_id(Product_PIE_Data::PIE_TEMPLATE_ID_KEY),
             'label' => __('Template ID', 'Peleman-Webshop-Package'),
             'value' => $meta->pie_data()->get_template_id(),
             'desc_tip' => true,
@@ -191,8 +192,8 @@ class Variable_Product_Custom_Fields extends Abstract_Action_Hookable
         ));
 
         woocommerce_wp_text_input(array(
-            'id' => Product_PIE_Data::DESIGN_ID_KEY . $this->loopEnd,
-            'name' => Product_PIE_Data::DESIGN_ID_KEY . $this->loopEnd,
+            'id' => $this->format_loop_id(Product_PIE_Data::DESIGN_ID_KEY),
+            'name' => $this->format_loop_id(Product_PIE_Data::DESIGN_ID_KEY),
             'label' => __('Design ID', 'Peleman-Webshop-Package'),
             'value' => $meta->pie_data()->get_design_id(),
             'desc_tip' => true,
@@ -202,8 +203,8 @@ class Variable_Product_Custom_Fields extends Abstract_Action_Hookable
         ));
 
         woocommerce_wp_text_input(array(
-            'id' => Product_PIE_Data::BACKGROUND_ID_KEY . $this->loopEnd,
-            'name' => Product_PIE_Data::BACKGROUND_ID_KEY . $this->loopEnd,
+            'id' => $this->format_loop_id(Product_PIE_Data::BACKGROUND_ID_KEY),
+            'name' => $this->format_loop_id(Product_PIE_Data::BACKGROUND_ID_KEY),
             'label' => __('Background ID', 'Peleman-Webshop-Package'),
             'value' => $meta->pie_data()->get_background_id(),
             'desc_tip' => true,
@@ -213,8 +214,8 @@ class Variable_Product_Custom_Fields extends Abstract_Action_Hookable
         ));
 
         // woocommerce_wp_text_input(array(
-        //     'id' => Product_PIE_Data::FORMAT_ID_KEY . $this->loopEnd,
-        //     'name' => Product_PIE_Data::FORMAT_ID_KEY . $this->loopEnd,
+        //     'id' => Product_PIE_Data::FORMAT_ID_KEY,
+        //     'name' => Product_PIE_Data::FORMAT_ID_KEY,
         //     'label' => __('Format ID', 'Peleman-Webshop-Package'),
         //     'value' => $meta->pie_data()->get_format_id(),
         //     'desc_tip' => true,
@@ -223,8 +224,8 @@ class Variable_Product_Custom_Fields extends Abstract_Action_Hookable
         // ));
 
         woocommerce_wp_text_input(array(
-            'id' => Product_PIE_Data::COLOR_CODE_KEY . $this->loopEnd,
-            'name' => Product_PIE_Data::COLOR_CODE_KEY . $this->loopEnd,
+            'id' => $this->format_loop_id(Product_PIE_Data::COLOR_CODE_KEY),
+            'name' => $this->format_loop_id(Product_PIE_Data::COLOR_CODE_KEY),
             'label' => __('Color code', 'Peleman-Webshop-Package'),
             'value' => $meta->pie_data()->get_color_code(),
             'desc_tip' => true,
@@ -234,8 +235,8 @@ class Variable_Product_Custom_Fields extends Abstract_Action_Hookable
         ));
 
         woocommerce_wp_checkbox(array(
-            'id'    => Product_PIE_Data::USE_IMAGE_UPLOAD_KEY . $this->loopEnd,
-            'name'  => Product_PIE_Data::USE_IMAGE_UPLOAD_KEY . $this->loopEnd,
+            'id'    => $this->format_loop_id(Product_PIE_Data::USE_IMAGE_UPLOAD_KEY),
+            'name'  =>  $this->format_loop_id(Product_PIE_Data::USE_IMAGE_UPLOAD_KEY),
             'label' => __('Use Image Uploads', 'Peleman-Webshop-Package'),
             'value' => $meta->pie_data()->uses_image_upload() ? 'yes' : 'no',
             'desc_tip' => true,
@@ -250,8 +251,8 @@ class Variable_Product_Custom_Fields extends Abstract_Action_Hookable
         ]);
 
         woocommerce_wp_text_input(array(
-            'id' => Product_PIE_Data::NUM_PAGES_KEY . $this->loopEnd,
-            'name' => Product_PIE_Data::NUM_PAGES_KEY . $this->loopEnd,
+            'id' => $this->format_loop_id(Product_PIE_Data::NUM_PAGES_KEY),
+            'name' => $this->format_loop_id(Product_PIE_Data::NUM_PAGES_KEY),
             'label' => __('Pages to Fill', 'Peleman-Webshop-Package'),
             'value' => $meta->pie_data()->get_num_pages(),
             'desc_tip' => true,
@@ -266,8 +267,8 @@ class Variable_Product_Custom_Fields extends Abstract_Action_Hookable
         ));
 
         woocommerce_wp_text_input(array(
-            'id' => Product_PIE_Data::MIN_IMAGES_KEY . $this->loopEnd,
-            'name' => Product_PIE_Data::MIN_IMAGES_KEY . $this->loopEnd,
+            'id' => $this->format_loop_id(Product_PIE_Data::MIN_IMAGES_KEY),
+            'name' => $this->format_loop_id(Product_PIE_Data::MIN_IMAGES_KEY),
             'label' => __('Min Images for upload', 'Peleman-Webshop-Package'),
             'value' => $meta->pie_data()->get_min_images(),
             'desc_tip' => true,
@@ -282,8 +283,8 @@ class Variable_Product_Custom_Fields extends Abstract_Action_Hookable
         ));
 
         woocommerce_wp_text_input(array(
-            'id' => Product_PIE_Data::MAX_IMAGES_KEY . $this->loopEnd,
-            'name' => Product_PIE_Data::MAX_IMAGES_KEY . $this->loopEnd,
+            'id' => $this->format_loop_id(Product_PIE_Data::MAX_IMAGES_KEY),
+            'name' => $this->format_loop_id(Product_PIE_Data::MAX_IMAGES_KEY),
             'label' => __('Max images for upload', 'Peleman-Webshop-Package'),
             'value' => $meta->pie_data()->get_max_images(),
             'desc_tip' => true,
@@ -298,8 +299,8 @@ class Variable_Product_Custom_Fields extends Abstract_Action_Hookable
         ));
 
         woocommerce_wp_checkbox(array(
-            'id'    => Product_PIE_Data::AUTOFILL_KEY . $this->loopEnd,
-            'name'  => Product_PIE_Data::AUTOFILL_KEY . $this->loopEnd,
+            'id'    => $this->format_loop_id(Product_PIE_Data::AUTOFILL_KEY),
+            'name'  => $this->format_loop_id(Product_PIE_Data::AUTOFILL_KEY),
             'label' => __('Autofill template pages in editor', 'Peleman-Webshop-Package'),
             'value' => $meta->pie_data()->get_autofill() ? 'yes' : 'no',
             'desc_tip' => true,
@@ -310,8 +311,8 @@ class Variable_Product_Custom_Fields extends Abstract_Action_Hookable
         HTML_Builder::close_div();
 
         woocommerce_wp_checkbox(array(
-            'id'    => Product_Meta_Data::OVERRIDE_CART_THUMB . $this->loopEnd,
-            'name'  => Product_Meta_Data::OVERRIDE_CART_THUMB . $this->loopEnd,
+            'id'    => $this->format_loop_id(Product_Meta_Data::OVERRIDE_CART_THUMB),
+            'name'  => $this->format_loop_id(Product_Meta_Data::OVERRIDE_CART_THUMB),
             'label' => __('Use project preview thumbnail in cart', 'Peleman-Webshop-Package'),
             'value' => $meta->get_override_thumbnail() ? 'yes' : 'no',
             'desc_tip' => true,
@@ -333,8 +334,8 @@ class Variable_Product_Custom_Fields extends Abstract_Action_Hookable
         $index = 0;
         foreach ($instructions as $key => $instruction) {
             woocommerce_wp_checkbox(array(
-                'id' => $key . $this->loopEnd,
-                'name' => $key . $this->loopEnd,
+                'id' => $this->format_loop_id($key),
+                'name' => $this->format_loop_id($key),
                 'label' => $instruction->get_label(),
                 'value' => $instruction->is_enabled() ? 'yes' : 'no',
                 'desc_tip' => true,
@@ -352,8 +353,8 @@ class Variable_Product_Custom_Fields extends Abstract_Action_Hookable
         $required = 'pdf_req_' . $this->loop;
 
         woocommerce_wp_checkbox(array(
-            'id'    => Product_Meta_Data::USE_PDF_CONTENT_KEY . $this->loopEnd,
-            'name'  => Product_Meta_Data::USE_PDF_CONTENT_KEY . $this->loopEnd,
+            'id'    => $this->format_loop_id(Product_Meta_Data::USE_PDF_CONTENT_KEY),
+            'name'  =>  $this->format_loop_id(Product_Meta_Data::USE_PDF_CONTENT_KEY),
             'label' => __('Require PDF upload', 'Peleman-Webshop-Package'),
             'value' => $meta->uses_pdf_content() ? 'yes' : 'no',
             'desc_tip' => true,
@@ -368,8 +369,8 @@ class Variable_Product_Custom_Fields extends Abstract_Action_Hookable
         ));
 
         woocommerce_wp_text_input(array(
-            'id' => Product_Meta_Data::PDF_PRICE_PER_PAGE_KEY . $this->loopEnd,
-            'name' => Product_Meta_Data::PDF_PRICE_PER_PAGE_KEY . $this->loopEnd,
+            'id' => $this->format_loop_id(Product_Meta_Data::PDF_PRICE_PER_PAGE_KEY),
+            'name' => $this->format_loop_id(Product_Meta_Data::PDF_PRICE_PER_PAGE_KEY),
             'label' => __('PDF price per page', 'Peleman-Webshop-Package'),
             'value' => $meta->get_price_per_page(),
             'desc_tip' => true,
@@ -384,12 +385,12 @@ class Variable_Product_Custom_Fields extends Abstract_Action_Hookable
             'placeholder' => wc_format_localized_decimal(0.000),
         ));
 
-        
+
 
 
         woocommerce_wp_text_input(array(
-            'id'            => Product_Meta_Data::PDF_MIN_PAGES_KEY . $this->loopEnd,
-            'name'          => Product_Meta_Data::PDF_MIN_PAGES_KEY . $this->loopEnd,
+            'id'            => $this->format_loop_id(Product_Meta_Data::PDF_MIN_PAGES_KEY),
+            'name'          => $this->format_loop_id(Product_Meta_Data::PDF_MIN_PAGES_KEY),
             'label'         => __('PDF Min Pages', 'Peleman-Webshop-Package'),
             'value'         => $meta->get_pdf_min_pages() ?: 1,
             'desc_tip'      => true,
@@ -406,8 +407,8 @@ class Variable_Product_Custom_Fields extends Abstract_Action_Hookable
         ));
 
         woocommerce_wp_text_input(array(
-            'id' => Product_Meta_Data::PDF_MAX_PAGES_KEY . $this->loopEnd,
-            'name' => Product_Meta_Data::PDF_MAX_PAGES_KEY . $this->loopEnd,
+            'id' => $this->format_loop_id(Product_Meta_Data::PDF_MAX_PAGES_KEY),
+            'name' => $this->format_loop_id(Product_Meta_Data::PDF_MAX_PAGES_KEY),
             'label' => __('PDF Max Pages', 'Peleman-Webshop-Package'),
             'value' => $meta->get_pdf_max_pages() ?: 1,
             'desc_tip' => true,
@@ -424,8 +425,8 @@ class Variable_Product_Custom_Fields extends Abstract_Action_Hookable
         ));
 
         woocommerce_wp_text_input(array(
-            'id' => Product_Meta_Data::PDF_WIDTH_KEY . $this->loopEnd,
-            'name' => Product_Meta_Data::PDF_WIDTH_KEY . $this->loopEnd,
+            'id' => $this->format_loop_id(Product_Meta_Data::PDF_WIDTH_KEY),
+            'name' => $this->format_loop_id(Product_Meta_Data::PDF_WIDTH_KEY),
             'label' => __('PDF Format Width (mm)', 'Peleman-Webshop-Package'),
             'value' => $meta->get_pdf_width() ?: 1,
             'desc_tip' => true,
@@ -441,8 +442,8 @@ class Variable_Product_Custom_Fields extends Abstract_Action_Hookable
         ));
 
         woocommerce_wp_text_input(array(
-            'id' => Product_Meta_Data::PDF_HEIGHT_KEY . $this->loopEnd,
-            'name' => Product_Meta_Data::PDF_HEIGHT_KEY . $this->loopEnd,
+            'id' => $this->format_loop_id(Product_Meta_Data::PDF_HEIGHT_KEY),
+            'name' => $this->format_loop_id(Product_Meta_Data::PDF_HEIGHT_KEY),
             'label' => __('PDF Format Height (mm)', 'Peleman-Webshop-Package'),
             'value' => $meta->get_pdf_height() ?: 1,
             'desc_tip' => true,
@@ -458,5 +459,10 @@ class Variable_Product_Custom_Fields extends Abstract_Action_Hookable
         ));
 
         HTML_Builder::close_div();
+    }
+
+    private function format_loop_id(string $id): string
+    {
+        return $this->var_prefix . $id . $this->loopSuffix;
     }
 }
