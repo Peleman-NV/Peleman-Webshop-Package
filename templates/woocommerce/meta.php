@@ -68,7 +68,6 @@ if ($isBundleProduct) {
 
         <?php if (get_option("pwp_enable_f2d")) : ?>
             <?php $articleCode = $meta->get_f2d_article_code(); ?>
-            <br>
             <span class="sku_wrapper article-code-container <?php echo empty($articleCode) ? 'pwp-hidden' : ''; ?>">
                 <span class="label article-code-label">
                     <?php esc_html_e('Article code:', 'Peleman-Webshop-Package'); ?>
@@ -82,7 +81,6 @@ if ($isBundleProduct) {
         <!-- Display SKU if user is admin -->
         <?php if (current_user_can('manage_options')) : ?>
             <?php if (wc_product_sku_enabled() && ($product->get_sku() || $product->is_type('variable'))) : ?>
-                <br>
                 <span class="sku_wrapper">
                     <span class="label">
                         <?php esc_html_e('SKU:', 'woocommerce'); ?>
@@ -91,7 +89,6 @@ if ($isBundleProduct) {
                         <?php echo esc_html($product->get_sku() ?: __('N/A', 'woocommerce')); ?>
                     </span>
                 </span>
-                <br>
             <?php endif; ?>
         <?php endif; ?>
         </span>
