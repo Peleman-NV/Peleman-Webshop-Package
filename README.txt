@@ -4,7 +4,7 @@ Tags: Peleman,
 Requires at least: 5.9.0
 Tested up to: 6.1.1
 Requires PHP: 7.4
-Stable tag: 1.4.0
+Stable tag: 1.5.0
 License: GPL-2.0+
 License URI: http://www.gnu.org/licenses/gpl-2.0.txt
 
@@ -15,6 +15,11 @@ This plugin allows a WordPress/WooCommerce webshop to show and sell Peleman prod
 Some of our products require user content to either be uploaded and/or created in an online editor, which is made possible through this plugin.
 
 == Changelog ==
+= 1.5.0 =
+* removal of various F2D specific functions
+* Fix - issue with F2D settings button in menu resolved.
+* Add - Displaying F2D article code on products in webshop. Underlying architecture also improved.
+
 = 1.4.0 =
 * improved product definition panels
 * many minor bugs fixed
@@ -31,4 +36,5 @@ Some of our products require user content to either be uploaded and/or created i
 * Fix - Readme.txt formatting and contents
 * Update - replacing Curl with WP HTTP API.
 
-1.0.00: first public release of the plugin
+=1.0.00=
+* first public release of the plugin
