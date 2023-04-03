@@ -196,9 +196,10 @@ class Product_Meta_Data extends Product_Meta
         return $this->pricePerPage ?: 0.0;
     }
 
-    public function set_override_thumbnail(bool $override = true): void
+    public function set_override_thumbnail(bool $override = true): self
     {
         $this->overrideThumb = $override;
+        return $this;
     }
 
     public function get_override_thumbnail(): bool
@@ -211,9 +212,10 @@ class Product_Meta_Data extends Product_Meta
         return $this->articleCode;
     }
 
-    public function set_f2d_article_code(): string
+    public function set_f2d_article_code(string $code): self
     {
-        return $this->articleCode;
+        $this->articleCode = $code;
+        return $this;
     }
 
     public function pie_data(): Product_PIE_Data

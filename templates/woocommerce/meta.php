@@ -60,7 +60,7 @@ if ($isBundleProduct) {
                 </span>
                 <span class="woocommerce-price-suffix">
                     <?php echo $priceSuffix; ?>
-                    <span class="bundle-suffix <?php echo !$isBundleProduct ? 'pwp-hidden' : ''; ?>"> <?php echo $bundleLabel; ?>
+                    <span class="bundle-suffix <?php echo $isBundleProduct ? 'pwp-hidden' : ''; ?>"> <?php echo $bundleLabel; ?>
                     </span>
                 </span>
             </span>
@@ -69,7 +69,7 @@ if ($isBundleProduct) {
         <?php if (get_option("pwp_enable_f2d")) : ?>
             <?php $articleCode = $meta->get_f2d_article_code(); ?>
             <br>
-            <span class="sku_wrapper article-code-container <?php echo empty($articleCode) ? '' : 'pwp-hidden'; ?>">
+            <span class="sku_wrapper article-code-container <?php echo empty($articleCode) ? 'pwp-hidden' : ''; ?>">
                 <span class="label article-code-label">
                     <?php esc_html_e('Article code:', 'Peleman-Webshop-Package'); ?>
                 </span>

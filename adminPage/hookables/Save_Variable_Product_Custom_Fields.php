@@ -49,7 +49,9 @@ class Save_Variable_Product_Custom_Fields extends Abstract_Action_Hookable
                 esc_attr(sanitize_text_field($post[Product_Meta_Data::EDITOR_ID_KEY][$loop]))
             )->set_custom_add_to_cart_label(
                 esc_attr(sanitize_text_field($post[Product_Meta_Data::CUSTOM_LABEL_KEY][$loop]))
-            )->set_override_thumbnail(isset($post[Product_Meta_Data::OVERRIDE_CART_THUMB][$loop]));
+            )->set_override_thumbnail(isset($post[Product_Meta_Data::OVERRIDE_CART_THUMB][$loop]))
+            ->set_f2d_article_code($post[Product_Meta_Data::F2D_ARTICLE_CODE][$loop]);
+
 
         $pie_data->set_template_id(
             esc_attr(sanitize_text_field(

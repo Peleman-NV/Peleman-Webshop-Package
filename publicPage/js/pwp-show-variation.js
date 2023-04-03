@@ -164,6 +164,7 @@
 
         // article code
         hideElement($('span.article-code-container'));
+        console.log("foo!");
     }
 
     function displayArticleCode(articleCode) {
