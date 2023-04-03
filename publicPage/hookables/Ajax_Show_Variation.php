@@ -47,6 +47,7 @@ class Ajax_Show_Variation extends Abstract_Ajax_Hookable
             'unit_amount'               => " (" . $meta->get_unit_amount() . ' ' . __('pieces', 'Peleman-Webshop-Package') . ")",
             'unit_price'                => wc_price($meta->get_unit_price()),
             'item_price'                => wc_price($variant->get_price()),
+            'f2dArtCode'                => $meta->get_f2d_article_code(),
             'pdf_data'                  => array(
                 'width'                 => $meta->get_pdf_width() ? $meta->get_pdf_width() . ' mm' : '',
                 'height'                => $meta->get_pdf_height() ? $meta->get_pdf_height() . ' mm' : '',

@@ -64,64 +64,55 @@ if ($isBundleProduct) {
                     </span>
                 </span>
             </span>
-        </span>
-    <?php endif; ?>
+        <?php endif; ?>
 
-    <?php
-    $articleCode = $product->get_meta('f2d_artcd');
-    ?>
-    <!-- Simple product: display article code instead of SKU -->
-    <?php if (!empty($articleCode)) : ?>
-        <span class="sku_wrapper">
-            <span class="label">
-                <?php esc_html_e('Article code:', 'Peleman-Webshop-Package'); ?>
-            </span>
-            <span class="sku">
-                <?php echo esc_html($articleCode); ?>
-            </span>
-        </span>
-    <?php else : ?>
-
-        <!-- Variable product: display article code placeholder to be filled with the magic of JavaScript! -->
-        <span class="sku_wrapper article-code-container pwp-hidden">
-            <span class="label article-code-label">
-                <?php esc_html_e('Article code:', 'Peleman-Webshop-Package'); ?>
-            </span>
-        </span>
-    <?php endif; ?>
-
-
-    <!-- Display SKU if user is admin -->
-    <?php if (current_user_can('manage_options')) : ?>
-        <?php if (wc_product_sku_enabled() && ($product->get_sku() || $product->is_type('variable'))) : ?>
-            <span class="sku_wrapper">
-                <span class="label">
-                    <?php esc_html_e('SKU:', 'woocommerce'); ?>
+        <?php if (get_option("pwp_enable_f2d")) : ?>
+            <?php $articleCode = $meta->get_f2d_article_code(); ?>
+            <br>
+            <span class="sku_wrapper article-code-container <?php echo empty($articleCode) ? '' : 'pwp-hidden'; ?>">
+                <span class="label article-code-label">
+                    <?php esc_html_e('Article code:', 'Peleman-Webshop-Package'); ?>
                 </span>
-                <span class="sku">
-                    <?php echo esc_html($product->get_sku() ?: __('N/A', 'woocommerce')); ?>
+                <span class="article-code">
+                    <?php echo empty($articleCode) ? '' : esc_html($articleCode); ?>
                 </span>
             </span>
         <?php endif; ?>
-    <?php endif; ?>
 
-    <?php
-    echo wc_get_product_category_list(
-        $product->get_id(),
-        ', ',
-        '<span class="posted_in"><span class="label">' . _n('Category:', 'Categories:', count($product->get_category_ids()), 'woocommerce') . '</span> ',
-        '</span>'
-    );
-    ?>
+        <!-- Display SKU if user is admin -->
+        <?php if (current_user_can('manage_options')) : ?>
+            <?php if (wc_product_sku_enabled() && ($product->get_sku() || $product->is_type('variable'))) : ?>
+                <br>
+                <span class="sku_wrapper">
+                    <span class="label">
+                        <?php esc_html_e('SKU:', 'woocommerce'); ?>
+                    </span>
+                    <span class="sku">
+                        <?php echo esc_html($product->get_sku() ?: __('N/A', 'woocommerce')); ?>
+                    </span>
+                </span>
+                <br>
+            <?php endif; ?>
+        <?php endif; ?>
+        </span>
 
-    <?php
-    echo wc_get_product_tag_list(
-        $product->get_id(),
-        ', ',
-        '<span class="tagged_as"><span class="label">' . _n('Tag:', 'Tags:', count($product->get_tag_ids()), 'woocommerce') . '</span> ',
-        '</span>'
-    ); ?>
+        <?php
+        echo wc_get_product_category_list(
+            $product->get_id(),
+            ', ',
+            '<span class="posted_in"><span class="label">' . _n('Category:', 'Categories:', count($product->get_category_ids()), 'woocommerce') . '</span> ',
+            '</span>'
+        );
+        ?>
 
-    <?php do_action('woocommerce_product_meta_end'); ?>
+        <?php
+        echo wc_get_product_tag_list(
+            $product->get_id(),
+            ', ',
+            '<span class="tagged_as"><span class="label">' . _n('Tag:', 'Tags:', count($product->get_tag_ids()), 'woocommerce') . '</span> ',
+            '</span>'
+        ); ?>
+
+        <?php do_action('woocommerce_product_meta_end'); ?>
 
 </div>
