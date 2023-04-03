@@ -8,6 +8,7 @@ class Product_Meta_Data extends Product_Meta
 {
     public const EDITOR_ID_KEY          = 'pwp_editor_id';
     public const CUSTOM_LABEL_KEY       = 'custom_variation_add_to_cart_label';
+    public const F2D_ARTICLE_CODE       = 'f2d_artcd';
 
     public const UNIT_AMOUNT            = 'cart_units';
     public const UNIT_PRICE             = 'cart_price';
@@ -29,6 +30,7 @@ class Product_Meta_Data extends Product_Meta
     private int $cartUnits;
     private float $cartPrice;
     private string $unitCode;
+    private string $articleCode;
 
     private bool $usePDFContent;
     private int $pdfHeight;
@@ -53,6 +55,7 @@ class Product_Meta_Data extends Product_Meta
         $this->cartUnits            = (int)$this->parent->get_meta(self::UNIT_AMOUNT) ?: 1;
         $this->cartPrice            = (float)$this->parent->get_meta(self::UNIT_PRICE) ?: 0.00;
         $this->unitCode             = $this->parent->get_meta(self::UNIT_CODE) ?: '';
+        $this->articleCode          = $this->parent->get_meta(self::F2D_ARTICLE_CODE ?: '');
 
         $this->pdfHeight            = (int)$this->parent->get_meta(self::PDF_HEIGHT_KEY) ?: 297;
         $this->pdfWidth             = (int)$this->parent->get_meta(self::PDF_WIDTH_KEY) ?: 210;
@@ -193,14 +196,26 @@ class Product_Meta_Data extends Product_Meta
         return $this->pricePerPage ?: 0.0;
     }
 
-    public function set_override_thumbnail(bool $override = true): void
+    public function set_override_thumbnail(bool $override = true): self
     {
         $this->overrideThumb = $override;
+        return $this;
     }
 
     public function get_override_thumbnail(): bool
     {
         return $this->overrideThumb;
+    }
+
+    public function get_f2d_article_code(): string
+    {
+        return $this->articleCode;
+    }
+
+    public function set_f2d_article_code(string $code): self
+    {
+        $this->articleCode = $code;
+        return $this;
     }
 
     public function pie_data(): Product_PIE_Data
@@ -220,6 +235,7 @@ class Product_Meta_Data extends Product_Meta
         $this->parent->update_meta_data(self::UNIT_AMOUNT, $this->cartUnits);
         $this->parent->update_meta_data(self::UNIT_PRICE, $this->cartPrice);
         $this->parent->update_meta_data(self::UNIT_CODE, $this->unitCode);
+        $this->parent->update_meta_data(self::F2D_ARTICLE_CODE, $this->articleCode);
 
         //TODO: make PDF editor data its own object
         //but this will do for now

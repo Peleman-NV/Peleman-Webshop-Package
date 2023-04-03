@@ -47,6 +47,8 @@ abstract class Abstract_Ajax_Hookable implements I_Hookable_Component
      */
     private int $priority;
 
+    private bool $isAdminScript;
+
     private array $dependencies;
 
     private const CALLBACK = 'callback';
@@ -71,12 +73,18 @@ abstract class Abstract_Ajax_Hookable implements I_Hookable_Component
         $this->dependencies = array_merge(['jquery'], $deps);
 
         $this->priority = $priority;
+        $this->isAdminScript = false;
+    }
+
+    public function set_admin(bool $isAdminScript): void
+    {
+        $this->isAdminScript = $isAdminScript;
     }
 
     final public function register(): void
     {
-        \add_action(
-            'wp_enqueue_scripts',
+        add_action(
+            $this->isAdminScript ? 'admin_enqueue_scripts' : 'wp_enqueue_scripts',
             array(
                 $this,
                 'enqueue_ajax'

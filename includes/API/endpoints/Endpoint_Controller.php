@@ -14,17 +14,15 @@ abstract class Endpoint_Controller implements I_Endpoint, I_Hookable_Component
     private string $namespace;
     protected string $path;
     protected string $title;
-    protected I_Api_Authenticator $authenticator;
     private int $priority;
 
     protected string $object;
 
-    public function __construct(string $namespace, string $path, string $title, I_Api_Authenticator $authenticator, int $priority = 10)
+    public function __construct(string $namespace, string $path, string $title, int $priority = 10)
     {
         $this->namespace = $namespace;
         $this->path = $path;
         $this->title = $title;
-        $this->authenticator = $authenticator;
         $this->priority = $priority;
     }
 
@@ -36,11 +34,6 @@ abstract class Endpoint_Controller implements I_Endpoint, I_Hookable_Component
     final public function get_path(): string
     {
         return $this->path;
-    }
-
-    public function get_authenticator(): I_Api_Authenticator
-    {
-        return $this->authenticator;
     }
 
     final public function register(): void

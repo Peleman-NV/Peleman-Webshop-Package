@@ -19,17 +19,24 @@ class Admin_Enqueue_Scripts extends Abstract_Action_Hookable
     public function enqueue_scripts()
     {
         $randomVersionNumber = wp_rand(0, 1000);
-        wp_enqueue_script(
-            'pwp_reset_theme_colors',
-            plugins_url('../js/pwp_reset_theme_colors.js', __FILE__),
-            array(),
-            $randomVersionNumber
-        );
+        // wp_enqueue_script(
+        //     'pwp_reset_theme_colors',
+        //     plugins_url('../js/pwp_reset_theme_colors.js', __FILE__),
+        //     array(),
+        //     $randomVersionNumber
+        // );
         wp_enqueue_script(
             'pwp_product_menu',
             plugins_url('../js/pwp_product_menu.js', __FILE__),
             array(),
             $randomVersionNumber
         );
+        // wp_enqueue_script(
+        //     'pie-test-js',
+        //     plugins_url('../js/pwp-test-editor-api-connection.js', __FILE__),
+        //     array('jquery'),
+        //     $randomVersionNumber,
+        //     true
+        // );
     }
 }

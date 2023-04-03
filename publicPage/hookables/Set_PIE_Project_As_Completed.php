@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PWP\publicPage\hookables;
 
-use PWP\includes\editor\Complete_PIE_Project_Request;
+use PWP\includes\editor\PIE_Add_To_Render_Queue_Request;
 use PWP\includes\exceptions\Invalid_Response_Exception;
 use PWP\includes\hookables\abstracts\Abstract_Action_Hookable;
 
@@ -42,14 +42,14 @@ class Set_PIE_Project_As_Completed extends Abstract_Action_Hookable
                 continue;
             }
 
-            $this->editor_set_order_as_complete($orderId, $customerId, $apiKey, $projectId);
+            // $this->editor_set_order_as_complete($orderId, $customerId, $apiKey, $projectId);
         }
     }
 
     private function editor_set_order_as_complete(int $orderId, string $customerId, string $apiKey, string $projectId): bool
     {
         try {
-            $request = new Complete_PIE_Project_Request(get_option('pie_domain'), $apiKey, $customerId);
+            $request = new PIE_Add_To_Render_Queue_Request(get_option('pie_domain'), $apiKey, $customerId);
             $request
                 ->set_order_id((string)$orderId)
                 ->set_output_type('print');

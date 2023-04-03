@@ -95,7 +95,7 @@
                     var buttonText = response.data.button_text ?? fallbackAddToCartLabel;
 
                     if (response.data.f2dArtCode) {
-                        displayArticleCode(response.f2dArtCode);
+                        displayArticleCode(response.data.f2dArtCode);
                     }
                     if (!response.data.in_stock) {
                         disableAddToCartButton(buttonText);
@@ -164,14 +164,16 @@
 
         // article code
         hideElement($('span.article-code-container'));
+        console.log("foo!");
     }
 
     function displayArticleCode(articleCode) {
-        $('.article-code').remove();
-        $('span.label.article-code-label').after(
-            '<span class="article-code">' + articleCode + '</span>'
-        );
-        showElement($('span.article-code-container'));
+        // $('.article-code').remove();
+        if (articleCode) {
+            console.log(articleCode);
+            $('.article-code').html(articleCode);
+            showElement($('span.article-code-container'));
+        }
     }
 
     /**

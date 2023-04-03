@@ -75,12 +75,12 @@ abstract class Abstract_PIE_Request extends Abstract_Request
     /**
      * Make request to endpoint
      *
-     * @return object decoded response body object
+     * @return object wp_remote_request response array. See documentation for details.
      * @throws Invalid_Response_Exception on a `wp_error`/`null`/`false` response
      */
     public function make_request(): object
     {
-        $response = wp_remote_get($this->endpoint, array(
+        $response = wp_remote_request($this->endpoint, array(
             'method' => $this->method,
             'timeout' => $this->timeout,
             'redirection' => $this->redirects,
@@ -91,8 +91,8 @@ abstract class Abstract_PIE_Request extends Abstract_Request
         if (is_wp_error($response) || !$response) {
             throw new Invalid_Response_Exception(__("Could not connect to API.", 'Peleman-Webshop-Package'));
         }
-
-        return (object)$response['body'];
+        //TODO: improve response handling
+        return json_decode(json_encode($response));
     }
 
     protected abstract function generate_request_body(): array;

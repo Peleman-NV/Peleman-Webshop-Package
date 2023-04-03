@@ -85,10 +85,10 @@ class Variable_Product_Custom_Fields extends Abstract_Action_Hookable
             ));
 
             woocommerce_wp_text_input(array(
-                'id' => "f2d_artcd" . $this->loopEnd,
-                'name' => "f2d_artcd" . $this->loopEnd,
+                'id' => Product_meta_data::F2D_ARTICLE_CODE . $this->loopEnd,
+                'name' => Product_meta_data::F2D_ARTICLE_CODE . $this->loopEnd,
                 'label' => __('Fly2Data article code', 'Peleman-Webshop-Package'),
-                'value' => $meta->get_parent()->get_meta('f2d_artcd'),
+                'value' => $meta->get_f2d_article_code(),
                 'desc_tip' => true,
                 'description' =>  __('Fly2Data article code for this variation/product', 'Peleman-Webshop-Package'),
                 'wrapper_class' => 'form-row form-row-last pwp-form-row-padding-5',

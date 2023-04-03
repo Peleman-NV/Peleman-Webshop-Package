@@ -13,13 +13,12 @@ defined('ABSPATH') || die;
 
 class Test_Endpoint extends Endpoint_Controller
 {
-    public function __construct(string $namespace, I_Api_Authenticator $authenticator)
+    public function __construct(string $namespace)
     {
         parent::__construct(
             $namespace,
             '/test',
             'test',
-            $this->authenticator = $authenticator
         );
     }
 

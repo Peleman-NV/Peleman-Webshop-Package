@@ -6,7 +6,10 @@ namespace PWP\includes\editor;
 
 use PWP\includes\exceptions\Invalid_Response_Exception;
 
-class Complete_PIE_Project_Request extends Abstract_PIE_Request
+/**
+ * PIE request to add project to rendering queue.
+ */
+class PIE_Add_To_Render_Queue_Request extends Abstract_PIE_Request
 {
     private string $projectId;
     private string $orderId;
@@ -42,7 +45,7 @@ class Complete_PIE_Project_Request extends Abstract_PIE_Request
     {
         $request = array(
             'customerid'        => $this->get_customer_id(),
-            'customerapikey'    => $this->get_customer_id(),
+            'customerapikey'    => $this->get_api_key(),
             'projectid'         => $this->projectId,
             "orderid"           => $this->orderId,
             'outputtype'        => $this->outputType,

@@ -8,7 +8,6 @@ use PWP\includes\editor\Product_PIE_Data;
 use PWP\includes\editor\Product_Meta_Data;
 use PWP\includes\hookables\abstracts\Abstract_Action_Hookable;
 use PWP\includes\utilities\HTML_Builder;
-use WC_Product_Simple;
 
 /**
  * Ads PWP/PIE specific fields to a WC simple/parent product
@@ -84,10 +83,10 @@ class Parent_Product_Custom_Fields extends Abstract_Action_Hookable
             ));
 
             woocommerce_wp_text_input(array(
-                'id' => "f2d_artcd",
-                'name' => "f2d_artcd",
+                'id' => Product_Meta_Data::F2D_ARTICLE_CODE,
+                'name' => Product_Meta_Data::F2D_ARTICLE_CODE,
                 'label' => __('Fly2Data article code', 'Peleman-Webshop-Package'),
-                'value' => $meta->get_parent()->get_meta('f2d_artcd'),
+                'value' => $meta->get_f2d_article_code(),
                 'desc_tip' => true,
                 'description' =>  __('Fly2Data article code for this variation/product', 'Peleman-Webshop-Package'),
                 'wrapper_class' => 'form-row form-row-last pwp-form-row-padding-5',

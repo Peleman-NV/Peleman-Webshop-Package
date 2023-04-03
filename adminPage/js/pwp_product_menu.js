@@ -27,8 +27,6 @@
 
     function connectFoldouts() {
 
-        console.log('ding');
-
         var selections = $("select[foldout]");
         selections.each(function () {
             var id = '#' + $(this).attr('foldout');
@@ -51,7 +49,6 @@
     };
 
     function connectRequirements() {
-        console.log("dong");
 
         var selections = $("select[requires]");
         selections.each(function () {

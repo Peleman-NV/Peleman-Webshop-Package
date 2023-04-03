@@ -30,13 +30,14 @@ abstract class Admin_Menu implements IWPMenu
     {
         $option = $args['option'];
         $description = $args['description'] ?: '';
+        $value = get_option($option);
 
         $classArray = isset($args['classes']) ? $args['classes'] : [];
         $classArray[] = 'regular-text';
         $classes = implode(" ", $classArray);
 
         ?>
-        <input type='checkbox' id=" <?php echo esc_attr($option); ?>" name="<?php echo esc_attr($option); ?>" value="1" class="<?php esc_attr($classes); ?>" <?php checked(1, get_option($option), false); ?> />
+        <input type='checkbox' id=" <?php echo esc_attr($option); ?>" name="<?php echo esc_attr($option); ?>" value="1" class="<?php esc_attr($classes); ?>" <?php checked(1, (int)$value, true); ?> />
 <?php
         if ($description) {
             echo wp_kses_post("<p class='description'>{$description}</p>");

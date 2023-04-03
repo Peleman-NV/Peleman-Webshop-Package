@@ -2,26 +2,30 @@
 
 declare(strict_types=1);
 
-namespace PWP\includes\API\endpoints;
+namespace PWP\restApi\v1;
 
-use PWP\includes\authentication\I_Api_Authenticator;
+use PWP\includes\API\endpoints\Abstract_FIND_Endpoint;
 use PWP\includes\services\entities\Project;
 use WP_REST_Request;
 use WP_REST_Response;
 
 defined('ABSPATH') || die;
 
-class FIND_PDF_Endpoint extends Abstract_FIND_Endpoint
+class GET_PDF_Endpoint extends Abstract_FIND_Endpoint
 {
-    public function __construct(string $namespace, I_Api_Authenticator $authenticator, int $priority = 10)
+    public function __construct(string $namespace, int $priority = 10)
     {
         parent::__construct(
             $namespace,
             '/pdf/(?P<id>\w+)',
             'pdf',
-            $this->authenticator = $authenticator,
             $priority
         );
+    }
+
+    public function authenticate(WP_REST_Request $request): bool
+    {
+        return true;
     }
 
     public function do_action(WP_REST_Request $request): WP_REST_Response
@@ -58,7 +62,8 @@ class FIND_PDF_Endpoint extends Abstract_FIND_Endpoint
             error_log("oops!");
             return new WP_REST_Response(array(
                 'error',
-                'file not found'));
+                'file not found'
+            ));
         }
 
         ob_start();

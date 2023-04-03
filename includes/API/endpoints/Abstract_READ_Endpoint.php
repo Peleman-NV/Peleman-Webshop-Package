@@ -12,12 +12,7 @@ use PWP\includes\API\endpoints\Endpoint_Controller;
  */
 abstract class Abstract_READ_Endpoint extends Endpoint_Controller
 {
-    public function authenticate(\WP_REST_Request $request): bool
-    {
-        return $this->get_authenticator()->auth_get_items($request);
-    }
-
-    final public function get_methods(): string
+        final public function get_methods(): string
     {
         return \WP_REST_Server::READABLE;
     }
