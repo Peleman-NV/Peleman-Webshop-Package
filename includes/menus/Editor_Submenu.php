@@ -37,6 +37,14 @@ class Editor_Submenu extends Admin_Menu
             'show_in_rest' => false,
             'default' => ''
         ));
+
+        register_setting('pwp-editor-options-group', 'pwp_cleanup_projects', array(
+            'type' => 'bool',
+            'description' => 'Wether the system should automatically clean up PDF files.',
+            'sanitize_callback' => 'esc_url_raw',
+            'show_in_rest' => true,
+            'default' => false,
+        ));
     }
 
     private function add_menu_components(): void
@@ -90,6 +98,15 @@ class Editor_Submenu extends Admin_Menu
                 'type' => 'button',
                 'title' => __('test credentials', 'PelemanWebshopPackage')
             )
+        );
+
+        add_settings_field(
+            'pwp_cleanup_projects',
+            __("Automatically delete old PDF files", 'Peleman-Webshop-Package'),
+            array($this, 'bool_property_callback'),
+            Admin_Control_Panel::PAGE_SLUG,
+            'pwp_settings_editors',
+            array('option' => 'pwp_cleanup_projects')
         );
     }
 

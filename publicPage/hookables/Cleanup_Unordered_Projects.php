@@ -27,6 +27,10 @@ class Cleanup_Unordered_Projects extends Abstract_Action_Hookable
 
     public function clean(): void
     {
+        if (!boolval(get_option('pwp_cleanup_projects'))) {
+            return;
+        }
+        
         error_log("project cleanup job running...");
         $days = (int)(get_option('pwp_project_cleanup_cutoff_days') ?: 30);
         $cutoffDate = current_time("timestamp") - ($days * 86400);
