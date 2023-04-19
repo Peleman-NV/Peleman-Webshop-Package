@@ -8,11 +8,13 @@ abstract class Admin_Menu implements IWPMenu
 {
     protected string $option_group;
     protected string $title;
+    protected string $page_slug;
 
-    public function __construct(string $title, string $option_group)
+    public function __construct(string $title, string $option_group, string $page_slug)
     {
         $this->title = $title;
         $this->option_group = $option_group;
+        $this->page_slug = $page_slug;
     }
 
     public function get_title(): string

@@ -8,9 +8,9 @@ use PWP\adminPage\hookables\Admin_Control_Panel;
 
 class Editor_Submenu extends Admin_Menu
 {
-    public function __construct()
+    public function __construct(string $page_slug)
     {
-        parent::__construct('Editor', 'pwp_settings_editors');
+        parent::__construct('Editor', 'pwp_settings_editors', $page_slug);
     }
 
     public function register_settings(): void
@@ -55,13 +55,13 @@ class Editor_Submenu extends Admin_Menu
             $this->option_group,
             __("Editor", 'Peleman-Webshop-Package'),
             null,
-            Admin_Control_Panel::PAGE_SLUG,
+            $this->page_slug,
         );
         add_settings_field(
             'pie_domain',
             __("PIE domain (URL)", 'Peleman-Webshop-Package'),
             array($this, 'text_property_callback'),
-            Admin_Control_Panel::PAGE_SLUG,
+            $this->page_slug,
             "pwp_settings_editors",
             array(
                 'option' => 'pie_domain',
@@ -73,7 +73,7 @@ class Editor_Submenu extends Admin_Menu
             'pie_customer_id',
             __("PIE Customer ID", 'Peleman-Webshop-Package'),
             array($this, 'text_property_callback'),
-            Admin_Control_Panel::PAGE_SLUG,
+            $this->page_slug,
             "pwp_settings_editors",
             array(
                 'option' => 'pie_customer_id',
@@ -83,7 +83,7 @@ class Editor_Submenu extends Admin_Menu
             'pie_api_key',
             __("PIE API key", 'Peleman-Webshop-Package'),
             array($this, 'text_property_callback'),
-            Admin_Control_Panel::PAGE_SLUG,
+            $this->page_slug,
             "pwp_settings_editors",
             array(
                 'option' => 'pie_api_key',
@@ -93,7 +93,7 @@ class Editor_Submenu extends Admin_Menu
             'pie_api_test',
             __("PIE API test", 'Peleman-Webshop-Package'),
             array($this, 'add_api_test_button'),
-            Admin_Control_Panel::PAGE_SLUG,
+            $this->page_slug,
             "pwp_settings_editors",
             array(
                 'id' => 'pie_api_test',
@@ -106,7 +106,7 @@ class Editor_Submenu extends Admin_Menu
             'pwp_cleanup_projects',
             __("Automatically delete old PDF files", 'Peleman-Webshop-Package'),
             array($this, 'bool_property_callback'),
-            Admin_Control_Panel::PAGE_SLUG,
+            $this->page_slug,
             $this->option_group,
             array('option' => 'pwp_cleanup_projects')
         );

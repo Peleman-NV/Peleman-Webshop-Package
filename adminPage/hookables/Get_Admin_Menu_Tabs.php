@@ -22,9 +22,9 @@ class Get_Admin_Menu_Tabs extends Abstract_Filter_Hookable
     {
         if (empty($this->submenus)) {
             $this->submenus = [
-                'buttons'   => new Button_Submenu(),
-                'editor'    => new Editor_Submenu(),
-                'f2d_menu'  => new F2D_Menu(),
+                'buttons'   => new Button_Submenu(Admin_Control_Panel::PAGE_SLUG),
+                'editor'    => new Editor_Submenu(Admin_Control_Panel::PAGE_SLUG),
+                'f2d_menu'  => new F2D_Menu(Admin_Control_Panel::PAGE_SLUG),
             ];
         }
 

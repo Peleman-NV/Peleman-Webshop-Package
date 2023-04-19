@@ -8,9 +8,9 @@ use PWP\adminPage\hookables\Admin_Control_Panel;
 
 class Button_Submenu extends Admin_Menu
 {
-    public function __construct()
+    public function __construct(string $page_slug)
     {
-        parent::__construct('Buttons', 'pwp-button-options-group');
+        parent::__construct('Buttons', 'pwp-button-options-group', $page_slug);
     }
 
     public function register_settings(): void
@@ -46,13 +46,13 @@ class Button_Submenu extends Admin_Menu
             'pwp_settings_buttons',
             __("Buttons", 'Peleman-Webshop-Package'),
             array($this, ''),
-            Admin_Control_Panel::PAGE_SLUG,
+            $this->page_slug,
         );
         add_settings_field(
             'pwp_customize_label',
             __("Simple product - customizable", 'Peleman-Webshop-Package'),
             array($this, 'text_property_callback'),
-            Admin_Control_Panel::PAGE_SLUG,
+            $this->page_slug,
             "pwp_settings_buttons",
             array(
                 'option' => 'pwp_customize_label',
@@ -64,7 +64,7 @@ class Button_Submenu extends Admin_Menu
             'pwp_archive_var_label',
             __("Variable product - customizable", 'Peleman-Webshop-Package'),
             array($this, 'text_property_callback'),
-            Admin_Control_Panel::PAGE_SLUG,
+            $this->page_slug,
             "pwp_settings_buttons",
             array(
                 'option' => 'pwp_archive_var_label',
