@@ -29,7 +29,7 @@ class Confirm_PIE_Project_On_Checkout extends Abstract_Action_Hookable
             $order_id
         );
 
-        error_log(print_r($request, true));
+        // error_log(print_r($request, true));
 
         $orderLines = $order->get_items();
         foreach ($orderLines as $key => $values) {

@@ -32,7 +32,6 @@ class Save_Variable_Product_Custom_Fields extends Abstract_Action_Hookable
         $pie_data = $editor_data->pie_data();
 
         $post = filter_input_array(INPUT_POST, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-        error_log(print_r($post, true));
 
         $editor_data
             ->set_unit_amount((int)$post[$this->format_array_key(Product_Meta_Data::UNIT_AMOUNT)][$loop] ?: 1)

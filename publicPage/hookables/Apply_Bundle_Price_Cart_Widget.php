@@ -5,9 +5,7 @@ declare(strict_types=1);
 namespace PWP\publicPage\hookables;
 
 use PWP\includes\editor\Product_Meta_Data;
-use PWP\includes\hookables\abstracts\Abstract_Action_Hookable;
 use PWP\includes\hookables\abstracts\Abstract_Filter_Hookable;
-use WC_Product;
 
 class Apply_Bundle_Price_Cart_Widget extends Abstract_Filter_Hookable
 {

@@ -37,7 +37,6 @@ class Save_Parent_Product_Custom_Fields extends Abstract_Action_Hookable
 
         $post = $this->filter_post();
 
-        error_log(print_r($post, true));
         $editorMeta->set_unit_amount((int)$post[Product_Meta_Data::UNIT_AMOUNT] ?: 1)
             ->set_unit_price((float)$post[Product_Meta_Data::UNIT_PRICE])
             ->set_unit_code($post[Product_Meta_Data::UNIT_CODE] ?: '')

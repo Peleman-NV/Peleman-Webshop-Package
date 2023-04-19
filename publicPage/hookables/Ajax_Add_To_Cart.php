@@ -89,7 +89,7 @@ class Ajax_Add_To_Cart extends Abstract_Ajax_Hookable
                     //transient expires in 30 days
                     set_transient($transientId, $itemData, 30 * 86400);
 
-                    error_log(print_r($projectData->get_project_editor_url(false), true));
+                    // error_log(print_r($projectData->get_project_editor_url(false), true));
                     wp_send_json_success(
                         array(
                             'message' => __('external project created, redirecting user to editor for customization...', 'Peleman-Webshop-Package'),
