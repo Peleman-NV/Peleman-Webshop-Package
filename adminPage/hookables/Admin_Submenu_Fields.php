@@ -5,9 +5,6 @@ declare(strict_types=1);
 namespace PWP\adminPage\hookables;
 
 use PWP\includes\hookables\abstracts\Abstract_Action_Hookable;
-use PWP\includes\menus\Button_Submenu;
-use PWP\includes\menus\Editor_Submenu;
-use PWP\includes\menus\F2D_Menu;
 
 class Admin_Submenu_Fields extends Abstract_Action_Hookable
 {
@@ -18,24 +15,14 @@ class Admin_Submenu_Fields extends Abstract_Action_Hookable
 
     public function register_submenu_fields()
     {
-        $get = filter_input_array(INPUT_GET, array('tab' => FILTER_VALIDATE_INT));
-        $activeTab = isset($get['tab']) ? (int)$get['tab'] : 1;
-        switch ($activeTab) {
-            default:
-            case 1:
-                break;
-            case 2:
-                $menu = new Button_Submenu();
-                $menu->render_menu();
-                break;
-            case 3:
-                $menu = new Editor_Submenu();
-                $menu->render_menu();
-                break;
-            case 4:
-                $menu = new F2D_Menu();
-                $menu->render_menu();
-                break;
+        $menus = apply_filters('pwp_get_admin_menu_tabs', []);
+
+        $get = $_GET;
+        $activeTab =  isset($get['tab']) ? sanitize_text_field($get['tab']) : '';
+
+        if (isset($menus[$activeTab]) && !empty($menus[$activeTab])) {
+            $menu = $menus[$activeTab];
+            $menu->register_settings();
         }
     }
 }

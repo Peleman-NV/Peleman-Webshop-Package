@@ -9,24 +9,25 @@ use PWP\includes\menus\Admin_Menu;
 
 class F2D_Menu extends Admin_Menu
 {
-    public function render_menu(): void
+    public function __construct()
     {
-        $this->register_settings();
-        $this->add_menu_components();
+        parent::__construct('F2D options', 'pwp-f2d-options-group');
     }
 
-    protected function register_settings(): void
+    public  function register_settings(): void
     {
-        register_setting('pwp-f2d-options-group', 'pwp_settings_f2d', array(
-            'type' => 'bool',
-            'description' => 'Enable F2D integration',
-            'sanitize_callback' => 'wp_filter_nohtml_kses',
-            'show_in_rest' => true,
-            'default' => false,
-        ));
-    }
-    protected function add_menu_components(): void
-    {
+        register_setting(
+            $this->option_group,
+            'pwp_settings_f2d',
+            array(
+                'type' => 'bool',
+                'description' => 'Enable F2D integration',
+                'sanitize_callback' => 'wp_filter_nohtml_kses',
+                'show_in_rest' => true,
+                'default' => false,
+            )
+        );
+
         add_settings_section(
             'pwp_settings_f2d',
             __("Fly2Data", 'Peleman-Webshop-Package'),

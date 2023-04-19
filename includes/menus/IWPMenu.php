@@ -6,5 +6,5 @@ namespace PWP\includes\menus;
 
 interface IWPMenu
 {
-    public function render_menu(): void;
+    public function render_menu(string $page_slug): void;
 }

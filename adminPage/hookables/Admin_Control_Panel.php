@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace PWP\adminPage\hookables;
 
 use PWP\includes\hookables\abstracts\Abstract_Action_Hookable;
+use PWP\includes\menus\Admin_Menu;
 
 /**
  * Adds the primary control panel to the Admin Control panel. Other control panels should be children of the one defined here.
@@ -33,8 +34,14 @@ class Admin_Control_Panel extends Abstract_Action_Hookable
 
     public function render_tab_buttons()
     {
-        $get = filter_input_array(INPUT_GET, array('tab' => FILTER_VALIDATE_INT));
-        $activeTab = isset($get['tab']) ? $get['tab'] : 1;
+        $get = $_GET;
+        $activeTab =  isset($get['tab']) ? sanitize_text_field($get['tab']) : '';
+        error_log((string)$activeTab);
+
+        /**
+         * @var Admin_Menu[]
+         */
+        $tabGroups = apply_filters('pwp_get_admin_menu_tabs', []);
 ?>
         <div class="wrap">
             <div id="icon-themes" class="icon32"></div>
@@ -42,35 +49,21 @@ class Admin_Control_Panel extends Abstract_Action_Hookable
             <?php settings_errors();
             ?>
             <h2 class="nav-tab-wrapper">
-                <a href="?page=<?php echo esc_attr($this::PAGE_SLUG); ?>&tab=1" class="nav-tab <?php echo esc_url($activeTab == 'multi_order' ? 'nav_tab_active' : ''); ?>">General</a>
-                <a href="?page=<?php echo esc_attr($this::PAGE_SLUG); ?>&tab=2" class="nav-tab <?php echo esc_url($activeTab == 'multi_order' ? 'nav_tab_active' : ''); ?>">Buttons</a>
-                <a href="?page=<?php echo esc_attr($this::PAGE_SLUG); ?>&tab=3" class="nav-tab <?php echo esc_url($activeTab == 'multi_order' ? 'nav_tab_active' : ''); ?>">Editor</a>
-                <a href="?page=<?php echo esc_attr($this::PAGE_SLUG); ?>&tab=4" class="nav-tab <?php echo esc_url($activeTab == 'multi_order' ? 'nav_tab_active' : ''); ?>">Advanced</a>
+                <a href="?page=<?php echo esc_attr($this::PAGE_SLUG); ?>" class="nav-tab <?php echo esc_html($activeTab == '0' ? 'nav_tab_active' : ''); ?>">General</a>
+                <?php
+                foreach ($tabGroups as $key => $group) :
+                ?>
+                    <a href="<?php esc_html_e($this->assemble_tab_url($key)); ?>" class=" nav-tab <?php esc_html_e($activeTab == $key ? 'nav_tab_active' : ''); ?>"><?php esc_html_e($group->get_title()); ?></a>
+                <?php endforeach; ?>
             </h2>
 
             <!-- <form method="post" action="options.php"> -->
             <form method="post" action='<?php echo esc_url(add_query_arg('tab', $activeTab, admin_url('options.php'))); ?>'>
                 <?php
-                switch ($activeTab) {
-                    default:
-                    case 1:
-                        $this->display_general_message();
-                        break;
-                    case 2:
-                        settings_fields('pwp-button-options-group');
-                        do_settings_sections($this::PAGE_SLUG);
-                        submit_button();
-                        break;
-                    case 3:
-                        settings_fields('pwp-editor-options-group');
-                        do_settings_sections($this::PAGE_SLUG);
-                        submit_button();
-                        break;
-                    case 4:
-                        settings_fields('pwp-f2d-options-group');
-                        do_settings_sections($this::PAGE_SLUG);
-                        submit_button();
-                        break;
+                if (isset($tabGroups[$activeTab]) && !empty($tabGroups[$activeTab])) {
+                    $tabGroups[$activeTab]->render_menu($this::PAGE_SLUG);
+                } else {
+                    $this->display_general_message();
                 }
                 ?>
             </form>
@@ -94,5 +87,10 @@ class Admin_Control_Panel extends Abstract_Action_Hookable
             <p>For proper communication with the <b>PIE</b>, The plugin will require proper PIE API credentials. Please go to the <b>Editor tab</b> to get started.</p>
         </div>
 <?php
+    }
+
+    private function assemble_tab_url(string $key): string
+    {
+        return esc_html(sprintf('?page=%s&tab=%s', $this::PAGE_SLUG, $key));
     }
 }

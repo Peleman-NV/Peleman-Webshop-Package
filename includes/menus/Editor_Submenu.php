@@ -8,13 +8,12 @@ use PWP\adminPage\hookables\Admin_Control_Panel;
 
 class Editor_Submenu extends Admin_Menu
 {
-    public function render_menu(): void
+    public function __construct()
     {
-        $this->register_settings();
-        $this->add_menu_components();
+        parent::__construct('Editor', 'pwp_settings_editors');
     }
 
-    private function register_settings(): void
+    public function register_settings(): void
     {
         register_setting('pwp-editor-options-group', 'pie_domain', array(
             'type' => 'string',
@@ -45,12 +44,15 @@ class Editor_Submenu extends Admin_Menu
             'show_in_rest' => true,
             'default' => false,
         ));
+
+        $this->add_menu_components();
+        $this->add_api_test_button($_GET);
     }
 
     private function add_menu_components(): void
     {
         add_settings_section(
-            'pwp_settings_editors',
+            $this->option_group,
             __("Editor", 'Peleman-Webshop-Package'),
             null,
             Admin_Control_Panel::PAGE_SLUG,
@@ -105,7 +107,7 @@ class Editor_Submenu extends Admin_Menu
             __("Automatically delete old PDF files", 'Peleman-Webshop-Package'),
             array($this, 'bool_property_callback'),
             Admin_Control_Panel::PAGE_SLUG,
-            'pwp_settings_editors',
+            $this->option_group,
             array('option' => 'pwp_cleanup_projects')
         );
     }

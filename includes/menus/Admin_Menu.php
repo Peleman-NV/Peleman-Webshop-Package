@@ -6,7 +6,27 @@ namespace PWP\includes\menus;
 
 abstract class Admin_Menu implements IWPMenu
 {
-    public abstract function render_menu(): void;
+    protected string $option_group;
+    protected string $title;
+
+    public function __construct(string $title, string $option_group)
+    {
+        $this->title = $title;
+        $this->option_group = $option_group;
+    }
+
+    public function get_title(): string
+    {
+        return $this->title;
+    }
+    public function render_menu(string $page_slug): void
+    {
+        settings_fields($this->option_group);
+        do_settings_sections($page_slug);
+        submit_button();
+    }
+
+    public abstract function register_settings(): void;
 
     final public static function text_property_callback(array $args): void
     {

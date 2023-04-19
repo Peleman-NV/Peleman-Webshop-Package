@@ -24,6 +24,7 @@ use PWP\adminPage\hookables\Ajax_Verify_PIE_Editor_Credentials;
 use PWP\adminPage\hookables\Display_Order_Tracking_Information;
 use PWP\adminPage\hookables\Add_PIE_Printfile_Download_Button;
 use PWP\adminPage\hookables\Display_PDF_Data_After_Order_Item;
+use PWP\adminPage\hookables\Get_Admin_Menu_Tabs;
 use PWP\adminPage\hookables\Save_Parent_Product_Custom_Fields;
 use PWP\adminPage\hookables\Parent_Product_Custom_Fields;
 use PWP\adminPage\hookables\PIE_Editor_Control_Panel;
@@ -109,6 +110,7 @@ final class Plugin
             new Admin_Enqueue_Scripts(),
             new Admin_Submenu_Fields(),
             new Admin_Control_Panel(),
+            new Get_Admin_Menu_Tabs(),
             new PIE_Editor_Control_Panel(),
         );
 
