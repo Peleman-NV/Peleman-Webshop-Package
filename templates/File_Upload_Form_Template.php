@@ -4,7 +4,7 @@ if (!defined('ABSPATH')) {
 }
 ?>
 
-<div class='pwp-upload-form <?php echo esc_attr($enabled ? '' :  'pwp-hidden');/* @phpstan-ignore-line */ ?>'>
+<div class="pwp-upload-form" <?php echo ($enabled ? '' : 'style="display: none"');/* @phpstan-ignore-line */ ?>>
     <div class='pwp-upload-parameters' style="display: inline-block">
         <p>
             <?php echo esc_html__('Your full price will be calculated in the cart according to the number of pages of your content PDF.', 'Peleman-Webshop-Package'); ?>

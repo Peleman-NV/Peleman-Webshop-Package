@@ -27,7 +27,6 @@ class Change_Cart_Item_Thumbnail extends Abstract_Filter_Hookable
     {
         if (!isset($cart_item['_project_id'])) return $image;
         $projectId = $cart_item['_project_id'];
-        // $projectId = '22110222b2c-4a9b';
         $product = $cart_item['data'];
 
         if (boolval($product->get_meta(Product_Meta_Data::OVERRIDE_CART_THUMB))) {

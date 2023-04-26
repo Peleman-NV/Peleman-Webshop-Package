@@ -34,7 +34,7 @@ class GET_Project_Thumbnail extends Abstract_FIND_Endpoint
         $projectId = $request['projectId'];
         $src = '';
         $url = $this->generate_thumbnail_request_url($projectId);
-        error_log($url);
+        // error_log($url);
 
         try {
             $img = wp_remote_get($url);

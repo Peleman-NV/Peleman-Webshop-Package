@@ -69,7 +69,7 @@
         const data = {
             variant: variationId,
             action: 'Ajax_Show_Variation',
-            _ajax_nonce: pwp_product_variation_information_object.nonce,
+            _ajax_nonce: Ajax_Show_Variation_object.nonce,
         };
         let fallbackAddToCartLabel = setAddToCartLabel();
 
