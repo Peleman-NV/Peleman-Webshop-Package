@@ -11,9 +11,9 @@ use PWP\includes\hookables\abstracts\Abstract_Action_Hookable;
  */
 class Enqueue_Public_Styles extends Abstract_Action_Hookable
 {
-    public function __construct()
+    public function __construct(int $priority = 10)
     {
-        parent::__construct('wp_enqueue_scripts', 'enqueue_public_styles', 12);
+        parent::__construct('wp_enqueue_scripts', 'enqueue_public_styles', $priority);
     }
 
     public function enqueue_public_styles(): void
@@ -22,7 +22,7 @@ class Enqueue_Public_Styles extends Abstract_Action_Hookable
             'pwp-products',
             plugins_url('../css/product-page-style.css', __FILE__),
             array(),
-            (string)rand(0, 2000),
+            (string)wp_rand(0, 2000),
             'all'
         );
         wp_enqueue_style('dashicons');

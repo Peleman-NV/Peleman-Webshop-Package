@@ -43,31 +43,33 @@
 
     /** FUNCTIONS */
 
-    function hideElement(element) {
-        element.addClass('pwp-hidden');
+    function HideElement(element) {
+        $(element).hide();
+        $(element).addClass('pwp-hidden');
     }
 
-    function showElement(element) {
-        element.removeClass('pwp-hidden');
+    function ShowElement(element) {
+        $(element).show();
+        $(element).removeClass('pwp-hidden');
     }
 
     function enableElement(element) {
-        element.prop('disabled', false);
-        element.removeClass('pwp-disabled');
-        element.removeClass('disabled');
+        $(element).prop('disabled', false);
+        $(element).removeClass('pwp-disabled');
+        $(element).removeClass('disabled');
     }
 
     function disableElement(element) {
-        element.prop('disabled', true)
-        element.addClass('pwp-disabled');
-        element.addClass('disabled')
+        $(element).prop('disabled', true)
+        $(element).addClass('pwp-disabled');
+        $(element).addClass('disabled')
     }
 
     function getProductVariationData(variationId) {
         const data = {
             variant: variationId,
             action: 'Ajax_Show_Variation',
-            //_ajax_nonce: pwp_product_variation_information_object.nonce,
+            _ajax_nonce: pwp_product_variation_information_object.nonce,
         };
         let fallbackAddToCartLabel = setAddToCartLabel();
 
@@ -116,12 +118,16 @@
                     DisplayBundlePricing(response.data);
 
                     enableAddToCartButton(buttonText);
+
+                    for (var element of response.data.extra_elements) {
+                        HandleExtraDataField(element);
+                    }
                     return;
 
                 }
                 $('#variant-info').html(response.data.message);
                 $('#variant-info').addClass('pwp-response-error');
-                hideElement($('#pwp-loading'));
+                HideElement($('#pwp-loading'));
 
             },
             error: function (jqXHR, textStatus, errorThrown) {
@@ -143,27 +149,27 @@
     // when showing a (new) variation, all previous elements need to be cleared or hidden
     function initRefreshVariantElements() {
         // display loading animation
-        showElement($('#pwp-loading'));
+        ShowElement($('#pwp-loading'));
         // clear any old upload information
         // $('#pwp-file-upload').val('');
         // hide the ever present max upload file size
-        hideElement($('#max-upload-size'));
+        HideElement($('#max-upload-size'));
         // disable add-to-cart btn
         disableElement($('.single_add_to_cart_button'));
         // hide upload button
-        hideElement($('.pwp-upload-form'));
+        HideElement($('.pwp-upload-form'));
         // hide upload parameters block
-        hideElement($('.pwp-upload-parameters'));
+        HideElement($('.pwp-upload-parameters'));
 
         $('.single_variation_wrap').show();
         $('.summary p.price').show();
         $('.add-to-cart-price').show();
         $('p').remove('#call-us');
-        hideElement($('#call-us-btn'));
-        hideElement($('#call-us-price'));
+        HideElement($('#call-us-btn'));
+        HideElement($('#call-us-price'));
 
         // article code
-        hideElement($('span.article-code-container'));
+        HideElement($('span.article-code-container'));
         console.log("foo!");
     }
 
@@ -172,7 +178,7 @@
         if (articleCode) {
             console.log(articleCode);
             $('.article-code').html(articleCode);
-            showElement($('span.article-code-container'));
+            ShowElement($('span.article-code-container'));
         }
     }
 
@@ -184,43 +190,43 @@
         const { height, width, min_pages, max_pages, price_per_page, price_per_page_html, total_price } =
             data.pdf_data;
 
-        hideElement($('#ppi-loading'));
-        showElement($('.pwp-upload-parameters'));
-        showElement($('.pwp-upload-form'));
-        showElement($('.upload-label'));
-        showElement($('#max-upload-size'));
+        HideElement($('#ppi-loading'));
+        ShowElement($('.pwp-upload-parameters'));
+        ShowElement($('.pwp-upload-form'));
+        ShowElement($('.upload-label'));
+        ShowElement($('#max-upload-size'));
         $('#pwp-file-upload').prop('required', true);
 
         if (height != '') {
             $('#content-height').html(height);
-            showElement($('#content-height').parent());
+            ShowElement($('#content-height').parent());
         } else {
-            hideElement($('#content-height').parent());
+            HideElement($('#content-height').parent());
         }
         if (width != '') {
             $('#content-width').html(width);
-            showElement($('#content-width').parent());
+            ShowElement($('#content-width').parent());
         } else {
-            hideElement($('#content-width').parent());
+            HideElement($('#content-width').parent());
         }
         if (min_pages != '') {
             $('#content-min-pages').html(min_pages);
-            showElement($('#content-min-pages').parent());
+            ShowElement($('#content-min-pages').parent());
         } else {
-            hideElement($('#content-min-pages').parent());
+            HideElement($('#content-min-pages').parent());
         }
         if (max_pages != '') {
             $('#content-max-pages').html(max_pages);
-            showElement($('#content-max-pages').parent());
+            ShowElement($('#content-max-pages').parent());
         } else {
-            hideElement($('#content-max-pages').parent());
+            HideElement($('#content-max-pages').parent());
         }
         if (price_per_page != '') {
             $('.price-per-page').attr('value', price_per_page);
             $('.price-per-page').html(price_per_page_html);
-            showElement($('#content-price-per-page').parent());
+            ShowElement($('#content-price-per-page').parent());
         } else {
-            hideElement($('#content-price-per-page').parent());
+            HideElement($('#content-price-per-page').parent());
             $('.price_per_page').attr('value', 0);
         }
         $('#pwp-product-price').attr('value', total_price);
@@ -233,13 +239,13 @@
             $('.bundle-price-amount').html(data.unit_price);
             $('.bundle-suffix').removeClass('pwp-hidden');
             $('.bundle-suffix').html(data.unit_amount)
-            hideElement($('.woocommerce-variation-price'));
+            HideElement($('.woocommerce-variation-price'));
             return;
         }
         $('.bundle-price-amount').html(data.item_price);
         $('.individual-price').addClass('pwp-hidden');
         $('.bundle-suffix').addClass('pwp-hidden');
-        showElement($('woocommerce-variation-price'));
+        ShowElement($('woocommerce-variation-price'));
     }
 
     /**
@@ -247,8 +253,8 @@
      * because a  new variant may not have upload parameters
      */
     function hideUploadElement() {
-        hideElement($('.pwp-upload-form'));
-        hideElement($('.pwp-upload-parameters'));
+        HideElement($('.pwp-upload-form'));
+        HideElement($('.pwp-upload-parameters'));
         $('.upload-label').addClass('upload-disabled');
         $('#pwp-file-upload').prop('required', false);
     }
@@ -313,7 +319,7 @@
             '<span id="pwp-loading" class="dashicons dashicons-update pwp-hidden"></span>' +
             addToCartLabel
         );
-        hideElement($('#pwp-loading'));
+        HideElement($('#pwp-loading'));
     }
 
     function disableAddToCartButton(addToCartLabel = '') {
@@ -322,7 +328,7 @@
             '<span id="pwp-loading" class="dashicons dashicons-update rotate"></span>' +
             addToCartLabel
         );
-        showElement($('#pwp-loading'));
+        ShowElement($('#pwp-loading'));
     }
 
     function disableUploadButton() {
@@ -337,8 +343,8 @@
         $('.single_variation_wrap').hide();
         $('.summary p.price').hide();
         $('.add-to-cart-price').hide();
-        showElement($('#call-us-btn'));
-        showElement($('#call-us-price'));
+        ShowElement($('#call-us-btn'));
+        ShowElement($('#call-us-price'));
         $('.summary h1.product_title.entry-title').after(
             '<p id="call-us" class="price"><span class="woocommerce-Price-amount amount">Call us for a quote at +32 3 889 32 41<span></p>'
         );
@@ -385,12 +391,12 @@
     }
 
     function resetUnitPrice() {
-        hideElement($('.cart-unit-block'));
+        HideElement($('.cart-unit-block'));
         $('.individual-price-text').html();
     }
 
     function hideArticleCodeElement() {
-        hideElement($('span.article-code-container'));
+        HideElement($('span.article-code-container'));
     }
 
     function AddButtonIconClass() {
@@ -399,5 +405,22 @@
 
     function RemoveButtonIconClass() {
         $('.single_add_to_cart_button').removeClass('pwp_customizable');
+    }
+
+    function HandleExtraDataField(fieldData) {
+
+        console.log(fieldData);
+        // var elements = [];
+        // var elements = elements.concat($('.' + fieldData['target_class']), $('#' + fieldData['target_id']));
+        var elements = $('.' + fieldData['target_class']);
+        var show = fieldData['show_element'] ?? null;
+        var innerHtml = fieldData['inner_html'];
+
+        if (show) { ShowElement(elements); }
+        else if (show == false) { HideElement(elements); }
+
+        if (innerHtml) {
+            elements.html(innerHtml);
+        }
     }
 })(jQuery);

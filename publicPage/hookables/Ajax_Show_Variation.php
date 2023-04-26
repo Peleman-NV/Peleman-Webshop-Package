@@ -58,6 +58,20 @@ class Ajax_Show_Variation extends Abstract_Ajax_Hookable
                 'total_price'           => $variant->get_price(),
             ),
         );
+
+        $data = apply_filters('pwp_get_variation_custom_fields', [], $variant);
+        /**
+         * 
+         * example element to enter into the associative array.
+         * $element = array(
+         *  'target_id'      => 'my_id',
+         *  'target_class'   => 'my_class',
+         *  'hide_element'   => false,
+         *  'inner_html'     => 'my message'
+         *);
+         */
+
+        $response['extra_elements'] = $data;
         wp_send_json_success($response, 200);
     }
 

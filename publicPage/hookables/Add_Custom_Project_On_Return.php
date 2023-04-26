@@ -18,9 +18,9 @@ class Add_Custom_Project_On_Return extends Abstract_Action_Hookable
     //this is a rather obscure hook, which is called even after wp_loaded.
     //for some reason, wp_loaded is still too early for this method to be called, but wp is the right timing.
     //TODO: perhaps in the future it might be a better idea to make this an API call, that redirects to the cart.
-    public function __construct(string $hook = 'wp')
+    public function __construct(string $hook = 'wp', int $priority = 10)
     {
-        parent::__construct($hook, 'add_customized_product_to_cart');
+        parent::__construct($hook, 'add_customized_product_to_cart', $priority);
     }
 
     public function add_customized_product_to_cart()
