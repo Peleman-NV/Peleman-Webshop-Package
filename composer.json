@@ -6,8 +6,6 @@
     },
     "require": {
         "wp-cli/wp-cli-bundle": "*",
-        "setasign/fpdf": "1.8.*",
-        "setasign/fpdi": "^2.0",
         "clean-composer-packages/pdf-js": "^2.0",
         "smalot/pdfparser": "^2.4"
     },

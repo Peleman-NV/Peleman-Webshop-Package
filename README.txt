@@ -18,6 +18,7 @@ Some of our products require user content to either be uploaded and/or created i
 = 1.5.2 =
 * Add - project thumbnails now visible in order package
 * Add - added various action and filter hooks to existing PWP methods to allow connections to other plugins.
+* Update - replaced previous PDF parser.
 
 = 1.5.0 =
 * removal of various F2D specific functions
