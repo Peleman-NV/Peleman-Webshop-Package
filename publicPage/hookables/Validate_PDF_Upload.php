@@ -14,6 +14,7 @@ use PWP\includes\validation\Validate_File_Errors;
 use PWP\includes\validation\Validate_File_PageCount;
 use PWP\includes\validation\Validate_File_Size;
 use PWP\includes\validation\Validate_File_Type_Is_PDF;
+use setasign\Fpdi\PdfParser\CrossReference\CrossReferenceException;
 
 /**
  * Validates pdf upload by customer in the woocommerce product validation chain
@@ -65,10 +66,17 @@ class Validate_PDF_Upload extends Abstract_Filter_Hookable
             }
 
             return $notification->is_success() ? $passed : false;
+        } catch (CrossReferenceException $e) {
+            Error_log((string)$e);
+            wc_add_notice(
+                __('PDF file has been compressed with an unsupported compression method. Please try again with an uncompressed PDF or PDF up to version 1.4.', 'Peleman-Webshop-Package'),
+                'error'
+            );
+            return false;
         } catch (\Exception $e) {
             Error_log((string)$e);
             wc_add_notice(
-                __('could not process PDF upload. try again with a different file.', 'Peleman-Webshop-Package'),
+                __('Could not process PDF upload due to an unexpected error. Please try again with a different file.', 'Peleman-Webshop-Package'),
                 'error'
             );
             return false;
@@ -94,7 +102,8 @@ class Validate_PDF_Upload extends Abstract_Filter_Hookable
             ))
             ->set_next(new Validate_File_Dimensions(
                 $metaData->get_pdf_height(),
-                $metaData->get_pdf_width()
+                $metaData->get_pdf_width(),
+                5.0
             ));
 
         return $validator;

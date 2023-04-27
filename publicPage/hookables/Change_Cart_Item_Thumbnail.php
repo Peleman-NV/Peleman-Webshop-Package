@@ -19,8 +19,8 @@ class Change_Cart_Item_Thumbnail extends Abstract_Filter_Hookable
     public function __construct(int $priority = 15)
     {
         parent::__construct('woocommerce_cart_item_thumbnail', 'pwp_override_cart_item_thumbnail', $priority, 3);
-        $this->add_hook('woocommerce_cart_item_name', $priority);
-        $this->add_hook('woocommerce_order_item_name', $priority);
+        // $this->add_hook('woocommerce_cart_item_name', $priority);
+        // $this->add_hook('woocommerce_order_item_name', $priority);
         $this->dom = null;
     }
 

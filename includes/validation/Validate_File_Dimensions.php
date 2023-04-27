@@ -12,7 +12,7 @@ class Validate_File_Dimensions extends Abstract_File_Handler
     private int $heightRange;
     private int $widthRange;
     private float $precision;
-    public function __construct(int $height, int $width, float $precision = .5)
+    public function __construct(int $height, int $width, float $precision)
     {
         parent::__construct();
         $this->heightRange = $height;
@@ -43,12 +43,17 @@ class Validate_File_Dimensions extends Abstract_File_Handler
             'Dimensions not valid',
             __('The dimensions of the file do not match the specified dimensions', 'Peleman-Webshop-Package')
         );
+        error_Log('page count: ' . $data->get_page_count());
+        error_log('width: ' . $data->get_width() . 'mm');
+        error_log('height: ' . $data->get_height() . 'mm');
         return false;
     }
 
     private function value_is_in_range(float $value, float $range, float $precision): bool
     {
         if ($range === 0) return true;
+        error_log('' . $precision);
+        error_log('' . abs($value - $range));
         return $precision >= abs($value - $range);
     }
 }
