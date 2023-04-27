@@ -13,9 +13,9 @@ use WC_Product;
  */
 class Add_PDF_Prices_To_Cart extends Abstract_Action_Hookable
 {
-    public function __construct()
+    public function __construct(int $priority = 10)
     {
-        parent::__construct('pwp_modify_cart_item_before_calculate_totals', 'add_pdf_costs_to_item', 9, 1);
+        parent::__construct('pwp_modify_cart_item_before_calculate_totals', 'add_pdf_costs_to_item', $priority, 1);
     }
 
     public function add_pdf_costs_to_item(array $cartItem): void
