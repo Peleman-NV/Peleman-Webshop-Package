@@ -51,8 +51,10 @@ use PWP\publicPage\hookables\Add_Class_To_Add_To_Cart_Button;
 use PWP\publicPage\hookables\Change_Add_To_Cart_Button_Label;
 use PWP\publicPage\hookables\Confirm_PIE_Project_On_Checkout;
 use PWP\publicPage\hookables\Add_Fields_To_Add_To_Cart_Button;
+use PWP\publicPage\hookables\Apply_Unit_Prices_To_Cart;
 use PWP\publicPage\hookables\Change_Add_To_Cart_Archive_Button;
 use PWP\publicPage\hookables\Display_Editor_Project_Button_In_Cart;
+use PWP\publicPage\hookables\Modify_Cart_Item_Before_Calculate_Totals;
 use PWP\publicPage\hookables\Save_Cart_Item_Meta_To_Order_Item_Meta;
 
 #endregion
@@ -134,7 +136,10 @@ final class Plugin
             new Ajax_Verify_PIE_Editor_Credentials(6),
             new Cleanup_Unordered_Projects(),
             new Override_WC_Templates(),
-            new Apply_Bundle_Price_Cart_Widget()
+            new Apply_Bundle_Price_Cart_Widget(),
+            new Modify_Cart_Item_Before_Calculate_Totals(),
+            new Apply_Unit_Prices_To_Cart(9),
+            new Add_PDF_Prices_To_Cart(20),
         );
 
         $this->add_hookables(
@@ -158,7 +163,6 @@ final class Plugin
             new Add_PDF_Data_To_Cart_Item(),
             new Display_PDF_Data_In_Cart(),
             new Remove_PDF_On_Cart_Deletion(),
-            new Add_PDF_Prices_To_Cart(),
             new Order_Project(),
             new Display_PDF_Data_After_Order_Item()
         );
