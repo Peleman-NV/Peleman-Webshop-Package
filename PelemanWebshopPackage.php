@@ -33,7 +33,7 @@ use PWP\includes\Plugin;
 defined('WPINC') || die;
 
 //define PWP constant values
-define('PWP_VERSION', '1.5.1');
+define('PWP_VERSION', '1.5.2');
 !defined('PWP_OPTION_GROUP')        ? define('PWP_OPTION_GROUP', 'OPTIONS') : null;
 
 !defined('PWP_DIRECTORY')           ? define('PWP_DIRECTORY', plugin_dir_path(__FILE__)) : null;
