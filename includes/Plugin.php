@@ -23,6 +23,7 @@ use PWP\adminPage\hookables\Save_Variable_Product_Custom_Fields;
 use PWP\adminPage\hookables\Ajax_Verify_PIE_Editor_Credentials;
 use PWP\adminPage\hookables\Display_Order_Tracking_Information;
 use PWP\adminPage\hookables\Add_PIE_Printfile_Download_Button;
+use PWP\adminPage\hookables\Change_Product_Thumbnail_In_Order;
 use PWP\adminPage\hookables\Display_PDF_Data_After_Order_Item;
 use PWP\adminPage\hookables\Get_Admin_Menu_Tabs;
 use PWP\adminPage\hookables\Save_Parent_Product_Custom_Fields;
@@ -53,6 +54,7 @@ use PWP\publicPage\hookables\Confirm_PIE_Project_On_Checkout;
 use PWP\publicPage\hookables\Add_Fields_To_Add_To_Cart_Button;
 use PWP\publicPage\hookables\Apply_Unit_Prices_To_Cart;
 use PWP\publicPage\hookables\Change_Add_To_Cart_Archive_Button;
+use PWP\publicPage\hookables\Change_Checkout_Item_Thumbnail;
 use PWP\publicPage\hookables\Display_Editor_Project_Button_In_Cart;
 use PWP\publicPage\hookables\Modify_Cart_Item_Before_Calculate_Totals;
 use PWP\publicPage\hookables\Save_Cart_Item_Meta_To_Order_Item_Meta;
@@ -140,6 +142,8 @@ final class Plugin
             new Modify_Cart_Item_Before_Calculate_Totals(),
             new Apply_Unit_Prices_To_Cart(9),
             new Add_PDF_Prices_To_Cart(20),
+            new Change_Checkout_Item_Thumbnail(),
+            new Change_Product_Thumbnail_In_Order(10),
         );
 
         $this->add_hookables(

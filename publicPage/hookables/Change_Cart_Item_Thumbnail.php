@@ -19,12 +19,14 @@ class Change_Cart_Item_Thumbnail extends Abstract_Filter_Hookable
     public function __construct(int $priority = 15)
     {
         parent::__construct('woocommerce_cart_item_thumbnail', 'pwp_override_cart_item_thumbnail', $priority, 3);
-        $this->add_hook('woocommerce_cart_item_name');
+        $this->add_hook('woocommerce_cart_item_name', $priority);
+        $this->add_hook('woocommerce_order_item_name', $priority);
         $this->dom = null;
     }
 
     public function pwp_override_cart_item_thumbnail(string $image, array $cart_item, $cart_item_key): string
     {
+        error_log("dong");
         if (!isset($cart_item['_project_id'])) return $image;
         $projectId = $cart_item['_project_id'];
         $product = $cart_item['data'];

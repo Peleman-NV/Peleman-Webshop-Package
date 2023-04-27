@@ -15,6 +15,10 @@ This plugin allows a WordPress/WooCommerce webshop to show and sell Peleman prod
 Some of our products require user content to either be uploaded and/or created in an online editor, which is made possible through this plugin.
 
 == Changelog ==
+= 1.5.1 =
+* Add - project thumbnails now visible in order package
+* Add - added various action and filter hooks to existing PWP methods to allow connections to other plugins.
+
 = 1.5.0 =
 * removal of various F2D specific functions
 * Fix - issue with F2D settings button in menu resolved.
