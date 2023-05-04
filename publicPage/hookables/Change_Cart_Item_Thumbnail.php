@@ -26,7 +26,6 @@ class Change_Cart_Item_Thumbnail extends Abstract_Filter_Hookable
 
     public function pwp_override_cart_item_thumbnail(string $image, array $cart_item, $cart_item_key): string
     {
-        error_log("dong");
         if (!isset($cart_item['_project_id'])) return $image;
         $projectId = $cart_item['_project_id'];
         $product = $cart_item['data'];

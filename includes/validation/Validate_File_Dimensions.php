@@ -21,10 +21,7 @@ class Validate_File_Dimensions extends Abstract_File_Handler
     }
 
     public function handle(PDF_Upload $data, ?I_Notification $notification = null): bool
-    {
-        // error_log('height: ' . $data->get_height());
-        // error_log('width: ' . $data->get_width());
-
+    { 
         $heightFit = $this->value_is_in_range(
             $data->get_height(),
             $this->heightRange,
