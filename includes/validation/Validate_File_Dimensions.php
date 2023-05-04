@@ -12,7 +12,7 @@ class Validate_File_Dimensions extends Abstract_File_Handler
     private int $heightRange;
     private int $widthRange;
     private float $precision;
-    public function __construct(int $height, int $width, float $precision)
+    public function __construct(int $height, int $width, float $precision = 5)
     {
         parent::__construct();
         $this->heightRange = $height;

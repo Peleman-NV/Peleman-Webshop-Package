@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace PWP\publicPage\hookables;
 
 use PWP\includes\editor\Product_Meta_Data;
-use setasign\Fpdi\Fpdi;
 use PWP\includes\wrappers\PDF_Upload;
 use PWP\includes\hookables\abstracts\Abstract_Ajax_Hookable;
 use PWP\includes\utilities\notification\Error_Notice;
@@ -17,6 +16,7 @@ use PWP\includes\validation\Validate_File_Errors;
 use PWP\includes\validation\Validate_File_PageCount;
 use PWP\includes\validation\Validate_File_Size;
 use PWP\includes\validation\Validate_File_Type_Is_PDF;
+use Smalot\PdfParser\Parser;
 
 /**
  * Ajax hookable for handling and validating a pdf upload from the webshop.
@@ -59,12 +59,17 @@ class Ajax_Upload_PDF extends Abstract_Ajax_Hookable
 
         /** 3) */
         try {
-            $pdf = new Fpdi();
-            $file->set_page_count($pdf->setSourceFile($file->get_tmp_name()));
-            $importedPage = $pdf->importPage(1);
+            $parser = new Parser();
+            $pdf = $parser->parseFile($file->get_tmp_name());
+            $pages = $pdf->getPages();
+            $file->set_page_count(count($pages));
+            
+            $page = $pages[0];
+            $mediaBox = $page->getDetails()['MediaBox'];
 
-            $dimensions = $pdf->getTemplateSize($importedPage);
-            $file->set_dimensions($dimensions['width'], $dimensions['height']);
+            $height = $mediaBox[2];
+            $width = $mediaBox[3];
+            $file->set_dimensions($width, $height);
         } catch (\Throwable $error) {
             $this->send_json_error(
                 $error->getMessage(),
@@ -143,7 +148,8 @@ class Ajax_Upload_PDF extends Abstract_Ajax_Hookable
             ))
             ->set_next(new Validate_File_Dimensions(
                 $metaData->get_pdf_height(),
-                $metaData->get_pdf_width()
+                $metaData->get_pdf_width(),
+                5
             ));
 
         return $validator;
