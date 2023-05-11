@@ -9,6 +9,7 @@ use Smalot\PdfParser\Parser;
 
 class PDF_Factory
 {
+    private const USER_UNIT = 0.3528;
     public function __construct()
     {
     }
@@ -21,8 +22,16 @@ class PDF_Factory
         $file = $parser->parseFile($pdf->get_tmp_name());
         $pageCount = count($file->getPages());
         $pageDetails = $file->getPages()[0]->getDetails();
-        $width = $pageDetails['MediaBox'][2];
-        $height = $pageDetails['MediaBox'][3];
+
+        $rightBound = $pageDetails['MediaBox'][0];
+        $topBound = $pageDetails['MediaBox'][1];
+        $leftBound = $pageDetails['MediaBox'][2];
+        $bottomBound = $pageDetails['MediaBox'][3];
+
+        $width = ($leftBound - $rightBound) * self::USER_UNIT;
+        $height = ($bottomBound - $topBound) * self::USER_UNIT;
+
+        error_log(print_r($pageDetails, true));
 
         $pdf->set_page_count($pageCount);
         $pdf->set_dimensions($width, $height);
