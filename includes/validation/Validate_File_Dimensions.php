@@ -44,7 +44,7 @@ class Validate_File_Dimensions extends Abstract_File_Handler
         $notification->add_error(
             'Dimensions not valid',
             sprintf(
-                __('The dimensions of the file do not match the specified dimensions \n your file:  %d mm by %d mm, requires : %d mm by %d mm', 'Peleman-Webshop-Package'),
+                __('The dimensions of the file do not match the specified dimensions.', 'Peleman-Webshop-Package'),
                 number_format($data->get_width(), 1),
                 number_Format($data->get_height(), 1),
                 $this->widthRange,

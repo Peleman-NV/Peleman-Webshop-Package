@@ -14,7 +14,6 @@ use PWP\includes\validation\Validate_File_Errors;
 use PWP\includes\validation\Validate_File_PageCount;
 use PWP\includes\validation\Validate_File_Size;
 use PWP\includes\validation\Validate_File_Type_Is_PDF;
-use setasign\Fpdi\PdfParser\CrossReference\CrossReferenceException;
 
 /**
  * Validates pdf upload by customer in the woocommerce product validation chain
@@ -36,7 +35,7 @@ class Validate_PDF_Upload extends Abstract_Filter_Hookable
 
         if (!isset($_FILES[$this->key])) {
             wc_add_notice(
-                __('product requires PDF upload.', 'Peleman-Webshop-Package'),
+                __('Product requires PDF upload.', 'Peleman-Webshop-Package'),
                 'error'
             );
             return false;
@@ -44,7 +43,7 @@ class Validate_PDF_Upload extends Abstract_Filter_Hookable
 
         if (!isset($_FILES[$this->key]['error']) || is_array($_FILES[$this->key]['error'])) {
             wc_add_notice(
-                __('invalid file upload parameters. Try again with a different file.', 'Peleman-Webshop-Package'),
+                __('Invalid file upload parameters. Try again with a different file.', 'Peleman-Webshop-Package'),
                 'error'
             );
             return false;
@@ -60,19 +59,12 @@ class Validate_PDF_Upload extends Abstract_Filter_Hookable
 
             if (!$notification->is_success()) {
                 wc_add_notice(
-                    $notification->get_errors()[0]->get_description() ?: __('the uploaded pdf is not valid', 'Peleman-Webshop-Package'),
+                    $notification->get_errors()[0]->get_description() ?: __('The uploaded pdf is not valid.', 'Peleman-Webshop-Package'),
                     'error'
                 );
             }
 
             return $notification->is_success() ? $passed : false;
-        } catch (CrossReferenceException $e) {
-            Error_log((string)$e);
-            wc_add_notice(
-                __('PDF file has been compressed with an unsupported compression method. Please try again with an uncompressed PDF or PDF up to version 1.4.', 'Peleman-Webshop-Package'),
-                'error'
-            );
-            return false;
         } catch (\Exception $e) {
             Error_log((string)$e);
             wc_add_notice(

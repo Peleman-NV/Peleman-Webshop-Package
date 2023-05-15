@@ -29,13 +29,27 @@ class Add_PDF_Prices_To_Cart extends Abstract_Action_Hookable
             return;
         }
 
+
         $pdfData = $cartItem['_pdf_data'];
 
         //update product price with pdf price if applicable
         if ($product instanceof WC_Product && $pdfData) {
-            $basePrice = $product->get_price();
+
+            //get the original product to reset the price
+            $originalProduct = wc_get_product($product->get_id());
             $unitAmount = (int)$product->get_meta('cart_units') ?: 1;
-            $product->set_price((float)$basePrice + ($pdfData['pages'] * $meta->get_price_per_page() * $unitAmount));
+            $pages = $pdfData['pages'];
+            $pricePerPage = $meta->get_price_per_page();
+
+            error_log("product price: " . $product->get_price());
+            error_log("price per page: " . $pricePerPage);
+            $args = [
+                'qty' => $quantity,
+                'price' => (float)$originalProduct->get_price() + ($pages * $pricePerPage * $unitAmount)
+            ];
+            $price = wc_get_price_including_tax($product, $args);
+            error_log("calculated price: " . $price);
+            $product->set_price($price);
         }
     }
 }

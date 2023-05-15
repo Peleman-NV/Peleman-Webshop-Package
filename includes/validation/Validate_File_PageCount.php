@@ -24,11 +24,12 @@ class Validate_File_PageCount extends Abstract_File_Handler
         $pages = $data->get_page_count();
 
         if ($pages > $this->maxPages) {
-            $notification->add_error('too many pages', 'File has more than the maximum allowed page count.');
+            $notification->add_error('too many pages', 
+            __('File has more than the maximum allowed page count.', 'Peleman-Webshop-Package'));
             return false;
         }
         if ($pages < $this->minPages) {
-            $notification->add_error('too few pages', 'File is below the minimum allowed page count.');
+            $notification->add_error('too few pages', __('File is below the minimum allowed page count.',  'Peleman-Webshop-Package'));
             return false;
         }
 
