@@ -43,9 +43,12 @@ class Enqueue_PDF_JS extends Abstract_Action_Hookable
             array(
                 'pdfjs',
                 'pdfworkerjs',
-                'jquery'
+                'jquery',
+                'wp-i18n',
             ),
             wp_rand(0, 2000),
         );
+
+        wp_set_script_translations('pwp-validate-pdf-upload.js', 'peleman-webshop-package');
     }
 }

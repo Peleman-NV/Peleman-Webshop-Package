@@ -37,19 +37,15 @@ class Save_Variable_Product_Custom_Fields extends Abstract_Action_Hookable
             ->set_unit_amount((int)$post[$this->format_array_key(Product_Meta_Data::UNIT_AMOUNT)][$loop] ?: 1)
             ->set_unit_price((float)$post[$this->format_array_key(Product_Meta_Data::UNIT_PRICE)][$loop] ?: 0.0)
             ->set_unit_code($post[$this->format_array_key(Product_Meta_Data::UNIT_CODE)][$loop] ?: '')
-            ->set_uses_pdf_content(
-                isset($post[$this->format_array_key(Product_Meta_Data::USE_PDF_CONTENT_KEY)][$loop])
-            )
+            ->set_uses_pdf_content(isset($post[$this->format_array_key(Product_Meta_Data::USE_PDF_CONTENT_KEY)][$loop]))
             ->set_pdf_max_pages((int)$post[$this->format_array_key(Product_Meta_Data::PDF_MAX_PAGES_KEY)][$loop])
             ->set_pdf_min_pages((int)$post[$this->format_array_key(Product_Meta_Data::PDF_MIN_PAGES_KEY)][$loop])
             ->set_pdf_height((int)$post[$this->format_array_key(Product_Meta_Data::PDF_HEIGHT_KEY)][$loop])
             ->set_pdf_width((int)$post[$this->format_array_key(Product_Meta_Data::PDF_WIDTH_KEY)][$loop])
             ->set_price_per_page((float)$post[$this->format_array_key(Product_Meta_Data::PDF_PRICE_PER_PAGE_KEY)][$loop])
-            ->set_editor(
-                esc_attr(sanitize_text_field($post[$this->format_array_key(Product_Meta_Data::EDITOR_ID_KEY)][$loop]))
-            )->set_custom_add_to_cart_label(
-                esc_attr(sanitize_text_field($post[$this->format_array_key(Product_Meta_Data::CUSTOM_LABEL_KEY)][$loop]))
-            )->set_override_thumbnail(isset($post[$this->format_array_key(Product_Meta_Data::OVERRIDE_CART_THUMB)][$loop]))
+            ->set_editor(esc_attr(sanitize_text_field($post[$this->format_array_key(Product_Meta_Data::EDITOR_ID_KEY)][$loop])))
+            ->set_custom_add_to_cart_label(esc_attr(sanitize_text_field($post[$this->format_array_key(Product_Meta_Data::CUSTOM_LABEL_KEY)][$loop])))
+            ->set_override_thumbnail(isset($post[$this->format_array_key(Product_Meta_Data::OVERRIDE_CART_THUMB)][$loop]))
             ->set_f2d_article_code($post[$this->format_array_key(Product_Meta_Data::F2D_ARTICLE_CODE)][$loop] ?: '');
 
 
@@ -67,7 +63,6 @@ class Save_Variable_Product_Custom_Fields extends Abstract_Action_Hookable
             ->set_uses_image_upload(isset($post[$this->format_array_key(Product_PIE_Data::USE_IMAGE_UPLOAD_KEY)][$loop]))
             ->set_autofill(isset($post[$this->format_array_key(Product_PIE_Data::AUTOFILL_KEY)][$loop]))
             ->set_num_pages((int)esc_attr(sanitize_text_field($post[$this->format_array_key(Product_PIE_Data::NUM_PAGES_KEY)][$loop])))
-            // ->set_format_id(esc_attr(sanitize_text_field($post[Product_PIE_Data::FORMAT_ID_KEY][$loop])))
             ->set_max_images((int)esc_attr(sanitize_text_field($post[$this->format_array_key(Product_PIE_Data::MAX_IMAGES_KEY)][$loop])))
             ->set_min_images((int)esc_attr(sanitize_text_field($post[$this->format_array_key(Product_PIE_Data::MIN_IMAGES_KEY)][$loop])))
             ->parse_instruction_array_loop($post, $loop);

@@ -70,7 +70,7 @@ abstract class Abstract_Ajax_Hookable implements I_Hookable_Component
         $this->objectName = $handle . self::OBJECT_SUFFIX;
         $this->nonceName = $handle . self::NONCE_SUFFIX;
         $this->jsFilePath = $jsFilePath;
-        $this->dependencies = array_merge(['jquery'], $deps);
+        $this->dependencies = array_merge(['jquery', 'wp-i18n'], $deps);
 
         $this->priority = $priority;
         $this->isAdminScript = false;
@@ -119,7 +119,7 @@ abstract class Abstract_Ajax_Hookable implements I_Hookable_Component
         wp_enqueue_script(
             $this->scriptHandle,
             $this->jsFilePath,
-            array('jquery'),
+            $this->dependencies,
             wp_rand(0, 2000),
             true
         );

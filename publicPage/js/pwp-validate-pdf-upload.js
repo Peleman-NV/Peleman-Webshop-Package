@@ -1,6 +1,8 @@
 (function ($) {
     ('use strict');
     $(function () {
+        const { __, _x, _n, _nx } = wp.i18n;
+
         const _clear = $('#pwp-file-clear');
         const _upload = $('#pwp-file-upload');
         const _preview = $('#pwp-pdf-canvas');
@@ -22,12 +24,12 @@
             var file = e.target.files[0];
             var mime_types = ['application/pdf'];
             if (mime_types.indexOf(file.type) == -1) {
-                alert('Error: Incorrect file type');
+                alert(__('Incorrect file type.', 'peleman-webshop-package'));
                 return;
             }
 
-            if (file.size > 20000000) {
-                alert('Error: Exceeds size 20MB');
+            if (file.size > 8000000) {
+                alert(__('File size exceeds') + ' 80MB');
                 return;
             }
 
