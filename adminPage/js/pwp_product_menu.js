@@ -30,11 +30,8 @@
         var selections = $("select[foldout]");
         selections.each(function () {
             var id = '#' + $(this).attr('foldout');
-            console.log(id);
-
             var target = $(id);
             $(this).change(function () {
-                console.log('foo');
                 elementVisibility(target, $(this).val() != '');
             });
         });

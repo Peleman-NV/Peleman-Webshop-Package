@@ -6,8 +6,6 @@
     const _apiKeyField = $('#pie_api_key');
     const _testButton = $('#pie_api_test');
 
-    console.log('borked');
-
     if (_testButton) {
         _testButton.on('click', function () {
             test_api_connection();
