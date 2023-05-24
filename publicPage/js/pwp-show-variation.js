@@ -23,7 +23,8 @@
 
 (function ($) {
     ('use strict');
-    const buttonText = setAddToCartLabel();
+    const { __, _x, _n, _nx } = wp.i18n;
+    const buttonText = __('add to cart', 'woocommerce');
 
     /** EVENTS */
     // Event: when a variation is selected
@@ -71,7 +72,7 @@
             action: 'Ajax_Show_Variation',
             _ajax_nonce: Ajax_Show_Variation_object.nonce,
         };
-        let fallbackAddToCartLabel = setAddToCartLabel();
+        let fallbackAddToCartLabel = __('add to cart', 'woocommerce');
 
         $.ajax({
             url: Ajax_Show_Variation_object.ajax_url,
@@ -81,7 +82,7 @@
             dataType: 'json',
             beforeSend: function () {
                 console.log('working...');
-                disableAddToCartButton(getLoadingMsg());
+                disableAddToCartButton(__('loading', 'peleman-webshop-package'));
             },
             complete: function () {
                 console.log('completed');
@@ -93,7 +94,6 @@
                         showCallUsTextAndButton();
                         return;
                     }
-                    // showUnitPrice(response.data.bundleObject);
                     var buttonText = response.data.button_text ?? fallbackAddToCartLabel;
 
                     if (response.data.f2dArtCode) {
@@ -148,17 +148,10 @@
 
     // when showing a (new) variation, all previous elements need to be cleared or hidden
     function initRefreshVariantElements() {
-        // display loading animation
         ShowElement($('#pwp-loading'));
-        // clear any old upload information
-        // $('#pwp-file-upload').val('');
-        // hide the ever present max upload file size
         HideElement($('#max-upload-size'));
-        // disable add-to-cart btn
         disableElement($('.single_add_to_cart_button'));
-        // hide upload button
         HideElement($('.pwp-upload-form'));
-        // hide upload parameters block
         HideElement($('.pwp-upload-parameters'));
 
         $('.single_variation_wrap').show();
@@ -168,13 +161,11 @@
         HideElement($('#call-us-btn'));
         HideElement($('#call-us-price'));
 
-        // article code
         HideElement($('span.article-code-container'));
         console.log("foo!");
     }
 
     function displayArticleCode(articleCode) {
-        // $('.article-code').remove();
         if (articleCode) {
             console.log(articleCode);
             $('.article-code').html(articleCode);
@@ -259,60 +250,6 @@
         $('#pwp-file-upload').prop('required', false);
     }
 
-    function setAddToCartLabel() {
-        const language = getSiteLanguage();
-
-        switch (language) {
-            case 'en':
-            default:
-                return 'Add to cart';
-            case 'nl':
-                return 'Voeg toe aan winkelmand';
-            case 'fr':
-                return 'Ajouter au panier';
-            case 'de':
-                return 'In den Warenkorb legen';
-            case 'it':
-                return 'Aggiungi al carrello';
-            case 'es':
-                return 'Añadir al carrito';
-        }
-    }
-
-    function getLoadingMsg() {
-        const lang = getSiteLanguage();
-
-        switch (lang) {
-            case 'en':
-            default:
-                return 'loading...';
-            case 'nl':
-                return 'laden...';
-            case 'fr':
-                return 'chargement...';
-            case 'de':
-                return 'laden...'
-            case 'it':
-                return 'caricamento...';
-            case 'es':
-                return 'carga...';
-
-        }
-    }
-
-    function getSiteLanguage() {
-        var userlang = navigator.language;
-        if (userlang !== null) { return userlang.split("_")[0]; }
-        const cookies = document.cookie;
-        const cookieArray = cookies.split(';');
-        for (const cookie of cookieArray) {
-            if (cookie.startsWith(' wp-wpml_current_language=')) {
-                return cookie.slice(-2);
-            }
-        }
-        return 'en';
-    }
-
     function enableAddToCartButton(addToCartLabel = '') {
         enableElement($('.single_add_to_cart_button'));
         $('.single_add_to_cart_button').html(
@@ -350,46 +287,6 @@
         );
     }
 
-    function showUnitPrice(bundleObject) {
-        return;
-        const {
-            bundlePriceExists,
-            bundlePriceWithCurrencySymbol,
-            priceSuffix,
-            bundleSuffix,
-            individualPriceWithCurrencySymbol,
-        } = bundleObject;
-
-        // hide individual price
-        $('.individual-price').addClass('pwp-hidden');
-        if (!bundlePriceExists) {
-            $('.add-to-cart-price span.price-amount').html(
-                individualPriceWithCurrencySymbol
-            );
-            $('.add-to-cart-price span.woocommerce-price-suffix').html(
-                priceSuffix
-            );
-        } else {
-            $('.individual-price').removeClass('pwp-hidden');
-            $('.add-to-cart-price span.price-amount').html(
-                bundlePriceWithCurrencySymbol
-            );
-            $('.add-to-cart-price span.woocommerce-price-suffix').html(
-                priceSuffix +
-                '<span class="bundle-suffix">' +
-                bundleSuffix +
-                '</span>'
-            );
-
-            $('.individual-price span.price-amount').html(
-                individualPriceWithCurrencySymbol
-            );
-            $('.individual-price span.woocommerce-price-suffix').html(
-                priceSuffix
-            );
-        }
-    }
-
     function resetUnitPrice() {
         HideElement($('.cart-unit-block'));
         $('.individual-price-text').html();
@@ -408,10 +305,6 @@
     }
 
     function HandleExtraDataField(fieldData) {
-
-        console.log(fieldData);
-        // var elements = [];
-        // var elements = elements.concat($('.' + fieldData['target_class']), $('#' + fieldData['target_id']));
         var elements = $('.' + fieldData['target_class']);
         var show = fieldData['show_element'] ?? null;
         var innerHtml = fieldData['inner_html'];

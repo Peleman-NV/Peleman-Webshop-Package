@@ -9,10 +9,13 @@ use Smalot\PdfParser\Parser;
 
 class PDF_Factory
 {
-    private const USER_UNIT = 0.3528;
-    public function __construct()
-    {
-    }
+    /**
+     * @var float
+     * User space unit conversion in mm
+     * 
+     * user space units represent 1/72nd of an inch according to PDF specification.
+     */
+    private const USER_SPACE_UNIT = 0.3527777;
 
     public static function generate_from_upload(array $upload): PDF_Upload
     {
@@ -23,15 +26,13 @@ class PDF_Factory
         $pageCount = count($file->getPages());
         $pageDetails = $file->getPages()[0]->getDetails();
 
-        $rightBound = $pageDetails['MediaBox'][0];
-        $topBound = $pageDetails['MediaBox'][1];
-        $leftBound = $pageDetails['MediaBox'][2];
-        $bottomBound = $pageDetails['MediaBox'][3];
+        $rightBound     = $pageDetails['MediaBox'][0];
+        $topBound       = $pageDetails['MediaBox'][1];
+        $leftBound      = $pageDetails['MediaBox'][2];
+        $bottomBound    = $pageDetails['MediaBox'][3];
 
-        $width = ($leftBound - $rightBound) * self::USER_UNIT;
-        $height = ($bottomBound - $topBound) * self::USER_UNIT;
-
-        error_log(print_r($pageDetails, true));
+        $width = ($leftBound - $rightBound) * self::USER_SPACE_UNIT;
+        $height = ($bottomBound - $topBound) * self::USER_SPACE_UNIT;
 
         $pdf->set_page_count($pageCount);
         $pdf->set_dimensions($width, $height);

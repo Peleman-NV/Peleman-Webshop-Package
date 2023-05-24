@@ -29,7 +29,6 @@ class Add_PDF_Prices_To_Cart extends Abstract_Action_Hookable
             return;
         }
 
-
         $pdfData = $cartItem['_pdf_data'];
 
         //update product price with pdf price if applicable
@@ -41,14 +40,11 @@ class Add_PDF_Prices_To_Cart extends Abstract_Action_Hookable
             $pages = $pdfData['pages'];
             $pricePerPage = $meta->get_price_per_page();
 
-            error_log("product price: " . $product->get_price());
-            error_log("price per page: " . $pricePerPage);
             $args = [
                 'qty' => $quantity,
                 'price' => (float)$originalProduct->get_price() + ($pages * $pricePerPage * $unitAmount)
             ];
             $price = wc_get_price_including_tax($product, $args);
-            error_log("calculated price: " . $price);
             $product->set_price($price);
         }
     }

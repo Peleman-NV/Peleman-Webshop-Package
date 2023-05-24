@@ -6,6 +6,7 @@ namespace PWP\includes\editor;
 
 class Product_Meta_Data extends Product_Meta
 {
+    #region constants
     public const EDITOR_ID_KEY          = 'pwp_editor_id';
     public const CUSTOM_LABEL_KEY       = 'custom_variation_add_to_cart_label';
     public const F2D_ARTICLE_CODE       = 'f2d_artcd';
@@ -24,7 +25,9 @@ class Product_Meta_Data extends Product_Meta
     public const OVERRIDE_CART_THUMB    = 'pwp_override_cart_thumb';
 
     public const VAR_PREFIX = "var_";
+    #endregion
 
+    #region variables
     private bool $customizable;
     private string $editorId;
     private string $customAddToCartLabel;
@@ -44,22 +47,25 @@ class Product_Meta_Data extends Product_Meta
     private bool $overrideThumb;
 
     public ?Product_PIE_Data $pieData;
+    #endregion
 
     public function __construct(\WC_Product $product)
     {
         parent::__construct($product);
 
-        $this->editorId             = $this->parent->get_meta(self::EDITOR_ID_KEY) ?: '';
+        $this->editorId             = (string)$this->parent->get_meta(self::EDITOR_ID_KEY) ?: '';
         $this->customizable         = !empty($this->editorId);
         $this->usePDFContent        = $this->parse_nonbool_value($this->parent->get_meta(self::USE_PDF_CONTENT_KEY));
-        $this->customAddToCartLabel = $this->parent->get_meta(self::CUSTOM_LABEL_KEY) ?: '';
+        $this->customAddToCartLabel = (string)$this->parent->get_meta(self::CUSTOM_LABEL_KEY) ?: '';
 
         $this->cartUnits            = (int)$this->parent->get_meta(self::UNIT_AMOUNT) ?: 1;
         $this->cartPrice            = (float)$this->parent->get_meta(self::UNIT_PRICE) ?: 0.00;
-        $this->unitCode             = $this->parent->get_meta(self::UNIT_CODE) ?: '';
-        $this->articleCode          = $this->parent->get_meta(self::F2D_ARTICLE_CODE ?: '');
+        $this->unitCode             = (string)$this->parent->get_meta(self::UNIT_CODE) ?: '';
+        $this->articleCode          = (string)$this->parent->get_meta(self::F2D_ARTICLE_CODE ?: '');
 
+        //defaults to A4 height
         $this->pdfHeight            = (int)$this->parent->get_meta(self::PDF_HEIGHT_KEY) ?: 297;
+        //defaults to A4 width
         $this->pdfWidth             = (int)$this->parent->get_meta(self::PDF_WIDTH_KEY) ?: 210;
         $this->maxPages             = (int)$this->parent->get_meta(self::PDF_MAX_PAGES_KEY) ?: 1;
         $this->minPages             = (int)$this->parent->get_meta(self::PDF_MIN_PAGES_KEY) ?: 1;
@@ -69,6 +75,7 @@ class Product_Meta_Data extends Product_Meta
         $this->pieData              = null;
     }
 
+    #region getters-setters
     public function set_uses_pdf_content(bool $usePDFContent): self
     {
         $this->usePDFContent = $usePDFContent;
@@ -227,6 +234,7 @@ class Product_Meta_Data extends Product_Meta
         }
         return $this->pieData;
     }
+    #endregion
 
     public function update_meta_data(): void
     {
@@ -258,7 +266,13 @@ class Product_Meta_Data extends Product_Meta
         $this->parent->save_meta_data();
     }
 
-    public function parse_nonbool_value($val)
+    /**
+     * Helper method to parse non-boolean values passed through legacy API.
+     *
+     * @param mixed $val
+     * @return bool
+     */
+    private function parse_nonbool_value($val): bool
     {
         switch ($val) {
             case 'no':
