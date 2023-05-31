@@ -10,26 +10,26 @@ class Editor_Submenu extends Admin_Menu
 {
     public function __construct(string $page_slug)
     {
-        parent::__construct('Editor', 'pwp_settings_editors', $page_slug);
+        parent::__construct('Editor', 'pwp-editor-options-group', $page_slug);
     }
 
     public function register_settings(): void
     {
-        register_setting('pwp-editor-options-group', 'pie_domain', array(
+        register_setting($this->option_group, 'pie_domain', array(
             'type' => 'string',
             'description' => 'base Site Address of the PIE editor',
             'sanitize_callback' => 'esc_url_raw',
             'show_in_rest' => false,
             'default' => ''
         ));
-        register_setting('pwp-editor-options-group', 'pie_customer_id', array(
+        register_setting($this->option_group, 'pie_customer_id', array(
             'type' => 'string',
             'description' => 'customer id for the PIE Editor',
             'sanitize_callback' => 'wp_filter_nohtml_kses',
             'show_in_rest' => false,
             'default' => ''
         ));
-        register_setting('pwp-editor-options-group', 'pie_api_key', array(
+        register_setting($this->option_group, 'pie_api_key', array(
             'type' => 'string',
             'description' => 'customer api key for PIE Editor',
             'sanitize_callback' => 'wp_filter_nohtml_kses',
@@ -37,7 +37,7 @@ class Editor_Submenu extends Admin_Menu
             'default' => ''
         ));
 
-        register_setting('pwp-editor-options-group', 'pwp_cleanup_projects', array(
+        register_setting($this->option_group, 'pwp_cleanup_projects', array(
             'type' => 'bool',
             'description' => 'Wether the system should automatically clean up PDF files.',
             'sanitize_callback' => 'esc_url_raw',
@@ -52,7 +52,7 @@ class Editor_Submenu extends Admin_Menu
     private function add_menu_components(): void
     {
         add_settings_section(
-            $this->option_group,
+            'pwp_settings_editors',
             __("Editor", 'Peleman-Webshop-Package'),
             null,
             $this->page_slug,
