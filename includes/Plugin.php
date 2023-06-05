@@ -56,6 +56,7 @@ use PWP\publicPage\hookables\Apply_Unit_Prices_To_Cart;
 use PWP\publicPage\hookables\Change_Add_To_Cart_Archive_Button;
 use PWP\publicPage\hookables\Change_Checkout_Item_Thumbnail;
 use PWP\publicPage\hookables\Display_Editor_Project_Button_In_Cart;
+use PWP\publicPage\hookables\Display_PIE_Project_Thumbnail;
 use PWP\publicPage\hookables\Modify_Cart_Item_Before_Calculate_Totals;
 use PWP\publicPage\hookables\Save_Cart_Item_Meta_To_Order_Item_Meta;
 
@@ -186,6 +187,7 @@ final class Plugin
 
         $this->add_hookables(
             new Display_Order_Tracking_On_Customer_Order(7),
+            new Display_PIE_Project_Thumbnail(),
         );
 
         /* ADDITIONAL ACTIONS & FILTERS */
