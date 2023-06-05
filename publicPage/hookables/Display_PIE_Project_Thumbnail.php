@@ -28,6 +28,7 @@ class Display_PIE_Project_Thumbnail extends Abstract_Action_Hookable
         $img .= "srcset='" . esc_url($sourceSetImage) . "' ";
         $img .= $altText    ? "alt='{$altText}' "   : '';
         $img .= $height     ? "height='{$height}' " : '';
+        $img .= $width      ? "width='{$width}' " : '';
         $img .= $classes    ? "class='" . esc_attr(implode(' ', $classes)) . "' " : '';
         $img . '>';
 
