@@ -57,8 +57,10 @@ use PWP\publicPage\hookables\Change_Add_To_Cart_Archive_Button;
 use PWP\publicPage\hookables\Change_Checkout_Item_Thumbnail;
 use PWP\publicPage\hookables\Display_Editor_Project_Button_In_Cart;
 use PWP\publicPage\hookables\Display_PIE_Project_Thumbnail;
+use PWP\publicPage\hookables\Generate_PIE_Edit_URL;
 use PWP\publicPage\hookables\Modify_Cart_Item_Before_Calculate_Totals;
 use PWP\publicPage\hookables\Save_Cart_Item_Meta_To_Order_Item_Meta;
+use PWP\publicPage\hookables\Update_PIE_Project_Return_URL;
 
 #endregion
 
@@ -135,6 +137,13 @@ final class Plugin
 
     private function public_hooks(): void
     {
+        /* ADDITIONAL ACTIONS & FILTERS */
+        $this->add_hookables(
+            new Get_PDF_Project_Data(),
+            new Update_PIE_Project_Return_URL(),
+            new Generate_PIE_Edit_URL(),
+        );
+
         $this->add_hookables(
             new Ajax_Verify_PIE_Editor_Credentials(6),
             new Cleanup_Unordered_Projects(),
@@ -189,9 +198,6 @@ final class Plugin
             new Display_Order_Tracking_On_Customer_Order(7),
             new Display_PIE_Project_Thumbnail(),
         );
-
-        /* ADDITIONAL ACTIONS & FILTERS */
-        $this->add_hookables(new Get_PDF_Project_Data());
     }
 
     private function api_endpoints(): void

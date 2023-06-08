@@ -29,10 +29,8 @@ class PIE_Project extends Editor_Project
         $params['customerapikey'] = get_option('pie_api_key');
         $params['lang'] = $this->get_editor_lang();
 
-        $url = get_option('pie_domain') . "/editor/upload";
-        $url .= "?projectid={$id}";
+        $url = apply_filters('pwp_generate_pie_project_url', '', $id, $params);
 
-        $url .= '&' . http_build_query($params);
         return $url;
     }
 
