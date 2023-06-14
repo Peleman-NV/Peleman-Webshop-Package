@@ -36,5 +36,12 @@ class Get_PDF_File_From_Project extends Abstract_Filter_Hookable
         );
 
         return $data;
+
+        /**
+         * Example use:
+         * $data = apply_filters('pwp_get_project_pdf_data', [], $project_id);
+         * $path = $data['path'];
+         * $filename = $data['name'];
+         */
     }
 }
