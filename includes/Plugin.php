@@ -58,6 +58,7 @@ use PWP\publicPage\hookables\Change_Checkout_Item_Thumbnail;
 use PWP\publicPage\hookables\Display_Editor_Project_Button_In_Cart;
 use PWP\publicPage\hookables\Display_PIE_Project_Thumbnail;
 use PWP\publicPage\hookables\Generate_PIE_Edit_URL;
+use PWP\publicPage\hookables\Get_PDF_File_From_Project;
 use PWP\publicPage\hookables\Modify_Cart_Item_Before_Calculate_Totals;
 use PWP\publicPage\hookables\Save_Cart_Item_Meta_To_Order_Item_Meta;
 use PWP\publicPage\hookables\Update_PIE_Project_Return_URL;
@@ -142,6 +143,7 @@ final class Plugin
             new Get_PDF_Project_Data(),
             new Update_PIE_Project_Return_URL(),
             new Generate_PIE_Edit_URL(),
+            new Get_PDF_File_From_Project()
         );
 
         $this->add_hookables(

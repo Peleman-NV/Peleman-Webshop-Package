@@ -11,21 +11,28 @@ class Get_PDF_File_From_Project extends Abstract_Filter_Hookable
 {
     public function __construct(int $priority = 1)
     {
-        parent::__construct('pwp_get_project_pdf_data', 'get_pdf_data', $priority);
+        parent::__construct('pwp_get_project_pdf_data', 'get_pdf_data', $priority, 2);
     }
 
     public function get_pdf_data(?array $data, int $projectId = 0): ?array
     {
+        error_log("project Id: {$projectId}");
         if (!$projectId) {
+            $data['error'] = 'invalid project ID';
+            error_log($data['error']);
             return $data;
         }
         $project = Project::get_by_id($projectId);
         if (!$project) {
+            $data['error'] = 'invalid project ID';
+            error_log($data['error']);
             return $data;
         }
 
         $path = PWP_UPLOAD_DIR . $project->get_path();
         if (!file_exists($path)) {
+            $data['error'] = 'PWP Project refers to incorrect file path.';
+            error_log($data['error']);
             return $data;
         }
         $name = $project->get_file_name();
@@ -36,12 +43,5 @@ class Get_PDF_File_From_Project extends Abstract_Filter_Hookable
         );
 
         return $data;
-
-        /**
-         * Example use:
-         * $data = apply_filters('pwp_get_project_pdf_data', [], $project_id);
-         * $path = $data['path'];
-         * $filename = $data['name'];
-         */
     }
 }
