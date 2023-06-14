@@ -28,7 +28,7 @@
                 return;
             }
 
-            if (file.size > 8000000) {
+            if (file.size > 80000000) {
                 alert(__('File size exceeds') + ' 80MB');
                 return;
             }

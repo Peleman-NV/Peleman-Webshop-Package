@@ -215,7 +215,6 @@ final class Plugin
         if (!\is_plugin_active('woocommerce/woocommerce.php')) {
             $this->noticePoster->new_warning_notice("{$this->plugin_name} needs Woocommerce to function properly!", true);
         }
-
         return true;
     }
 
