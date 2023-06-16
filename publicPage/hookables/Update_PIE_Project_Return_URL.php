@@ -20,19 +20,28 @@ class Update_PIE_Project_Return_URL extends Abstract_Action_Hookable
 
     public function update_return_url(string $project_id, string $target_url): void
     {
+        $domain =  get_option('pie_domain');
         $apiKey = get_option('pie_api_key');
-        $customerId = get_option('pie_customer_id');
+        $params = array(
+            'projectid' => $project_id,
+            'type'      => 'setreturnurl',
+            'value'     => $target_url,
+        );
 
-        $url =  get_option('pie_domain');
-        $url .= "/editor/api/setprojectreturnurl.php";
-        $url .= "?projectid={$project_id}";
+        $url = $domain . "/editor/api/projectfileAPI.php?";
+        $url .= http_build_query($params);
 
-        $result = wp_remote_get($url, array('headers' => array(
-            'HTTP_REFERER' => $target_url,
-            "PIEAPIKEY" => $apiKey,
-        )));
-        error_log("set project return url results: " . print_r($result, true));
+        $headers = array(
+            'PIEAPIKEY' => $apiKey,
+        );
 
-        // do_action('pwp_update_pie_project_return_url', '1256d5454', 'my.site.be/here');
+        $result = wp_remote_get(
+            $url,
+            array('headers' => $headers)
+        );
+
+        if (is_wp_error($result)) {
+            error_log($result->get_error_message());
+        }
     }
 }

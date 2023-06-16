@@ -12,6 +12,7 @@ use PWP\includes\editor\Product_PIE_Data;
 use PWP\includes\editor\PIE_Project;
 use PWP\includes\exceptions\Invalid_Response_Exception;
 use PWP\includes\hookables\abstracts\Abstract_Ajax_Hookable;
+use PWP\includes\utilities\PDF_Factory;
 
 /**
  * AJAX method which handles add to cart requests. If the product being added to the cart requires customization,
@@ -47,60 +48,17 @@ class Ajax_Add_To_Cart extends Abstract_Ajax_Hookable
             $productId      = apply_filters('woocommerce_add_to_cart_product_id', sanitize_key($_REQUEST['product_id']));
             $variationId    = apply_filters('woocommerce_add_to_cart_product_id', sanitize_key($_REQUEST['variation_id']));
             $product        = wc_get_product($variationId ?: $productId);
-            $productMeta     = new Product_Meta_Data($product);
+            $productMeta    = new Product_Meta_Data($product);
             $quantity       = wc_stock_amount((float)$_REQUEST['quantity'] ?: 1);
-            $redirectUrl = '';
+            $redirectUrl    = '';
 
             if (apply_filters('woocommerce_add_to_cart_validation', true, $productId, $quantity, $variationId)) {
                 wc_clear_notices();
+                //store relevant data in session
                 if ($productMeta->is_customizable()) {
-
-                    $transientId = uniqid('pwpproj-');
-
-                    $continueUrl = wc_get_cart_url() . "?CustProj={$transientId}";
-                    $cancelUrl = get_permalink($product->get_id());
-                    $redirectUrl = '';
-
-                    $projectData = $this->generate_new_project($productMeta, $continueUrl, $cancelUrl);
-
-                    $itemData = array(
-                        'product_id'    => $productId,
-                        'quantity'      => $quantity,
-                        'variation_id'  => $variationId,
-                        'item_meta'     => array(
-                            '_editor_id'    => $projectData->get_editor_id(),
-                            '_project_id'   => $projectData->get_project_id(),
-                        )
-                    );
-
-                    //store relevant data in transients
-                    /**
-                     * @var array $itemData array of data to be stored in the session until user returns
-                     * @var \WC_Product $product product which is to be stored
-                     * @var Product_Meta_Data $productMeta product meta data object
-                     */
-                    $itemData['item_meta'] = apply_filters(
-                        'pwp_add_cart_item_data',
-                        $itemData['item_meta'],
-                        $product,
-                        $productMeta,
-                    );
-
-                    //transient expires in 30 days
-                    set_transient($transientId, $itemData, 30 * 86400);
-
-                    // error_log(print_r($projectData->get_project_editor_url(false), true));
-                    wp_send_json_success(
-                        array(
-                            'message' => __('external project created, redirecting user to editor for customization...', 'Peleman-Webshop-Package'),
-                            'destination_url' => $projectData->get_project_editor_url(false),
-                        ),
-                        201
-                    );
-                    return;
+                    $this->setup_custom_project($productMeta, $productId, $variationId, $quantity);
                 }
 
-                //store relevant data in session
                 $meta = apply_filters(
                     'pwp_add_cart_item_data',
                     array(),
@@ -176,6 +134,7 @@ class Ajax_Add_To_Cart extends Abstract_Ajax_Hookable
                 return null;
         }
     }
+
     /**
      * generate a new project for the Peleman Image Editor
      *
@@ -214,5 +173,44 @@ class Ajax_Add_To_Cart extends Abstract_Ajax_Hookable
         if (!empty($_FILES)) {
             error_log(__CLASS__ . "\r\nuploaded files : " . print_r($_FILES, true));
         }
+    }
+
+    private function setup_custom_project(Product_Meta_Data $productMeta, int $productId, int $variationId, int $quantity)
+    {
+        $transientId = uniqid('pwpproj-');
+
+        $continueUrl = wc_get_cart_url() . "?CustProj={$transientId}";
+        $cancelUrl = get_permalink();
+
+        $projectData = $this->generate_new_project($productMeta, $continueUrl, $cancelUrl);
+
+        $itemData = array(
+            'product_id'    => $productId,
+            'quantity'      => $quantity,
+            'variation_id'  => $variationId,
+            'item_meta'     => array(
+                '_editor_id'    => $projectData->get_editor_id(),
+                '_project_id'   => $projectData->get_project_id(),
+            )
+        );
+
+        $itemData['item_meta'] = apply_filters(
+            'pwp_add_cart_item_data',
+            $itemData['item_meta'],
+            $productMeta->get_parent(),
+            $productMeta,
+        );
+
+        //transient expires in 30 days
+        set_transient($transientId, $itemData, 30 * 86400);
+
+        // error_log(print_r($projectData->get_project_editor_url(false), true));
+        wp_send_json_success(
+            array(
+                'message' => __('external project created, redirecting user to editor for customization...', 'Peleman-Webshop-Package'),
+                'destination_url' => $projectData->get_project_editor_url(false),
+            ),
+            201
+        );
     }
 }

@@ -162,6 +162,7 @@ class New_PIE_Project_Request extends Abstract_PIE_Request
 
     protected function generate_request_body(): array
     {
+
         $request = array(
             'customerid'            => $this->get_customer_id(),
             'customerapikey'        => $this->get_api_key(),
@@ -176,6 +177,9 @@ class New_PIE_Project_Request extends Abstract_PIE_Request
             'projectname'           => $this->projectName,
             'returnurl'             => $this->returnUrl,
         );
+
+
+        $request = apply_filters('pwp_new_pie_project_request_params', $request, $this->editorData->get_parent());
         return $request;
     }
 }

@@ -25,7 +25,7 @@ class Add_PDF_Data_To_Cart_Item extends Abstract_Filter_Hookable
 
     public function add_PDF_to_cart_item(array $data, \WC_Product $product, Product_Meta_Data $meta): array
     {
-        if (!$meta->uses_pdf_content())
+        if (!$meta->uses_pdf_content() || !isset($_FILES['upload']))
             return $data;
 
         $fileArr = $_FILES['upload'];
@@ -35,7 +35,7 @@ class Add_PDF_Data_To_Cart_Item extends Abstract_Filter_Hookable
             // Undefined | Multiple Files | $_FILES Corruption Attack
             // If this request falls under any of them, treat it invalid.
 
-            if ('application/pdf' == $fileArr['type'] && 0 === $fileArr['error']) {
+            if ('application/pdf' === $fileArr['type'] && 0 === $fileArr['error']) {
 
                 if (4 === $fileArr['error']) {
                     wp_die('something went wrong with the file upload', 'upload failure');
