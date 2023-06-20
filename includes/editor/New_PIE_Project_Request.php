@@ -46,6 +46,8 @@ class New_PIE_Project_Request extends Abstract_PIE_Request
     private string $projectName;
     private string $returnUrl;
 
+    private array $params;
+
     private string $formatId;
     #endregion
 
@@ -70,6 +72,7 @@ class New_PIE_Project_Request extends Abstract_PIE_Request
         $this->returnUrl = '';
 
         $this->formatId = '';
+        $this->params = [];
 
         $this->set_GET();
     }
@@ -160,6 +163,18 @@ class New_PIE_Project_Request extends Abstract_PIE_Request
         return new PIE_Project($this->editorData, $responseBody);
     }
 
+    /**
+     * Undocumented function
+     *
+     * @param string $key
+     * @param mixed $value
+     * @return void
+     */
+    public function add_request_parameter(string $key, $value): void
+    {
+        $this->params[$key] = $value;
+    }
+
     protected function generate_request_body(): array
     {
 
@@ -178,8 +193,14 @@ class New_PIE_Project_Request extends Abstract_PIE_Request
             'returnurl'             => $this->returnUrl,
         );
 
+        $request += $this->params;
 
-        $request = apply_filters('pwp_new_pie_project_request_params', $request, $this->editorData->get_parent());
+        $request = apply_filters(
+            'pwp_new_pie_project_request_params',
+            $request,
+            $this->editorData->get_parent(),
+            $this->editorData
+        );
         return $request;
     }
 }

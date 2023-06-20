@@ -12,7 +12,6 @@ use PWP\includes\editor\Product_PIE_Data;
 use PWP\includes\editor\PIE_Project;
 use PWP\includes\exceptions\Invalid_Response_Exception;
 use PWP\includes\hookables\abstracts\Abstract_Ajax_Hookable;
-use PWP\includes\utilities\PDF_Factory;
 
 /**
  * AJAX method which handles add to cart requests. If the product being added to the cart requires customization,
@@ -46,7 +45,7 @@ class Ajax_Add_To_Cart extends Abstract_Ajax_Hookable
             //find and store all relevant variables
             //first, read and interpret data from request
             $productId      = apply_filters('woocommerce_add_to_cart_product_id', sanitize_key($_REQUEST['product_id']));
-            $variationId    = apply_filters('woocommerce_add_to_cart_product_id', sanitize_key($_REQUEST['variation_id']));
+            $variationId    = apply_filters('woocommerce_add_to_cart_product_id', sanitize_key($_REQUEST['variation_id'])) ?: $productId;
             $product        = wc_get_product($variationId ?: $productId);
             $productMeta    = new Product_Meta_Data($product);
             $quantity       = wc_stock_amount((float)$_REQUEST['quantity'] ?: 1);
@@ -56,7 +55,7 @@ class Ajax_Add_To_Cart extends Abstract_Ajax_Hookable
                 wc_clear_notices();
                 //store relevant data in session
                 if ($productMeta->is_customizable()) {
-                    $this->setup_custom_project($productMeta, $productId, $variationId, $quantity);
+                    $this->setup_custom_project($productMeta, (int)$productId, (int)$variationId, $quantity);
                 }
 
                 $meta = apply_filters(
@@ -66,7 +65,8 @@ class Ajax_Add_To_Cart extends Abstract_Ajax_Hookable
                     $productMeta,
                 );
 
-                if (WC()->cart->add_to_cart($productId, $quantity, $variationId, array(), $meta)) {
+                $itemKey = WC()->cart->add_to_cart($productId, $quantity, $variationId, array(), $meta);
+                if ($itemKey) {
                     do_action('woocommerce_ajax_added_to_cart', $productId);
 
                     if (boolval(get_option('woocommerce_cart_redirect_after_add'))) {
@@ -124,12 +124,12 @@ class Ajax_Add_To_Cart extends Abstract_Ajax_Hookable
      * @param string $cancelURL url to which the editor will return the user if the user cancels their project.
      * @return Editor_Project|null wil return a Editor_Project object if successful. if the method can not determine a valid editor, will return null.
      */
-    public function generate_new_project(Product_Meta_Data $data, string $returnURL = '', string $cancelURL = ''): ?Editor_Project
+    public function generate_new_project(Product_Meta_Data $data, string $returnURL = '', string $cancelURL = '', array $params = []): ?Editor_Project
     {
         // error_log($data->get_editor_id());
         switch ($data->get_editor_id()) {
             case Product_PIE_Data::MY_EDITOR:
-                return $this->new_PIE_Project($data->pie_data(), $returnURL ?: site_url());
+                return $this->new_PIE_Project($data->pie_data(), $returnURL ?: site_url(), $params);
             default:
                 return null;
         }
@@ -142,7 +142,7 @@ class Ajax_Add_To_Cart extends Abstract_Ajax_Hookable
      * @param string $continueUrl when the user has completed their project, they will be redirected to this URL
      * @return PIE_Project project object
      */
-    private function new_PIE_Project(Product_PIE_Data $data, string $continueUrl): PIE_Project
+    private function new_PIE_Project(Product_PIE_Data $data, string $continueUrl, array $params): PIE_Project
     {
         $instructions = new PIE_Editor_Instructions($data->get_parent());
         $request = new New_PIE_Project_Request(
@@ -156,6 +156,9 @@ class Ajax_Add_To_Cart extends Abstract_Ajax_Hookable
         $request->set_language($this->get_site_language() ?: 'en');
         $request->set_project_name($data->get_parent()->get_name());
         $request->set_timeout(10);
+        foreach ($params as $param => $value) {
+            $request->add_request_parameter($param, $value);
+        }
         return $request->make_request();
     }
 
@@ -177,29 +180,36 @@ class Ajax_Add_To_Cart extends Abstract_Ajax_Hookable
 
     private function setup_custom_project(Product_Meta_Data $productMeta, int $productId, int $variationId, int $quantity)
     {
+        $meta = apply_filters(
+            'pwp_add_cart_item_data',
+            [],
+            $productMeta->get_parent(),
+            $productMeta,
+        );
+        $params = apply_filters(
+            'pwp_prepare_new_pie_project_params',
+            [],
+            $productMeta->get_parent(),
+            $quantity,
+            $meta
+        );
+
         $transientId = uniqid('pwpproj-');
-
         $continueUrl = wc_get_cart_url() . "?CustProj={$transientId}";
-        $cancelUrl = get_permalink();
+        $cancelUrl = get_permalink($variationId ?: $productId);
 
-        $projectData = $this->generate_new_project($productMeta, $continueUrl, $cancelUrl);
+        $projectData = $this->generate_new_project($productMeta, $continueUrl, $cancelUrl, $params);
 
+        $meta['_editor_id'] = $projectData->get_editor_id();
+        $meta['_project_id'] = $projectData->get_project_id();
         $itemData = array(
             'product_id'    => $productId,
             'quantity'      => $quantity,
             'variation_id'  => $variationId,
-            'item_meta'     => array(
-                '_editor_id'    => $projectData->get_editor_id(),
-                '_project_id'   => $projectData->get_project_id(),
-            )
+            'item_meta'     => $meta,
+
         );
 
-        $itemData['item_meta'] = apply_filters(
-            'pwp_add_cart_item_data',
-            $itemData['item_meta'],
-            $productMeta->get_parent(),
-            $productMeta,
-        );
 
         //transient expires in 30 days
         set_transient($transientId, $itemData, 30 * 86400);
