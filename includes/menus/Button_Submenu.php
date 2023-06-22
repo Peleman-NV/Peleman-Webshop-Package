@@ -45,7 +45,7 @@ class Button_Submenu extends Admin_Menu
         add_settings_section(
             'pwp_settings_buttons',
             __("Buttons", 'Peleman-Webshop-Package'),
-            array($this, ''),
+            array($this, 'do_nothing'),
             $this->page_slug,
         );
         add_settings_field(
@@ -72,5 +72,9 @@ class Button_Submenu extends Admin_Menu
                 'description' =>  __("label for customizable variable products", 'Peleman-Webshop-Package')
             )
         );
+    }
+
+    public function do_nothing(): void
+    {
     }
 }

@@ -33,6 +33,7 @@ class Update_PIE_Project_Return_URL extends Abstract_Action_Hookable
 
         $headers = array(
             'PIEAPIKEY' => $apiKey,
+            'RETURN_URL' => $target_url,
         );
 
         $result = wp_remote_get(
