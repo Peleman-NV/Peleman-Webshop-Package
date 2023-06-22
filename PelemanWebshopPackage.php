@@ -59,6 +59,4 @@ register_deactivation_hook(__FILE__, function () {
     $deactivator->deactivate();
 });
 
-// add_action('plugins_loaded', function () {
 Plugin::run();
-// }, 12, 0);
