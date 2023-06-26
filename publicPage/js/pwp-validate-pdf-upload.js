@@ -15,21 +15,23 @@
         const _canvas = _preview[0];
 
         const _currencyCode = $('#pwp-currency-code');
-        const _priceFormat = $('#pwp-price-format')
+        const _priceFormat = $('#pwp-price-format');
 
         var _pdf_doc;
         var _object_url;
 
         _upload.on('change', e => {
             var file = e.target.files[0];
+            var filesize = file.size;
+            var maxSize = _upload.attr('size') ?? 30000000;
             var mime_types = ['application/pdf'];
             if (mime_types.indexOf(file.type) == -1) {
                 alert(__('Incorrect file type.', 'peleman-webshop-package'));
                 return;
             }
 
-            if (file.size > 80000000) {
-                alert(__('File size exceeds') + ' 80MB');
+            if (filesize > maxSize) {
+                alert(__('File is too large and cannot be uploaded.', 'peleman-webshop-package'));
                 return;
             }
 
