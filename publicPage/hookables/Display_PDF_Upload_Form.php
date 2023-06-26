@@ -43,11 +43,13 @@ class Display_PDF_Upload_Form extends Abstract_Action_Hookable
     private function display_pdf_data_form(\WC_Product $product, bool $enabled = false): void
     {
         $meta = new Product_Meta_Data($product);
+        $size = (int)ini_get('upload_max_filesize');
+        $size_mb = $size * Validate_File_Size::MB;
         $params = array(
             'enabled' => $enabled,
             'button_label' => esc_html__('Click here to upload your PDF file', 'Peleman-Webshop-Package'),
-            'max_file_size' => '200 MB',
-            'size' => (int)ini_get('upload_max_filesize') * Validate_File_Size::MB,
+            'max_file_size' => "{$size} MB",
+            'size' => $size_mb,
             'pdf_width' => $meta->get_pdf_width() ? $meta->get_pdf_width() : '',
             'pdf_height' => $meta->get_pdf_height() ? $meta->get_pdf_height() : '',
             'pdf_min_pages' => $meta->get_pdf_min_pages() ? $meta->get_pdf_min_pages() : '',

@@ -89,7 +89,7 @@ class Variable_Product_Custom_Fields extends Abstract_Action_Hookable
                 'id' => $this->format_loop_id(Product_meta_data::F2D_ARTICLE_CODE),
                 'name' => $this->format_loop_id(Product_meta_data::F2D_ARTICLE_CODE),
                 'label' => __('Fly2Data article code', 'Peleman-Webshop-Package'),
-                'value' => $meta->get_f2d_article_code(),
+                'value' => $meta->get_f2d_article_code() ?: '',
                 'desc_tip' => true,
                 'description' =>  __('Fly2Data article code for this variation/product', 'Peleman-Webshop-Package'),
                 'wrapper_class' => 'form-row form-row-last pwp-form-row-padding-5',
