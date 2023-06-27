@@ -24,9 +24,17 @@ class Change_Add_To_Cart_Button_Label extends Abstract_Filter_Hookable
         $meta = new Product_Meta_Data($product);
         $customizable = $meta->is_customizable();
 
-        // error_log("is product customizable: " . ($customizable ? "yes" : "no"));
         if ($customizable) {
-            $default = $meta->get_custom_add_to_cart_label() ?: $default;
+            if (!empty($meta->get_custom_add_to_cart_label())) {
+                return $meta->get_custom_add_to_cart_label() ?: $default;
+            }
+            if ($product instanceof \WC_Product_Simple) {
+                error_log('is simple');
+                return (get_option('pwp_customize_label', '') ?: $default);
+            }
+            if ($product instanceof \WC_Product_Variation) {
+                return (get_option('pwp_archive_var_label', '') ?: $default);
+            }
         }
 
         return $default;

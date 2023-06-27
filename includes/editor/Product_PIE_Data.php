@@ -135,6 +135,7 @@ class Product_PIE_Data extends Product_Meta
         return $this;
     }
 
+
     public function parse_instruction_array_loop(array $instructions, int $loop): self
     {
         $this->editorInstructions->parse_instruction_array_loop($instructions, $loop);

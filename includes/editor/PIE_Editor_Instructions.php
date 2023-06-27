@@ -44,6 +44,8 @@ class PIE_Editor_Instructions extends Product_Meta
         $this->add_instruction('usesettings', 'use settings', true);
         $this->add_instruction('useshowcropzone', 'use show cropzone', true);
 
+        $this->add_Instruction('useautoflow', 'use auto flow', true);
+
         // $this->add_instruction('usedownloadpreview', 'use download preview');
         // $this->add_instruction('useopenfile', 'use open file');
         // $this->add_instruction('usedesignmode', 'use design mode');
