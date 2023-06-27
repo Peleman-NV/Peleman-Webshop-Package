@@ -36,7 +36,7 @@ class Add_Custom_Project_On_Return extends Abstract_Action_Hookable
                 // error_log("adding project to cart: " . print_r($data, true));
 
                 $productId      = (int)$data['product_id'];
-                $variationId    = (int)$data['variation_id'] ?: null;
+                $variationId    = (int)$data['variation_id'] ?: 0;
                 $quantity       = (int)$data['quantity'] ?: 1;
                 $product        = wc_get_product($variationId ?: $productId);
                 $variationArr   = [];
