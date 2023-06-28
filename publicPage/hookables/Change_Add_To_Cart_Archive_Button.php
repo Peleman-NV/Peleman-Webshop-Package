@@ -22,7 +22,7 @@ class Change_Add_To_Cart_Archive_Button extends Abstract_Filter_Hookable
     {
         $meta = new Product_Meta_Data($product);
 
-        if ($product->get_type() === 'variable' || $meta->uses_pdf_content() || $meta->is_editable()) {
+        if ($meta->uses_pdf_content() || $meta->is_editable()) {
             $label = $this->get_label($product, $meta);
             $label = __($label, 'Peleman-Webshop-Package');
             $redir = $product->get_permalink();
