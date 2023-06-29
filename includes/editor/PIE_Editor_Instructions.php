@@ -34,7 +34,7 @@ class PIE_Editor_Instructions extends Product_Meta
 
         $this->add_instruction('useimageupload', 'use image upload', true);
         $this->add_instruction('useelements', 'use elements', true);
-        $this->add_instruction('useexport', 'use export', false);
+        $this->add_Instruction('useartwork', 'use artwork', false);
 
         $this->add_instruction('usestockphotos', 'use stock photos', true);
         $this->add_instruction('useqr', 'use QR code', true);
@@ -44,7 +44,10 @@ class PIE_Editor_Instructions extends Product_Meta
         $this->add_instruction('usesettings', 'use settings', true);
         $this->add_instruction('useshowcropzone', 'use show cropzone', true);
 
-        $this->add_Instruction('useautoflow', 'use auto flow', true);
+        $this->add_Instruction('useautoflow', 'use auto flow', false);
+        $this->add_Instruction('usenotes', 'use notes', false);
+        $this->add_Instruction('usepagenavigator', 'use page navigator', false);
+
 
         // $this->add_instruction('usedownloadpreview', 'use download preview');
         // $this->add_instruction('useopenfile', 'use open file');

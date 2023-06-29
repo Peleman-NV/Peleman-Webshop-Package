@@ -14,9 +14,10 @@ use WC_Product;
  */
 class Change_Add_To_Cart_Button_Label extends Abstract_Filter_Hookable
 {
-    public function __construct()
+    public function __construct(int $priority = 10)
     {
-        parent::__construct('woocommerce_product_single_add_to_cart_text', 'change_add_to_cart_button_label', 10, 2);
+        parent::__construct('woocommerce_product_single_add_to_cart_text', 'change_add_to_cart_button_label', $priority, 2);
+        $this->add_hook('woocommerce_product_add_to_cart_text', $priority);
     }
 
     public function change_add_to_cart_button_label(string $default, WC_Product $product): string
@@ -25,16 +26,13 @@ class Change_Add_To_Cart_Button_Label extends Abstract_Filter_Hookable
         $customizable = $meta->is_customizable();
 
         if ($customizable) {
-            if (!empty($meta->get_custom_add_to_cart_label())) {
-                return $meta->get_custom_add_to_cart_label() ?: $default;
+            if ($meta->get_custom_add_to_cart_label()) {
+                return $meta->get_custom_add_to_cart_label();
             }
             if ($product instanceof \WC_Product_Simple) {
-                error_log('is simple');
                 return (get_option('pwp_customize_label', '') ?: $default);
             }
-            if ($product instanceof \WC_Product_Variation) {
-                return (get_option('pwp_archive_var_label', '') ?: $default);
-            }
+            return (get_option('pwp_archive_var_label', '') ?: $default);
         }
 
         return $default;
