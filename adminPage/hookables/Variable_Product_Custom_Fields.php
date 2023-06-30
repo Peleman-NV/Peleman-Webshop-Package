@@ -18,7 +18,6 @@ class Variable_Product_Custom_Fields extends Abstract_Action_Hookable
 {
     private int $loop;
     private string $loopSuffix = '';
-    private string $var_prefix = 'var_';
 
     public function __construct()
     {
@@ -463,6 +462,6 @@ class Variable_Product_Custom_Fields extends Abstract_Action_Hookable
 
     private function format_loop_id(string $id): string
     {
-        return $this->var_prefix . $id . $this->loopSuffix;
+        return $id . $this->loopSuffix;
     }
 }

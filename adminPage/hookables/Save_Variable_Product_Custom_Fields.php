@@ -68,11 +68,14 @@ class Save_Variable_Product_Custom_Fields extends Abstract_Action_Hookable
             ->parse_instruction_array_loop($post, $loop);
 
         $editor_data->update_meta_data();
+        $pie_data->save_meta_data();
+        error_Log(print_r($post, true));
+        error_log("editor instructions: " . $pie_data->get_editor_instruction_string());
         $editor_data->save_meta_data();
     }
 
     private function format_array_key(string $key): string
     {
-        return Product_Meta_Data::VAR_PREFIX . $key;
+        return $key;
     }
 }
