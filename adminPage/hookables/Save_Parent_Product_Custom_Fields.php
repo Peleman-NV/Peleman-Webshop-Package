@@ -43,6 +43,9 @@ class Save_Parent_Product_Custom_Fields extends Abstract_Action_Hookable
             ->set_uses_pdf_content(
                 isset($post[Product_Meta_Data::USE_PDF_CONTENT_KEY])
             )
+            ->set_pdf_size_check_enabled(
+                isset($post[Product_Meta_Data::PDF_SIZE_CHECK])
+            )
             ->set_pdf_max_pages((int)$post[Product_Meta_Data::PDF_MAX_PAGES_KEY])
             ->set_pdf_min_pages((int)$post[Product_Meta_Data::PDF_MIN_PAGES_KEY])
             ->set_pdf_height((int)$post[Product_Meta_Data::PDF_HEIGHT_KEY])

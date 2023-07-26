@@ -16,6 +16,7 @@ class Product_Meta_Data extends Product_Meta
     public const UNIT_CODE              = 'unit_code';
 
     public const USE_PDF_CONTENT_KEY    = 'pdf_upload_required';
+    public const PDF_SIZE_CHECK         = 'pdf_size_check';
     public const PDF_HEIGHT_KEY         = 'pdf_height_mm';
     public const PDF_WIDTH_KEY          = 'pdf_width_mm';
     public const PDF_MAX_PAGES_KEY      = 'pdf_max_pages';
@@ -37,7 +38,8 @@ class Product_Meta_Data extends Product_Meta
     private string $unitCode;
     private string $articleCode;
 
-    private bool $usePDFContent;
+    private bool $usePDFContent = false;
+    private bool $pdfSizeCheckEnabled = true;
     private int $pdfHeight;
     private int $pdfWidth;
     private int $maxPages;
@@ -56,6 +58,7 @@ class Product_Meta_Data extends Product_Meta
         $this->editorId             = (string)$this->parent->get_meta(self::EDITOR_ID_KEY) ?: '';
         $this->customizable         = !empty($this->editorId);
         $this->usePDFContent        = $this->parse_nonbool_value($this->parent->get_meta(self::USE_PDF_CONTENT_KEY));
+        $this->pdfSizeCheckEnabled = $this->parse_nonbool_value($this->parent->get_meta(self::PDF_SIZE_CHECK));
         $this->customAddToCartLabel = (string)$this->parent->get_meta(self::CUSTOM_LABEL_KEY) ?: '';
 
         $this->cartUnits            = (int)$this->parent->get_meta(self::UNIT_AMOUNT) ?: 1;
@@ -234,11 +237,27 @@ class Product_Meta_Data extends Product_Meta
         }
         return $this->pieData;
     }
+
+    public function set_pdf_size_check_enabled(bool $disabled = false): self
+    {
+        //we invert the input so working with the value in the front-end
+        //makes more sense.
+        $this->pdfSizeCheckEnabled = !$disabled;
+        return $this;
+    }
+
+    public function pdf_size_check_enabled(): bool
+    {
+        //we invert the input so working with the value in the front-end
+        //makes more sense.
+        return !$this->pdfSizeCheckEnabled;
+    }
     #endregion
 
     public function update_meta_data(): void
     {
         $this->parent->update_meta_data(self::USE_PDF_CONTENT_KEY, $this->usePDFContent ? 1 : 0);
+        $this->parent->update_meta_data(self::PDF_SIZE_CHECK, $this->pdfSizeCheckEnabled ? 1 : 0);
         $this->parent->update_meta_data(self::EDITOR_ID_KEY, $this->editorId);
         $this->parent->update_meta_data(self::CUSTOM_LABEL_KEY, $this->customAddToCartLabel);
 

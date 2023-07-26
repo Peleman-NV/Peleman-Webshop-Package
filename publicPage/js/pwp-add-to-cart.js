@@ -49,11 +49,14 @@
             beforeSend: function () {
                 $thisButton.removeClass('pwp-added')
                 $thisButton.addClass('pwp-loading');
+                $thisButton.attr("disabled",true);
                 showElement($('#pwp-loading'));
             },
             complete: function (response) {
                 $thisButton.addClass('pwp-added')
                 $thisButton.removeClass('pwp-loading');
+                $thisButton.attr("disabled",false);
+
                 hideElement($('#pwp-loading'));
                 console.log(response);
             },
@@ -91,10 +94,10 @@
     }
 
     function logAjaxError(jqXHR, textStatus, errorThrown) {
-        alert(textStatus);
-
-        console.log(jqXHR);
-        console.error(
+        console.log(jqXHR.responseText);
+        var response = JSON.parse(jqXHR.responseText);
+        alert(response.data.message);
+        console.log(
             'Something went wrong:\n' +
             jqXHR.status +
             ': ' +

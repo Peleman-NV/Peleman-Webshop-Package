@@ -15,7 +15,7 @@ class Generate_PIE_Edit_URL extends Abstract_Filter_Hookable
 
     public function generate_url(string $url, string $project_id, array $params = []): string
     {
-        $url = get_option('pie_domain');
+        $url = get_option('pie_domain', $url);
         $url .= "/editor/upload";
         $url .= "?projectid={$project_id}";
 

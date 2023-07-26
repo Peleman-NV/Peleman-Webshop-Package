@@ -63,7 +63,7 @@ class Ajax_Upload_PDF extends Abstract_Ajax_Hookable
             $pdf = $parser->parseFile($file->get_tmp_name());
             $pages = $pdf->getPages();
             $file->set_page_count(count($pages));
-            
+
             $page = $pages[0];
             $mediaBox = $page->getDetails()['MediaBox'];
 
@@ -145,12 +145,14 @@ class Ajax_Upload_PDF extends Abstract_Ajax_Hookable
             ->set_next(new Validate_File_PageCount(
                 $metaData->get_pdf_min_pages(),
                 $metaData->get_pdf_max_pages()
-            ))
-            ->set_next(new Validate_File_Dimensions(
+            ));
+        if (!$metaData->pdf_size_check_enabled()) {
+            $validator->set_next(new Validate_File_Dimensions(
                 $metaData->get_pdf_height(),
                 $metaData->get_pdf_width(),
                 5
             ));
+        }
 
         return $validator;
     }

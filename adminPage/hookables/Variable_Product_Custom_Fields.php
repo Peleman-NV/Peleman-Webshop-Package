@@ -384,9 +384,6 @@ class Variable_Product_Custom_Fields extends Abstract_Action_Hookable
             'placeholder' => wc_format_localized_decimal(0.000),
         ));
 
-
-
-
         woocommerce_wp_text_input(array(
             'id'            => $this->format_loop_id(Product_Meta_Data::PDF_MIN_PAGES_KEY),
             'name'          => $this->format_loop_id(Product_Meta_Data::PDF_MIN_PAGES_KEY),
@@ -406,38 +403,50 @@ class Variable_Product_Custom_Fields extends Abstract_Action_Hookable
         ));
 
         woocommerce_wp_text_input(array(
-            'id' => $this->format_loop_id(Product_Meta_Data::PDF_MAX_PAGES_KEY),
-            'name' => $this->format_loop_id(Product_Meta_Data::PDF_MAX_PAGES_KEY),
-            'label' => __('PDF Max Pages', 'Peleman-Webshop-Package'),
-            'value' => $meta->get_pdf_max_pages() ?: 1,
-            'desc_tip' => true,
-            'description' =>  __('Maximum number of pages allowed for PDF upload', 'Peleman-Webshop-Package'),
-            'class' => $required,
-            'wrapper_class' => 'form-row form-row-last pwp-form-row-padding-5',
-            'type' => 'number',
+            'id'                => $this->format_loop_id(Product_Meta_Data::PDF_MAX_PAGES_KEY),
+            'name'              => $this->format_loop_id(Product_Meta_Data::PDF_MAX_PAGES_KEY),
+            'label'             => __('PDF Max Pages', 'Peleman-Webshop-Package'),
+            'value'             => $meta->get_pdf_max_pages() ?: 1,
+            'desc_tip'          => true,
+            'description'       =>  __('Maximum number of pages allowed for PDF upload', 'Peleman-Webshop-Package'),
+            'class'             => $required,
+            'wrapper_class'     => 'form-row form-row-last pwp-form-row-padding-5',
+            'type'              => 'number',
             'custom_attributes' => array(
-                'step' => 1,
-                'min' => 1,
-                'max' => 1000
+                'step'              => 1,
+                'min'               => 1,
+                'max'               => 1000
             ),
-            'placeholder' => 1
+            'placeholder'       => 1
+        ));
+
+        woocommerce_wp_checkbox(array(
+            'id'                => $this->format_loop_id(Product_Meta_Data::PDF_SIZE_CHECK),
+            'name'              => $this->format_loop_id(Product_Meta_Data::PDF_SIZE_CHECK),
+            'label'             => __('Disable PDF format check', 'Peleman-Webshop-Package'),
+            'value'             => $meta->pdf_size_check_enabled() ? 'yes' : 'no',
+            'desc_tip'          => true,
+            'description'       => __('Enable/disable PDF size validation.', 'Peleman-Webshop-Package'),
+            'class'             => $required,
+            'wrapper_class'     => 'form-row form-row-first pwp-form-row-padding-5',
+            // 'custom_attributes' => array('foldout' => $custom2),
         ));
 
         woocommerce_wp_text_input(array(
-            'id' => $this->format_loop_id(Product_Meta_Data::PDF_WIDTH_KEY),
-            'name' => $this->format_loop_id(Product_Meta_Data::PDF_WIDTH_KEY),
-            'label' => __('PDF Format Width (mm)', 'Peleman-Webshop-Package'),
-            'value' => $meta->get_pdf_width() ?: 1,
-            'desc_tip' => true,
-            'description' =>  __('permitted width of PDF uploads in mm', 'Peleman-Webshop-Package'),
-            'class' => $required,
-            'wrapper_class' => 'form-row form-row-first pwp-form-row-padding-5',
-            'type' => 'number',
+            'id'                => $this->format_loop_id(Product_Meta_Data::PDF_WIDTH_KEY),
+            'name'              => $this->format_loop_id(Product_Meta_Data::PDF_WIDTH_KEY),
+            'label'             => __('PDF Format Width (mm)', 'Peleman-Webshop-Package'),
+            'value'             => $meta->get_pdf_width() ?: 1,
+            'desc_tip'          => true,
+            'description'       =>  __('permitted width of PDF uploads in mm', 'Peleman-Webshop-Package'),
+            'class'             => $required,
+            'wrapper_class'     => 'form-row form-row-first pwp-form-row-padding-5',
+            'type'              => 'number',
             'custom_attributes' => array(
-                'step' => 1,
-                'min' => 1
+                'step'              => 1,
+                'min'               => 1
             ),
-            'placeholder' => 210
+            'placeholder'       => 210
         ));
 
         woocommerce_wp_text_input(array(

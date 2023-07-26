@@ -66,7 +66,14 @@ class Validate_PDF_Upload extends Abstract_Filter_Hookable
 
             return $notification->is_success() ? $passed : false;
         } catch (\Exception $e) {
-            Error_log((string)$e);
+            error_log((string)$e);
+            wc_add_notice(
+                __('Could not process PDF upload due to an unexpected error. Please try again with a different file.', 'Peleman-Webshop-Package'),
+                'error'
+            );
+            return false;
+        } catch (\Error $e) {
+            error_log((string)$e);
             wc_add_notice(
                 __('Could not process PDF upload due to an unexpected error. Please try again with a different file.', 'Peleman-Webshop-Package'),
                 'error'
@@ -91,12 +98,15 @@ class Validate_PDF_Upload extends Abstract_Filter_Hookable
             ->set_next(new Validate_File_PageCount(
                 $metaData->get_pdf_min_pages(),
                 $metaData->get_pdf_max_pages()
-            ))
-            ->set_next(new Validate_File_Dimensions(
+            ));
+        if ($metaData->pdf_size_check_enabled()) {
+            error_log(print_r($metaData, true));
+            $validator->set_next(new Validate_File_Dimensions(
                 $metaData->get_pdf_height(),
                 $metaData->get_pdf_width(),
-                5.0
+                5
             ));
+        }
 
         return $validator;
     }
