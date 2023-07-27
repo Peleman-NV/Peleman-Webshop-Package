@@ -35,7 +35,7 @@ class Validate_PDF_Upload extends Abstract_Filter_Hookable
 
         if (!isset($_FILES[$this->key])) {
             wc_add_notice(
-                __('Product requires PDF upload.', 'Peleman-Webshop-Package'),
+                __('Error: Product requires PDF upload.', 'Peleman-Webshop-Package'),
                 'error'
             );
             return false;
@@ -43,7 +43,7 @@ class Validate_PDF_Upload extends Abstract_Filter_Hookable
 
         if (!isset($_FILES[$this->key]['error']) || is_array($_FILES[$this->key]['error'])) {
             wc_add_notice(
-                __('Invalid file upload parameters. Try again with a different file.', 'Peleman-Webshop-Package'),
+                __('Error: Invalid file upload parameters. Try again with a different file.', 'Peleman-Webshop-Package'),
                 'error'
             );
             return false;
@@ -59,7 +59,7 @@ class Validate_PDF_Upload extends Abstract_Filter_Hookable
 
             if (!$notification->is_success()) {
                 wc_add_notice(
-                    $notification->get_errors()[0]->get_description() ?: __('The uploaded pdf is not valid.', 'Peleman-Webshop-Package'),
+                    $notification->get_errors()[0]->get_description() ?: __('Error: The uploaded pdf is not valid.', 'Peleman-Webshop-Package'),
                     'error'
                 );
             }
@@ -68,14 +68,14 @@ class Validate_PDF_Upload extends Abstract_Filter_Hookable
         } catch (\Exception $e) {
             error_log((string)$e);
             wc_add_notice(
-                __('Could not process PDF upload due to an unexpected error. Please try again with a different file.', 'Peleman-Webshop-Package'),
+                __('Error: Could not process PDF upload. Please try again with a different file.', 'Peleman-Webshop-Package'),
                 'error'
             );
             return false;
         } catch (\Error $e) {
             error_log((string)$e);
             wc_add_notice(
-                __('Could not process PDF upload due to an unexpected error. Please try again with a different file.', 'Peleman-Webshop-Package'),
+                __('Error: Could not process PDF upload. Please try again with a different file.', 'Peleman-Webshop-Package'),
                 'error'
             );
             return false;
