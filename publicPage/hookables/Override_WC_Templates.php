@@ -28,7 +28,7 @@ class Override_WC_Templates extends Abstract_Action_Hookable
             case 'variation':
                 return trailingslashit(plugin_dir_path(__FILE__)) . '../../templates/woocommerce/variation.php';
             case 'order-details-customer':
-                return trailingslashit(plugin_dir_path(__FILE__)) . '../../Templates/woocommerce/order-details-customer.php';
+                return trailingslashit(plugin_dir_path(__FILE__)) . '../../templates/woocommerce/order-details-customer.php';
             default:
                 return $template;
         }
