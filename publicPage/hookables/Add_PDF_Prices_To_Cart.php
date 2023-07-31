@@ -31,7 +31,8 @@ class Add_PDF_Prices_To_Cart extends Abstract_Action_Hookable
         $price = (float)$product->get_meta('cart_price') ?: (float)$originalProduct->get_price();
 
         $args = [
-            'qty' => $quantity,
+            // 'qty' => $quantity,
+            'qty' => 1,
             'price' => $price,
         ];
 
