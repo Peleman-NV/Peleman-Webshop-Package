@@ -16,7 +16,7 @@ use PWP\includes\Plugin;
  * @package           PWP
  *
  * @wordpress-plugin
- * Plugin Name:       Peleman Webshop Package
+ * Plugin Name:       Peleman - Peleman Webshop Package
  * Plugin URI:        https://www.peleman.com
  * requires PHP:      7.4
  * requires at least: 5.9.0
