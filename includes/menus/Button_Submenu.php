@@ -37,6 +37,13 @@ class Button_Submenu extends Admin_Menu
             'default' => 15,
         ));
 
+        register_setting($this->option_group, 'pwp_global_pdf_size_validation', array(
+            'type' => 'boolean',
+            'description' => 'whether the PDF upload system should validate PDF size or not, globally. This will override individual product or variation settings.',
+            'show_in_rest'  => true,
+            'default' => true,
+        ));
+
         $this->add_menu_components();
     }
 
@@ -70,6 +77,18 @@ class Button_Submenu extends Admin_Menu
                 'option' => 'pwp_archive_var_label',
                 'placeholder' => 'customize me',
                 'description' =>  __("label for customizable variable products", 'Peleman-Webshop-Package')
+            )
+        );
+
+        add_settings_field(
+            'pwp_global_pdf_size_validation',
+            __('Global PDF size validation', 'Peleman-Webshop-Package'),
+            array($this, 'bool_property_callback'),
+            $this->page_slug,
+            'pwp_settings_buttons',
+            array(
+                'option' => 'pwp_global_pdf_size_validation',
+                'description' => __("Disabling this will globally override all PDF size validation checks.", 'Peleman-Webshop-Package'),
             )
         );
     }

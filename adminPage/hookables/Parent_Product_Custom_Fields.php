@@ -420,7 +420,7 @@ class Parent_Product_Custom_Fields extends Abstract_Action_Hookable
         woocommerce_wp_checkbox(array(
             'id'    => Product_Meta_Data::PDF_SIZE_CHECK,
             'name'  => Product_Meta_Data::PDF_SIZE_CHECK,
-            'label' => __('Disable PDF format check', 'Peleman-Webshop-Package'),
+            'label' => __('PDF format check enabled', 'Peleman-Webshop-Package'),
             'value' => $meta->pdf_size_check_enabled() ? 'yes' : 'no',
             'desc_tip' => true,
             'description' => __('Enable/disable PDF size validation.', 'Peleman-Webshop-Package'),
