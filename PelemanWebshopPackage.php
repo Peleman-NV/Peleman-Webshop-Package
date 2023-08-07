@@ -21,7 +21,7 @@ use PWP\includes\Plugin;
  * requires PHP:      7.4
  * requires at least: 5.9.0
  * Description:       In-development umbrella project of the Peleman Product Uploader and Print Partner Integrator.
- * Version:           1.5.13
+ * Version:           1.5.14
  * Author:            Peleman NV, Kai Helsen
  * Author URI:        https://github.com/KaiHelsen
  * License:           GPL-2.0+
