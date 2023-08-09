@@ -8,7 +8,7 @@ use PWP\includes\editor\Product_Meta_Data;
 use PWP\includes\hookables\abstracts\Abstract_Filter_Hookable;
 use PWP\includes\utilities\notification\Notification;
 use PWP\includes\utilities\PDF_Factory;
-use PWP\includes\validation\Abstract_File_Handler;
+use PWP\includes\validation\File_Validator;
 use PWP\includes\validation\Validate_File_Dimensions;
 use PWP\includes\validation\Validate_File_Errors;
 use PWP\includes\validation\Validate_File_PageCount;
@@ -42,8 +42,9 @@ class Validate_PDF_Upload extends Abstract_Filter_Hookable
         }
 
         if (!isset($_FILES[$this->key]['error']) || is_array($_FILES[$this->key]['error'])) {
+            error_log(print_r($_FILES[$this->key]['error'], true));
             wc_add_notice(
-                __('Error: Invalid file upload parameters. Try again with a different file.', 'Peleman-Webshop-Package'),
+                __('Error: Invalid file upload. Try again with a different file.', 'Peleman-Webshop-Package'),
                 'error'
             );
             return false;
@@ -67,17 +68,11 @@ class Validate_PDF_Upload extends Abstract_Filter_Hookable
             return $notification->is_success() ? $passed : false;
         } catch (\Exception $e) {
             error_log((string)$e);
-            wc_add_notice(
-                __('Error: Could not process PDF upload. Please try again with a different file.', 'Peleman-Webshop-Package'),
-                'error'
-            );
+            $this->save_pdf_for_review();
             return false;
         } catch (\Error $e) {
             error_log((string)$e);
-            wc_add_notice(
-                __('Error: Could not process PDF upload. Please try again with a different file.', 'Peleman-Webshop-Package'),
-                'error'
-            );
+            $this->save_pdf_for_review();
             return false;
         }
     }
@@ -85,9 +80,9 @@ class Validate_PDF_Upload extends Abstract_Filter_Hookable
     /**
      * generate and return an iterator chain that validates a file
      *
-     * @return Abstract_File_Handler
+     * @return File_Validator
      */
-    private function validation_chain(Product_Meta_Data $metaData): Abstract_File_Handler
+    private function validation_chain(Product_Meta_Data $metaData): File_Validator
     {
         $maxFileSize = (int)ini_get('upload_max_filesize') * Validate_File_Size::MB;
 
@@ -109,5 +104,16 @@ class Validate_PDF_Upload extends Abstract_Filter_Hookable
         }
 
         return $validator;
+    }
+
+    private function save_pdf_for_review(): void
+    {
+        $file = $_FILES[$this->key];
+        $upload = wp_handle_upload($_FILES[$this->key]);
+        error_log("saving pdf for testing purposes: " . $upload['url']);
+        wc_add_notice(
+            __('Error: Could not process PDF upload. Please try again with a different file.', 'Peleman-Webshop-Package'),
+            'error'
+        );
     }
 }

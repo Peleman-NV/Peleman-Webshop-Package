@@ -7,7 +7,7 @@ namespace PWP\includes\validation;
 use PWP\includes\utilities\notification\I_Notification;
 use PWP\includes\wrappers\PDF_Upload;
 
-class Validate_File_Errors extends Abstract_File_Handler
+class Validate_File_Errors extends File_Validator
 {
     final public function handle(PDF_Upload $file, ?I_Notification $notification = null): bool
     {

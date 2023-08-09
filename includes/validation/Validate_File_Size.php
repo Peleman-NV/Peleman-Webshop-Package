@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace PWP\includes\validation;
 
 use PWP\includes\wrappers\PDF_Upload;
-use PWP\includes\validation\Abstract_File_Handler;
+use PWP\includes\validation\File_Validator;
 use PWP\includes\utilities\notification\I_Notification;
 
-final class Validate_File_Size extends Abstract_File_Handler
+final class Validate_File_Size extends File_Validator
 {
 
     /** bytes in a kilobyte */

@@ -417,16 +417,6 @@ class Parent_Product_Custom_Fields extends Abstract_Action_Hookable
             ),
             'placeholder' => 1
         ));
-        woocommerce_wp_checkbox(array(
-            'id'    => Product_Meta_Data::PDF_SIZE_CHECK,
-            'name'  => Product_Meta_Data::PDF_SIZE_CHECK,
-            'label' => __('PDF format check enabled', 'Peleman-Webshop-Package'),
-            'value' => $meta->pdf_size_check_enabled() ? 'yes' : 'no',
-            'desc_tip' => true,
-            'description' => __('Enable/disable PDF size validation.', 'Peleman-Webshop-Package'),
-            'wrapper_class' => 'form-row form-row-first pwp-form-row-padding-5',
-            // 'custom_attributes' => array('foldout' => $custom2),
-        ));
 
         woocommerce_wp_text_input(array(
             'id' => Product_Meta_Data::PDF_WIDTH_KEY,
@@ -460,6 +450,17 @@ class Parent_Product_Custom_Fields extends Abstract_Action_Hookable
                 'min' => 1
             ),
             'placeholder' => 297
+        ));
+
+        woocommerce_wp_checkbox(array(
+            'id'    => Product_Meta_Data::PDF_SIZE_CHECK,
+            'name'  => Product_Meta_Data::PDF_SIZE_CHECK,
+            'label' => __('PDF format check enabled', 'Peleman-Webshop-Package'),
+            'value' => $meta->pdf_size_check_enabled() ? 'yes' : 'no',
+            'desc_tip' => true,
+            'description' => __('Enable/disable PDF size validation.', 'Peleman-Webshop-Package'),
+            'wrapper_class' => 'form-row form-row-first pwp-form-row-padding-5',
+            // 'custom_attributes' => array('foldout' => $custom2),
         ));
 
         HTML_Builder::close_div();

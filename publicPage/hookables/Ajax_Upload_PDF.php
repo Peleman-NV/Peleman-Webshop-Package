@@ -10,7 +10,7 @@ use PWP\includes\hookables\abstracts\Abstract_Ajax_Hookable;
 use PWP\includes\utilities\notification\Error_Notice;
 use PWP\includes\utilities\notification\Notification;
 use PWP\includes\utilities\notification\Success_Notice;
-use PWP\includes\validation\Abstract_File_Handler;
+use PWP\includes\validation\File_Validator;
 use PWP\includes\validation\Validate_File_Dimensions;
 use PWP\includes\validation\Validate_File_Errors;
 use PWP\includes\validation\Validate_File_PageCount;
@@ -132,9 +132,9 @@ class Ajax_Upload_PDF extends Abstract_Ajax_Hookable
     /**
      * generate and return an iterator chain that validates a file
      *
-     * @return Abstract_File_Handler
+     * @return File_Validator
      */
-    private function validation_chain(Product_Meta_Data $metaData): Abstract_File_Handler
+    private function validation_chain(Product_Meta_Data $metaData): File_Validator
     {
         $maxFileSize = (int)ini_get('upload_max_filesize') * Validate_File_Size::MB;
 

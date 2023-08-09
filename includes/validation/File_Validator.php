@@ -7,7 +7,7 @@ namespace PWP\includes\validation;
 use PWP\includes\utilities\notification\I_Notification;
 use PWP\includes\wrappers\PDF_Upload;
 
-abstract class Abstract_File_Handler
+abstract class File_Validator
 {
     private ?self $next = null;
 
@@ -16,7 +16,7 @@ abstract class Abstract_File_Handler
         $this->next = null;
     }
 
-    final public function set_next(Abstract_File_Handler $next): Abstract_File_Handler
+    final public function set_next(File_Validator $next): File_Validator
     {
         $this->next = $next;
         return $this->next;

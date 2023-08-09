@@ -7,7 +7,7 @@ namespace PWP\includes\validation;
 use PWP\includes\wrappers\PDF_Upload;
 use PWP\includes\utilities\notification\I_Notification;
 
-class Validate_File_PageCount extends Abstract_File_Handler
+class Validate_File_PageCount extends File_Validator
 {
     private int $minPages;
     private int $maxPages;
