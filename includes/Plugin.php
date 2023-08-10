@@ -55,6 +55,7 @@ use PWP\publicPage\hookables\Change_Add_To_Cart_Archive_Button;
 use PWP\publicPage\hookables\Change_Checkout_Item_Thumbnail;
 use PWP\publicPage\hookables\Display_Editor_Project_Button_In_Cart;
 use PWP\publicPage\hookables\Display_PIE_Project_Thumbnail;
+use PWP\publicPage\hookables\editor\Set_PIE_Project_Output_Description;
 use PWP\publicPage\hookables\Generate_PIE_Edit_URL;
 use PWP\publicPage\hookables\Get_PDF_File_From_Project;
 use PWP\publicPage\hookables\Modify_Cart_Item_Before_Calculate_Totals;
@@ -138,6 +139,7 @@ final class Plugin
         $this->add_hookables(
             new Get_PDF_Project_Data(),
             new Update_PIE_Project_Return_URL(),
+            new Set_PIE_Project_Output_Description(),
             new Generate_PIE_Edit_URL(),
             new Get_PDF_File_From_Project()
         );
