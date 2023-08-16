@@ -26,24 +26,22 @@
     const { __, _x, _n, _nx } = wp.i18n;
     const buttonText = __('add to cart', 'woocommerce');
 
-    //only attach events when document is fully loaded
-    $(document).ready(function () {
-        /** EVENTS */
-        // Event: when a variation is selected
-        $(document).on('show_variation', (event, variation) => {
-            event.stopPropagation();
-            initRefreshVariantElements();
-            getProductVariationData(variation.variation_id);
-        });
-
-        // Event: when a new variation is chosen
-        $(document).on('hide_variation', e => {
-            hideUploadElement();
-            disableAddToCartButton(buttonText);
-            resetUnitPrice();
-            hideArticleCodeElement();
-        });
+    /** EVENTS */
+    // Event: when a variation is selected
+    $("form.variations_form").on('show_variation', (event, variation) => {
+        event.stopPropagation();
+        initRefreshVariantElements();
+        getProductVariationData(variation.variation_id);
     });
+
+    // Event: when a new variation is chosen
+    $("form.variations_form").on('hide_variation', e => {
+        hideUploadElement();
+        disableAddToCartButton(buttonText);
+        resetUnitPrice();
+        hideArticleCodeElement();
+    });
+
     /** FUNCTIONS */
 
     function HideElement(element) {
