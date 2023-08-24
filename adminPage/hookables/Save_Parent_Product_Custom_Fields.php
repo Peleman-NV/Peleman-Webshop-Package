@@ -50,7 +50,7 @@ class Save_Parent_Product_Custom_Fields extends Abstract_Action_Hookable
             ->set_pdf_min_pages((int)$post[Product_Meta_Data::PDF_MIN_PAGES_KEY])
             ->set_pdf_height((int)$post[Product_Meta_Data::PDF_HEIGHT_KEY])
             ->set_pdf_width((int)$post[Product_Meta_Data::PDF_WIDTH_KEY])
-            ->set_price_per_page((float)$post[Product_Meta_Data::PDF_PRICE_PER_PAGE_KEY])
+            ->set_price_per_page((float)str_replace(',','.',$post[Product_Meta_Data::PDF_PRICE_PER_PAGE_KEY]))
             ->set_custom_add_to_cart_label(
                 esc_attr(sanitize_text_field($post[Product_Meta_Data::CUSTOM_LABEL_KEY]))
             )

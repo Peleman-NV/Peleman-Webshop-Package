@@ -61,6 +61,7 @@ class Add_PDF_Data_To_Cart_Item extends Abstract_Filter_Hookable
                     'extra_cost' => $pdf->get_page_count() * $meta->get_price_per_page()
                 );
             }
+
             return $data;
         } catch (\Throwable $exception) {
             throw $exception;

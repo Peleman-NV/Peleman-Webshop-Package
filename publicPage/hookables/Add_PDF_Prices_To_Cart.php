@@ -29,6 +29,8 @@ class Add_PDF_Prices_To_Cart extends Abstract_Action_Hookable
         //get the original product to reset the price
         $originalProduct = wc_get_product($product->get_id());
         $price = (float)$product->get_meta('cart_price') ?: (float)$originalProduct->get_price();
+        $unitAmount = max((int)$product->get_meta('unit_amount'),1);
+        $unitPrice = (float)$product->get_meta('unit_price');
 
         $args = [
             // 'qty' => $quantity,
@@ -43,11 +45,19 @@ class Add_PDF_Prices_To_Cart extends Abstract_Action_Hookable
 
                 $pages = $pdfData['pages'];
                 $pricePerPage = $meta->get_price_per_page();
-
-                $args['price'] += $pages * $pricePerPage;
+                error_log((string)$pricePerPage);
+                $args['price'] += $pages * $pricePerPage * $unitAmount;
+                error_log((string)$args['price']);
             }
         }
+
+        if ($unitAmount > 1) {
+            // $args['price'] *= $unitAmount;
+        }
+
         $price = wc_get_price_including_tax($product, $args);
-        $product->set_price($price);
+        $cartItem['data']->set_price($price);
+
+        error_log("fuck");
     }
 }

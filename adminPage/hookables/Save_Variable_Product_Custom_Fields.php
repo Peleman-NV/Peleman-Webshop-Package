@@ -47,7 +47,7 @@ class Save_Variable_Product_Custom_Fields extends Abstract_Action_Hookable
             ->set_pdf_min_pages((int)$post[$this->format_array_key(Product_Meta_Data::PDF_MIN_PAGES_KEY)][$loop])
             ->set_pdf_height((int)$post[$this->format_array_key(Product_Meta_Data::PDF_HEIGHT_KEY)][$loop])
             ->set_pdf_width((int)$post[$this->format_array_key(Product_Meta_Data::PDF_WIDTH_KEY)][$loop])
-            ->set_price_per_page((float)$post[$this->format_array_key(Product_Meta_Data::PDF_PRICE_PER_PAGE_KEY)][$loop])
+            ->set_price_per_page((float)str_replace(',','.',$post[$this->format_array_key(Product_Meta_Data::PDF_PRICE_PER_PAGE_KEY)][$loop]))
             ->set_editor(esc_attr(sanitize_text_field($post[$this->format_array_key(Product_Meta_Data::EDITOR_ID_KEY)][$loop])))
             ->set_custom_add_to_cart_label(esc_attr(sanitize_text_field($post[$this->format_array_key(Product_Meta_Data::CUSTOM_LABEL_KEY)][$loop])))
             ->set_override_thumbnail(isset($post[$this->format_array_key(Product_Meta_Data::OVERRIDE_CART_THUMB)][$loop]))
