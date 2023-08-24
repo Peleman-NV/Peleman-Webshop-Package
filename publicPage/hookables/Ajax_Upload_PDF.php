@@ -54,8 +54,6 @@ class Ajax_Upload_PDF extends Abstract_Ajax_Hookable
         }
 
         $notification = new Notification();
-        // error_log(print_r($_REQUEST, true));
-        // error_log(print_r($file, true));
 
         /** 3) */
         try {

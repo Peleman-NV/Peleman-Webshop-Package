@@ -35,8 +35,6 @@ class Ajax_Show_Variation extends Abstract_Ajax_Hookable
         $meta = new Product_Meta_Data($variant);
         $parent = wc_get_product($variant->get_parent_id());
 
-        // error_log(print_r($meta, true));
-
         $response = array(
             'variant'                   => $variantId,
             'in_stock'                  => $variant->is_in_stock(),

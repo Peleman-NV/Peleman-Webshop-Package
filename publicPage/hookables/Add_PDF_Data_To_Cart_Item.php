@@ -29,7 +29,6 @@ class Add_PDF_Data_To_Cart_Item extends Abstract_Filter_Hookable
             return $data;
 
         $fileArr = $_FILES['upload'];
-        // error_log(print_r($fileArr,true));
 
         try {
 

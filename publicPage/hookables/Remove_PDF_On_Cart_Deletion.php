@@ -21,8 +21,6 @@ class Remove_PDF_On_Cart_Deletion extends Abstract_Action_Hookable
     public function remove_pdf_project(string $cart_item_id, \WC_Cart $cart): void
     {
         $item = $cart->get_cart_item($cart_item_id);
-        // error_log(print_r($item, true));
-
         if (!isset($item['_pdf_data'])) return;
 
         $data = $item['_pdf_data'];

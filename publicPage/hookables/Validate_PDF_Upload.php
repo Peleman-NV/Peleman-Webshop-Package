@@ -95,7 +95,6 @@ class Validate_PDF_Upload extends Abstract_Filter_Hookable
                 $metaData->get_pdf_max_pages()
             ));
         if (get_option('pwp_global_pdf_size_validation', true) && $metaData->pdf_size_check_enabled()) {
-            error_log(print_r($metaData, true));
             $validator->set_next(new Validate_File_Dimensions(
                 $metaData->get_pdf_height(),
                 $metaData->get_pdf_width(),

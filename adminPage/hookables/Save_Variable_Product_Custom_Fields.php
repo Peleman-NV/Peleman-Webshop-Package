@@ -74,8 +74,6 @@ class Save_Variable_Product_Custom_Fields extends Abstract_Action_Hookable
 
         $editor_data->update_meta_data();
         $pie_data->save_meta_data();
-        error_Log(print_r($post, true));
-        error_log("editor instructions: " . $pie_data->get_editor_instruction_string());
         $editor_data->save_meta_data();
     }
 
