@@ -29,7 +29,7 @@ global $product;
 	do_action('woocommerce_after_add_to_cart_quantity');
 	?>
 
-	<button type="submit" class="<?php echo esc_attr(apply_filters('pwp_single_add_to_cart_button_class', 'single_add_to_cart_button button alt', $product)); ?>"><span class="pwp-loader"></span><?php echo esc_html($product->single_add_to_cart_text()); ?></button>
+	<button type="submit" class="<?php echo esc_attr(apply_filters('pwp_single_add_to_cart_button_class', 'single_add_to_cart_button button alt', $product)); ?>"><span class="pwp-loader" style="display: none;"></span><span class="btn-text"><?php echo esc_html($product->single_add_to_cart_text()); ?></span></button>
 
 	<?php do_action('woocommerce_after_add_to_cart_button'); ?>
 

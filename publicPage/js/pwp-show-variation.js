@@ -127,7 +127,6 @@
                 }
                 $('#variant-info').html(response.data.message);
                 $('#variant-info').addClass('pwp-response-error');
-                HideElement($('#pwp-loading'));
 
             },
             error: function (jqXHR, textStatus, errorThrown) {
@@ -148,7 +147,6 @@
 
     // when showing a (new) variation, all previous elements need to be cleared or hidden
     function initRefreshVariantElements() {
-        ShowElement($('#pwp-loading'));
         HideElement($('#max-upload-size'));
         disableElement($('.single_add_to_cart_button'));
         HideElement($('.pwp-upload-form'));
@@ -181,7 +179,6 @@
         const { height, width, min_pages, max_pages, price_per_page, price_per_page_html, total_price } =
             data.pdf_data;
 
-        HideElement($('#ppi-loading'));
         ShowElement($('.pwp-upload-parameters'));
         ShowElement($('.pwp-upload-form'));
         ShowElement($('.upload-label'));
@@ -252,20 +249,12 @@
 
     function enableAddToCartButton(addToCartLabel = '') {
         enableElement($('.single_add_to_cart_button'));
-        $('.single_add_to_cart_button').html(
-            '<span id="pwp-loading" class="dashicons dashicons-update pwp-hidden"></span>' +
-            addToCartLabel
-        );
-        HideElement($('#pwp-loading'));
+        $('.single_add_to_cart_button').find('.btn-text').text(addToCartLabel);
     }
 
     function disableAddToCartButton(addToCartLabel = '') {
         disableElement($('.single_add_to_cart_button'));
-        $('.single_add_to_cart_button').html(
-            '<span id="pwp-loading" class="dashicons dashicons-update rotate"></span>' +
-            addToCartLabel
-        );
-        ShowElement($('#pwp-loading'));
+        $('.single_add_to_cart_button').find('.btn-text').text(addToCartLabel);
     }
 
     function disableUploadButton() {
