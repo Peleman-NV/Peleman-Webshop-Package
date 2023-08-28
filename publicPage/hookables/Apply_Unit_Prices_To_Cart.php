@@ -32,7 +32,5 @@ class Apply_Unit_Prices_To_Cart extends Abstract_Action_Hookable
         if ($unitAmount > 1 && $unitPrice > 0) {
             $cartItem['data']->set_price($unitPrice);
         }
-
-        error_log("dang");
     }
 }

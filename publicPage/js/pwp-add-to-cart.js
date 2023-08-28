@@ -27,6 +27,8 @@
         var product_id = $form.find('input[name=product_id]').val() || id;
         var variation_id = $form.find('input[name=variation_id]').val() || 0;
         var file = $form.find('input[id="pwp-file-upload"]')[0].files[0];
+        var loadSpinner = $(this).find('.pwp-loader');
+        var buttonText = $thisButton.find('.btn-text').text();
 
         var formData = new FormData();
         formData.append('action', 'Ajax_Add_To_Cart');
@@ -49,14 +51,19 @@
             beforeSend: function () {
                 $thisButton.removeClass('pwp-added')
                 $thisButton.addClass('pwp-loading');
-                $thisButton.attr("disabled",true);
+                if (file) {
+                    $thisButton.find('.btn-text').text("Uploading file...");
+                }
+                loadSpinner.show();
+                $thisButton.attr("disabled", true);
                 showElement($('#pwp-loading'));
             },
             complete: function (response) {
                 $thisButton.addClass('pwp-added')
                 $thisButton.removeClass('pwp-loading');
-                $thisButton.attr("disabled",false);
-
+                $thisButton.attr("disabled", false);
+                $thisButton.find('.btn-text').text(buttonText);
+                loadSpinner.hide();
                 hideElement($('#pwp-loading'));
                 console.log(response);
             },

@@ -29,7 +29,6 @@ class Ajax_Show_Variation extends Abstract_Ajax_Hookable
 
     public function callback(): void
     {
-
         $variantId = sanitize_key($_REQUEST['variant']);
         $variant = wc_get_product($variantId);
         $meta = new Product_Meta_Data($variant);

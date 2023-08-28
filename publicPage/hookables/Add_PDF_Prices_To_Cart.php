@@ -57,7 +57,5 @@ class Add_PDF_Prices_To_Cart extends Abstract_Action_Hookable
 
         $price = wc_get_price_including_tax($product, $args);
         $cartItem['data']->set_price($price);
-
-        error_log("fuck");
     }
 }
