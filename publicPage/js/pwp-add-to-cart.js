@@ -52,7 +52,7 @@
                 $thisButton.removeClass('pwp-added')
                 $thisButton.addClass('pwp-loading');
                 if (file) {
-                    $thisButton.find('.btn-text').text("Uploading file...");
+                    $thisButton.find('.btn-text').text("Uploading file, please wait");
                 }
                 loadSpinner.show();
                 $thisButton.attr("disabled", true);
