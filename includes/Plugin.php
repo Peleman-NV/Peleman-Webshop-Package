@@ -29,7 +29,7 @@ use PWP\adminPage\hookables\Parent_Product_Custom_Fields;
 use PWP\adminPage\hookables\PIE_Editor_Control_Panel;
 
 use PWP\publicPage\hookables\Order_Project;
-use PWP\publicPage\hookables\Enqueue_PDF_JS;
+use PWP\publicPage\hookables\Register_PDF_JS_Scripts;
 use PWP\publicPage\hookables\Ajax_Add_To_Cart;
 use PWP\publicPage\hookables\Validate_PDF_Upload;
 use PWP\publicPage\hookables\Get_PDF_Project_Data;
@@ -56,6 +56,7 @@ use PWP\publicPage\hookables\Change_Checkout_Item_Thumbnail;
 use PWP\publicPage\hookables\Display_Editor_Project_Button_In_Cart;
 use PWP\publicPage\hookables\Display_PIE_Project_Thumbnail;
 use PWP\publicPage\hookables\editor\Set_PIE_Project_Output_Description;
+use PWP\publicPage\hookables\Enqueue_PDF_JS_Scripts;
 use PWP\publicPage\hookables\Generate_PIE_Edit_URL;
 use PWP\publicPage\hookables\Get_PDF_File_From_Project;
 use PWP\publicPage\hookables\Modify_Cart_Item_Before_Calculate_Totals;
@@ -158,7 +159,8 @@ final class Plugin
 
         $this->add_hookables(
             new Enqueue_Public_Styles(),
-            new Enqueue_PDF_JS()
+            new Register_PDF_JS_Scripts(),
+            new Enqueue_PDF_JS_Scripts(),
         );
 
         $this->add_hookables(

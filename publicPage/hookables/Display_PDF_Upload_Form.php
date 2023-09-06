@@ -61,6 +61,7 @@ class Display_PDF_Upload_Form extends Abstract_Action_Hookable
             'currency_pos' => get_option('woocommerce_currency_pos'),
         );
 
+        do_action('pwp_Register_PDF_JS_Scripts');
         $this->template->render('File_Upload_Form_Template', $params);
     }
 
