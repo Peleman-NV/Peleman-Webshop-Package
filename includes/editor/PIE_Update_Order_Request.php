@@ -12,11 +12,10 @@ class PIE_Update_Order_Request extends Abstract_PIE_Request
     public function __construct(int $orderId)
     {
         $endpoint = '/editor/api/updateordernr.php';
+        $auth = new Editor_Auth_Provider();
         parent::__construct(
-            get_option('pie_domain', 'https://deveditor.peleman.com'),
-            $endpoint,
-            get_option('pie_api_key', ''),
-            get_option('pie_customer_id', ''),
+            $auth,
+            $endpoint
         );
 
         $this->orderId = $orderId;

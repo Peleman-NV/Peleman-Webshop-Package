@@ -33,4 +33,5 @@ class Apply_Unit_Prices_To_Cart extends Abstract_Action_Hookable
             $cartItem['data']->set_price($unitPrice);
         }
     }
+    
 }

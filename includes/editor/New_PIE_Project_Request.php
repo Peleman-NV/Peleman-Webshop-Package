@@ -51,17 +51,10 @@ class New_PIE_Project_Request extends Abstract_PIE_Request
     private string $formatId;
     #endregion
 
-    /**
-     * class for requesting a new PIE project via the api
-     *
-     * @param string $clientDomain online domain of the editor
-     * @param string $customerId id of the customer for reference within the editor
-     * @param string $apiKey api key
-     */
-    public function __construct(string $clientDomain,  string $customerId, string $apiKey)
+    public function __construct(Editor_Auth_Provider $auth)
     {
         $endpoint = '/editor/api/createprojectAPI.php';
-        parent::__construct($clientDomain, $endpoint, $apiKey, $customerId);
+        parent::__construct($auth, $endpoint);
 
         $this->editorData = null;
 
@@ -79,9 +72,9 @@ class New_PIE_Project_Request extends Abstract_PIE_Request
 
     #region BUILDER METHODS
 
-    public static function new(string $clientDomain, string $customerId, string $apiKey): self
+    public static function new(Editor_Auth_Provider $auth): self
     {
-        return new New_PIE_Project_Request($clientDomain, $customerId, $apiKey);
+        return new New_PIE_Project_Request($auth);
     }
 
     public function initialize_from_product(\WC_Product $product): self
@@ -141,15 +134,19 @@ class New_PIE_Project_Request extends Abstract_PIE_Request
 
     public function make_request(): PIE_Project
     {
-        $response = wp_remote_request($this->get_endpoint_url(), array(
-            'method'    => $this->get_method(),
-            'timeout'   => $this->timeout,
-            'header'    => $this->generate_request_header(),
-            'body'      => $this->generate_request_body(),
-        ));
+        $response = wp_remote_request(
+            $this->get_endpoint_url(),
+            array(
+                'method'    => $this->get_method(),
+                'timeout'   => $this->timeout,
+                'header'    => $this->generate_request_header(),
+                'body'      => $this->generate_request_body(),
+            )
+        );
 
         //TODO: use improved request feedback to bolster error response system
         if (is_wp_error($response)) {
+            error_log($response->get_error_code() . ": " . $response->get_error_message());
             throw new Invalid_Response_Exception(__('Could not connect to Peleman Image Editor. Please try again later.', 'Peleman-Webshop-Package'));
         }
 

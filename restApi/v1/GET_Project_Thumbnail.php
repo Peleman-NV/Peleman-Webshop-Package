@@ -6,6 +6,7 @@ namespace PWP\restApi\v1;
 
 use PWP\includes\API\endpoints\Abstract_FIND_Endpoint;
 use PWP\includes\authentication\I_Api_Authenticator;
+use PWP\includes\editor\Editor_Auth_Provider;
 use PWP\includes\exceptions\WP_Error_Exception;
 use WP_REST_Request;
 use WP_REST_Response;
@@ -60,13 +61,13 @@ class GET_Project_Thumbnail extends Abstract_FIND_Endpoint
 
     private function generate_thumbnail_request_url(string $projectId): string
     {
-        $domain = get_option('pie_domain');
+        $auth = new Editor_Auth_Provider();
 
         $query = array(
             'projectid' => $projectId,
-            'customerapikey' => get_option('pie_api_key'),
+            'customerapikey' => $auth->get_api_key(),
         );
 
-        return $domain . "/editor/api/getprojectthumbnailAPI.php" . '?' . http_build_query($query);
+        return $auth->get_domain() . "/editor/api/getprojectthumbnailAPI.php" . '?' . http_build_query($query);
     }
 }

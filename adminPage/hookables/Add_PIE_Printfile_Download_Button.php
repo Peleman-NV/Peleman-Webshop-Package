@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace PWP\adminPage\hookables;
 
+use PWP\includes\editor\Editor_Auth_Provider;
 use PWP\includes\editor\PIE_GET_Queue_Request;
 use PWP\includes\exceptions\Invalid_Response_Exception;
 use PWP\includes\hookables\abstracts\Abstract_Action_Hookable;
@@ -36,12 +37,9 @@ class Add_PIE_Printfile_Download_Button extends Abstract_Action_Hookable
 
 
             if (!$projectId) return;
+            $auth = new Editor_Auth_Provider();
 
-            $queue = PIE_GET_Queue_Request::new(
-                $this->clientDomain,
-                get_option('pie_api_key'),
-                get_option('pie_customer_id')
-            )
+            $queue = PIE_GET_Queue_Request::new($auth)
                 ->set_project_id($projectId)
                 ->set_output_type('print')
                 ->make_request()->data;

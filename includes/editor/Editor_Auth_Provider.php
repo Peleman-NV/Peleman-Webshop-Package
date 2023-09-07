@@ -6,7 +6,7 @@ namespace PWP\includes\editor;
 
 use Firebase\JWT\JWT;
 
-class Editor_Auth_Provider
+final class Editor_Auth_Provider
 {
     private string $api_key;
     private string $customer_id;
@@ -16,7 +16,7 @@ class Editor_Auth_Provider
     {
         $this->api_key      = get_option('pie_api_key', 'https://deveditor.peleman.com');
         $this->customer_id  = get_option('pie_customer_id', '');
-        $this->domain       = get_option('pie_domain', '');
+        $this->domain       = rtrim(get_option('pie_domain', ''));
     }
 
     public function get_domain(): string

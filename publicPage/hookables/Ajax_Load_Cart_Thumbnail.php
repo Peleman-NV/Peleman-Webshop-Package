@@ -4,13 +4,14 @@ declare(strict_types=1);
 
 namespace PWP\publicPage\hookables;
 
+use PWP\includes\editor\Editor_Auth_Provider;
 use PWP\includes\hookables\abstracts\Abstract_Ajax_Hookable;
 
-    /**
-     * @deprecated 1.0.0
-     * hook for loading cart thumbnails through an AJAX call; replaced by a more
-     * native solution based on Wordpress's lazy loading system.
-     */
+/**
+ * @deprecated 1.0.0
+ * hook for loading cart thumbnails through an AJAX call; replaced by a more
+ * native solution based on Wordpress's lazy loading system.
+ */
 class Ajax_Load_Cart_Thumbnail extends Abstract_Ajax_Hookable
 {
 
@@ -60,10 +61,11 @@ class Ajax_Load_Cart_Thumbnail extends Abstract_Ajax_Hookable
     private function generate_thumbnail_request_url(string $projectId): string
     {
         $domain = get_option('pie_domain');
+        $auth = new Editor_Auth_Provider();
 
         $query = array(
             'projectid' => $projectId,
-            'customerapikey' => get_option('pie_api_key'),
+            'customerapikey' => $auth->get_api_key(),
         );
 
         return $domain . "/editor/api/getprojectthumbnailAPI.php" . '?' . http_build_query($query);

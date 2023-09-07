@@ -12,28 +12,17 @@ use PWP\includes\exceptions\Invalid_Response_Exception;
  */
 abstract class Abstract_PIE_Request extends Abstract_Request
 {
+    private Editor_Auth_Provider $auth;
     private string $endpoint;
-    private string $apiKey;
-    private string $customerId;
     private string $method;
     private int $timeouts;
 
-    /**
-     * base class for any request to the PIE editor
-     *
-     * @param string $domain base PIE domain
-     * @param string $endpoint API endpoint, relative to the domain
-     * @param string $apiKey 
-     * @param string $customerId
-     */
-    public function __construct(string $domain, string $endpoint, string $apiKey, string $customerId = '')
+    public function __construct(Editor_Auth_Provider $auth, string $endpoint)
     {
-        $this->endpoint = $domain . $endpoint;
-        $this->apiKey = $apiKey;
-        $this->customerId = $customerId;
-
-        $this->timeouts = 5;
-        $this->redirects = 5;
+        $this->auth         = $auth;
+        $this->endpoint     = $endpoint;
+        $this->timeouts     = 5;
+        $this->redirects    = 5;
         $this->set_GET();
     }
 
@@ -44,17 +33,17 @@ abstract class Abstract_PIE_Request extends Abstract_Request
      */
     final protected function get_endpoint_url(): string
     {
-        return $this->endpoint;
+        return $this->auth->get_domain() . $this->endpoint;
     }
 
     final protected function get_api_key(): string
     {
-        return $this->apiKey;
+        return $this->auth->get_api_key();
     }
 
     final protected function get_customer_id(): string
     {
-        return $this->customerId;
+        return $this->auth->get_customer_id();
     }
 
     final protected function set_GET(): void
@@ -104,12 +93,6 @@ abstract class Abstract_PIE_Request extends Abstract_Request
      */
     protected function generate_request_header(): array
     {
-        $referer = get_site_url();
-        $headers = array(
-            "PIEAPIKEY" => $this->apiKey,
-            // "PROJECTNAME" => $this->projectName,
-        );
-
-        return $headers;
+        return $this->auth->get_auth_header();
     }
 }

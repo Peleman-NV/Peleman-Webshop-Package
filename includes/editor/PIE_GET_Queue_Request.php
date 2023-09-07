@@ -18,10 +18,10 @@ class PIE_GET_Queue_Request extends Abstract_PIE_Request
 
     private string $projectId;
 
-    public function __construct(string $domain, string $apiKey, string $customerId)
+    public function __construct(Editor_Auth_Provider $auth)
     {
         $endpoint = '/editor/api/getqueues.php';
-        parent::__construct($domain, $endpoint, $apiKey, $customerId);
+        parent::__construct($auth, $endpoint);
 
         $this->status = '';
         $this->type = '';
@@ -36,9 +36,9 @@ class PIE_GET_Queue_Request extends Abstract_PIE_Request
         $this->set_GET();
     }
 
-    public static function new(string $domain, string $apiKey, string $customerId): self
+    public static function new(Editor_Auth_Provider $auth): self
     {
-        return new self($domain, $apiKey, $customerId);
+        return new self($auth);
     }
 
     public function set_status(string $status): self

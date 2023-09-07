@@ -15,9 +15,9 @@ class PIE_Add_To_Render_Queue_Request extends Abstract_PIE_Request
     private string $orderId;
     private string $outputType;
 
-    public function __construct(string $domain, string $apiKey, string $customerId = '')
+    public function __construct(Editor_Auth_Provider $auth)
     {
-        parent::__construct($domain, '/editor/api/addtoqueueAPI.php', $apiKey, $customerId);
+        parent::__construct($auth, '/editor/api/addtoqueueAPI.php');
         $this->projectId = '';
         $this->orderId = '';
         $this->outputType = 'print';

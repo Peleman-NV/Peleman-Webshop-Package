@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace PWP\publicPage\hookables;
 
+use PWP\includes\editor\Editor_Auth_Provider;
 use PWP\includes\editor\Product_Meta_Data;
 use PWP\includes\editor\Editor_Project;
 use PWP\includes\editor\New_PIE_Project_Request;
@@ -145,11 +146,8 @@ class Ajax_Add_To_Cart extends Abstract_Ajax_Hookable
     private function new_PIE_Project(Product_PIE_Data $data, string $continueUrl, array $params): PIE_Project
     {
         $instructions = new PIE_Editor_Instructions($data->get_parent());
-        $request = new New_PIE_Project_Request(
-            get_option('pie_domain', 'https://deveditor.peleman.com'),
-            get_option('pie_customer_id', ''),
-            get_option('pie_api_key', ''),
-        );
+        $auth = new Editor_Auth_Provider();
+        $request = new New_PIE_Project_Request($auth);
         $request->initialize_from_pie_data($data);
         $request->set_return_url($continueUrl);
         $request->set_user_id(get_current_user_id());

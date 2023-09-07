@@ -6,14 +6,12 @@ namespace PWP\includes\editor;
 
 class PIE_Verify_Credentials_Request extends Abstract_PIE_Request
 {
-    public function __construct(string $domain, string $apiKey, string $customerId)
+    public function __construct(Editor_Auth_Provider $auth)
     {
         $endpoint = '/editor/api/getcustomerbyid.php';
         parent::__construct(
-            $domain,
+            $auth,
             $endpoint,
-            $apiKey,
-            $customerId,
         );
         $this->set_GET();
     }

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace PWP\publicPage\hookables;
 
+use PWP\includes\editor\Editor_Auth_Provider;
 use PWP\includes\hookables\abstracts\Abstract_Action_Hookable;
 
 class Update_PIE_Project_Return_URL extends Abstract_Action_Hookable
@@ -20,21 +21,18 @@ class Update_PIE_Project_Return_URL extends Abstract_Action_Hookable
 
     public function update_return_url(string $project_id, string $target_url): void
     {
-        $domain =  get_option('pie_domain');
-        $apiKey = get_option('pie_api_key');
+        $auth = new Editor_Auth_Provider();
         $params = array(
             'projectid' => $project_id,
             'type'      => 'setreturnurl',
             'value'     => $target_url,
         );
 
-        $url = $domain . "/editor/api/projectfileAPI.php?";
+        $url = $auth->get_domain() . "/editor/api/projectfileAPI.php?";
         $url .= http_build_query($params);
 
-        $headers = array(
-            'PIEAPIKEY' => $apiKey,
-            'RETURN_URL' => $target_url,
-        );
+        $headers = $auth->get_auth_header();
+        $headers['RETURN_URL'] = $target_url;
 
         $result = wp_remote_get(
             $url,
