@@ -69,7 +69,8 @@ abstract class Abstract_PIE_Request extends Abstract_Request
      */
     public function make_request(): object
     {
-        $response = wp_remote_request($this->endpoint, array(
+        $url = $this->auth->get_domain() . $this->endpoint;
+        $response = wp_remote_request($url, array(
             'method' => $this->method,
             'timeout' => $this->timeout,
             'redirection' => $this->redirects,
@@ -77,7 +78,10 @@ abstract class Abstract_PIE_Request extends Abstract_Request
             'body' => $this->generate_request_body(),
         ));
 
-        if (is_wp_error($response) || !$response) {
+        if (!$response) {
+        }
+        if (is_wp_error($response)) {
+            error_log($response->get_error_code() . ": " . $response->get_error_message());
             throw new Invalid_Response_Exception(__("Could not connect to API.", 'Peleman-Webshop-Package'));
         }
         //TODO: improve response handling

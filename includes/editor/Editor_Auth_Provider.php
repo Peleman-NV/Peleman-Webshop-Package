@@ -53,4 +53,11 @@ final class Editor_Auth_Provider
 
         return $header;
     }
+
+    public function new_credentials(string $domain, string $api_key, string $customer_id): void
+    {
+        $this->domain = $domain;
+        $this->api_key = $api_key;
+        $this->customer_id = $customer_id;
+    }
 }

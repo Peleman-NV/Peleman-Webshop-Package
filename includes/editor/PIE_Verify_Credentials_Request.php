@@ -18,6 +18,8 @@ class PIE_Verify_Credentials_Request extends Abstract_PIE_Request
 
     protected function generate_request_body(): array
     {
-        return ['customerId' => $this->get_customer_id()];
+        return [
+            'customerId' => $this->get_customer_id(),
+        ];
     }
 }
