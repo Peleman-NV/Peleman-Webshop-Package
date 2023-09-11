@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace PWP\adminPage\hookables;
 
+use PWP\includes\editor\Editor_Auth_Provider;
 use PWP\includes\editor\PIE_Verify_Credentials_Request;
 use PWP\includes\hookables\abstracts\Abstract_Ajax_Hookable;
 
@@ -22,14 +23,17 @@ class Ajax_Verify_PIE_Editor_Credentials extends Abstract_Ajax_Hookable
 
     public function callback(): void
     {
-        $request = new PIE_Verify_Credentials_Request(
+        $auth = new Editor_Auth_Provider();
+        $auth->new_credentials(
             $_POST['domain'],
             $_POST['api_key'],
             $_POST['customer_id'],
+
         );
+        $request = new PIE_Verify_Credentials_Request($auth);
 
         $response = $request->make_request();
-        $code = (int)$response->response->code ?: 500;
+        $code = (int)$response->response->code ?: 0;
         $message = $this->get_response_message($code);
         wp_send_json_success(
             array(
