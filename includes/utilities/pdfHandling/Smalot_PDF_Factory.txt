@@ -4,10 +4,11 @@ declare(strict_types=1);
 
 namespace PWP\includes\utilities;
 
+use PWP\includes\utilities\pdfHandling\I_PDF_Data;
 use PWP\includes\wrappers\PDF_Upload;
 use Smalot\PdfParser\Parser;
 
-class PDF_Factory
+class Smalot_PDF_Factory implements I_PDF_Data
 {
     /**
      * @var float

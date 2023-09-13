@@ -6,7 +6,8 @@
     },
     "require": {
         "clean-composer-packages/pdf-js": "^2.0",
-        "smalot/pdfparser": "^2.4",
+        "setasign/fpdf": "^1.8",
+        "setasign/fpdi": "^2.0",
         "firebase/php-jwt": "^6.8"
     },
     "require-dev": {

@@ -7,7 +7,7 @@ namespace PWP\publicPage\hookables;
 use PWP\includes\editor\Product_Meta_Data;
 use PWP\includes\hookables\abstracts\Abstract_Filter_Hookable;
 use PWP\includes\utilities\notification\Notification;
-use PWP\includes\utilities\PDF_Factory;
+use PWP\includes\utilities\pdfHandling\PDFI_PDF_Factory;
 use PWP\includes\validation\File_Validator;
 use PWP\includes\validation\Validate_File_Dimensions;
 use PWP\includes\validation\Validate_File_Errors;
@@ -52,7 +52,7 @@ class Validate_PDF_Upload extends Abstract_Filter_Hookable
 
         try {
 
-            $pdfFactory = new PDF_Factory();
+            $pdfFactory = new PDFI_PDF_Factory();
             $pdf = $pdfFactory->generate_from_upload($_FILES[$this->key]);
 
             $notification = new Notification();
