@@ -7,7 +7,7 @@ namespace PWP\publicPage\hookables;
 use PWP\includes\editor\Product_Meta_Data;
 use PWP\includes\hookables\abstracts\Abstract_Filter_Hookable;
 use PWP\includes\services\entities\Project;
-use PWP\includes\utilities\PDF_Factory;
+use PWP\includes\utilities\pdfHandling\PDFI_PDF_Factory;
 
 /**
  * Filter hookable class for handling PDF uploads when adding an item to the cart. If the product
@@ -41,7 +41,7 @@ class Add_PDF_Data_To_Cart_Item extends Abstract_Filter_Hookable
                     wp_die('something went wrong with the file upload', 'upload failure');
                 }
 
-                $pdf = PDF_Factory::generate_from_upload($fileArr);
+                $pdf = PDFI_PDF_Factory::generate_from_upload($fileArr);
 
                 $filename = $pdf->get_name();
                 $project = Project::create_new(
