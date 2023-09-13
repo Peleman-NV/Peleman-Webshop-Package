@@ -62,7 +62,7 @@ class Add_PDF_Data_To_Cart_Item extends Abstract_Filter_Hookable
             }
 
             return $data;
-        } catch (\Throwable $exception) {
+        } catch (\Exception $exception) {
             throw $exception;
         }
     }
