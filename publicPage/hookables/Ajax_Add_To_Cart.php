@@ -94,7 +94,7 @@ class Ajax_Add_To_Cart extends Abstract_Ajax_Hookable
                 200
             );
         } catch (Invalid_Response_Exception $err) {
-            error_log($err->getMessage());
+            error_log((string)$err);
             wp_send_json_error(
                 array('message' => __('Could not connect to Peleman Image Editor. Please try again in a few moments.', 'Peleman-Webshop-Package')),
             );

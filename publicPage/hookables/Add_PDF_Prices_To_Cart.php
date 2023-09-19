@@ -45,9 +45,9 @@ class Add_PDF_Prices_To_Cart extends Abstract_Action_Hookable
 
                 $pages = $pdfData['pages'];
                 $pricePerPage = $meta->get_price_per_page();
-                error_log((string)$pricePerPage);
+                // error_log((string)$pricePerPage);
                 $args['price'] += $pages * $pricePerPage * $unitAmount;
-                error_log((string)$args['price']);
+                // error_log((string)$args['price']);
             }
         }
 

@@ -54,7 +54,6 @@ class PIE_Editor_Instructions extends Product_Meta
         // $this->add_instruction('usedesignmode', 'use design mode');
 
         $this->parse_instructions_from_meta();
-        error_log($this->get_instructions_string());
     }
 
     private function parse_instructions_from_meta()

@@ -56,7 +56,7 @@ class Validate_PDF_Upload extends Abstract_Filter_Hookable
             $pdf = $pdfFactory->generate_from_upload($_FILES[$this->key]);
 
             $notification = new Notification();
-            $this->validation_chain($product,)->handle($pdf, $notification);
+            $this->validation_chain($product)->handle($pdf, $notification);
 
             if (!$notification->is_success()) {
                 wc_add_notice(

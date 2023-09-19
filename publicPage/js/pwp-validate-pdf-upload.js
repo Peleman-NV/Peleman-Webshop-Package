@@ -23,7 +23,7 @@
         _upload.on('change', e => {
             var file = e.target.files[0];
             var filesize = file.size;
-            var maxSize = _upload.attr('size') ?? 30000000;
+            var maxSize = _upload.attr('size') ?? 312000000;
             var mime_types = ['application/pdf'];
             if (mime_types.indexOf(file.type) == -1) {
                 alert(__('Incorrect file type.', 'peleman-webshop-package'));
