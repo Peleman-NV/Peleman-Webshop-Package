@@ -125,7 +125,7 @@ class Ajax_Add_To_Cart extends Abstract_Ajax_Hookable
      * @param string $cancelURL url to which the editor will return the user if the user cancels their project.
      * @return Editor_Project|null wil return a Editor_Project object if successful. if the method can not determine a valid editor, will return null.
      */
-    public function generate_new_project(Product_Meta_Data $data, string $returnURL = '', string $cancelURL = '', array $params = []): ?Editor_Project
+    public function generate_new_editor_Project(Product_Meta_Data $data, string $returnURL = '', string $cancelURL = '', array $params = []): ?Editor_Project
     {
         // error_log($data->get_editor_id());
         switch ($data->get_editor_id()) {
@@ -140,16 +140,16 @@ class Ajax_Add_To_Cart extends Abstract_Ajax_Hookable
      * generate a new project for the Peleman Image Editor
      *
      * @param Product_PIE_Data $data product or variant id of the product
-     * @param string $continueUrl when the user has completed their project, they will be redirected to this URL
+     * @param string $returnUrl when the user has completed their project, they will be redirected to this URL
      * @return PIE_Project project object
      */
-    private function new_PIE_Project(Product_PIE_Data $data, string $continueUrl, array $params): PIE_Project
+    private function new_PIE_Project(Product_PIE_Data $data, string $returnUrl, array $params): PIE_Project
     {
         $instructions = new PIE_Editor_Instructions($data->get_parent());
         $auth = new Editor_Auth_Provider();
         $request = new New_PIE_Project_Request($auth);
         $request->initialize_from_pie_data($data);
-        $request->set_return_url($continueUrl);
+        $request->set_return_url($returnUrl);
         $request->set_user_id(get_current_user_id());
         $request->set_language($this->get_site_language() ?: 'en');
         $request->set_project_name($data->get_parent()->get_name());
@@ -175,15 +175,38 @@ class Ajax_Add_To_Cart extends Abstract_Ajax_Hookable
             error_log(__CLASS__ . "\r\nuploaded files : " . print_r($_FILES, true));
         }
     }
-
+    /**
+     * Undocumented function
+     *
+     * @param Product_Meta_Data $productMeta
+     * @param integer $productId
+     * @param integer $variationId
+     * @param integer $quantity
+     * @return void
+     */
     private function setup_custom_project(Product_Meta_Data $productMeta, int $productId, int $variationId, int $quantity)
     {
+        /**
+         * Filter for adding additional meta data to an item being added to the cart.
+         * 
+         * @param array $meta Array of meta data to store in the local project, to be added to the item after the editor.
+         * @param \WC_Product $product product which is being ordered
+         * @param Product_Meta_Data $productMeta object containing all the products meta data relevant to the PWP workflow.
+         */
         $meta = apply_filters(
             'pwp_add_cart_item_data',
             [],
             $productMeta->get_parent(),
             $productMeta,
         );
+        /**
+         * Filter for adding additional parameters to the editor create project request.
+         * 
+         * @param array $params Array of parameters to be passed into the editor.
+         * @param \WC_Product $product product which is being ordered
+         * @param int $quantity how many units of the product are being ordered
+         * @param Product_Meta_Data $productMeta object containing all the product's meta data relevant to the PWP workflow.
+         */
         $params = apply_filters(
             'pwp_prepare_new_pie_project_params',
             [],
@@ -192,11 +215,13 @@ class Ajax_Add_To_Cart extends Abstract_Ajax_Hookable
             $meta
         );
 
+        //create a new transient ID for storing our project data
+        //this allows us to add the item to the cart when the user returns from the editor and not before.
         $transientId = uniqid('pwpproj-');
-        $continueUrl = wc_get_cart_url() . "?CustProj={$transientId}";
+        $returnUrl = wc_get_cart_url() . "?CustProj={$transientId}";
         $cancelUrl = get_permalink($variationId ?: $productId);
 
-        $projectData = $this->generate_new_project($productMeta, $continueUrl, $cancelUrl, $params);
+        $projectData = $this->generate_new_editor_Project($productMeta, $returnUrl, $cancelUrl, $params);
 
         $meta['_editor_id'] = $projectData->get_editor_id();
         $meta['_project_id'] = $projectData->get_project_id();
@@ -207,7 +232,6 @@ class Ajax_Add_To_Cart extends Abstract_Ajax_Hookable
             'item_meta'     => $meta,
 
         );
-
 
         //transient expires in 30 days
         set_transient($transientId, $itemData, 30 * 86400);

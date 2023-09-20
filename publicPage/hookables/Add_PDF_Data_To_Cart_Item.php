@@ -54,10 +54,10 @@ class Add_PDF_Data_To_Cart_Item extends Abstract_Filter_Hookable
                 $project->save_file($pdf);
 
                 $data['_pdf_data'] = array(
-                    'id'        => $project->get_id(),
-                    'pdf_name'  => $project->get_file_name(),
-                    'pages'     => $pdf->get_page_count(),
-                    'extra_cost' => $pdf->get_page_count() * $meta->get_price_per_page()
+                    'id'            => $project->get_id(),
+                    'pdf_name'      => $project->get_file_name(),
+                    'pages'         => $pdf->get_page_count(),
+                    'extra_cost'    => $pdf->get_page_count() * $meta->get_price_per_page()
                 );
             }
 

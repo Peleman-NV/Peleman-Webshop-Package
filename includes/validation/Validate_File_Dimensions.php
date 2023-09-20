@@ -35,9 +35,6 @@ class Validate_File_Dimensions extends File_Validator
             $this->widthRange,
             $this->precision
         );
-        // error_Log('page count: ' . $data->get_page_count());
-        // error_log('width: ' . $data->get_width() . ' mm');
-        // error_log('height: ' . $data->get_height()  . ' mm');
         if ($heightFit && $widthFit) {
             return $this->handle_next($data, $notification);
         }

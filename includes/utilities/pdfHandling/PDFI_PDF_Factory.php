@@ -19,9 +19,13 @@ class PDFI_PDF_Factory implements I_PDF_Data
         $tpl    = $pdf->importPage(1, PageBoundaries::TRIM_BOX);
         $pdf->AddPage();
         $dimensions = $pdf->getTemplateSize($tpl);
-        
+
         $width      = round($dimensions['width']);
         $height     = round($dimensions['height']);
+
+        // error_log ("pdf page count: {$pages}");
+        // error_log  ("height: {$height} mm");
+        // error_log  ("width: {$width} mm");
 
         $uploadData->set_page_count($pages);
         $uploadData->set_dimensions($width, $height);
