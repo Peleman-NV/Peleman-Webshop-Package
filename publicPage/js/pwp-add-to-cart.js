@@ -30,7 +30,8 @@
         var loadSpinner = $(this).find('.pwp-loader');
         var buttonText = $thisButton.find('.btn-text').text();
 
-        var formData = new FormData();
+        var formData = new FormData($form[0]);
+        console.log(formData);
         formData.append('action', 'Ajax_Add_To_Cart');
         formData.append('product_id', product_id);
         formData.append('product_sku', '');
