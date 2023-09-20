@@ -42,3 +42,6 @@ Config.php
 /build
 /docs
 /tools
+
+# ignore sensitive files
+auth.json
