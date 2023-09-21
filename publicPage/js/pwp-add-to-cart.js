@@ -16,6 +16,7 @@
 (function ($) {
     ('use strict');
     console.log('updated add to cart js initializing...');
+    const { __, _x, _n, _nx } = wp.i18n;
 
     $(document).on('click', '.single_add_to_cart_button', function (e) {
         e.preventDefault();
@@ -57,7 +58,7 @@
                 $thisButton.removeClass('pwp-added')
                 $thisButton.addClass('pwp-loading');
                 if (file) {
-                    $thisButton.find('.btn-text').text("Uploading file, please wait");
+                    $thisButton.find('.btn-text').text(__("Uploading file, please wait", 'peleman-webshop-package'));
                 }
                 loadSpinner.show();
                 $thisButton.attr("disabled", true);
