@@ -33,7 +33,7 @@ class Ajax_Add_To_Cart extends Abstract_Ajax_Hookable
     public function callback(): void
     {
         error_log(print_r($_REQUEST, true));
-        erroR_Log(print_r($_FILES, true));
+        error_log(print_r($_FILES, true));
         if (!$this->verify_nonce($_REQUEST['nonce']))
             wp_send_json_error(
                 array('message' => __('session timed out', 'Peleman-Webshop-Package')),
@@ -192,10 +192,6 @@ class Ajax_Add_To_Cart extends Abstract_Ajax_Hookable
     {
         /**
          * Filter for adding additional meta data to an item being added to the cart.
-         * 
-         * @param array $meta Array of meta data to store in the local project, to be added to the item after the editor.
-         * @param \WC_Product $product product which is being ordered
-         * @param Product_Meta_Data $productMeta object containing all the products meta data relevant to the PWP workflow.
          */
         $meta = apply_filters(
             'pwp_add_cart_item_data',
@@ -205,11 +201,6 @@ class Ajax_Add_To_Cart extends Abstract_Ajax_Hookable
         );
         /**
          * Filter for adding additional parameters to the editor create project request.
-         * 
-         * @param array $params Array of parameters to be passed into the editor.
-         * @param \WC_Product $product product which is being ordered
-         * @param int $quantity how many units of the product are being ordered
-         * @param Product_Meta_Data $productMeta object containing all the product's meta data relevant to the PWP workflow.
          */
         $params = apply_filters(
             'pwp_prepare_new_pie_project_params',

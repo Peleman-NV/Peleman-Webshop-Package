@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "ac5311eb7de9f296fc5d5cf5fe04f919",
+    "content-hash": "12f2bf98c9dca49a73003ff9d3767a79",
     "packages": [
         {
             "name": "clean-composer-packages/pdf-js",

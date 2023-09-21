@@ -20,25 +20,30 @@
     $(document).on('click', '.single_add_to_cart_button', function (e) {
         e.preventDefault();
 
-        var $thisButton = $(this);
-        var $form = $thisButton.closest('form.cart');
-        $form.action = 'Ajax_Add_To_Cart';
+        let $thisButton = $(this);
+        let $form = $('form.cart');
 
-        var id = $thisButton.val();
-        var file = $form.find('input[id="pwp-file-upload"]')[0].files[0];
-        var product_id = $form.find('input[name=product_id]').val() || id;
-        var variation_id = $form.find('input[name=variation_id]').val() || 0;
-        var loadSpinner = $(this).find('.pwp-loader');
-        var buttonText = $thisButton.find('.btn-text').text();
+        let id = $thisButton.val();
+        let file = $('#pwp-file-upload')[0].files[0];
+        let product_id = $form.find('input[name=product_id]').val() || id;
+        let quantity = $form.find('input[name=quantity]').val() || 1;
+        let variation_id = $form.find('input[name=variation_id]').val() || 0;
+        let loadSpinner = $(this).find('.pwp-loader');
+        let buttonText = $thisButton.find('.btn-text').text();
 
-        var formData = new FormData($form[0]);
+        let formData = new FormData();
 
-        formData.set('action', 'Ajax_Add_To_Cart');
-        formData.set('product_id', product_id);
-        formData.set('variation_id', variation_id);
+        formData.append('action', 'Ajax_Add_To_Cart');
+        formData.append('product_id', product_id);
+        formData.append('product_sku', '');
+        formData.append('quantity', quantity);
+        formData.append('variation_id', variation_id);
+        formData.append('pdf-upload', file);
         formData.set('nonce', Ajax_Add_To_Cart_object.nonce);
 
-        $(document.body).trigger('adding_to_cart', [$thisButton, formData]);
+        console.log(JSON.stringify(formData));
+
+        // $(document.body).trigger('adding_to_cart', [$thisButton, formData]);
 
         $.ajax({
             url: Ajax_Add_To_Cart_object.ajax_url,
@@ -47,6 +52,7 @@
             data: formData,
             processData: false,
             contentType: false,
+            // async: true,
             beforeSend: function () {
                 $thisButton.removeClass('pwp-added')
                 $thisButton.addClass('pwp-loading');
@@ -102,7 +108,7 @@
 
     function logAjaxError(jqXHR, textStatus, errorThrown) {
         console.log(jqXHR.responseText);
-        var response = JSON.parse(jqXHR.responseText);
+        let response = JSON.parse(jqXHR.responseText);
         alert(response.data.message);
         console.log(
             'Something went wrong:\n' +

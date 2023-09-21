@@ -33,7 +33,8 @@ class Validate_PDF_Upload extends Abstract_Filter_Hookable
 
         if (!$product->uses_pdf_content()) return $passed;
 
-        if (!isset($_FILES[$this->key])) {
+
+        if (!isset($_FILES[$this->key]) || $_FILES[$this->key]['error'] == 4) {
             wc_add_notice(
                 __('Error: Product requires PDF upload.', 'Peleman-Webshop-Package'),
                 'error'
