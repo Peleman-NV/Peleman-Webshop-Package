@@ -149,10 +149,6 @@ final class Plugin
             new Ajax_Verify_PIE_Editor_Credentials(6),
             new Cleanup_Unordered_Projects(),
             new Override_WC_Templates(),
-            new Apply_Bundle_Price_Cart_Widget(),
-            new Modify_Cart_Item_Before_Calculate_Totals(),
-            new Apply_Unit_Prices_To_Cart(9),
-            new Add_PDF_Prices_To_Cart(20),
             new Change_Checkout_Item_Thumbnail(),
             new Change_Product_Thumbnail_In_Order(10),
         );
@@ -186,6 +182,10 @@ final class Plugin
         if (get_option('pwp_use_custom_add_to_cart_js', true)) {
             $this->add_hookables(
                 new Ajax_Add_To_Cart(8),
+                new Apply_Bundle_Price_Cart_Widget(),
+                new Modify_Cart_Item_Before_Calculate_Totals(),
+                new Apply_Unit_Prices_To_Cart(9),
+                new Add_PDF_Prices_To_Cart(20),
             );
             /* PDF upload hookables */
             $this->add_hookables(
