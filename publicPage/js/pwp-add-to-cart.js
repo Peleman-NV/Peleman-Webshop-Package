@@ -58,7 +58,7 @@
                 $thisButton.removeClass('pwp-added')
                 $thisButton.addClass('pwp-loading');
                 if (file) {
-                    $thisButton.find('.btn-text').text(__("Uploading file, please wait", 'peleman-webshop-package'));
+                    $thisButton.find('.btn-text').text(Ajax_Add_To_Cart_object.uploading_text);
                 }
                 loadSpinner.show();
                 $thisButton.attr("disabled", true);

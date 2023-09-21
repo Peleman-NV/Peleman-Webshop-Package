@@ -123,14 +123,19 @@ abstract class Abstract_Ajax_Hookable implements I_Hookable_Component
             wp_rand(0, 2000),
             true
         );
+
+        $localization_array = array(
+            'ajax_url' => admin_url('admin-ajax.php'),
+            'nonce' => wp_create_nonce($this->nonceName),
+        );
+        $localization_array += $this->object_data();
         wp_localize_script(
             $this->scriptHandle,
             $this->objectName,
-            array(
-                'ajax_url' => admin_url('admin-ajax.php'),
-                'nonce' => wp_create_nonce($this->nonceName)
-            )
+            $localization_array,
+
         );
+        wp_set_script_translations($this->scriptHandle, 'peleman-webshop-package');
 
         // error_log("{$this->scriptHandle} registered");
     }
@@ -142,6 +147,15 @@ abstract class Abstract_Ajax_Hookable implements I_Hookable_Component
      */
     public abstract function callback(): void;
 
+    /**
+     * Function to add extra data to the Ajax object, such as translated strings and other values needed for script operation.
+     *
+     * @return array
+     */
+    protected function object_data(): array
+    {
+        return array();
+    }
     /**
      * functionality of the component for unauthenticated users
      *

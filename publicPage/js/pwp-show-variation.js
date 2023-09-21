@@ -82,7 +82,7 @@
             dataType: 'json',
             beforeSend: function () {
                 console.log('working...');
-                disableAddToCartButton(__('loading', 'peleman-webshop-package'));
+                disableAddToCartButton(Ajax_Show_Variation_object.loading_msg);
             },
             complete: function () {
                 console.log('completed');

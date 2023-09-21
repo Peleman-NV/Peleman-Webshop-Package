@@ -13,6 +13,7 @@ use PWP\includes\editor\Product_PIE_Data;
 use PWP\includes\editor\PIE_Project;
 use PWP\includes\exceptions\Invalid_Response_Exception;
 use PWP\includes\hookables\abstracts\Abstract_Ajax_Hookable;
+use PWP\includes\validation\Validate_File_Size;
 
 /**
  * AJAX method which handles add to cart requests. If the product being added to the cart requires customization,
@@ -235,6 +236,13 @@ class Ajax_Add_To_Cart extends Abstract_Ajax_Hookable
                 'destination_url' => $projectData->get_project_editor_url(false),
             ),
             201
+        );
+    }
+
+    protected function object_data(): array
+    {
+        return array(
+            'uploading_text' => __("Uploading file, please wait", 'peleman-webshop-package'),
         );
     }
 }

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace PWP\publicPage\hookables;
 
 use PWP\includes\hookables\abstracts\Abstract_Action_Hookable;
+use PWP\includes\validation\Validate_File_Size;
 
 /**
  * Enqueues the required PDF.js files for in-browser previewing of pdf uploads.
@@ -44,6 +45,16 @@ class Register_PDF_JS_Scripts extends Abstract_Action_Hookable
                 'wp-i18n',
             ),
             wp_rand(0, 2000),
+        );
+
+        wp_localize_script(
+            'pwp-validate-pdf-upload.js',
+            'validate_pdf',
+            array(
+                'type_error' => __('Incorrect file type.', 'peleman-webshop-package'),
+                'size_error' => __('File is too large and cannot be uploaded.', 'peleman-webshop-package'),
+                'max_size'   => (int)ini_get('upload_max_filesize') * Validate_File_Size::MB,
+            )
         );
 
         wp_set_script_translations('pwp-validate-pdf-upload.js', 'peleman-webshop-package');

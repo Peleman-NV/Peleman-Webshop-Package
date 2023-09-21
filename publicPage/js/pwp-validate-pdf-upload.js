@@ -1,8 +1,6 @@
 (function ($) {
     ('use strict');
     $(function () {
-        const { __, _x, _n, _nx } = wp.i18n;
-
         const _clear = $('#pwp-file-clear');
         const _upload = $('#pwp-file-upload');
         const _preview = $('#pwp-pdf-canvas');
@@ -23,15 +21,15 @@
         _upload.on('change', e => {
             var file = e.target.files[0];
             var filesize = file.size;
-            var maxSize = _upload.attr('size') ?? 312000000;
+            var maxSize = _upload.attr('size') ?? validate_pdf.max_size;
             var mime_types = ['application/pdf'];
             if (mime_types.indexOf(file.type) == -1) {
-                alert(__('Incorrect file type.', 'peleman-webshop-package'));
+                alert(validate_pdf.type_error);
                 return;
             }
 
             if (filesize > maxSize) {
-                alert(__('File is too large and cannot be uploaded.', 'peleman-webshop-package'));
+                alert(validate_pdf.size_error);
                 return;
             }
 

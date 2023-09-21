@@ -88,4 +88,9 @@ class Ajax_Show_Variation extends Abstract_Ajax_Hookable
         }
         return __('Add To Cart', 'woocommerce');
     }
+
+    protected function object_data(): array
+    {
+        return array('loading_msg' => __("Loading", 'Peleman-Webshop-Package'));
+    }
 }

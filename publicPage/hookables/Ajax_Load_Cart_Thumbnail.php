@@ -70,4 +70,11 @@ class Ajax_Load_Cart_Thumbnail extends Abstract_Ajax_Hookable
 
         return $domain . "/editor/api/getprojectthumbnailAPI.php" . '?' . http_build_query($query);
     }
+
+    final protected function object_data(): array
+    {
+        return array(
+            
+        );
+    }
 }
