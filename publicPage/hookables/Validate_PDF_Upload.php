@@ -24,7 +24,7 @@ class Validate_PDF_Upload extends Abstract_Filter_Hookable
     public function __construct()
     {
         parent::__construct('woocommerce_add_to_cart_validation', 'validate_pdf_upload', 10, 5);
-        $this->key = "upload";
+        $this->key = "pdf-upload";
     }
 
     public function validate_pdf_upload(bool $passed, int $product_id, int $quantity, int $variation_id = 0, array $variations = []): bool

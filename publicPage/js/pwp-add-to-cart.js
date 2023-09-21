@@ -22,23 +22,21 @@
 
         var $thisButton = $(this);
         var $form = $thisButton.closest('form.cart');
+        $form.action = 'Ajax_Add_To_Cart';
+
         var id = $thisButton.val();
-        var product_qty = $form.find('input[name=quantity]').val() || 1;
+        var file = $form.find('input[id="pwp-file-upload"]')[0].files[0];
         var product_id = $form.find('input[name=product_id]').val() || id;
         var variation_id = $form.find('input[name=variation_id]').val() || 0;
-        var file = $form.find('input[id="pwp-file-upload"]')[0].files[0];
         var loadSpinner = $(this).find('.pwp-loader');
         var buttonText = $thisButton.find('.btn-text').text();
 
         var formData = new FormData($form[0]);
-        console.log(formData);
-        formData.append('action', 'Ajax_Add_To_Cart');
-        formData.append('product_id', product_id);
-        formData.append('product_sku', '');
-        formData.append('quantity', product_qty);
-        formData.append('variation_id', variation_id);
-        formData.append('upload', file);
-        formData.append('nonce', Ajax_Add_To_Cart_object.nonce);
+
+        formData.set('action', 'Ajax_Add_To_Cart');
+        formData.set('product_id', product_id);
+        formData.set('variation_id', variation_id);
+        formData.set('nonce', Ajax_Add_To_Cart_object.nonce);
 
         $(document.body).trigger('adding_to_cart', [$thisButton, formData]);
 
@@ -69,6 +67,7 @@
                 console.log(response);
             },
             success: function (response) {
+                console.log(response);
                 data = response.data;
                 response.success ? onSuccess(data, $thisButton) : onFailure(data);
             },

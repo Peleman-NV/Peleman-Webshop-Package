@@ -32,6 +32,8 @@ class Ajax_Add_To_Cart extends Abstract_Ajax_Hookable
 
     public function callback(): void
     {
+        error_log(print_r($_REQUEST, true));
+        erroR_Log(print_r($_FILES, true));
         if (!$this->verify_nonce($_REQUEST['nonce']))
             wp_send_json_error(
                 array('message' => __('session timed out', 'Peleman-Webshop-Package')),
@@ -39,7 +41,10 @@ class Ajax_Add_To_Cart extends Abstract_Ajax_Hookable
             );
 
         if (!isset($_REQUEST['product_id'])) {
-            return;
+            wp_send_json_error(
+                array('message' => __('invalid request', 'Peleman-Webshop_Package')),
+                400
+            );
         }
 
         try {
@@ -91,7 +96,6 @@ class Ajax_Add_To_Cart extends Abstract_Ajax_Hookable
                     'message'   => $message,
                     'data'      => 'data validation error has occurred',
                 ),
-                200
             );
         } catch (Invalid_Response_Exception $err) {
             error_log((string)$err);
@@ -106,7 +110,7 @@ class Ajax_Add_To_Cart extends Abstract_Ajax_Hookable
                 array(
                     'message' => __('The System has encountered an unexpected error. Please try again in a few moments.', 'Peleman-Webshop-Package'),
                 ),
-                200
+                500
             );
         }
     }

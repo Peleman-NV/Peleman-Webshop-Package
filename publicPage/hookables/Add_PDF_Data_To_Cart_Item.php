@@ -25,10 +25,10 @@ class Add_PDF_Data_To_Cart_Item extends Abstract_Filter_Hookable
 
     public function add_PDF_to_cart_item(array $data, \WC_Product $product, Product_Meta_Data $meta): array
     {
-        if (!$meta->uses_pdf_content() || !isset($_FILES['upload']))
+        if (!$meta->uses_pdf_content() || !isset($_FILES['pdf-upload']))
             return $data;
 
-        $fileArr = $_FILES['upload'];
+        $fileArr = $_FILES['pdf-upload'];
 
         try {
 
