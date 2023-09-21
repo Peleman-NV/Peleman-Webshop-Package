@@ -44,6 +44,13 @@ class Button_Submenu extends Admin_Menu
             'default' => true,
         ));
 
+        register_setting($this->option_group, 'pwp_use_custom_add_to_cart_js', array(
+            'type' => 'boolean',
+            'description' => 'Whether to use the default woocommerce add to cart logic & scripts, or the PWP overrides.',
+            'show_in_rest'  => true,
+            'default' => true,
+        ));
+
         $this->add_menu_components();
     }
 
@@ -89,6 +96,18 @@ class Button_Submenu extends Admin_Menu
             array(
                 'option' => 'pwp_global_pdf_size_validation',
                 'description' => __("Disabling this will globally override all PDF size validation checks.", 'Peleman-Webshop-Package'),
+            )
+        );
+
+        add_settings_field(
+            'pwp_use_custom_add_to_cart_js',
+            __('Use PWP add to cart scripts', 'Peleman-Webshop-Package'),
+            array($this, 'bool_property_callback'),
+            $this->page_slug,
+            'pwp_settings_buttons',
+            array(
+                'option' => 'pwp_use_custom_add_to_cart_js',
+                'description' => __("Whether to use the default woocommerce add to cart logic & scripts, or the PWP overrides.", 'Peleman-Webshop-Package'),
             )
         );
     }
