@@ -32,8 +32,6 @@ class Ajax_Add_To_Cart extends Abstract_Ajax_Hookable
 
     public function callback(): void
     {
-        error_log(print_r($_REQUEST, true));
-        error_log(print_r($_FILES, true));
         if (!$this->verify_nonce($_REQUEST['nonce']))
             wp_send_json_error(
                 array('message' => __('session timed out', 'Peleman-Webshop-Package')),
