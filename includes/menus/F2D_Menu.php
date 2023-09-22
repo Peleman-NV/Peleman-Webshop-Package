@@ -85,7 +85,7 @@ class F2D_Menu extends Admin_Menu
             $this->page_slug,
             "pwp_settings_git",
             array(
-                'option' => 'pwp_enable_f2d',
+                'option' => 'pwp_update_automatic',
                 'description' =>  __("Enables cron job that will attempt a daily update of the plugin through a git request", 'Peleman-Webshop-Package'),
             )
         );
