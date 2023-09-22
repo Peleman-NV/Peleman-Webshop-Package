@@ -10,6 +10,8 @@ use PWP\includes\hookables\abstracts\Abstract_Action_Hookable;
  * Experimental system to automatically update WP plugins through PHP scripts.
  * 
  * The system will try to get the latest commit on a branch and then do a composer install.
+ * It is recommended to disable this option on a development computer, since composer will do a --no-dev install.
+ * This is only intended to keep plugins on dev, demo, and live sites up to date automatically.
  */
 class Update_Plugin_Commands extends Abstract_Action_Hookable
 {
