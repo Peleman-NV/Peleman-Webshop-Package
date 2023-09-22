@@ -6,6 +6,11 @@ namespace PWP\publicPage\hookables;
 
 use PWP\includes\hookables\abstracts\Abstract_Action_Hookable;
 
+/**
+ * Experimental system to automatically update WP plugins through PHP scripts.
+ * 
+ * The system will try to get the latest commit on a branch and then do a composer install.
+ */
 class Update_Plugin_Commands extends Abstract_Action_Hookable
 {
     public const HOOK = 'pwp_update_plugin';
