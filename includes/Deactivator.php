@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace PWP\includes;
 
 use PWP\publicPage\hookables\Cleanup_Unordered_Projects;
+use PWP\publicPage\hookables\Update_Plugin_Commands;
 
 defined('ABSPATH') || exit;
 
@@ -18,7 +19,10 @@ class Deactivator
     {
         error_log("disabling PWP plugin...");
 
-        self::unschedule_cron_jobs(Cleanup_Unordered_Projects::HOOK);
+        self::unschedule_cron_jobs(
+            Cleanup_Unordered_Projects::HOOK,
+            Update_Plugin_Commands::HOOK
+        );
     }
 
     private static function unschedule_cron_jobs(...$cronHooks): void

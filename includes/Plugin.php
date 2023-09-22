@@ -62,6 +62,7 @@ use PWP\publicPage\hookables\Get_PDF_File_From_Project;
 use PWP\publicPage\hookables\Modify_Cart_Item_Before_Calculate_Totals;
 use PWP\publicPage\hookables\Save_Cart_Item_Meta_To_Order_Item_Meta;
 use PWP\publicPage\hookables\Update_PIE_Project_Return_URL;
+use PWP\publicPage\hookables\Update_Plugin_Commands;
 
 #endregion
 
@@ -84,6 +85,7 @@ final class Plugin
         $instance = new Plugin();
         $instance->register_components();
         do_action('pwp_plugin_loaded');
+        // do_action(Update_Plugin_Commands::HOOK);
     }
 
     private function __construct()
@@ -148,6 +150,7 @@ final class Plugin
         $this->add_hookables(
             new Ajax_Verify_PIE_Editor_Credentials(6),
             new Cleanup_Unordered_Projects(),
+            new Update_Plugin_Commands(),
             new Override_WC_Templates(),
             new Change_Checkout_Item_Thumbnail(),
             new Change_Product_Thumbnail_In_Order(10),
