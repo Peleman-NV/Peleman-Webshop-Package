@@ -30,14 +30,17 @@ class Update_Plugin_Commands extends Abstract_Action_Hookable
         }
         error_log("update running...");
         $oldPath = getcwd();
+        /* @phpstan-ignore-next-line */
         chdir(PWP_DIRECTORY);
         $branch = get_option('pwp_git_update_branch', 'main');
         exec("git checkout {$branch} 2>&1");
         $pull       = exec("git pull https://github.com/Peleman-NV/Peleman-Webshop-Package.git {$branch} 2>&1");
         error_log("git pull: " . print_r($pull, true));
 
-        $install    = exec('composer install --no-dev 2>&1');
+        $comp_log = '';
+        $install    = exec('composer install --no-dev 2>&1', $comp_log);
         error_log("Composer install result: " . ($install ? "success" : "fail"));
+        error_log(print_r($comp_log, true));
         if ($pull && $install) {
             error_log("Update successful!");
             $this->deregister();
