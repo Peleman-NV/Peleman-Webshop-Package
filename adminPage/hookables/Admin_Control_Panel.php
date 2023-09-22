@@ -36,7 +36,6 @@ class Admin_Control_Panel extends Abstract_Action_Hookable
     {
         $get = $_GET;
         $activeTab =  isset($get['tab']) ? sanitize_text_field($get['tab']) : '';
-        error_log((string)$activeTab);
 
         /**
          * @var Admin_Menu[]

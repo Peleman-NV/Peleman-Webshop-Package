@@ -58,6 +58,7 @@ class F2D_Menu extends Admin_Menu
             null,
             $this->page_slug,
         );
+        
         add_settings_field(
             'pwp_enable_f2d',
             __("Enable F2D integration", 'Peleman-Webshop-Package'),
