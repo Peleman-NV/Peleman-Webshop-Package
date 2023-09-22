@@ -20,14 +20,14 @@ class Update_Plugin_Commands extends Abstract_Action_Hookable
 
     public function update(): void
     {
-        if (!boolval(get_option('pwp_update_automatic', false))) {
+        if (!boolval(get_option('pwp_update_automatic', true))) {
             return;
         }
         error_log("update running...");
         $oldPath = getcwd();
         chdir(PWP_DIRECTORY);
         $branch = get_option('pwp_git_update_branch', 'main');
-        $pull       = exec("git pull https://github.com/Peleman-NV/Peleman-Webshop-Package.git {branch} 2>&1");
+        $pull       = exec("git pull https://github.com/Peleman-NV/Peleman-Webshop-Package.git {$branch} 2>&1");
         error_log("git pull: " . print_r($pull, true));
 
         $install    = exec('composer install --no-dev 2>&1');

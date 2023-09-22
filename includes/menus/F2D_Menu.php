@@ -11,7 +11,7 @@ class F2D_Menu extends Admin_Menu
 {
     public function __construct(string $page_slug)
     {
-        parent::__construct('F2D options', 'pwp-f2d-options-group', $page_slug);
+        parent::__construct('Developer options', 'pwp-f2d-options-group', $page_slug);
     }
 
     public  function register_settings(): void
@@ -58,7 +58,7 @@ class F2D_Menu extends Admin_Menu
             null,
             $this->page_slug,
         );
-        
+
         add_settings_field(
             'pwp_enable_f2d',
             __("Enable F2D integration", 'Peleman-Webshop-Package'),
@@ -71,12 +71,19 @@ class F2D_Menu extends Admin_Menu
             )
         );
 
+        add_settings_section(
+            'pwp_settings_git',
+            __("Git Developer Options", 'Peleman-Webshop-Package'),
+            null,
+            $this->page_slug,
+        );
+
         add_settings_field(
             'pwp_update_automatic',
             __("Enable Git updates", 'Peleman-Webshop-Package'),
             array($this, 'bool_property_callback'),
             $this->page_slug,
-            "pwp_update_automatic",
+            "pwp_settings_git",
             array(
                 'option' => 'pwp_enable_f2d',
                 'description' =>  __("Enables cron job that will attempt a daily update of the plugin through a git request", 'Peleman-Webshop-Package'),
@@ -88,9 +95,9 @@ class F2D_Menu extends Admin_Menu
             __("Git Branch", 'Peleman-Webshop-Package'),
             array($this, 'text_property_callback'),
             $this->page_slug,
-            "pwp_git_update_branch",
+            "pwp_settings_git",
             array(
-                'option' => 'pwp_enable_f2d',
+                'option' => 'pwp_git_update_branch',
                 'description' =>  __("Which git branch to pull from.", 'Peleman-Webshop-Package'),
             )
         );
