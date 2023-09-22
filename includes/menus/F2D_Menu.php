@@ -28,6 +28,30 @@ class F2D_Menu extends Admin_Menu
             )
         );
 
+        register_setting(
+            $this->option_group,
+            'pwp_update_automatic',
+            array(
+                'type' => 'bool',
+                'description' => 'Enable daily updates through git',
+                'sanitize_callback' => 'wp_filter_nohtml_kses',
+                'show_in_rest' => true,
+                'default' => false,
+            )
+        );
+
+        register_setting(
+            $this->option_group,
+            'pwp_git_update_branch',
+            array(
+                'type' => 'string',
+                'description' => 'Git branch to pull from',
+                'sanitize_callback' => 'wp_filter_nohtml_kses',
+                'show_in_rest' => true,
+                'default' => 'main',
+            )
+        );
+
         add_settings_section(
             'pwp_settings_f2d',
             __("Fly2Data", 'Peleman-Webshop-Package'),
@@ -43,6 +67,30 @@ class F2D_Menu extends Admin_Menu
             array(
                 'option' => 'pwp_enable_f2d',
                 'description' =>  __("Enables F2D specific properties on products and API. ", 'Peleman-Webshop-Package'),
+            )
+        );
+
+        add_settings_field(
+            'pwp_update_automatic',
+            __("Enable Git updates", 'Peleman-Webshop-Package'),
+            array($this, 'bool_property_callback'),
+            $this->page_slug,
+            "pwp_update_automatic",
+            array(
+                'option' => 'pwp_enable_f2d',
+                'description' =>  __("Enables cron job that will attempt a daily update of the plugin through a git request", 'Peleman-Webshop-Package'),
+            )
+        );
+
+        add_settings_field(
+            'pwp_git_update_branch',
+            __("Git Branch", 'Peleman-Webshop-Package'),
+            array($this, 'text_property_callback'),
+            $this->page_slug,
+            "pwp_git_update_branch",
+            array(
+                'option' => 'pwp_enable_f2d',
+                'description' =>  __("Which git branch to pull from.", 'Peleman-Webshop-Package'),
             )
         );
     }

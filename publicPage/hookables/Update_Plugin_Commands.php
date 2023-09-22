@@ -26,9 +26,8 @@ class Update_Plugin_Commands extends Abstract_Action_Hookable
         error_log("update running...");
         $oldPath = getcwd();
         chdir(PWP_DIRECTORY);
-
-        $checkout   = exec('git checkout main 2>&1');
-        $pull       = exec('git pull https://github.com/Peleman-NV/Peleman-Webshop-Package.git main 2>&1');
+        $branch = get_option('pwp_git_update_branch', 'main');
+        $pull       = exec("git pull https://github.com/Peleman-NV/Peleman-Webshop-Package.git {branch} 2>&1");
         error_log("git pull: " . print_r($pull, true));
 
         $install    = exec('composer install --no-dev 2>&1');
