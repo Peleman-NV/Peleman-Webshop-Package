@@ -27,6 +27,7 @@ class Update_Plugin_Commands extends Abstract_Action_Hookable
         $oldPath = getcwd();
         chdir(PWP_DIRECTORY);
         $branch = get_option('pwp_git_update_branch', 'main');
+        exec("git checkout {$branch} 2>&1");
         $pull       = exec("git pull https://github.com/Peleman-NV/Peleman-Webshop-Package.git {$branch} 2>&1");
         error_log("git pull: " . print_r($pull, true));
 
