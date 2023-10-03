@@ -147,12 +147,15 @@ class Ajax_Add_To_Cart extends Abstract_Ajax_Hookable
      */
     private function new_PIE_Project(Product_PIE_Data $data, string $returnUrl, array $params): PIE_Project
     {
+        $user = wp_get_current_user();
         $instructions = new PIE_Editor_Instructions($data->get_parent());
         $auth = new Editor_Auth_Provider();
         $request = new New_PIE_Project_Request($auth);
         $request->initialize_from_pie_data($data);
+        $request->set_organisation_id($this->get_organisation_id());
         $request->set_return_url($returnUrl);
         $request->set_user_id(get_current_user_id());
+        $request->set_user_email($user->user_email);
         $request->set_language($this->get_site_language() ?: 'en');
         $request->set_project_name($data->get_parent()->get_name());
         $request->set_timeout(10);
@@ -161,6 +164,17 @@ class Ajax_Add_To_Cart extends Abstract_Ajax_Hookable
         }
         return $request->make_request();
     }
+
+    public function get_organisation_id(){
+		if(parse_url($_SERVER['HTTP_REFERER'], PHP_URL_QUERY) != null){
+			parse_str(parse_url($_SERVER['HTTP_REFERER'], PHP_URL_QUERY), $queries);
+			if($queries['organisationid']){
+				return $queries['organisationid'];
+			}
+    }else{
+			return '';
+		}
+	}
 
     private function get_site_language(): string
     {

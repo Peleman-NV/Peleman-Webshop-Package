@@ -41,13 +41,13 @@ class New_PIE_Project_Request extends Abstract_PIE_Request
     private ?Product_PIE_Data $editorData;
 
     private int $userId;
+    private string $userEmail;
     private string $language;
     private array $editorInstructions;
     private string $projectName;
     private string $returnUrl;
-
+    private ?string $organisationId;
     private array $params;
-
     private string $formatId;
     #endregion
 
@@ -59,10 +59,12 @@ class New_PIE_Project_Request extends Abstract_PIE_Request
         $this->editorData = null;
 
         $this->userId = 0;
+        $this->userEmail = '';
         $this->language = substr(get_locale(), 0, 2) ?: 'en';
         $this->editorInstructions = [];
         $this->projectName = '';
         $this->returnUrl = '';
+        $this->organisationId ='';
 
         $this->formatId = '';
         $this->params = [];
@@ -93,11 +95,26 @@ class New_PIE_Project_Request extends Abstract_PIE_Request
     {
         $this->userId = $userId;
     }
-
-    public function set_return_url(string $returnURL): void
+    public function set_user_email(string $userEmail): void
     {
-        $this->returnUrl = $returnURL;
+        $this->userEmail = $userEmail;
     }
+	     public function set_return_url(string $returnURL): void
+    {
+        if($this->organisationId){
+            $this->returnUrl = $returnURL . '&organisationid=' . $this->organisationId;
+ 
+        }else{
+            $this->returnUrl = $returnURL;
+
+        }
+    }
+    
+ public function set_organisation_id(?string $organisationId){
+        $this->organisationId = $organisationId;
+
+    }
+
 
     public function set_editor_instructions(string ...$args): void
     {
@@ -179,6 +196,7 @@ class New_PIE_Project_Request extends Abstract_PIE_Request
             'customerid'            => $this->get_customer_id(),
             'customerapikey'        => $this->get_api_key(),
             'userid'                => $this->userId,
+            'useremail'                => $this->userEmail,
             'lang'                  => $this->language,
             'templateid'            => $this->editorData->get_template_id(),
             'designid'              => $this->editorData->get_design_id(),
@@ -187,6 +205,7 @@ class New_PIE_Project_Request extends Abstract_PIE_Request
             'formatid'              => $this->editorData->get_format_id(),
             'editorinstructions'    => array_merge($this->editorData->get_editor_instruction_array(), $this->editorInstructions),
             'projectname'           => $this->projectName,
+            'organisationid'        => $this->organisationId,
             'returnurl'             => $this->returnUrl,
         );
 

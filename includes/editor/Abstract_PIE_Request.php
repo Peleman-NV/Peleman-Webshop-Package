@@ -35,6 +35,11 @@ abstract class Abstract_PIE_Request extends Abstract_Request
     {
         return $this->auth->get_domain() . $this->endpoint;
     }
+	
+public function set_endpoint_url($newEndpoint):void
+    {
+          $this->endpoint .= '?organisationid=' . $newEndpoint;
+    }
 
     final protected function get_api_key(): string
     {
