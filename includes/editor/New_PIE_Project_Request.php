@@ -196,7 +196,7 @@ class New_PIE_Project_Request extends Abstract_PIE_Request
             'customerid'            => $this->get_customer_id(),
             'customerapikey'        => $this->get_api_key(),
             'userid'                => $this->userId,
-            'useremail'                => $this->userEmail,
+            'useremail'             => $this->userEmail,
             'lang'                  => $this->language,
             'templateid'            => $this->editorData->get_template_id(),
             'designid'              => $this->editorData->get_design_id(),

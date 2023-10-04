@@ -58,8 +58,11 @@ class Add_Custom_Project_On_Return extends Abstract_Action_Hookable
                 wc_add_to_cart_message(array($productId => $quantity), true);
                 delete_transient($transientId);
             }
-
-            wp_redirect(wc_get_cart_url());
+            $organisation = '';
+            if (!empty($get['organisationid'])) {
+                $organisation = '?organisationid=' . $get['organisationid'];
+            }
+            wp_redirect(wc_get_cart_url() . $organisation);
             exit;
         }
     }
