@@ -14,119 +14,118 @@
  */
 
 (function ($) {
-    ('use strict');
-    console.log('updated add to cart js initializing...');
+	("use strict");
+	//console.log("updated add to cart js initializing...");
+	const { __, _x, _n, _nx } = wp.i18n;
+	$(document).on("click", ".single_add_to_cart_button", function (e) {
+		e.preventDefault();
 
-    $(document).on('click', '.single_add_to_cart_button', function (e) {
-        e.preventDefault();
+		let $thisButton = $(this);
+		let $form = $("form.cart");
 
-        let $thisButton = $(this);
-        let $form = $('form.cart');
+		let id = $thisButton.val();
+		let file = $("#pwp-file-upload")[0].files[0];
+		let product_id = $form.find("input[name=product_id]").val() || id;
+		let quantity = $form.find("input[name=quantity]").val() || 1;
+		let variation_id = $form.find("input[name=variation_id]").val() || 0;
+		let loadSpinner = $(this).find(".pwp-loader");
+		let buttonText = $thisButton.find(".btn-text").text();
 
-        let id = $thisButton.val();
-        let file = $('#pwp-file-upload')[0].files[0];
-        let product_id = $form.find('input[name=product_id]').val() || id;
-        let quantity = $form.find('input[name=quantity]').val() || 1;
-        let variation_id = $form.find('input[name=variation_id]').val() || 0;
-        let loadSpinner = $(this).find('.pwp-loader');
-        let buttonText = $thisButton.find('.btn-text').text();
+		let formData = new FormData();
 
-        let formData = new FormData();
+		formData.append("action", "Ajax_Add_To_Cart");
+		formData.append("product_id", product_id);
+		formData.append("product_sku", "");
+		formData.append("quantity", quantity);
+		formData.append("variation_id", variation_id);
+		formData.append("pdf-upload", file);
+		formData.set("nonce", Ajax_Add_To_Cart_object.nonce);
 
-        formData.append('action', 'Ajax_Add_To_Cart');
-        formData.append('product_id', product_id);
-        formData.append('product_sku', '');
-        formData.append('quantity', quantity);
-        formData.append('variation_id', variation_id);
-        formData.append('pdf-upload', file);
-        formData.set('nonce', Ajax_Add_To_Cart_object.nonce);
+		//console.log(JSON.stringify(formData));
 
-        console.log(JSON.stringify(formData));
+		// $(document.body).trigger('adding_to_cart', [$thisButton, formData]);
 
-        // $(document.body).trigger('adding_to_cart', [$thisButton, formData]);
+		$.ajax({
+			url: Ajax_Add_To_Cart_object.ajax_url,
+			method: "POST",
+			type: "POST",
+			data: formData,
+			processData: false,
+			contentType: false,
+			// async: true,
+			beforeSend: function () {
+				$thisButton.removeClass("pwp-added");
+				$thisButton.addClass("pwp-loading");
+				if (file) {
+					$thisButton.find(".btn-text").text("Uploading file, please wait");
+				}
+				loadSpinner.show();
+				$thisButton.attr("disabled", true);
+				showElement($("#pwp-loading"));
+			},
+			complete: function (response) {
+				$thisButton.addClass("pwp-added");
+				$thisButton.removeClass("pwp-loading");
+				$thisButton.attr("disabled", false);
+				$thisButton.find(".btn-text").text(buttonText);
+				loadSpinner.hide();
+				hideElement($("#pwp-loading"));
+				//console.log(response);
+			},
+			success: function (response) {
+				//console.log(response);
+				data = response.data;
+				response.success ? onSuccess(data, $thisButton) : onFailure(data);
+			},
+			error: function (jqXHR, textStatus, errorThrown) {
+				logAjaxError(jqXHR, textStatus, errorThrown);
+			},
+		});
+	});
+	return false;
 
-        $.ajax({
-            url: Ajax_Add_To_Cart_object.ajax_url,
-            method: 'POST',
-            type: 'POST',
-            data: formData,
-            processData: false,
-            contentType: false,
-            // async: true,
-            beforeSend: function () {
-                $thisButton.removeClass('pwp-added')
-                $thisButton.addClass('pwp-loading');
-                if (file) {
-                    $thisButton.find('.btn-text').text("Uploading file, please wait");
-                }
-                loadSpinner.show();
-                $thisButton.attr("disabled", true);
-                showElement($('#pwp-loading'));
-            },
-            complete: function (response) {
-                $thisButton.addClass('pwp-added')
-                $thisButton.removeClass('pwp-loading');
-                $thisButton.attr("disabled", false);
-                $thisButton.find('.btn-text').text(buttonText);
-                loadSpinner.hide();
-                hideElement($('#pwp-loading'));
-                console.log(response);
-            },
-            success: function (response) {
-                console.log(response);
-                data = response.data;
-                response.success ? onSuccess(data, $thisButton) : onFailure(data);
-            },
-            error: function (jqXHR, textStatus, errorThrown) {
-                logAjaxError(jqXHR, textStatus, errorThrown);
+	function onFailure(data) {
+		//console.log(data);
+		alert(data.message);
+		$("#redirection-info").html(data.message);
 
-            }
-        });
-    });
-    return false;
+		$("#redirection-info").addClass("ppi-response-error");
+	}
 
-    function onFailure(data) {
-        console.log(data);
-        alert(data.message);
-        $('#redirection-info').html(data.message);
+	function onSuccess(data, button) {
+		if (data.destination_url) {
+			window.location.href = data.destination_url;
+			return;
+		}
 
-        $('#redirection-info').addClass('ppi-response-error');
-    }
+		$(document.body).trigger("added_to_cart", [
+			data.fragments,
+			data.cart_hash,
+			button,
+		]);
+	}
 
-    function onSuccess(data, button) {
-        if (data.destination_url) {
-            window.location.href = data.destination_url;
-            return;
-        }
+	function logAjaxError(jqXHR, textStatus, errorThrown) {
+		//console.log(jqXHR.responseText);
+		let response = JSON.parse(jqXHR.responseText);
+		alert(response.data.message);
+		// console.log(
+		// 	"Something went wrong:\n" +
+		// 		jqXHR.status +
+		// 		": " +
+		// 		jqXHR.statusText +
+		// 		"\nTextstatus: " +
+		// 		textStatus +
+		// 		"\nError thrown: " +
+		// 		errorThrown
+		// );
+	}
 
-        $(document.body).trigger('added_to_cart', [
-            data.fragments,
-            data.cart_hash,
-            button
-        ]);
-    }
+	function hideElement(element) {
+		element.addClass("pwp-hidden");
+	}
 
-    function logAjaxError(jqXHR, textStatus, errorThrown) {
-        console.log(jqXHR.responseText);
-        let response = JSON.parse(jqXHR.responseText);
-        alert(response.data.message);
-        console.log(
-            'Something went wrong:\n' +
-            jqXHR.status +
-            ': ' +
-            jqXHR.statusText +
-            '\nTextstatus: ' +
-            textStatus +
-            '\nError thrown: ' +
-            errorThrown);
-    }
-
-    function hideElement(element) {
-        element.addClass('pwp-hidden');
-    }
-
-    function showElement(element) {
-        element.removeClass('pwp-hidden');
-    }
-
+	function showElement(element) {
+		element.removeClass("pwp-hidden");
+	}
 })(jQuery);

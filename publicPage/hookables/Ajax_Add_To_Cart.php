@@ -251,4 +251,11 @@ class Ajax_Add_To_Cart extends Abstract_Ajax_Hookable
             201
         );
     }
+
+    protected function object_data(): array
+    {
+        return array(
+            'uploading_text' => __("Uploading file, please wait", 'peleman-webshop-package'),
+        );
+    }
 }

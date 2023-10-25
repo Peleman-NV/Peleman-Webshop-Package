@@ -149,10 +149,6 @@ final class Plugin
             new Ajax_Verify_PIE_Editor_Credentials(6),
             new Cleanup_Unordered_Projects(),
             new Override_WC_Templates(),
-            new Apply_Bundle_Price_Cart_Widget(),
-            new Modify_Cart_Item_Before_Calculate_Totals(),
-            new Apply_Unit_Prices_To_Cart(9),
-            new Add_PDF_Prices_To_Cart(20),
             new Change_Checkout_Item_Thumbnail(),
             new Change_Product_Thumbnail_In_Order(10),
         );
@@ -172,26 +168,36 @@ final class Plugin
             new Set_PIE_Project_As_Completed()
         );
 
-        /* PDF upload hookables */
-        $this->add_hookables(
-            new Display_PDF_Upload_Form($this->templateEngine),
-            new Validate_PDF_Upload(),
-            new Add_PDF_Data_To_Cart_Item(),
-            new Display_PDF_Data_In_Cart(),
-            new Remove_PDF_On_Cart_Deletion(),
-            new Order_Project(),
-            new Display_PDF_Data_After_Order_Item()
-        );
 
         /* EDITOR product hookables */
         $this->add_hookables(
             new Ajax_Show_Variation(8),
-            new Ajax_Add_To_Cart(8),
             new Display_Editor_Project_Button_In_Cart(),
             new Add_Custom_Project_On_Return(),
             new Save_Cart_Item_Meta_To_Order_Item_Meta(),
             new Confirm_PIE_Project_On_Checkout(),
         );
+
+        /* CUSTOM ADD TO CART/STOREFRONT OVERRIDES */
+        if (get_option('pwp_use_custom_add_to_cart_js', true)) {
+            $this->add_hookables(
+                new Ajax_Add_To_Cart(8),
+                new Apply_Bundle_Price_Cart_Widget(),
+                new Modify_Cart_Item_Before_Calculate_Totals(),
+                new Apply_Unit_Prices_To_Cart(9),
+                new Add_PDF_Prices_To_Cart(20),
+            );
+            /* PDF upload hookables */
+            $this->add_hookables(
+                new Display_PDF_Upload_Form($this->templateEngine),
+                new Validate_PDF_Upload(),
+                new Add_PDF_Data_To_Cart_Item(),
+                new Display_PDF_Data_In_Cart(),
+                new Remove_PDF_On_Cart_Deletion(),
+                new Order_Project(),
+                new Display_PDF_Data_After_Order_Item()
+            );
+        }
 
         /* EDITOR front end display hookables */
         $this->add_hookable(new Change_Cart_Item_Thumbnail());
